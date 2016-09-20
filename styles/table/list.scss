@@ -1,0 +1,27 @@
+table.list{
+
+    width: 100%;
+    overflow: auto;
+    border-collapse: collapse;
+
+    thead{
+        background: $table_header_bg;
+    }
+
+    td, th{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: $gutter/2;
+    }
+
+    tbody{
+        tr:nth-child(even){
+            background: $table_even_bg;
+        }
+        tr:hover{
+            background: $table_hover_bg;
+        }
+    }
+
+}

@@ -1,2 +1,2 @@
 a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden')
-    | {{ module.name + ':module:sidebar' }}
+    | {{ module.name + ':module:sidebar' | translate }}

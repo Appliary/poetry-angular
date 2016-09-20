@@ -1,4 +1,4 @@
-app.controller( 'modals/login', function ( $scope, $http ) {
+app.controller( 'modals/login', function ( $scope, $http, $location ) {
 
     $scope.login = {};
 
@@ -15,7 +15,7 @@ app.controller( 'modals/login', function ( $scope, $http ) {
             } )
             .then( function success( response ) {
 
-                console.dir( response.data );
+                $location.refresh();
 
             }, function error( response ) {
 

@@ -1,11 +1,11 @@
-table
+table.list
     thead: tr
         th(ng-repeat='column in columns', ng-click='orderBy(column)')
-            | {{ column + ':' + __module.name + ':' + 'column'}}
+            | {{ column + ':' + __module.name + ':' + 'column' | translate }}
     tbody
         tr(ng-repeat='row in data')
             td(ng-repeat='column in columns')
                 span(ng-if='row[ column ] !== undefined')
                     | {{ row[ column ] }}
-                span(ng-if='row[ column ] === undefined')
-                    | null
+                span(ng-if='row[ column ] === undefined').badge
+                    | {{ 'null:' + __module.name + ':' + ':value' | translate }}

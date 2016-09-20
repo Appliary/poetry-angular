@@ -19,6 +19,8 @@ Server.register( {
         },
         handler( request, reply ) {
 
+            request.session = {};
+
             reply.proxy( {
                 host: config.app.remote,
                 port: 80,

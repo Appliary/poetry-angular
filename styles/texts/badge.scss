@@ -1,0 +1,10 @@
+.badge{
+    display: inline-block;
+    color: $badge_txt;
+    background: $badge_bg;
+    border-radius: 3px;
+    font-size: 0.8em;
+    padding: 0 4px;
+    opacity: 0.5;
+    vertical-align: middle;
+}

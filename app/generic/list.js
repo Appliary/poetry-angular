@@ -10,14 +10,18 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             else
                 $scope.data = [];
 
-            $scope.columns = [];
-            $scope.data.forEach( function ( data ) {
-                Object.keys( data )
-                    .forEach( function ( col ) {
-                        if ( !~$scope.columns.indexOf( col ) )
-                            $scope.columns.push( col );
-                    } )
-            } );
+            if ( $scope.__module.config && $scope.__module.config.columns )
+                $scope.columns = $scope.__module.config.columns;
+            else $scope.columns = [];
+
+            if ( !$scope.columns.length )
+                $scope.data.forEach( function ( data ) {
+                    Object.keys( data )
+                        .forEach( function ( col ) {
+                            if ( !~$scope.columns.indexOf( col ) )
+                                $scope.columns.push( col );
+                        } )
+                } );
 
         }, function error( response ) {
 
