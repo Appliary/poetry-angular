@@ -1,0 +1,3 @@
+dropdown(ng-if='apps.length > 1', icon='application', text='"App"')
+    a(ng-repeat='app in apps' ng-click='select(app)', ng-class="{active:(app==current)}")
+        | {{ 'application.' + app }}

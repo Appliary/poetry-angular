@@ -1,0 +1,41 @@
+body > app-topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $topnav_height;
+    background: $topnav_bg;
+    text-align: right;
+    z-index: 999;
+    app-logo {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: $topnav_height;
+        width: $sidebar_width;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: $logo;
+        transition: width 0.1s ease-in;
+        @media(max-width:$mobile_break) {
+            width: $sidebar_width_collapsed;
+        }
+    }
+    button{
+        border-radius: 0;
+        background: none;
+        height: $topnav_height;
+        min-width: $topnav_height;
+    }
+    dropdown list{
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        background: #CCC;
+        border: none;
+        z-index: 998;
+    }
+}
+body.collapsed > app-topnav app-logo {
+    width: $sidebar_width_collapsed;
+}

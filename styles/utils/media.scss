@@ -1,0 +1,10 @@
+@media(max-width: $mobile_break) {
+    .except-mobile {
+        display: none;
+    }
+}
+@media(min-width: $mobile_break + 1) {
+    .only-mobile {
+        display: none;
+    }
+}

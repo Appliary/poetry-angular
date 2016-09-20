@@ -1,0 +1,11 @@
+header
+    h1 {{ 'login:modal:title' }}
+
+form( ng-submit='auth()' )
+    label( for='email' ) {{ 'email:field:login' }}
+    input( type='email', ng-model='login.email', name='email' )
+
+    label( for='password' ) {{ 'password:field:login' }}
+    input( type='password', ng-model='login.password', name='password' )
+
+    button( type='submit' ).pull-right {{ 'login:button' }}

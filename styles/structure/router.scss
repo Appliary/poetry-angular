@@ -1,0 +1,30 @@
+body > app-router{
+    position: fixed;
+    top: $topnav_height;
+    left: $sidebar_width;
+    bottom: 0;
+    right: 0;
+    transition: left 0.1s ease-in;
+    z-index: 0;
+
+    @media(max-width:$mobile_break) {
+        left: 0;
+    }
+
+    &>header{
+        display: block;
+        background: #EEE;
+        padding: $gutter/2 $gutter;
+    }
+
+    ng-include{
+        padding: $gutter;
+        display: block;
+    }
+}
+body.collapsed > app-router{
+    left: $sidebar_width_collapsed;
+    @media(max-width:$mobile_break) {
+        left: 0;
+    }
+}

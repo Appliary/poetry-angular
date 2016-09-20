@@ -1,0 +1,19 @@
+label+input {
+    width: 60%;
+    display: inline-block;
+    @media(max-width:$mobile_break) {
+        width: 100%;
+    }
+}
+label {
+    width: 40%;
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: right;
+    padding: $gutter;
+    @media(max-width:$mobile_break) {
+        width: 100%;
+        padding: $gutter 0 0 0;
+        text-align: left;
+    }
+}

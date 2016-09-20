@@ -1,0 +1,43 @@
+doctype html
+html(ng-app=app.name)
+    head
+        meta(charset="utf-8")
+        meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+        title=app.name
+        base(href='/'+app.name+'/')
+
+        //- Hide ngcloak during application loading
+        style.
+            .ng-cloak{ display:none; }
+            noscript{
+                position:fixed;
+                z-index:99999999999;
+            }
+
+        //- Transfer app config
+        script(language='javascript') var __appName = "#{app.name}";
+
+        //- Load Styles, Dependencies, Core application, Templates, App & Theme
+        link(rel='stylesheet' href=`/${app.name}/__styles.css`)
+        script(src=`/${app.name}/__dependencies.js`)
+        script(src=`/${app.name}/__core.js`)
+        script(src=`/${app.name}/__templates.js`)
+        script(src=`/${app.name}/__app.js`)
+        link(rel="stylesheet" ng-href=`/themes/{{ $session.team.theme || "${app.defaultTheme}" }}.css`)
+
+
+    body(ng-class='{collapsed:$root.collapseSidebar}')
+
+        //- NoJS warning
+        noscript
+            | This website needs JavaScript to work properly.
+            | Please activate JS or use another browser.
+
+        //- Horizontal top bar
+        app-topnav
+
+        //- Sidebar, populated by app config
+        app-sidebar
+
+        //- Content of the page, routed using url
+        app-router

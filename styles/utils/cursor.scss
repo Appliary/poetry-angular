@@ -1,0 +1,9 @@
+*{
+    cursor: default;
+}
+
+[ng-click], [onclick], [href]{
+    &, & *{
+        cursor: pointer;
+    }
+}

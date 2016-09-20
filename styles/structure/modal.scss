@@ -1,0 +1,38 @@
+.ngdialog {
+    .ngdialog-overlay {
+        position: fixed;
+        z-index: 1000;
+        background: $modal_mask;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+    .ngdialog-content {
+        position: fixed;
+        z-index: 1001;
+        top: 25%;
+        left: 50%;
+        margin-left: -230px;
+        background: $modal_bg;
+        width: 460px;
+        border: $modal_border solid 1px;
+        border-radius: 4px;
+        box-shadow: 0 0 100px $modal_mask;
+        padding: $gutter;
+        max-height: 50%;
+        overflow-y: auto;
+        .ngdialog-close:before {
+            position: absolute;
+            top: $gutter;
+            right: $gutter;
+            content: '⨉';
+        }
+        @media(max-width:$mobile_break) {
+            left: $gutter*2;
+            right: $gutter*2;
+            margin: auto;
+            width: auto;
+        }
+    }
+}
