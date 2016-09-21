@@ -34,6 +34,11 @@ app.controller( 'modals/register', function ( $scope, $http, $location, ngDialog
                 $scope.failed = true;
 
             } );
+    },
+    
+    $scope.closeModal = function closeModal() {
+
+        $window.location.replace( $location.absUrl() );
     }
 
 } );
