@@ -1,10 +1,11 @@
-app.controller( 'modals/login', function ( $scope, $http, $window, $location ) {
+app.controller( 'modals/login', function ( $scope, $http, $window, $location, ngDialog ) {
 
     $scope.login = {};
 
     $scope.auth = function auth() {
 
         console.info( 'Try to authenticate', $scope.login.email );
+        console.info('test test'),
 
         $http.post( '/login', {
 
@@ -16,7 +17,8 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location ) {
             .then( function success( response ) {
 
                 console.info( 'Now authenticated', response.data );
-                $window.location.replace( $location.absUrl() );
+                console.info($location.absUrl());
+                //$window.location.replace( $location.absUrl() );
 
             }, function error( response ) {
 
@@ -29,10 +31,15 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location ) {
 
     $scope.register = function register() {
 
-        console.info( 'Try to Register', $scope.login.email );
+        console.info( 'Try to Register', $scope.register.email );
 
-        $location.path('/register');
-
+        return ngDialog.open( {
+            templateUrl: 'modals/register.pug',
+            controller: 'modals/register',
+            showClose: false,
+            className: 'register'
+        } );
     };
+
 
 } );
