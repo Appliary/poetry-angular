@@ -25,6 +25,14 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location ) {
 
             } );
 
-    }
+    };
+
+    $scope.register = function register() {
+
+        console.info( 'Try to Register', $scope.login.email );
+
+        $location.path('/register');
+
+    };
 
 } );

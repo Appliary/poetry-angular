@@ -1,0 +1,25 @@
+header
+    h1 {{ 'register:modal:title' | translate }}
+
+form( ng-submit='createUser()' )
+    label( for='email' ) {{ 'email:field:register' | translate }}
+    input( type='email', ng-model='register.email', name='email' )
+
+    label( for='language' ) {{ 'language:field:register' | translate }}
+    input( type='language', ng-model='register.language', name='language' )
+
+	label( for='firstName' ) {{ 'firstName:field:register' | translate }}
+    input( type='firstName', ng-model='register.firstName', name='firstName' )
+
+    label( for='lastName' ) {{ 'lastName:field:register' | translate }}
+    input( type='lastName', ng-model='register.lastName', name='lastName' )
+
+    label( for='phone' ) {{ 'phone:field:register' | translate }}
+    input( type='phone', ng-model='register.phone', name='phone' )
+
+    label( for='teamName' ) {{ 'teamName:field:register' | translate }}
+    input( type='teamName', ng-model='register.teamName', name='teamName' )    
+
+    button( type='submit' ).pull-right {{ 'register:button' | translate }}
+
+

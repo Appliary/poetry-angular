@@ -9,3 +9,5 @@ form( ng-submit='auth()' )
     input( type='password', ng-model='login.password', name='password' )
 
     button( type='submit' ).pull-right {{ 'login:button' | translate }}
+
+a( ng-click='register()' ) {{ 'Sign Up' }}
