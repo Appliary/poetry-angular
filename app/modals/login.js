@@ -29,7 +29,6 @@ app.controller( 'modals/login', function ( $scope, $http, $location ) {
 
         console.info( 'Try to Register', $scope.login.email );
 
-        $location.refresh();
         $location.path('/register');
 
     };
