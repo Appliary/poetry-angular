@@ -1,6 +1,6 @@
 app.controller( 'modals/register', function ( $scope, $http, $location ) {
 
-    $scope.login = {};
+    $scope.register = {};
 
     $scope.createUser = function createUser() {
 
@@ -17,11 +17,12 @@ app.controller( 'modals/register', function ( $scope, $http, $location ) {
 
             } )
             .then( function success( response ) {
+                console.log(response);
 
-                $location.refresh();
+                $window.location.replace( $location.absUrl() );
 
             }, function error( response ) {
-
+                console.log(response);
                 $scope.failed = true;
 
             } );
