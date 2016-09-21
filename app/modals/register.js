@@ -22,6 +22,14 @@ app.controller( 'modals/register', function ( $scope, $http, $location, ngDialog
                 $window.location.replace( $location.absUrl() );
 
             }, function error( response ) {
+                switch (response.status) {
+                    case 406: 
+                        alert("Adresse mail déjà utilisée");
+                        break;
+
+                    default: 
+                        alert(response.status);
+                }
                 console.log(response);
                 $scope.failed = true;
 
