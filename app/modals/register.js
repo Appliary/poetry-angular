@@ -1,4 +1,4 @@
-app.controller( 'modals/register', function ( $scope, $http, $location ) {
+app.controller( 'modals/register', function ( $scope, $http, $location, ngDialog, $window ) {
 
     $scope.register = {};
 
@@ -6,14 +6,14 @@ app.controller( 'modals/register', function ( $scope, $http, $location ) {
 
         console.info( 'Try to register', $scope.register.email );
 
-        $http.post( '/register', {
+        $http.post( '/api/teams', {
 
                 email: $scope.register.email,
                 language : $scope.register.language,
                 firstName : $scope.register.firstName,
                 lastName : $scope.register.lastName,
                 phone : $scope.register.phone,
-                teamName : $scope.register.teamName,
+                teamName : $scope.register.teamName
 
             } )
             .then( function success( response ) {
@@ -26,7 +26,6 @@ app.controller( 'modals/register', function ( $scope, $http, $location ) {
                 $scope.failed = true;
 
             } );
-
     }
 
 } );

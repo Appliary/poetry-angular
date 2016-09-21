@@ -5,7 +5,6 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location, ng
     $scope.auth = function auth() {
 
         console.info( 'Try to authenticate', $scope.login.email );
-        console.info('test test'),
 
         $http.post( '/login', {
 
@@ -18,7 +17,7 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location, ng
 
                 console.info( 'Now authenticated', response.data );
                 console.info($location.absUrl());
-                //$window.location.replace( $location.absUrl() );
+                $window.location.replace( $location.absUrl() );
 
             }, function error( response ) {
 
