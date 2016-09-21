@@ -10,4 +10,5 @@ form( ng-submit='auth()' )
 
     button( type='submit' ).pull-right {{ 'login:button' | translate }}
 
-a( ng-click='register()' ) {{ 'Sign Up' }}
+button( ng-if='__appRegister' ng-click='register()' )
+    | {{ 'register:button' | translate }}

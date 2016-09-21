@@ -1,27 +1,58 @@
-table.list{
-
-    width: 100%;
+.list {
+    display: inline-block;
+    position: relative;
     overflow: auto;
-    border-collapse: collapse;
-
-    thead{
-        background: $table_header_bg;
-    }
-
-    td, th{
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding: $gutter/2;
-    }
-
-    tbody{
-        tr:nth-child(even){
-            background: $table_even_bg;
+    width: 100%;
+    box-sizing: border-box;
+    transition: width 0.3s ease-out;
+    table {
+        display: inline-table;
+        width: 100%;
+        border-collapse: collapse;
+        transition: width 0.3s ease-out;
+        thead {
+            background: $table_header_bg;
         }
-        tr:hover{
-            background: $table_hover_bg;
+        td,
+        th {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding: $gutter/2;
+        }
+        tbody {
+            tr:nth-child(even) {
+                background: $table_even_bg;
+            }
+            tr:hover {
+                background: $table_hover_bg;
+            }
         }
     }
-
+    &.detailed {
+        width: 50%;
+        @media( max-width:1200px ) {
+            display: none;
+        }
+    }
+}
+ng-include.details {
+    position: fixed;
+    box-sizing: border-box;
+    right: $gutter;
+    left: 57%;
+    top: $gutter*2 + $header_height + $topnav_height;
+    bottom: $gutter;
+    background: grey;
+    margin-left: 60%;
+    transition: margin 0.3s ease-out;
+    &.detailed {
+        margin-left: $gutter;
+        @media( max-width:1200px ) {
+            left: $sidebar_width;
+        }
+        @media( max-width: $mobile_break ) {
+            left: 0;
+        }
+    }
 }

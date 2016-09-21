@@ -15,7 +15,9 @@ html(ng-app=app.name)
             }
 
         //- Transfer app config
-        script(language='javascript') var __appName = "#{app.name}";
+        script(language='javascript').
+            var __appName = "#{app.name}",
+                __appRegister = "#{app.register}";
 
         //- Load Styles, Dependencies, Core application, Templates, App & Theme
         link(rel='stylesheet' href=`/${app.name}/__styles.css`)

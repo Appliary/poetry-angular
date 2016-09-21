@@ -1,11 +1,14 @@
-table.list
-    thead: tr
-        th(ng-repeat='column in columns', ng-click='orderBy(column)')
-            | {{ column + ':' + __module.name + ':' + 'column' | translate }}
-    tbody
-        tr(ng-repeat='row in data')
-            td(ng-repeat='column in columns')
-                span(ng-if='row[ column ] !== undefined')
-                    | {{ row[ column ] | localize }}
-                span(ng-if='row[ column ] === undefined').badge
-                    | {{ 'null:' + __module.name + ':' + ':value' | translate }}
+.list( ng-class='{detailed:__id}' )
+    table
+        thead: tr
+            th( ng-repeat='column in columns', ng-click='orderBy(column)' )
+                | {{ column + ':' + __module.name + ':' + 'column' | translate }}
+        tbody
+            tr( ng-repeat='row in data', ng-click='select(row._id)' )
+                td( ng-repeat='column in columns')
+                    span( ng-if='row[ column ] !== undefined' )
+                        | {{ row[ column ] | localize }}
+                    span( ng-if='row[ column ] === undefined' ).badge
+                        | {{ 'null:' + __module.name + ':' + ':value' | translate }}
+
+ng-include.details( ng-class='{detailed:__id}', src="__module.subview || 'generic/details.pug'" )

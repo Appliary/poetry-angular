@@ -37,4 +37,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
         } );
 
+    $scope.select = function select( id ) {
+        $location.path( '/' + $scope.__module.name + '/' + id );
+    }
+
 } );

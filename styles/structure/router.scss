@@ -1,5 +1,6 @@
 body > app-router{
     position: fixed;
+    display: block;
     top: $topnav_height;
     left: $sidebar_width;
     bottom: 0;
@@ -15,6 +16,7 @@ body > app-router{
         display: block;
         background: #EEE;
         padding: $gutter/2 $gutter;
+        height: $header_height;
     }
 
     ng-include{
