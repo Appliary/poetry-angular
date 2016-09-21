@@ -1,4 +1,4 @@
-app.controller( 'modals/login', function ( $scope, $http, $location ) {
+app.controller( 'modals/login', function ( $scope, $http, $window, $location ) {
 
     $scope.login = {};
 
@@ -15,10 +15,12 @@ app.controller( 'modals/login', function ( $scope, $http, $location ) {
             } )
             .then( function success( response ) {
 
-                $location.refresh();
+                console.info( 'Now authenticated', response.data );
+                $window.location.replace( $location.absUrl() );
 
             }, function error( response ) {
 
+                console.warn( 'Authentication failed', response );
                 $scope.failed = true;
 
             } );

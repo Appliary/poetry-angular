@@ -16,5 +16,5 @@ app.filter( 'translate', function () {
 
     }
 
-    return translate
+    return translate;
 } );

@@ -6,6 +6,6 @@ table.list
         tr(ng-repeat='row in data')
             td(ng-repeat='column in columns')
                 span(ng-if='row[ column ] !== undefined')
-                    | {{ row[ column ] }}
+                    | {{ row[ column ] | localize }}
                 span(ng-if='row[ column ] === undefined').badge
                     | {{ 'null:' + __module.name + ':' + ':value' | translate }}
