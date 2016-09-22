@@ -26,7 +26,7 @@ Poetry.route( {
                 Poetry.log.silly( 'Rendering :', name );
                 let tmpl = Pug.renderFile( file );
                 r += `$templateCache.put('${name}','`;
-                r += tmpl.replace( /\'/g, '\\\'' );
+                r += tmpl.replace( /\'/g, '\\\'' ).replace( /\n/g, '\\n' );
                 r += `');`;
             }catch(err){
                 Poetry.log.error(err);
