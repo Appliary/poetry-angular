@@ -8,5 +8,5 @@ app.directive( 'scroll', function () {
                 return scope.scroll()( event );
             }
         }
-    }
+    };
 } );
