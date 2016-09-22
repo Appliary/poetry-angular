@@ -1,17 +1,21 @@
 .list {
-    display: inline-block;
-    position: relative;
+    position: fixed;
+    left: $gutter + $sidebar_width;
+    right: $gutter;
+    top: $gutter*2 + $header_height + $topnav_height;
+    bottom: $gutter;
     overflow: auto;
-    width: 100%;
     box-sizing: border-box;
-    transition: width 0.3s ease-out;
+    transition: right 0.3s ease-out;
     table {
         display: inline-table;
         width: 100%;
         border-collapse: collapse;
-        transition: width 0.3s ease-out;
-        thead {
+        transition: all 0.3s ease-out;
+        thead th {
             background: $table_header_bg;
+            position: relative;
+            transition: top 0.01s ease-out
         }
         td,
         th {
@@ -30,7 +34,7 @@
         }
     }
     &.detailed {
-        width: 50%;
+        right: $gutter*2 + 600px;
         @media( max-width:1200px ) {
             display: none;
         }
@@ -40,19 +44,20 @@ ng-include.details {
     position: fixed;
     box-sizing: border-box;
     right: $gutter;
-    left: 57%;
+    width: 600px;
     top: $gutter*2 + $header_height + $topnav_height;
     bottom: $gutter;
-    background: grey;
-    margin-left: 60%;
-    transition: margin 0.3s ease-out;
+    transform: translateX(1000px);
+    transition: transform 0.3s ease-out;
     &.detailed {
-        margin-left: $gutter;
+        transform: translateX(0);
         @media( max-width:1200px ) {
-            left: $sidebar_width;
+            left: $sidebar_width + $gutter;
+            width: auto;
         }
         @media( max-width: $mobile_break ) {
-            left: 0;
+            left: $gutter;
+            width: auto;
         }
     }
 }

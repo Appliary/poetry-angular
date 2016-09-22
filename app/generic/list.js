@@ -1,5 +1,7 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
 
+    $scope.order = $location.search;
+
     $http.get( $scope.__module.api )
         .then( function success( response ) {
 
@@ -39,6 +41,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     $scope.select = function select( id ) {
         $location.path( '/' + $scope.__module.name + '/' + id );
+    }
+
+    $scope.scroll = function scroll( event ) {
+        var elem = event.target;
+        var header = elem.querySelectorAll( 'th' );
+        for ( var i = 0; i < header.length; i++ ) {
+            header[i].style.top = elem.scrollTop + 'px';
+        };
     }
 
 } );
