@@ -1,5 +1,7 @@
 header
+    button( ng-click='closeModal()' ).pull-right {{ 'X' }}
     h1 {{ 'register:modal:title' | translate }}
+
 
 form( ng-submit='createUser()' )
     label( for='email' ) {{ 'email:field:register' | translate }}
