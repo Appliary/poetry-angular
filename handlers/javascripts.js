@@ -35,8 +35,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( [
         __dirname + '/../app/index.js',
-        __dirname + '/../app/*/**/*.js',
-        './app/**/*.js'
+        __dirname + '/../app/*/**/*.js'
     ], ( err, res ) => {
 
         if ( !err )
@@ -53,7 +52,18 @@ Poetry.route( {
     method: 'GET',
     path: '/' + config.app.name + '/__app.js'
 }, ( request, reply ) => {
-    reply( 'console.log("app")' );
+    concat( [
+        './app/**/*.js'
+    ], ( err, res ) => {
+
+        if ( !err )
+            return reply( res )
+                .type( 'script/javascript' );
+
+        Poetry.log.error( 'CoreJS', err );
+        reply( err );
+
+    } );
 } );
 
 Poetry.route( {
