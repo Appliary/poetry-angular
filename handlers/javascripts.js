@@ -35,7 +35,8 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( [
         __dirname + '/../app/index.js',
-        __dirname + '/../app/*/**/*.js'
+        __dirname + '/../app/*/**/*.js',
+        './app/**/*.js'
     ], ( err, res ) => {
 
         if ( !err ) return reply( res );
