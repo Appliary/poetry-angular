@@ -15,34 +15,40 @@ Poetry.route( {
     Poetry.log.info( 'Rendering templates' );
 
     glob( __dirname + '/../app/**/*.pug', ( err, files ) => {
+        glob( './app/**/*.pug', ( err, files2 ) => {
+            files = files.concat( files2 );
 
-        let r = 'app.run( function($templateCache){';
-        files.forEach( ( file ) => {
+            let r = 'app.run( function($templateCache){';
+            files.forEach( ( file ) => {
 
-            let name = file.slice( __dirname.length - 4 );
-            if ( name == 'index.pug' ) return;
+                let name = file.slice( __dirname.length - 4 );
+                if ( name == 'index.pug' ) return;
 
-            try{
-                Poetry.log.silly( 'Rendering :', name );
-                let tmpl = Pug.renderFile( file );
-                r += `$templateCache.put('${name}','`;
-                r += tmpl.replace( /\'/g, '\\\'' ).replace( /\n/g, '\\n' );
-                r += `');`;
-            }catch(err){
-                Poetry.log.error(err);
+                try {
+                    Poetry.log.silly( 'Rendering :', name );
+                    let tmpl = Pug.renderFile( file );
+                    r += `$templateCache.put('${name}','`;
+                    r += tmpl.replace( /\'/g, '\\\'' )
+                        .replace( /\n/g, '\\n' );
+                    r += `');`;
+                } catch ( err ) {
+                    Poetry.log.error( err );
+                    return reply( err );
+                }
+
+            } );
+            r += '} )';
+            reply( r )
+                .type( 'script/javascript' );
+
+            if ( process.env.node_env == 'prod' ||
+                process.env.NODE_ENV == 'prod' ||
+                process.env.node_env == 'production' ||
+                process.env.NODE_ENV == 'production' ) {
+                cache = r;
+                Poetry.log.verbose( 'Templates are now cached' );
             }
 
         } );
-        r += '} )';
-        reply( r );
-
-        if ( process.env.node_env == 'prod' ||
-            process.env.NODE_ENV == 'prod' ||
-            process.env.node_env == 'production' ||
-            process.env.NODE_ENV == 'production' ) {
-            cache = r;
-            Poetry.log.verbose( 'Templates are now cached' );
-        }
-
     } );
 } );

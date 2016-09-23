@@ -3,7 +3,7 @@
 const Poetry = require( 'poetry' ),
     fs = require( 'fs' ),
     config = require( './config' ),
-    angular = require('./handlers/angular');
+    angular = require( './handlers/angular' );
 
 
 Poetry.route( {
@@ -12,7 +12,7 @@ Poetry.route( {
     path: '/' + config.app.name + '/{file*}',
     config: {
         description: 'Get the application',
-        tags: ['front-end', 'application', 'angular'],
+        tags: [ 'front-end', 'application', 'angular' ],
         cors: false
     }
 
@@ -20,8 +20,14 @@ Poetry.route( {
 
     fs.readFile( './assets/' + request.params.file, ( err, file ) => {
 
-        if( !err )
+        if ( !err )
             return reply( file );
+
+        if ( request.params.file &&
+            (
+                request.params.file.indexOf( '.pug' ) == request.params.file.length - 4 || request.params.file.indexOf( '.js' ) == request.params.file.length - 3
+            ) ) return reply()
+            .code( 404 );
 
         return reply( angular() );
 
