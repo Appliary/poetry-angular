@@ -3,6 +3,8 @@ var i18n_registry = {};
 app.filter( 'translate', function () {
     function translate( key ) {
 
+        if ( !key ) return undefined;
+
         if ( i18n_registry[ key ] !== undefined )
             return i18n_registry[ key ];
 

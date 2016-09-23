@@ -10,7 +10,7 @@ config.dependencies.forEach( ( dep ) => {
 
     try {
         let file = require.resolve( dep );
-        if( !file )
+        if ( !file )
             return Poetry.log.warn( 'Unable to solve JS depencency', dep );
         dependencies.push( file );
     } catch ( err ) {
@@ -26,7 +26,7 @@ Poetry.route( {
     path: '/' + config.app.name + '/__dependencies.js'
 }, ( request, reply ) => {
 
-    if(!dependencies) return reply();
+    if ( !dependencies ) return reply();
 
     concat( dependencies, ( err, res ) => {
 
@@ -66,8 +66,10 @@ Poetry.route( {
         './app/**/*.js'
     ], ( err, res ) => {
 
-        if( ~err.toString().indexOf('"undefined"') )
-            return reply('console.info("No app JS to load")').type('script/javascript')
+        if ( ~err.toString()
+            .indexOf( '"undefined"' ) )
+            return reply( 'console.info("No app JS to load")' )
+                .type( 'script/javascript' )
 
         if ( !err )
             return reply( res )

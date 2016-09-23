@@ -16,11 +16,19 @@ files.forEach( ( file ) => {
 
         let imp = require( '../../config/' + file );
 
-        if ( !config[ name ] ) config[ name ] = {};
+        if ( !config[ name ] ) {
+            if( imp instanceof Array )
+                config[ name ] = [];
+            else
+                config[ name ] = {};
+        }
 
         Object.keys( imp )
             .forEach( ( key ) => {
-                config[ name ][ key ] = imp[ key ];
+                if( imp instanceof Array )
+                    config[ name ].push( imp[ key ] );
+                else
+                    config[ name ][ key ] = imp[ key ];
             } );
 
     } catch ( err ) {
