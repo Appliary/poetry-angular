@@ -15,7 +15,14 @@
         thead th {
             background: $table_header_bg;
             position: relative;
-            transition: top 0.01s ease-out
+            transition: top 0.01s ease-out;
+            text-align: left;
+            &.desc::after{
+                content: 'ꜛ';
+            }
+            &.asc::after{
+                content: 'ꜜ';
+            }
         }
         td,
         th {
