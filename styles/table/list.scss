@@ -17,10 +17,10 @@
             position: relative;
             transition: top 0.01s ease-out;
             text-align: left;
-            &.desc::after{
+            &.desc::after {
                 content: 'ꜛ';
             }
-            &.asc::after{
+            &.asc::after {
                 content: 'ꜜ';
             }
         }
@@ -35,7 +35,7 @@
             tr:nth-child(even) {
                 background: $table_even_bg;
             }
-            tr.active{
+            tr.active {
                 background: $table_active_bg;
             }
             tr:hover {
@@ -75,11 +75,13 @@ ng-include.details {
             width: auto;
         }
     }
-
 }
-body.collapsed{
-    .list{
-        @media( min-width:$mobile_break + 1 ) {
+@media( min-width:$mobile_break + 1 ) {
+    body.collapsed {
+        .list {
+            left: $sidebar_width_collapsed + $gutter;
+        }
+        ng-include.details {
             left: $sidebar_width_collapsed + $gutter;
         }
     }

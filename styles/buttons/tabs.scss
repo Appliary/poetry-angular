@@ -1,6 +1,6 @@
 tabs{
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
 
     &>*{
         display: inline-block;
@@ -9,7 +9,7 @@ tabs{
         box-sizing: border-box;
         text-align: center;
         transition: border 0.1s linear;
-        max-width: 30%;
+        max-width: 40%;
         overflow: hidden;
         text-overflow: ellipsis;
     }

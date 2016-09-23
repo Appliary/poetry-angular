@@ -1,7 +1,6 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
 
-    $scope.order = $location.search;
-
+    if($scope.__id) retrieveItem($scope.__id);
     $http.get( $scope.__module.api )
         .then( function success( response ) {
 
@@ -40,6 +39,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         } );
 
     $scope.select = function select( id ) {
+        retrieveItem( id );
         $location.path(
             '/' + $scope.__module.name +
             '/' + id +
@@ -61,6 +61,18 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         for ( var i = 0; i < header.length; i++ ) {
             header[ i ].style.top = elem.scrollTop + 'px';
         };
+    }
+
+    $scope.isArray = angular.isArray;
+
+    function retrieveItem( id ){
+        $scope.item = undefined;
+        $http.get( $scope.__module.api + '/' + id )
+            .then( function success( response ) {
+                $scope.item = response.data
+            }, function error( response ) {
+                $location.path( '/error/' + response.status );
+            } );
     }
 
 } );

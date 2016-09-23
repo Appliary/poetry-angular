@@ -1,5 +1,7 @@
 tabs
-    a(ng-repeat=' (name, config) in __module.config.details ', ng-click=' tab(name) ', ng-class=' { active: name == __view }')
-        | {{ ((name)? name:__id) | translate }}
-pre
-    | You must be `admin`, but you are `test`
+    a(ng-repeat=' ( name, config ) in __module.config.tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }')
+        span( ng-if=" name ") {{ name + ':tab:' + __module.name | translate }}
+        span( ng-if=" !name ") {{ __id }}
+
+br
+ng-include( src=" config.templateUrl || 'generic/overview.pug' " )
