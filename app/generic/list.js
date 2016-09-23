@@ -40,14 +40,26 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         } );
 
     $scope.select = function select( id ) {
-        $location.path( '/' + $scope.__module.name + '/' + id );
+        $location.path(
+            '/' + $scope.__module.name +
+            '/' + id +
+            '/' + ( $scope.__view || '' )
+        );
+    }
+
+    $scope.tab = function tab( name ){
+        $location.path(
+            '/' + $scope.__module.name +
+            '/' + $scope.__id +
+            '/' + name
+        );
     }
 
     $scope.scroll = function scroll( event ) {
         var elem = event.target;
         var header = elem.querySelectorAll( 'th' );
         for ( var i = 0; i < header.length; i++ ) {
-            header[i].style.top = elem.scrollTop + 'px';
+            header[ i ].style.top = elem.scrollTop + 'px';
         };
     }
 

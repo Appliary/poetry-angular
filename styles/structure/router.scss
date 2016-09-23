@@ -19,7 +19,7 @@ body > app-router{
         height: $header_height;
     }
 
-    ng-include{
+    &>ng-include{
         padding: $gutter;
         display: block;
     }

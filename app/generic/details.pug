@@ -1,0 +1,5 @@
+tabs
+    a(ng-repeat=' (name, config) in __module.config.details ', ng-click=' tab(name) ', ng-class=' { active: name == __view }')
+        | {{ ((name)? name:__id) | translate }}
+pre
+    | You must be `admin`, but you are `test`

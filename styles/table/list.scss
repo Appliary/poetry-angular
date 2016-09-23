@@ -28,13 +28,20 @@
             tr:nth-child(even) {
                 background: $table_even_bg;
             }
+            tr.active{
+                background: $table_active_bg;
+            }
             tr:hover {
                 background: $table_hover_bg;
             }
         }
     }
+    @media( max-width: $mobile_break ) {
+        left: $gutter;
+        width: auto;
+    }
     &.detailed {
-        right: $gutter*2 + 600px;
+        right: $gutter*2 + 500px;
         @media( max-width:1200px ) {
             display: none;
         }
@@ -42,12 +49,13 @@
 }
 ng-include.details {
     position: fixed;
+    display: block;
     box-sizing: border-box;
     right: $gutter;
-    width: 600px;
+    width: 500px;
     top: $gutter*2 + $header_height + $topnav_height;
     bottom: $gutter;
-    transform: translateX(1000px);
+    transform: translateX(600px);
     transition: transform 0.3s ease-out;
     &.detailed {
         transform: translateX(0);
@@ -58,6 +66,14 @@ ng-include.details {
         @media( max-width: $mobile_break ) {
             left: $gutter;
             width: auto;
+        }
+    }
+
+}
+body.collapsed{
+    .list{
+        @media( min-width:$mobile_break + 1 ) {
+            left: $sidebar_width_collapsed + $gutter;
         }
     }
 }

@@ -4,7 +4,7 @@
             th( ng-repeat='column in columns', ng-click='orderBy(column)' )
                 | {{ column + ':' + __module.name + ':' + 'column' | translate }}
         tbody
-            tr( ng-repeat='row in data', ng-click='select(row._id)' )
+            tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
                 td( ng-repeat='column in columns')
                     span( ng-if='row[ column ] !== undefined' )
                         | {{ row[ column ] | localize }}

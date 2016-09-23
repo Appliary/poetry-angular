@@ -1,0 +1,21 @@
+tabs{
+    display: flex;
+    justify-content: flex-start;
+
+    &>*{
+        display: inline-block;
+        border-bottom: 0px solid $tab_active;
+        padding: $gutter/2;
+        box-sizing: border-box;
+        text-align: center;
+        transition: border 0.1s linear;
+        max-width: 30%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .active{
+        font-weight: bold;
+        border-bottom-width: 2px;
+        margin: -2px 0 0 0;
+    }
+}
