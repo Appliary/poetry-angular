@@ -39,7 +39,9 @@ Poetry.route( {
         './app/**/*.js'
     ], ( err, res ) => {
 
-        if ( !err ) return reply( res );
+        if ( !err )
+            return reply( res )
+                .type( 'script/javascript' );
 
         Poetry.log.error( 'CoreJS', err );
         reply( err );
