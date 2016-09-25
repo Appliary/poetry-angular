@@ -1,2 +1,2 @@
-a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden')
+a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden', ng-class="{ active: module.name == __module.name, disbled: module.disabled } ")
     | {{ module.name + ':module:sidebar' | translate }}

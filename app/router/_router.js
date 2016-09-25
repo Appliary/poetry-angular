@@ -61,8 +61,8 @@ app.component( 'appRouter', {
             if ( !$scope.$root.__modules[ path[ 0 ] ] ) {
                 console.warn( 'Unhandled route :', path );
                 $scope.__module = undefined;
-                $scope.__module.id = undefined;
-                $scope.__module.view = undefined;
+                $scope.__id = undefined;
+                $scope.__view = undefined;
                 return;
             }
 

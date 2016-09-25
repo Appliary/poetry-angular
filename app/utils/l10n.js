@@ -7,6 +7,7 @@ app.filter( 'localize', function ( $filter ) {
         if( input === true ) return $filter('translate')('true:value');
 
         if( _date( input ) != "Invalid Date" ) return _date( input );
+        if( input instanceof Number ) return _number( input );
 
         return input;
 
@@ -14,6 +15,10 @@ app.filter( 'localize', function ( $filter ) {
 
     function _date( input ){
         input = new Date(input);
+        return input.toLocaleString( i18n_registry['lang'] );
+    }
+
+    function _number( input ){
         return input.toLocaleString( i18n_registry['lang'] );
     }
 

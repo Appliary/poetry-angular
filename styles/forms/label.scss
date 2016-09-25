@@ -4,6 +4,7 @@ label+input, label+textarea, label+select {
     display: inline-block;
     @media(max-width:$mobile_break) {
         width: 100%;
+        max-width: 100%;
     }
 }
 label {

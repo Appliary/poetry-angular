@@ -23,6 +23,13 @@ body > app-sidebar {
             width: $sidebar_width;
             padding-right: 0;
         }
+        &.active {
+            background: $sidebar_bg_active;
+        }
+        &.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
     }
     @media(max-width:$mobile_break) {
         width: 100%;
