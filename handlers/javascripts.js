@@ -66,7 +66,7 @@ Poetry.route( {
         './app/**/*.js'
     ], ( err, res ) => {
 
-        if ( ~err.toString()
+        if ( err && ~err.toString()
             .indexOf( '"undefined"' ) )
             return reply( 'console.info("No app JS to load")' )
                 .type( 'script/javascript' )

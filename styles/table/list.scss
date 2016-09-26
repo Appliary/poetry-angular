@@ -51,6 +51,7 @@
         right: $gutter*2 + 500px;
         @media( max-width:1200px ) {
             display: none;
+            left: $sidebar_width_collapsed + $gutter;
         }
     }
 }
@@ -81,12 +82,8 @@ ng-include.details {
         .list {
             left: $sidebar_width_collapsed + $gutter;
         }
-        ng-include.details {
-            left: $sidebar_width_collapsed + $gutter;
-        }
     }
 }
-
 table {
     width: 100%;
 }
