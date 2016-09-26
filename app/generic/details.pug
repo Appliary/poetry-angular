@@ -4,4 +4,4 @@ tabs
         span( ng-if=" !name ") {{ __id }}
 
 br
-ng-include( src=" config.templateUrl || 'generic/overview.pug' " )
+ng-include( src=" __module.config.tabs[__view].templateUrl || 'generic/overview.pug' " )

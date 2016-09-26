@@ -1,9 +1,9 @@
 form( ng-submit='' )
-    div(ng-repeat=' (label, type) in __module.config.tabs[__view] ')
+    div(ng-repeat=' (label, type) in __module.config.tabs[__view].config ')
         label( for='{{ label }}' ) {{ label + ':field' | translate }}
         input( name='{{ label }}', ng-if=' type=="read" ', ng-model='item[label]', disabled )
         input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
         select( name='{{ label }}', ng-if=' isArray( type ) ', ng-model='item[label]' )
             option( ng-repeat=' opt in type ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
         textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
-        pre {{angular.isArray( type )}}
+    button.pull-right {{ 'save:' + __module.name + ':button' | translate }}

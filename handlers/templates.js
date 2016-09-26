@@ -15,19 +15,27 @@ Poetry.route( {
     Poetry.log.info( 'Rendering templates' );
 
     glob( __dirname + '/../app/**/*.pug', ( err, files ) => {
-        glob( './app/**/*.pug', ( err, files2 ) => {
+        glob( process.cwd() + '/app/**/*.pug', ( err, files2 ) => {
+
+            files = files.map( file => ( {
+                file: file,
+                name: file.slice( __dirname.length - 4 )
+            } ) )
+            files2 = files2.map( file => ( {
+                file: file,
+                name: file.slice( process.cwd().length + 5 )
+            } ) )
             files = files.concat( files2 );
 
             let r = 'app.run( function($templateCache){';
             files.forEach( ( file ) => {
 
-                let name = file.slice( __dirname.length - 4 );
-                if ( name == 'index.pug' ) return;
+                if ( file.name == 'index.pug' ) return;
 
                 try {
-                    Poetry.log.silly( 'Rendering :', name );
-                    let tmpl = Pug.renderFile( file );
-                    r += `$templateCache.put('${name}','`;
+                    Poetry.log.silly( 'Rendering :', file.name );
+                    let tmpl = Pug.renderFile( file.file );
+                    r += `$templateCache.put('${file.name}','`;
                     r += tmpl.replace( /\'/g, '\\\'' )
                         .replace( /\n/g, '\\n' );
                     r += `');`;
