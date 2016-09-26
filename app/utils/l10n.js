@@ -15,11 +15,18 @@ app.filter( 'localize', function ( $filter ) {
 
         if ( _date( input ) != "Invalid Date" ) return _date( input );
 
-        if( typeof input == 'object' ){
-            if( input.name ) return input.name;
-            if( input.id ) return input.id;
-            if( input._id ) return input._id;
-            return JSON.stringify( input, null, 4 );
+        if ( typeof input == 'object' ) {
+            if ( input.name ) return input.name;
+            if ( input.id ) return input.id;
+            if ( input._id ) return input._id;
+
+            var output = '';
+            Object.keys( input )
+                .forEach( function ( key ) {
+                    output += $filter('translate')( key + ':subvalue' );
+                    output += ': ' + localize( input[ key ] ) + '\n';
+                } );
+            return output;
         }
 
         return input;
