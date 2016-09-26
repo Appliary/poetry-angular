@@ -19,6 +19,7 @@ app.filter( 'localize', function ( $filter ) {
             if( input.name ) return input.name;
             if( input.id ) return input.id;
             if( input._id ) return input._id;
+            return JSON.stringify( input, null, 4 );
         }
 
         return input;
