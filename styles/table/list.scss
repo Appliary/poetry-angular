@@ -56,6 +56,7 @@
     }
 }
 ng-include.details {
+    overflow-y: auto;
     position: fixed;
     display: block;
     box-sizing: border-box;
