@@ -1,0 +1,29 @@
+.list
+    table
+        thead: tr
+            th( ng-repeat='column in columns' )
+                | {{ column | translate }}
+        tbody
+            tr( ng-repeat='row in data')
+                td( ng-repeat='column in columns')
+                    span( ng-if='row[ column ] !== undefined' )
+                        | {{ row[ column ] | localize }}
+                    span( ng-if='row[ column ] === undefined' ).badge
+                        | {{ 'null:' + __module.name + ':' + ':value' | translate }}
+                td
+                    input(type="checkbox",ng-click="selectDevice(row)")
+span(style="position: absolute; left: 100px; top: 200px;")
+    label 
+        | Start Date
+    input.datepicker.positionDate(type="text",ng-model="startDate",placeholder=" Date ")
+span(style="position: absolute; left: 100px; top: 240px;")
+    label
+        | End Date
+    input.datepicker.positionDate(type="text",ng-model="endDate",placeholder=" Date ")
+div(style="position: absolute; left: 50px; top: 280px;")
+    span(ng-repeat="positionType in positionTypes")
+        label {{positionType}}
+        input(type="checkbox", ng-click="selectType(positionType)")
+.p(style="position: absolute; left: 280px; top: 300px;")#map
+    openlayers(ol-center="center",height="600px" width="800px")
+        ol-marker(ng-repeat="marker in markers", ol-marker-properties="marker",ol-style="marker.marker_style", ng-click="zoomTo(marker)")
