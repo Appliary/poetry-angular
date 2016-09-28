@@ -1,7 +1,7 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
 
     if($scope.__id) retrieveItem($scope.__id);
-    $http.get( $scope.__module.api )
+    $http.get( $scope.$root.__module.api )
         .then( function success( response ) {
 
             if ( response.data.data )
@@ -11,8 +11,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             else
                 $scope.data = [];
 
-            if ( $scope.__module.config && $scope.__module.config.columns )
-                $scope.columns = $scope.__module.config.columns;
+            if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
+                $scope.columns = $scope.$root.__module.config.columns;
             else $scope.columns = [];
 
             if ( !$scope.columns.length )
@@ -41,7 +41,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     $scope.select = function select( id ) {
         retrieveItem( id );
         $location.path(
-            '/' + $scope.__module.name +
+            '/' + $scope.$root.__module.name +
             '/' + id +
             '/' + ( $scope.__view || '' )
         );
@@ -49,7 +49,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     $scope.tab = function tab( name ){
         $location.path(
-            '/' + $scope.__module.name +
+            '/' + $scope.$root.__module.name +
             '/' + $scope.__id +
             '/' + name
         );
@@ -67,7 +67,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     function retrieveItem( id ){
         $scope.item = undefined;
-        $http.get( $scope.__module.api + '/' + id )
+        $http.get( $scope.$root.__module.api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data
             }, function error( response ) {

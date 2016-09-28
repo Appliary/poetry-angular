@@ -1,7 +1,7 @@
 tabs
-    a(ng-repeat=' ( name, config ) in __module.config.tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }')
-        span( ng-if=" name ") {{ name + ':tab:' + __module.name | translate }}
+    a(ng-repeat=' ( name, config ) in $root.__module.config.tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }', id="tab-{{ name || 'overview' }}")
+        span( ng-if=" name ") {{ name + ':tab:' + $root.__module.name | translate }}
         span( ng-if=" !name ") {{ __id }}
 
 br
-ng-include( src=" __module.config.tabs[__view].templateUrl || 'generic/overview.pug' " )
+ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}" )

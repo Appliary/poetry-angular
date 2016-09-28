@@ -43,4 +43,4 @@ html(ng-app=app.name)
         app-sidebar
 
         //- Content of the page, routed using url
-        app-router
+        app-router(module="{{$root.__module.name}}")

@@ -46,7 +46,7 @@ Poetry.route( {
                     .type( 'text/css' );
             }
 
-            reply( result.css )
+            reply( res + result.css )
                 .type( 'text/css' );
 
         } );
