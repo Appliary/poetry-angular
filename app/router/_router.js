@@ -66,14 +66,14 @@ app.component( 'appRouter', {
                 return;
             }
 
-            $scope.__module = $scope.$root.__modules[ path[ 0 ] ];
+            $scope.$root.__module = $scope.$root.__modules[ path[ 0 ] ];
             $scope.__id = path[ 1 ];
             $scope.__view = path[ 2 ];
-            console.info( 'Going to', $scope.__module.name, $scope.__id, $scope.__view );
+            console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
 
             try {
-                if($scope.__module.controller)
-                    $scope.__module.ctrl = $controller( $scope.__module.controller, {
+                if($scope.$root.__module.controller)
+                    $scope.$root.__module.ctrl = $controller( $scope.$root.__module.controller, {
                         $scope: $scope
                     } );
             } catch ( err ) {
