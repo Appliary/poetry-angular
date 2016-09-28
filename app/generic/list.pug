@@ -2,13 +2,13 @@
     table
         thead: tr
             th( ng-repeat='column in columns', ng-click='orderBy(column)' )
-                | {{ column + ':' + __module.name + ':' + 'column' | translate }}
+                | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
         tbody
             tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
                 td( ng-repeat='column in columns')
                     span( ng-if='row[ column ] !== undefined' )
                         | {{ row[ column ] | localize }}
                     span( ng-if='row[ column ] === undefined' ).badge
-                        | {{ 'null:' + __module.name + ':' + ':value' | translate }}
+                        | {{ 'null:' + $root.__module.name + ':' + ':value' | translate }}
 
-ng-include.details( ng-class='{detailed:__id}', src="__module.subview || 'generic/details.pug'" )
+ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
