@@ -1,0 +1,65 @@
+.map-small-panel {
+	margin-left: 10px;
+	margin-right: 10px;
+	width: 300px;
+
+}
+.date-div {
+	
+
+	span {
+		display: inline-block;
+	}
+	label {
+
+	}
+}
+
+.history {
+	
+	label {
+		padding: 0px;
+		margin-left: 15px;
+
+	}
+	input {
+		all: none;
+		margin-left: 10px;
+	}
+
+}
+
+.map-global {
+	
+}
+.map-block {
+	display: inline-block;
+	margin-left: 5px;
+	margin-right: 5px;
+
+}
+.positionTypes {
+	
+	ul {
+	list-style-position:outside;
+		li {
+			position: relative;
+			padding: 7px 120px 7px 20px;
+			line-height: 21px;
+			font-size: 18px;
+			border-bottom: 1px solid #e6ebed;
+			input {
+				position: absolute;
+				right: 0px;
+			}
+			label {
+				padding: 5px;
+				position: absolute;
+				left: 0px;
+			}
+		}
+	}
+}
+.map {
+	
+}
