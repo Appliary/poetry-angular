@@ -1,0 +1,150 @@
+.rounded{
+    display:block;
+    width:90%;
+    height:25px;
+    padding:auto;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    margin-bottom:5px;
+}
+.buttonsPosition{
+    width:100%;
+    height:20px;
+}
+.activePosition {
+    background: rgba(255,255,255,0.9) !important;
+    border-bottom: 3px solid #aacac1 !important;
+    color: #6fa9a1 !important;
+    border-left: 1px solid #aacac1 !important;
+    border-right: 1px solid #aacac1 !important;
+    border-top: 1px solid #aacac1 !important;
+    color: #6fa99f !important;
+}
+.buttonsPosition button{
+    margin-left: 1px;
+    margin-right: 1px;
+    background-color: #f0f7f5;
+    margin: 4px;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 12px;
+    border-bottom: 3px solid #ddd;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin: 5px;
+}
+
+ input[type="checkbox"]{
+    margin-left: 5px;
+    position: relative;
+    background: white;
+    width: 12px;
+    height: 12px;
+    -webkit-appearance: initial;
+    border-radius: 3px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    outline: none !important;
+    font-size: 14px;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    vertical-align: -2px;
+    margin: 1.5px;
+
+}
+ input[type="checkbox"]:after
+{
+    color: #999;
+    font-size: 10px;
+    margin-top: -3px;
+}
+ input[type="checkbox"]:after
+{
+    position: absolute
+}
+ input[type="checkbox"]:checked:after
+{
+    content: "✓";
+    position: absolute;
+}
+.positionHistoric{
+    float: right;
+    margin-right: 10px;
+    color: #999;
+    font-style: italic;
+}
+.positionDate{
+  width : 50%;
+  margin-right : 10px;
+  font-size:15px;
+}
+.positionDate fa{
+  font-size:20px;
+}
+.selectAllDevices{
+  display:block;
+  margin-top:10px;
+  margin-left:6px;
+  margin-bottom:10px;
+  color: #999;
+  font-style: italic;
+}
+.panelDeviceList .panel-heading span.fa{
+    float: right;
+    margin: 1px;
+    width: 5%;
+    margin-top: 7px;
+    height: -3px;
+    margin: px;
+    padding-left: 3px;
+    color: #ccc;
+}
+.panelDeviceList{
+  margin-bottom:5px !important;
+}
+.deviceHeader:hover{
+  background-color:#ecf3f3 !important;
+}
+.deviceHeaderContent{
+    margin-left: 3%;
+    color: #848383;
+    font-size: 12px;
+}
+.deviceTimeout{
+  &,* {
+    color : red !important;
+  }
+}
+.temp {
+    display: inline-block;
+}
+.map {
+    border-style: solid;
+    border-color: #6ea3ab;
+    float: right;
+    width: 70%;
+    @media( max-width: $mobile_break + 850) {
+        width: 100%;
+        left: $gutter;
+    }
+}
+.map-controls {
+    min-width: 360px;;
+    max-width: $mobile_break;
+    width: 29%;
+    float: left;
+    @media( max-width: $mobile_break + 850) {
+        width: 100%;
+        left: $gutter;
+    }
+}
+.historyLabel {
+    color: #999;
+}
+.map-global{
+	
+}
