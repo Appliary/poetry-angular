@@ -24,6 +24,7 @@ dropdown {
             height: 35px;
             line-height: 35px;
             padding: 0 $gutter;
+            display: block;
         }
 
         @media(max-width:$mobile_break){
