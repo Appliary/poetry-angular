@@ -17,13 +17,13 @@ Poetry.route( {
     }
 
 }, ( request, reply ) => {
-
+    console.log(request.params.file);
     fs.readFile( './assets/' + request.params.file, ( err, file ) => {
-
+        console.log(err, file);
         if ( !err )
             return reply( file );
 
-        if ( request.params.file &&
+        if ( request.params.file && request.params.file.length > 4 &&
             (
                 request.params.file.indexOf( '.pug' ) == request.params.file.length - 4 || request.params.file.indexOf( '.js' ) == request.params.file.length - 3
             ) ) return reply()
