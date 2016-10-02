@@ -54,6 +54,10 @@
             left: $sidebar_width_collapsed + $gutter;
         }
     }
+    #filters > * {
+        display: inline-block;
+        width: 33%;
+    }
 }
 ng-include.details {
     overflow-y: auto;

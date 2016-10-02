@@ -17,9 +17,6 @@
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0"
   },
-  "devDependencies": {},
-  "gitHead": "ea87cc88b9d75c46521ad222f67596180828e421",
-  "homepage": "https://github.com/Appliary/poetry-angular#readme",
   "license": "ISC",
   "main": "index.js",
   "name": "poetry-angular",

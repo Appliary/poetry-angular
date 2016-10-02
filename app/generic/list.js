@@ -1,6 +1,6 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
 
-    if($scope.__id) retrieveItem($scope.__id);
+    if ( $scope.__id ) retrieveItem( $scope.__id );
     $http.get( $scope.$root.__module.api )
         .then( function success( response ) {
 
@@ -47,7 +47,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         );
     }
 
-    $scope.tab = function tab( name ){
+    $scope.tab = function tab( name ) {
         $location.path(
             '/' + $scope.$root.__module.name +
             '/' + $scope.__id +
@@ -65,7 +65,21 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     $scope.isArray = angular.isArray;
 
-    function retrieveItem( id ){
+    $scope.save = function save() {
+
+        if ( !$scope.item || !$scope.__id )
+            return console.warn( 'No item to save' );
+
+        $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
+            .then( function success() {
+                console.info( 'Saved!' );
+            }, function error( err ) {
+                console.error( err )
+            } )
+
+    }
+
+    function retrieveItem( id ) {
         $scope.item = undefined;
         $http.get( $scope.$root.__module.api + '/' + id )
             .then( function success( response ) {

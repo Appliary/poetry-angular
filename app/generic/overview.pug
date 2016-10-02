@@ -7,4 +7,5 @@ form( ng-submit='' )
         select( name='{{ label }}', ng-if=' isArray( type ) ', ng-model='item[label]' )
             option( ng-repeat=' opt in type ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
         textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
-    button.pull-right {{ 'save:' + $root.__module.name + ':button' | translate }}
+    button(ng-click=" save() ").pull-right
+        | {{ 'save:' + $root.__module.name + ':button' | translate }}
