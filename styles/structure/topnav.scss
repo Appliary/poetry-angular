@@ -35,6 +35,13 @@ body > app-topnav {
         border: none;
         z-index: 998;
     }
+    #appName{
+        position: fixed;
+        top: 0;
+        left: $sidebar_width + $gutter;
+        height: $topnav_height;
+        line-height: $topnav_height;
+    }
 }
 body.collapsed > app-topnav app-logo {
     width: $sidebar_width_collapsed;
