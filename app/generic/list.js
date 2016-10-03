@@ -73,6 +73,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success() {
                 console.info( 'Saved!' );
+                $scope.item.__saved = true;
             }, function error( err ) {
                 console.error( err )
             } )
