@@ -1,3 +1,4 @@
 header
-    h1 {{ $root.__module.name + ':module:title' | translate }}
+    h1(icon="{{$root.__module.icon}}")
+        | {{ $root.__module.name + ':module:title' | translate }}
 ng-include(src='$root.__module.templateUrl')
