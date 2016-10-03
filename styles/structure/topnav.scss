@@ -41,8 +41,15 @@ body > app-topnav {
         left: $sidebar_width + $gutter;
         height: $topnav_height;
         line-height: $topnav_height;
+        @media (max-width:$mobile_break) {
+            left: $sidebar_width_collapsed + $gutter;
+        }
     }
 }
 body.collapsed > app-topnav app-logo {
     width: $sidebar_width_collapsed;
+}
+
+body.collapsed > app-topnav {
+    left: $sidebar_width_collapsed + $gutter;
 }
