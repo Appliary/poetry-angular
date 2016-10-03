@@ -3,6 +3,7 @@ app.filter( 'localize', function ( $filter ) {
     function localize( input ) {
 
         if ( input === undefined ) return undefined;
+        if ( input === null ) return $filter('translate')( 'null:value' );
         if ( input === false ) return $filter( 'translate' )( 'false:value' );
         if ( input === true ) return $filter( 'translate' )( 'true:value' );
 
@@ -10,6 +11,7 @@ app.filter( 'localize', function ( $filter ) {
             input = parseFloat( input );
             if ( input > 0xe8d4a51000 && input < 0x82f79cd9000 )
                 return _date( input );
+
             return _number( input );
         }
 
@@ -34,8 +36,10 @@ app.filter( 'localize', function ( $filter ) {
     };
 
     function _date( input ) {
-        input = new Date( input );
-        return input.toLocaleString( i18n_registry[ 'lang' ] );
+        var output = new Date( input );
+        if( output.getFullYear() == 1970 )
+            output = new Date ( output.getTime() * 1000 );
+        return output.toLocaleString( i18n_registry[ 'lang' ] );
     }
 
     function _number( input ) {
