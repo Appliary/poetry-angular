@@ -88,10 +88,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
-        if ( $root.__module.config.tabs[ __view ].controller )
-            $scope.ctrl = $controller( $root.__module.config.tabs[ __view ].controller, {
-                $scope: $scope
-            } );
+        // if ( $scope.$root.__module.config.tabs[ __view ].controller )
+        //     $scope.ctrl = $controller( $root.__module.config.tabs[ __view ].controller, {
+        //         $scope: $scope
+        //     } );
     }
 
 } );
