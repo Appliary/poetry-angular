@@ -19,12 +19,12 @@ body > app-sidebar {
         box-sizing: border-box;
         transition: width 0.1s ease-in;
         &:hover {
-            background: $sidebar_bg_hover;
+            background-color: $sidebar_bg_hover;
             width: $sidebar_width;
             padding-right: 0;
         }
         &.active {
-            background: $sidebar_bg_active;
+            background-color: $sidebar_bg_active;
         }
         &.disabled {
             opacity: 0.5;
