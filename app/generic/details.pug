@@ -1,3 +1,5 @@
+button.back( ng-click=' go( $root.__module ) ' )
+    | {{ 'back:button:details:' + $root.__module.name | translate }}
 tabs
     a(ng-repeat=' ( name, config ) in $root.__module.config.tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }', id="tab-{{ name || 'overview' }}")
         span( ng-if=" name ") {{ name + ':tab:' + $root.__module.name | translate }}
