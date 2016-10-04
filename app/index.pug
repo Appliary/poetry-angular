@@ -26,6 +26,7 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__core.js`)
         script(src=`/${app.name}/__templates.js`)
         script(src=`/${app.name}/__app.js`)
+        link(rel="shortcut icon" ng-href=`/themes/{{ $session.team.theme || "${app.defaultTheme}" }}/favicon.png`)
         link(rel="stylesheet" ng-href=`/themes/{{ $session.team.theme || "${app.defaultTheme}" }}.css`)
 
 
