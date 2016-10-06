@@ -69,6 +69,7 @@ app.component( 'appRouter', {
                             $urlRouterProvider.otherwise( '/404' );
                             Object.keys( Routes )
                                 .forEach( function ( route ) {
+                                    console.log('Registering route: ' + route);
                                     $stateProvider.state( route, Routes[ route ] );
                                 } );
                         } );
