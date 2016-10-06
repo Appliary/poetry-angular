@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller ) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller,  ) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -47,12 +47,39 @@ app.component( 'appRouter', {
                 } );
 
                 $scope.$root.__modules = modules;
+                loadCustomRoutes();
+
                 route( null, $window.location.pathname );
 
-                $scope.$on( '$locationChangeStart', route );
-
+                $scope.$on( '$locationChangeStart', route );                
             } );
 
+        
+        function loadCustomRoutes() {
+            $http.get( '/' + __appName + '/__routes.json' )
+                .then(function (result) {
+                    var Routes = {};
+
+                    for (var key in result.data) {
+                        var _route = result.data[key];
+                        Routes[key] = _route;
+                    }
+
+                    app.config( function ( $stateProvider, $urlRouterProvider ) {
+                            $urlRouterProvider.otherwise( '/404' );
+                            Object.keys( Routes )
+                                .forEach( function ( route ) {
+                                    $stateProvider.state( route, Routes[ route ] );
+                                } );
+                        } );
+                })
+                .catch(function (err) {
+                    console.log('No custom routes found.')
+                });
+        }
+        
+        
+        
         function route( ev, nextUrl, oldUrl, n ) {
             nextUrl = nextUrl.replace( '://', '' );
             var path = nextUrl.split( '/' )
@@ -74,7 +101,7 @@ app.component( 'appRouter', {
             try {
                 if($scope.$root.__module.controller)
                     $scope.$root.__module.ctrl = $controller( $scope.$root.__module.controller, {
-                        $scope: $scope
+                        $scope: $scope                    
                     } );
             } catch ( err ) {
                 console.error( err );

@@ -7,6 +7,7 @@
     "url": "https://github.com/Appliary/poetry-angular/issues"
   },
   "dependencies": {
+    "angular-ui-router": "^0.3.1",
     "ascss": "^1.0.3",
     "concatenate": "0.0.1",
     "glob": "^7.0.6",

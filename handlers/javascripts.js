@@ -87,3 +87,10 @@ Poetry.route( {
 }, ( request, reply ) => {
     reply.file( './config/sidebar.json' );
 } );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__routes.json'
+}, ( request, reply ) => {
+    reply.file( './config/routes.json' );
+} );
