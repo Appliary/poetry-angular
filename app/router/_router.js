@@ -69,34 +69,8 @@ app.component( 'appRouter', {
                         route( null, $window.location.pathname );
                         $scope.$on( '$locationChangeStart', route );
                     });
-
-                //loadCustomRoutes();           
-            } );
-
-        
-        // function loadCustomRoutes() {
-        //     $http.get( '/' + __appName + '/__routes.json' )
-        //         .then(function (result) {
-        //             var Routes = {};
-
-        //             for (var key in result.data) {
-        //                 var _route = result.data[key];
-        //                 console.log('Registering route: ' + route);
-        //                 $customRoutesProvider.addState(key, _route);
-        //             }
-                
-        //             // Object.keys( Routes )
-        //             //     .forEach( function ( route ) {
-        //             //         console.log('Registering route: ' + route);
-        //             //         $customRoutesProvider.addState( route, Routes[ route ] );
-        //             //     });
-
-        //         })
-        //         .catch(function (err) {
-        //             console.log('No custom routes found.')
-        //         });
-        // }
-        
+         
+            } );      
         
         
         function route( ev, nextUrl, oldUrl, n ) {
