@@ -3,6 +3,9 @@ app.provider('$customRoutesProvider', function ($stateProvider) {
         return { 
             addState: function(name, state) { 
                 $stateProvider.state(name, state);
+            },
+            getProvider: function () {
+                return $stateProvider;
             }
         }
     }
