@@ -47,36 +47,55 @@ app.component( 'appRouter', {
                 } );
 
                 $scope.$root.__modules = modules;
-                loadCustomRoutes();
 
-                route( null, $window.location.pathname );
+                $http.get( '/' + __appName + '/__routes.json' )
+                    .then(function (result) {
+                        var Routes = {};
 
-                $scope.$on( '$locationChangeStart', route );                
+                        for (var key in result.data) {
+                            var _route = result.data[key];
+                            console.log('Registering route: ' + route);
+                            $customRoutesProvider.addState(key, _route);
+                        }
+
+
+                        route( null, $window.location.pathname );
+                        $scope.$on( '$locationChangeStart', route );
+
+                    })
+                    .catch(function (err) {
+                        console.log('No custom routes found.');
+
+                        route( null, $window.location.pathname );
+                        $scope.$on( '$locationChangeStart', route );
+                    });
+
+                //loadCustomRoutes();           
             } );
 
         
-        function loadCustomRoutes() {
-            $http.get( '/' + __appName + '/__routes.json' )
-                .then(function (result) {
-                    var Routes = {};
+        // function loadCustomRoutes() {
+        //     $http.get( '/' + __appName + '/__routes.json' )
+        //         .then(function (result) {
+        //             var Routes = {};
 
-                    for (var key in result.data) {
-                        var _route = result.data[key];
-                        console.log('Registering route: ' + route);
-                        $customRoutesProvider.addState(key, _route);
-                    }
+        //             for (var key in result.data) {
+        //                 var _route = result.data[key];
+        //                 console.log('Registering route: ' + route);
+        //                 $customRoutesProvider.addState(key, _route);
+        //             }
                 
-                    // Object.keys( Routes )
-                    //     .forEach( function ( route ) {
-                    //         console.log('Registering route: ' + route);
-                    //         $customRoutesProvider.addState( route, Routes[ route ] );
-                    //     });
+        //             // Object.keys( Routes )
+        //             //     .forEach( function ( route ) {
+        //             //         console.log('Registering route: ' + route);
+        //             //         $customRoutesProvider.addState( route, Routes[ route ] );
+        //             //     });
 
-                })
-                .catch(function (err) {
-                    console.log('No custom routes found.')
-                });
-        }
+        //         })
+        //         .catch(function (err) {
+        //             console.log('No custom routes found.')
+        //         });
+        // }
         
         
         
