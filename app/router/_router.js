@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller, $stateProvider, $urlRouterProvider) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -65,14 +65,13 @@ app.component( 'appRouter', {
                         Routes[key] = _route;
                     }
 
-                    app.config( function ( $stateProvider, $urlRouterProvider ) {
-                            $urlRouterProvider.otherwise( '/404' );
-                            Object.keys( Routes )
-                                .forEach( function ( route ) {
-                                    console.log('Registering route: ' + route);
-                                    $stateProvider.state( route, Routes[ route ] );
-                                } );
-                        } );
+                    $urlRouterProvider.otherwise( '/404' );
+                    Object.keys( Routes )
+                        .forEach( function ( route ) {
+                            console.log('Registering route: ' + route);
+                            $stateProvider.state( route, Routes[ route ] );
+                        });
+
                 })
                 .catch(function (err) {
                     console.log('No custom routes found.')
