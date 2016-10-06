@@ -5,3 +5,4 @@ header
         button( ng-repeat='(name, action) in $root.__module.toolbox', ng-click='action' )
             | {{ name + ':toolbox:' + $root.__module.name | translate }}
 ng-include(src='$root.__module.templateUrl')
+ui-view
