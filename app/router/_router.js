@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -47,7 +47,7 @@ app.component( 'appRouter', {
                 } );
 
                 $scope.$root.__modules = modules;
-                //loadCustomRoutes();
+                loadCustomRoutes();
 
                 route( null, $window.location.pathname );
 
@@ -62,15 +62,15 @@ app.component( 'appRouter', {
 
                     for (var key in result.data) {
                         var _route = result.data[key];
-                        Routes[key] = _route;
+                        console.log('Registering route: ' + route);
+                        $customRoutesProvider.addState(key, _route);
                     }
-
-                    $urlRouterProvider.otherwise( '/404' );
-                    Object.keys( Routes )
-                        .forEach( function ( route ) {
-                            console.log('Registering route: ' + route);
-                            $stateProvider.state( route, Routes[ route ] );
-                        });
+                
+                    // Object.keys( Routes )
+                    //     .forEach( function ( route ) {
+                    //         console.log('Registering route: ' + route);
+                    //         $customRoutesProvider.addState( route, Routes[ route ] );
+                    //     });
 
                 })
                 .catch(function (err) {
