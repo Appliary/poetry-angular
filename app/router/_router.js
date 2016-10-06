@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller, $stateProvider, $urlRouterProvider) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -47,7 +47,7 @@ app.component( 'appRouter', {
                 } );
 
                 $scope.$root.__modules = modules;
-                loadCustomRoutes();
+                //loadCustomRoutes();
 
                 route( null, $window.location.pathname );
 
