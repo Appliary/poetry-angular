@@ -1,43 +1,25 @@
-app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
+app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $cookies, $rootScope ) {
 
-    $scope.user = {
-        "status": "",
-        "role": "",
-        "language": "",
-        "firstName": "",
-        "lastName": "",
-        "phone": "",
-        "email": ""
-    };
+    $scope.user = $rootScope.user;
     $scope.email = "";
+
+    $scope.cancel = function cancel (){
+        $window.location.replace( $location.absUrl() );
+    }
 
     $scope.edit = function edit() {
 
         console.info( 'Try to edit profile', $scope.user );
-        console.log('scope', $scope);
-        console.log('root', $rootScope);
 
-        
+        console.log('ngcookies', $cookies.getAll());
 
-        // $http.post( '/login', {
+        $http.put('/api/users/' + $scope.user._id, $scope.user)
+        .then( function success(response) {
+            console.info('User edit succes', response);
 
-        //         email: $scope.login.email,
-        //         password: $scope.login.password,
-        //         keep: $scope.login.keep || false
-
-        //     } )
-        //     .then( function success( response ) {
-
-        //         console.info( 'Now authenticated', response.data );
-        //         console.info($location.absUrl());
-        //         $window.location.replace( $location.absUrl() );
-
-        //     }, function error( response ) {
-
-        //         console.warn( 'Authentication failed', response );
-        //         $scope.failed = true;
-
-        //     } );
+        }, function error(response) {
+            console.warn( 'Users edit failed', response );
+        });
 
     };
 

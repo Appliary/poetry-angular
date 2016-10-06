@@ -12,3 +12,4 @@ form( ng-submit='edit()' )
     input( type='text', ng-model='user.email', name='email' )
 
     button( type='submit' ).pull-right {{ 'edit:button' | translate }}
+    button.pull-left(ng-click="cancel()") {{ 'cancel:button' | translate }}

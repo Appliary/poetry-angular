@@ -1,4 +1,59 @@
 {
+  "_args": [
+    [
+      {
+        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
+        "scope": null,
+        "escapedName": "poetry-angular",
+        "name": "poetry-angular",
+        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
+        "spec": "git+https://github.com/Appliary/poetry-angular.git",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:Appliary/poetry-angular.git",
+          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
+          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
+          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
+          "shortcut": "github:Appliary/poetry-angular",
+          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
+        }
+      },
+      "/home/test/APIServices/App/devicemanager-app"
+    ]
+  ],
+  "_from": "git+https://github.com/Appliary/poetry-angular.git",
+  "_id": "poetry-angular@1.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/poetry-angular",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
+    "scope": null,
+    "escapedName": "poetry-angular",
+    "name": "poetry-angular",
+    "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
+    "spec": "git+https://github.com/Appliary/poetry-angular.git",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:Appliary/poetry-angular.git",
+      "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
+      "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
+      "gitUrl": "git://github.com/Appliary/poetry-angular.git",
+      "shortcut": "github:Appliary/poetry-angular",
+      "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
+    }
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/Appliary/poetry-angular.git#ef076ea2aae085db6b6975b98be34a5f9f229295",
+  "_shasum": "4e62b0244764bb52da50ea153377463072931492",
+  "_shrinkwrap": null,
+  "_spec": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
+  "_where": "/home/test/APIServices/App/devicemanager-app",
   "author": {
     "name": "MicCarr",
     "email": "miccarr@me.com"
@@ -18,6 +73,9 @@
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0"
   },
+  "devDependencies": {},
+  "gitHead": "ef076ea2aae085db6b6975b98be34a5f9f229295",
+  "homepage": "https://github.com/Appliary/poetry-angular#readme",
   "license": "ISC",
   "main": "index.js",
   "name": "poetry-angular",
