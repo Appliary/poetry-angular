@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider, $state) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -85,7 +85,7 @@ app.component( 'appRouter', {
                 $scope.__view = undefined;
                 var foundState = $customRoutesProvider.checkInitialState();
                 if (foundState) {
-                    $state.go(foundState);
+                    angular.injector().get('$state').go(foundState);
                 }
                 return;
             }
