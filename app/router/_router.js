@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider, $state) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -83,7 +83,10 @@ app.component( 'appRouter', {
                 $scope.$root.__module = undefined;
                 $scope.__id = undefined;
                 $scope.__view = undefined;
-                $customRoutesProvider.checkInitialState();
+                var foundState = $customRoutesProvider.checkInitialState();
+                if (foundState) {
+                    $state.go(foundState);
+                }
                 return;
             }
 

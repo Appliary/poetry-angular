@@ -15,8 +15,10 @@ app.provider('$customRoutesProvider', function ($stateProvider, $state) {
                     var match = $stateProvider.url.exec(url);
                     if (match) {
                         _initialLoadDone = true;
-                        $state.go({ state: state, stateParams: match })
+                        return { state: state, stateParams: match };
                     }})
+                } else {
+                    return null;
                 }
             }
 
