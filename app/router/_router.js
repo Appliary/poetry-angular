@@ -83,6 +83,7 @@ app.component( 'appRouter', {
                 $scope.$root.__module = undefined;
                 $scope.__id = undefined;
                 $scope.__view = undefined;
+                $customRoutesProvider.checkInitialState();
                 return;
             }
 
