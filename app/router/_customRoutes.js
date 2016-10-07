@@ -16,8 +16,8 @@ app.provider('$customRoutesProvider', function ($stateProvider, $state) {
                     if (match) {
                         _initialLoadDone = true;
                         $state.go({ state: state, stateParams: match })
-                    }
-                })
+                    }})
+                }
             }
 
             //$state.transitionTo($state.current, $stateParams, { reload: true, inherit: true, notify: true });
