@@ -1,6 +1,11 @@
 app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
 
-    $scope.user = $rootScope.user;
+    $scope.user = { 
+        email: $rootScope.user.emil, 
+        firstName: $rootScope.user.firstName,
+        lastName: $rootScope.user.lastName
+    }
+    $rootScope.user;
     $scope.email = "";
     $scope.password = {
         oldPassword: "",
@@ -18,16 +23,13 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
 
         console.info( 'Try to edit profile', $scope.user );
 
-        console.log(
-            $http.put('/api/users/' + $scope.user._id, $scope.user)
-            .then( function success(response) {
-                console.info('User edit succes', response);
+        $http.put('/api/users/' + $rootScope.user._id, $scope.user)
+        .then( function success(response) {
+            console.info('User edit succes', response);
 
-            }, function error(response) {
-                console.warn( 'Users edit failed', response );
-            })
-        );
-
+        }, function error(response) {
+            console.warn( 'Users edit failed', response );
+        })
     };
 
     $scope.changePassword = function changePassword() {
