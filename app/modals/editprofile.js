@@ -29,6 +29,7 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
         $http.put('/api/users/' + $rootScope.user._id, $scope.user)
         .then( function success(response) {
             console.info('User edit succes', response);
+            $scope.cancel();
 
         }, function error(response) {
             console.warn( 'Users edit failed', response );
