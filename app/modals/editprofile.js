@@ -1,4 +1,4 @@
-app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $cookies, $rootScope ) {
+app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
 
     $scope.user = $rootScope.user;
     $scope.email = "";
@@ -17,8 +17,6 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     $scope.edit = function edit() {
 
         console.info( 'Try to edit profile', $scope.user );
-
-        console.log('ngcookies', $cookies.getAll());
 
         console.log(
             $http.put('/api/users/' + $scope.user._id, $scope.user)
