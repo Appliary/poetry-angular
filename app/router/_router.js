@@ -83,10 +83,10 @@ app.component( 'appRouter', {
                 $scope.$root.__module = undefined;
                 $scope.__id = undefined;
                 $scope.__view = undefined;
-                var foundState = $customRoutesProvider.checkInitialState();
-                if (foundState) {
-                    angular.injector().get('$state').go(foundState);
-                }
+                // var foundState = $customRoutesProvider.checkInitialState();
+                // if (foundState) {
+                //     angular.injector().get('$state').go(foundState);
+                // }
                 return;
             }
 
