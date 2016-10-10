@@ -1,7 +1,7 @@
 app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
 
     $scope.user = { 
-        email: $rootScope.user.emil, 
+        email: $rootScope.user.email, 
         firstName: $rootScope.user.firstName,
         lastName: $rootScope.user.lastName
     }
@@ -12,8 +12,11 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
         newPassword1: "",
         newPassword2: ""
     }
-    $scope.failed = false;
-    $scope.failmsg = "";
+    $scope.failedEdit = false;
+    $scope.failEditMsg = "";
+    $scope.failedChangepwd = false;
+    $scope.failChangepwdMsg = "";
+
 
     $scope.cancel = function cancel (){
         $window.location.replace( $location.absUrl() );
@@ -29,6 +32,8 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
 
         }, function error(response) {
             console.warn( 'Users edit failed', response );
+            $scope.failedEdit = true;
+            $scope.failEditMsg = response.data;
         })
     };
 
@@ -49,13 +54,13 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
 
                 }, function error(response) {
                     console.warn( 'Users change pwd failed', response );
-                    $scope.failed = true;
-                    $scope.failmsg = response.data;
+                    $scope.failedChangepwd = true;
+                    $scope.failChangepwdMsg = response.data;
                 })
         }
         else{
-            $scope.failed = true;
-            $scope.failmsg = "Both new password field are not the same !";
+            $scope.failedChangepwd = true;
+            $scope.failChangepwdMsg = "Both new password field are not the same !";
         }
     };
 
