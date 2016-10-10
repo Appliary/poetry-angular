@@ -1,4 +1,4 @@
-app.provider('$customRoutesProvider', function ($stateProvider, $state) {
+app.provider('$customRoutesProvider', function ($stateProvider) {
     this.$get = function() {
         var _initialLoadDone = false;
 
@@ -11,7 +11,7 @@ app.provider('$customRoutesProvider', function ($stateProvider, $state) {
             },
             checkInitialState: function () {
                 if (!_initialLoadDone) {
-                    $state.get().forEach( function (state) {
+                    $stateProvider.get().forEach( function (state) {
                     var match = $stateProvider.url.exec(url);
                     if (match) {
                         _initialLoadDone = true;
