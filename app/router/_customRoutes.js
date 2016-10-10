@@ -11,7 +11,7 @@ app.provider('$customRoutesProvider', function ($stateProvider) {
             },
             checkInitialState: function () {
                 if (!_initialLoadDone) {
-                    $stateProvider.get().forEach( function (state) {
+                    angular.injector().get('$state').get().forEach( function (state) {
                     var match = $stateProvider.url.exec(url);
                     if (match) {
                         _initialLoadDone = true;
