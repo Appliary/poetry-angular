@@ -14,7 +14,7 @@ app.component( 'appUserselector', {
             return ngDialog.open( {
 	            templateUrl: 'modals/editprofile.pug',
 	            controller: 'modals/editprofile',
-	            showClose: false,
+	            showClose: true,
 	            className: 'editprofile'
         	} );
         }

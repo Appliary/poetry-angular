@@ -1,0 +1,7 @@
+h1 
+    | Add {{module.name}}
+form( ng-submit='add()' )
+    div(ng-repeat="field in columns")
+        label( for=field ) {{ field + ':field:login' | translate }}
+        input( type=field, ng-model='element[field]', name=field )
+    button( type='submit' ).pull-right {{ 'Add:button' | translate }}
