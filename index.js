@@ -1,4 +1,5 @@
 'use strict';
+var mime = require('mime-types');
 
 const Poetry = require( 'poetry' ),
     fs = require( 'fs' ),
@@ -21,7 +22,7 @@ Poetry.route( {
     fs.readFile( './assets/' + request.params.file, ( err, file ) => {
         console.log(err, file);
         if ( !err )
-            return reply( file );
+            return reply( file ).type(mime.lookup(request.params.file));
 
         if ( request.params.file && request.params.file.length > 4 &&
             (
