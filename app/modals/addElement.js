@@ -8,7 +8,7 @@ app.controller( 'modals/addElement', function ( $scope, $http, $window, $locatio
     $scope.columns = [];
     $scope.module.config.columns.forEach(function(field){
         console.log("field to add", field);
-        if(field != "_id" && field != "timestamp"){
+        if(field != "_id" && field != "timestamp" && field != "createdAt"){
             $scope.columns.push(field);
             $scope.element[field] = "";
         }
