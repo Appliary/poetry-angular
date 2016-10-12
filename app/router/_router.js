@@ -2,27 +2,6 @@ app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
     controller: function ( $window, $http, $scope, $templateCache, $controller , ngDialog) {
 
-        console.log("scope.$root", $scope.$root);
-        console.log("scope.$root.__module", $scope.$root.__module);
-        $scope.open = false;
-        $scope.buttons = {};
-
-
-        $scope.buttons["add"] = function add() {
-            console.info( 'Try to add open addElem modal in module : ', $scope.$root.__module );
-
-            return ngDialog.open( {
-                templateUrl: 'modals/addElement.pug',
-                controller: 'modals/addElement',
-                showClose: true,
-                className: 'addElement'
-            } );
-        
-            $scope.open = true;
-            console.log("you can now sho the modal");      
-        };
-
-
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
                 var modules = {
@@ -88,21 +67,9 @@ app.component( 'appRouter', {
             }
 
             $scope.$root.__module = $scope.$root.__modules[ path[ 0 ] ];
-            console.log('in route module : ', $scope.$root.__module);
             $scope.__id = path[ 1 ];
             $scope.__view = path[ 2 ];
-            console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
-
-            $scope.$root.__module.toolbox = {};
-            if($scope.$root.__module.buttons){
-                $scope.$root.__module.buttons.forEach(function(button){
-                    if($scope.buttons[button]){
-                        $scope.$root.__module.toolbox[button] = $scope.buttons[button];
-                    }
-
-                });
-            }
-            
+            console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );          
                 
 
             try {

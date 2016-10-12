@@ -1,6 +1,35 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
-
     if ( $scope.__id ) retrieveItem( $scope.__id );
+
+    $scope.buttons = [];
+    $scope.buttons["add"] = function add() {
+            console.info( 'Try to add open addElem modal in module : ', $scope.$root.__module );
+
+            return ngDialog.open( {
+                templateUrl: 'modals/addElement.pug',
+                controller: 'modals/addElement',
+                showClose: true,
+                className: 'addElement'
+            } );
+        
+            $scope.open = true;
+            console.log("you can now sho the modal");      
+        };
+
+
+    console.log("show module in list", $scope.$root.__module);
+    console.log("show add func in list module", $scope.add);
+    $scope.$root.__module.toolbox = {};
+    if($scope.$root.__module.buttons){
+        $scope.$root.__module.buttons.forEach(function(button){
+            if($scope.buttons[button]){
+                $scope.$root.__module.toolbox[button] = $scope.buttons[button];
+            }
+
+        });
+    }
+
+    
     $http.get( $scope.$root.__module.api )
         .then( function success( response ) {
 
@@ -37,6 +66,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             $location.path( '/error/' + response.status );
 
         } );
+
+    
+
 
     $scope.select = function select( id ) {
         retrieveItem( id );
@@ -93,5 +125,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         //         $scope: $scope
         //     } );
     }
+
+
 
 } );
