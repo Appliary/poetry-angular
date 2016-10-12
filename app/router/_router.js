@@ -80,7 +80,9 @@ app.component( 'appRouter', {
 
             if ( !$scope.$root.__modules[ path[ 0 ] ] ) {
                 console.warn( 'Unhandled route :', path );
-                $scope.$root.__module = undefined;
+                if (!$scope.$root.__module.dynamic) {
+                    $scope.$root.__module = undefined;
+                }
                 $scope.__id = undefined;
                 $scope.__view = undefined;
                 // var foundState = $customRoutesProvider.checkInitialState();
