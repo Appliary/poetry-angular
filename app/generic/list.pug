@@ -16,6 +16,6 @@
                     span( ng-if='row[ column ] !== undefined' )
                         | {{ row[ column ] | localize }}
                     span( ng-if='row[ column ] === undefined' ).badge
-                        | {{ 'null:' + $root.__module.name + ':' + ':value' | translate }}
+                        | {{ 'null:' + $root.__module.name + ':value' | translate }}
 
 ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
