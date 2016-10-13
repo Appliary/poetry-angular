@@ -1,8 +1,9 @@
 var i18n_registry = {},
     pot = function pot() {
-        pot.active = true
-        var out = '# ' + Date.now() + '\nmsgid ""\nmsgstr ""\n\n\n' ;
+        var out = '# ' + Date.now() + '\nmsgid ""\nmsgstr ""\n\n';
+        pot.active = true;
         pot.registry.forEach( function ( k ) {
+            out += 'msgctxt "' + k.split( ":" )[0] + '"\n';
             out += 'msgid "' + k + '"\nmsgstr ""\n\n';
         } );
         window.location.replace(
