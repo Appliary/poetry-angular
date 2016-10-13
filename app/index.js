@@ -7,27 +7,19 @@ app.config( function ( $locationProvider, $httpProvider ) {
     .run( function ( $rootScope, $http ) {
         $rootScope.__appName = __appName;
 
-        $http.get( '/api/users' )
+        $http.get( '/api/users/me' )
             .then( function success( usersResponse ) {
 
-                $rootScope.session = usersResponse.data.session;
-                console.log("rootscope session :", $rootScope.session);
-                $http.get( '/api/users/' + $rootScope.session.user )
-                .then( function success( response ) {
-
-                    console.log(response);
-                    $rootScope.user = response.data;
-
-                }, function error( response ) {
-
-                    console.warn( 'Users failed', response );
-
-                } );
+                $rootScope.session = usersResponse.data.user;
+                $rootScope.user = usersResponse.data.session;
+                console.log("root session :", $rootScope.session);
+                console.log("root user :", $rootScope.user);
 
             }, function error( usersResponse ) {
 
-                console.warn( 'Users failed', usersResponse );
+                console.warn( '/me failed', usersResponse );
                 $rootScope.session = {};
+                $rootScope.user = {};
 
             } );
 
