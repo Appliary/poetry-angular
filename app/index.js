@@ -10,8 +10,8 @@ app.config( function ( $locationProvider, $httpProvider ) {
         $http.get( '/api/users/me' )
             .then( function success( usersResponse ) {
 
-                $rootScope.session = usersResponse.data.user;
-                $rootScope.user = usersResponse.data.session;
+                $rootScope.session = usersResponse.data.session;
+                $rootScope.user = usersResponse.data.user;
                 console.log("root session :", $rootScope.session);
                 console.log("root user :", $rootScope.user);
 
