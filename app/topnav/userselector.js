@@ -1,14 +1,23 @@
 app.component( 'appUserselector', {
     templateUrl: 'topnav/userselector.pug',
-    controller: function ( $scope, $http, $location, ngDialog , $rootScope ) {
+    controller: function ( $scope, $http, $location, ngDialog , $timeout) {
 
-        $scope.userName = '';
-        setTimeout(function(){
-            if($rootScope.session){
-                $scope.userName = $rootScope.session.user;
-                console.log('userselector username', $scope.userName);
-            }
-        }, 2000);
+        $scope.userName = "";
+        if($scope.$root.user){
+            $scope.userName = $scope.$root.user.email;
+        }
+        else{
+            $timeout(function(){
+                if($scope.$root.user){
+                    $scope.userName = $scope.$root.user.email;
+                    console.log('userselector username', $scope.userName);
+                }
+                else{
+                    console.warn('No current user loaded !');
+                }
+            }, 2000);
+        }
+        
 
         $scope.editprofile = function ( ) {
             return ngDialog.open( {
