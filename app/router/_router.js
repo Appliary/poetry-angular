@@ -1,6 +1,6 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller , ngDialog) {
+    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
 
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
@@ -47,12 +47,32 @@ app.component( 'appRouter', {
                 } );
 
                 $scope.$root.__modules = modules;
-                route( null, $window.location.pathname );
 
-                $scope.$on( '$locationChangeStart', route );
+                $http.get( '/' + __appName + '/__routes.json' )
+                    .then(function (result) {
+                        var Routes = {};
 
-            } );
+                        for (var key in result.data) {
+                            var _route = result.data[key];
+                            console.log('Registering route: ' + route);
+                            $customRoutesProvider.addState(key, _route);
+                        }
 
+
+                        route( null, $window.location.pathname );
+                        $scope.$on( '$locationChangeStart', route );
+
+                    })
+                    .catch(function (err) {
+                        console.log('No custom routes found.');
+
+                        route( null, $window.location.pathname );
+                        $scope.$on( '$locationChangeStart', route );
+                    });
+         
+            } );      
+        
+        
         function route( ev, nextUrl, oldUrl, n ) {
             nextUrl = nextUrl.replace( '://', '' );
             var path = nextUrl.split( '/' )
@@ -60,9 +80,15 @@ app.component( 'appRouter', {
 
             if ( !$scope.$root.__modules[ path[ 0 ] ] ) {
                 console.warn( 'Unhandled route :', path );
-                $scope.$root.__module = undefined;
+                if ($scope.$root.__module && !$scope.$root.__module.dynamic) {
+                    $scope.$root.__module = undefined;
+                }
                 $scope.__id = undefined;
                 $scope.__view = undefined;
+                // var foundState = $customRoutesProvider.checkInitialState();
+                // if (foundState) {
+                //     angular.injector().get('$state').go(foundState);
+                // }
                 return;
             }
 
@@ -75,7 +101,7 @@ app.component( 'appRouter', {
             try {
                 if($scope.$root.__module.controller)
                     $scope.$root.__module.ctrl = $controller( $scope.$root.__module.controller, {
-                        $scope: $scope
+                        $scope: $scope                    
                     } );
             } catch ( err ) {
                 console.error( err );

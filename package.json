@@ -91,7 +91,8 @@
     "node-sass": "^3.8.0",
     "poetry": "0.0.54",
     "pug": "^2.0.0-beta6",
-    "sass": "^0.5.0"
+    "sass": "^0.5.0",
+    "mime-types": "^2.1.12"
   },
   "devDependencies": {},
   "gitHead": "332057f06e01553490af15938789a4d83ba5f7c9",
