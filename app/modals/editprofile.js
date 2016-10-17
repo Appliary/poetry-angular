@@ -19,6 +19,8 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     $scope.failEditMsg = "";
     $scope.failedChangepwd = false;
     $scope.failChangepwdMsg = "";
+    $scope.editView = true;
+    $scope.pwdView = false;
 
 
     $scope.cancel = function cancel (){
@@ -68,5 +70,15 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
             $scope.failChangepwdMsg = "Both new password field are not the same !";
         }
     };
+
+    $scope.showEdit = function showEdit(){
+        $scope.editView = true;
+        $scope.pwdView = false;
+    }
+
+    $scope.showChangepwd = function showChangepwd(){
+        $scope.editView = false;
+        $scope.pwdView = true;
+    }
 
 } );
