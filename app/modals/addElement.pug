@@ -12,5 +12,3 @@ form( ng-submit='add()' )
         textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
     button.pull-right
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
-button.pull-left(ng-click="cancel()")
-    | {{ 'cancel:' + $root.__module.name + ':button' | translate }}
