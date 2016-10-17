@@ -8,7 +8,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             return ngDialog.open( {
                 templateUrl: 'modals/addElement.pug',
                 controller: 'modals/addElement',
-                showClose: true,
+                showClose: false,
                 className: 'addElement'
             } );
         

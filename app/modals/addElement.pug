@@ -1,5 +1,7 @@
 h2 
     | Add {{module.name}}
+label(ng-if="failedAdd")
+    | {{ failAddMsg + ':addElem' | translate }}
 form( ng-submit='add()' )
     div(ng-repeat=' (label, type) in module.config.tabs[""].config ')
         label(ng-if=' type!="read" ', for='{{ label }}' ) {{ label + ':field' | translate }}
@@ -10,3 +12,5 @@ form( ng-submit='add()' )
         textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
     button.pull-right
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
+button.pull-left(ng-click="cancel()")
+    | {{ 'cancel:' + $root.__module.name + ':button' | translate }}

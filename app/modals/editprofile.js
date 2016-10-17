@@ -1,5 +1,8 @@
 app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
 
+    console.log("editprofile controller loaded");
+    console.log("$scope.closethisdialog", $scope.closeThisDialog);
+
     $scope.user = { 
         email: $rootScope.user.email, 
         firstName: $rootScope.user.firstName,
@@ -19,6 +22,7 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
 
 
     $scope.cancel = function cancel (){
+        console.log("Refreshing page");
         $window.location.replace( $location.absUrl() );
     }
 

@@ -4,6 +4,8 @@ app.controller( 'modals/addElement', function ( $scope, $http, $window, $locatio
     $scope.failChangepwdMsg = "";
     $scope.module = $scope.$root.__module;
     $scope.item = {};
+    $scope.failedAdd = false;
+    $scope.failAddMsg = "";
 
     $scope.cancel = function cancel (){
         $window.location.replace( $location.absUrl() );
@@ -22,7 +24,9 @@ app.controller( 'modals/addElement', function ( $scope, $http, $window, $locatio
             }, function error( response ) {
 
                 console.warn( 'add failed', response );
-                $window.location.replace( $location.absUrl() );
+                $scope.failedAdd = true;
+                $scope.failAddMsg = response.data.message;
+                // $window.location.replace( $location.absUrl() );
 
             } );
     }
