@@ -17,6 +17,13 @@ pot.activate = function () {
     pot.active = true
 };
 
+app.run( function getTranslations($http){
+    $http.get('/i18n/en')
+        .then(function ok(i18n){
+            i18n_registry= i18n.data;
+        });
+});
+
 app.filter( 'translate', function () {
 
     function translate( key ) {
@@ -43,6 +50,7 @@ app.filter( 'translate', function () {
             .slice( 0, -1 )
             .join( ':' );
 
+        console.log('t', key);
         return translate( key );
 
     }
