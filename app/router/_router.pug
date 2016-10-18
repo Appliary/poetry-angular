@@ -1,6 +1,8 @@
 header.router-header
     h1(icon="{{$root.__module.icon}}")
-        | {{ $root.__appName + " > " + $root.__module.name + ':module:title' | translate }}
+        | {{ $root.__appName + ':application:header' | translate }}
+        | &gt;
+        | {{ $root.__module.name + ':module:title' | translate }}
     .pull-right
         button.btn-action( ng-repeat='(name, action) in $root.__module.toolbox', ng-click="action()" , style="position: absolute; right: 20px; top: 15px;")
             | {{ name + ':toolbox:' + $root.__module.name | translate }}

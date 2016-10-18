@@ -26,7 +26,7 @@ app.run( function getTranslations($http){
 
 app.filter( 'translate', function () {
 
-    function translate( key ) {
+    var translate = function translate( key ) {
 
         if ( !key ) return undefined;
 
@@ -50,10 +50,10 @@ app.filter( 'translate', function () {
             .slice( 0, -1 )
             .join( ':' );
 
-        console.log('t', key);
         return translate( key );
 
     }
+    translate.$stateful = true;
 
     return translate;
 } );
