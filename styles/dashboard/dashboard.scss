@@ -331,3 +331,14 @@ table.dataTable thead > tr th
     padding-bottom: 3px !important;
     margin: 0;
 }
+
+.dashboard-menu .fa {
+    position: relative;
+    left: -8px;
+    color:white;
+}
+
+.widgetContent *{
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
