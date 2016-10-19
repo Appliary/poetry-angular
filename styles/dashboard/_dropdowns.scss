@@ -17,31 +17,7 @@
   background-clip: padding-box;
   border-radius: 2px;
 
-  // Aligns the dropdown menu to right
-  //
-  // Deprecated as of 3.1.0 in favor of `.dashboard-menu-[dir]`
-  &.pull-right {
-    right: 0;
-    left: auto;
-    margin-top: 10px;
-    margin-right: -3px;
-  }
-
-  // Dividers (basically an hr) within the dropdown
-  .divider {
-    @include nav-divider(rgba(250, 250, 250, 0.29));
-  }
-
-  // Links within the dropdown menu
-  > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    color: #fff !important;
-    white-space: nowrap; // prevent links from randomly breaking onto new lines
-  }
-}
+  
 
 // Hover/Focus state
 .dashboard-menu > li > a {
@@ -93,11 +69,6 @@
     display: block;
   }
 
-  // Remove the outline when :focus is triggered
-  > a {
-    outline: 0;
-  }
-}
 
 // Menu positioning
 //
@@ -117,53 +88,3 @@
   left: 0;
   right: auto;
 }
-
-// Dropdown section headers
-.dropdown-header {
-  display: block;
-  padding: 3px 20px;
-  color: blue;
-  white-space: nowrap; // as with > li > a
-}
-
-// Backdrop to catch body clicks on mobile, etc.
-.dropdown-backdrop {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  z-index: 900;
-}
-
-// Right aligned dropdowns
-.pull-right > .dashboard-menu {
-  right: 0;
-  left: auto;
-}
-
-// Allow for dropdowns to go bottom up (aka, dropup-menu)
-//
-// Just add .dropup after the standard .dropdown class and you're set, bro.
-// TODO: abstract this so that the navbar fixed styles are not placed here?
-
-.dropup,
-.navbar-fixed-bottom .dropdown {
-  // Reverse the caret
-  .caret {
-    border-top: 0;
-    content: "";
-  }
-  // Different positioning for bottom up menu
-  .dashboard-menu {
-    top: auto;
-    bottom: 100%;
-    margin-bottom: 2px;
-  }
-}
-
-
-// Component alignment
-//
-// Reiterate per navbar.less and the modified component alignment there.
-
