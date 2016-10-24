@@ -29,6 +29,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         });
     }
 
+    $scope.$root.__module.toolbox["test"] = function(){console.log("test")};
+
     
     $http.get( $scope.$root.__module.api )
         .then( function success( response ) {

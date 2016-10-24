@@ -41,6 +41,27 @@
         }
       },
       "/home/test/APIServices/App/teammanager-app"
+    ],
+    [
+      {
+        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
+        "scope": null,
+        "escapedName": "poetry-angular",
+        "name": "poetry-angular",
+        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
+        "spec": "git+https://github.com/Appliary/poetry-angular.git",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:Appliary/poetry-angular.git",
+          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
+          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
+          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
+          "shortcut": "github:Appliary/poetry-angular",
+          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
+        }
+      },
+      "/home/test/APIServices/App/teammanager-app"
     ]
   ],
   "_from": "git+https://github.com/Appliary/poetry-angular.git",
@@ -70,8 +91,8 @@
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "git+https://github.com/Appliary/poetry-angular.git#73d303b392ccfbd331e9270a808bf16e385ba371",
-  "_shasum": "8b35678a34cf43a59dafda93d61ddf1b9d7cebf9",
+  "_resolved": "git+https://github.com/Appliary/poetry-angular.git#8d2ff290fd111c2350e42fb37fa991d727a43b7c",
+  "_shasum": "6ddb1fc49e051cd94f3812dc4b9441c097d19f39",
   "_shrinkwrap": null,
   "_spec": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
   "_where": "/home/test/APIServices/App/teammanager-app",
@@ -87,12 +108,12 @@
     "concatenate": "0.0.1",
     "glob": "^7.0.6",
     "h2o2": "^5.1.1",
+    "mime-types": "^2.1.12",
     "ng-dialog": "^0.6.4",
     "node-sass": "^3.8.0",
     "poetry": "0.0.54",
     "pug": "^2.0.0-beta6",
-    "sass": "^0.5.0",
-    "mime-types": "^2.1.12"
+    "sass": "^0.5.0"
   },
   "devDependencies": {},
   "gitHead": "332057f06e01553490af15938789a4d83ba5f7c9",
