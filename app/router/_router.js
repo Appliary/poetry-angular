@@ -2,6 +2,12 @@ app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
     controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
 
+
+        // ***********************************************************
+        //                  DECLARE VARIABLES
+        let lastModuleController = null;
+
+
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
                 var modules = {
@@ -69,10 +75,10 @@ app.component( 'appRouter', {
                         route( null, $window.location.pathname );
                         $scope.$on( '$locationChangeStart', route );
                     });
-         
-            } );      
-        
-        
+
+            } );
+
+
         function route( ev, nextUrl, oldUrl, n ) {
             nextUrl = nextUrl.replace( '://', '' );
             var path = nextUrl.split( '/' )
@@ -95,14 +101,20 @@ app.component( 'appRouter', {
             $scope.$root.__module = $scope.$root.__modules[ path[ 0 ] ];
             $scope.__id = path[ 1 ];
             $scope.__view = path[ 2 ];
-            console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );          
-                
+            console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
+
 
             try {
-                if($scope.$root.__module.controller)
-                    $scope.$root.__module.ctrl = $controller( $scope.$root.__module.controller, {
-                        $scope: $scope                    
-                    } );
+                if($scope.$root.__module.controller){
+
+                    if( $scope.$root.__module.controller  != lastModuleController) {
+                        $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
+                            $scope: $scope
+                        });
+                    }
+                    lastModuleController = $scope.$root.__module.controller;
+
+                }
             } catch ( err ) {
                 console.error( err );
             }
