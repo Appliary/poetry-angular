@@ -4,7 +4,6 @@ app.component( 'appAppselector', {
         $http.get( '/__apps' )
             .then( function ( r ) {
                 $scope.apps = r.data;
-                console.log("-------------apps in devicemanager-----------------", $scope.apps);
             } );
 
         $scope.current = __appName;
