@@ -4,6 +4,7 @@ app.component( 'appAppselector', {
         $http.get( '/__apps' )
             .then( function ( r ) {
                 $scope.apps = r.data;
+                $scope.apps.sort();
             } );
 
         $scope.current = __appName;
