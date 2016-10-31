@@ -4,6 +4,6 @@ header.router-header
         | &gt;
         | {{ $root.__module.name + ':module:title' | translate }}
     .pull-right(style="position: absolute; top: 0px; right: 3px;")
-        button.btn-action( ng-repeat='(name, action) in $root.__module.toolbox', ng-click="action()", style="display: inline-block; margin-left: 10px")
+        button.btn-action( ng-repeat='(name, action) in $root.__module.toolbox', ng-click="action()")
             | {{ name + ':toolbox:' + $root.__module.name | translate }}
 ng-include(src='$root.__module.templateUrl')
