@@ -107,7 +107,11 @@ app.component( 'appRouter', {
             try {
                 if($scope.$root.__module.controller){
 
-                    if( $scope.$root.__module.controller  != lastModuleController) {
+                    if( $scope.$root.__module.controller != "measurements/list/measurements-list.controller.js" ) {
+                        $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
+                            $scope: $scope
+                        });
+                    }else if($scope.$root.__module.controller  != lastModuleController ){
                         $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
                             $scope: $scope
                         });
