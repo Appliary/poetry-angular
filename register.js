@@ -30,8 +30,8 @@ Poetry.route( {
     method: 'GET',
     path: '/__apps',
     config: {
-        description: 'List the front-end applications available',
-        tags: [ 'front-end', 'list', 'app', 'application' ]
+        description: '__ LIST APPS __',
+        tags: [ 'Applications (front-end)' ]
     }
 }, ( request, reply ) => {
 

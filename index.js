@@ -12,8 +12,8 @@ Poetry.route( {
     method: 'GET',
     path: '/' + config.app.name + '/{file*}',
     config: {
-        description: 'Get the application',
-        tags: [ 'front-end', 'application', 'angular' ],
+        description: config.app.name,
+        tags: [ 'Applications (front-end)' ],
         cors: false
     }
 
