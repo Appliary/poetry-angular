@@ -1,101 +1,4 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-        "scope": null,
-        "escapedName": "poetry-angular",
-        "name": "poetry-angular",
-        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-        "spec": "git+https://github.com/Appliary/poetry-angular.git",
-        "type": "hosted",
-        "hosted": {
-          "type": "github",
-          "ssh": "git@github.com:Appliary/poetry-angular.git",
-          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-          "shortcut": "github:Appliary/poetry-angular",
-          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-        }
-      },
-      "/home/test/APIServices/App/devicemanager-app"
-    ],
-    [
-      {
-        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-        "scope": null,
-        "escapedName": "poetry-angular",
-        "name": "poetry-angular",
-        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-        "spec": "git+https://github.com/Appliary/poetry-angular.git",
-        "type": "hosted",
-        "hosted": {
-          "type": "github",
-          "ssh": "git@github.com:Appliary/poetry-angular.git",
-          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-          "shortcut": "github:Appliary/poetry-angular",
-          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-        }
-      },
-      "/home/test/APIServices/App/teammanager-app"
-    ],
-    [
-      {
-        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-        "scope": null,
-        "escapedName": "poetry-angular",
-        "name": "poetry-angular",
-        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-        "spec": "git+https://github.com/Appliary/poetry-angular.git",
-        "type": "hosted",
-        "hosted": {
-          "type": "github",
-          "ssh": "git@github.com:Appliary/poetry-angular.git",
-          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-          "shortcut": "github:Appliary/poetry-angular",
-          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-        }
-      },
-      "/home/test/APIServices/App/teammanager-app"
-    ]
-  ],
-  "_from": "git+https://github.com/Appliary/poetry-angular.git",
-  "_id": "poetry-angular@1.0.0",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/poetry-angular",
-  "_phantomChildren": {},
-  "_requested": {
-    "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-    "scope": null,
-    "escapedName": "poetry-angular",
-    "name": "poetry-angular",
-    "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-    "spec": "git+https://github.com/Appliary/poetry-angular.git",
-    "type": "hosted",
-    "hosted": {
-      "type": "github",
-      "ssh": "git@github.com:Appliary/poetry-angular.git",
-      "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-      "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-      "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-      "shortcut": "github:Appliary/poetry-angular",
-      "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-    }
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+https://github.com/Appliary/poetry-angular.git#8d2ff290fd111c2350e42fb37fa991d727a43b7c",
-  "_shasum": "6ddb1fc49e051cd94f3812dc4b9441c097d19f39",
-  "_shrinkwrap": null,
-  "_spec": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-  "_where": "/home/test/APIServices/App/teammanager-app",
   "author": {
     "name": "MicCarr",
     "email": "miccarr@me.com"
@@ -108,16 +11,13 @@
     "concatenate": "0.0.1",
     "glob": "^7.0.6",
     "h2o2": "^5.1.1",
-    "mime-types": "^2.1.12",
     "ng-dialog": "^0.6.4",
     "node-sass": "^3.8.0",
-    "poetry": "0.0.54",
+    "poetry": "0.0.63",
     "pug": "^2.0.0-beta6",
-    "sass": "^0.5.0"
+    "sass": "^0.5.0",
+    "mime-types": "^2.1.12"
   },
-  "devDependencies": {},
-  "gitHead": "332057f06e01553490af15938789a4d83ba5f7c9",
-  "homepage": "https://github.com/Appliary/poetry-angular#readme",
   "license": "ISC",
   "main": "index.js",
   "name": "poetry-angular",
