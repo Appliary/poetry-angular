@@ -1,0 +1,16 @@
+div(ng-controller='columnCtrl')
+    fieldset.form-group()
+        label(for="selected")
+            span `Data`
+            select(ng-options="name for (name,value) in possibleData track by value.api",ng-model="widget.api",ng-change="loadDataFromApi(true)")
+    table.objectAttribute(ng-if="resultQuery")
+        tr(ng-repeat="(key,value) in getAllSubVars(resultQuery[0])",ng-click="addColumn(value)")
+            td {{value}}
+            td
+                input(type="checkbox",ng-model="aColumn",ng-checked="isCheck(value)!==-1")
+
+
+
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : widget,'title' : $parent.$parent.widget.title})")
+            | `Apply`

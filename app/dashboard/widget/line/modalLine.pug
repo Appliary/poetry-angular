@@ -1,0 +1,43 @@
+div(ng-controller="lineCtrl")
+    fieldset.form-group()
+        label
+            | Device
+        input.form-control(style="width:20%;",type="text",ng-model="newWidget.search")
+        select.form-control(ng-model="newWidget.selected",id="newWidget.selected", ng-change="selectDevice(newWidget.selected)")
+            option(ng-repeat="device in devicesData | filter:search") {{ device.name }}
+        select.form-control(style="width:20%;",ng-model="measurementType",id="dataSelected", ng-click="selectMeasurement(measurementType)")
+            option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}
+
+        table(class="table-condensed tableModalWidget")
+            thead
+                tr
+                    th
+                        span
+                            | Device
+                    th
+                        span
+                            | Data
+                    th
+                        span
+                            | From
+                    th
+                        span
+                            | To
+            tbody
+                tr
+                    td
+                        span.modalInputWidget
+                            | {{ selectedDevice.name }}
+                    td
+                        span.modalInputWidget
+                            | {{ measurementType }}
+                    td
+                        datepicker
+                            input.input-inline(ng-model="newWidget.startDate", type="text", ng-change="loadHistory()")
+                    td
+                        datepicker
+                            input.input-inline(ng-model="newWidget.endDate", type="text", ng-change="loadHistory()")
+
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : newWidget,'title' : $parent.$parent.widget.title})")
+            | `Apply`

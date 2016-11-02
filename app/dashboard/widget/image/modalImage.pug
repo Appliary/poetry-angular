@@ -1,0 +1,12 @@
+div(ng-controller='imageCtrl')
+  .row
+    label(for='fileToUpload') Enter image URL
+    form
+        input(type="text",ng-model="image.url", ng-change="updateImage()")
+    //- input(type="file",file-model="toUpload")
+    //- .modalImages(ng-show="!loadingImagePath")
+    //-     img(ng-class="{modalImageSelected : widget.currentImage==$index}",ng-repeat="image in widget.imagesPath",src="{{image.url}}", alt="{{image.name}}",ng-click="setCurrentImage($index)",ng-if="$index!==0")
+    //- .modalImages(ng-show="loadingImagePath")
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : widget,'file' : toUpload,'title' : $parent.$parent.widget.title})")
+            | `Apply`

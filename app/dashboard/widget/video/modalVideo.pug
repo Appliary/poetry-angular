@@ -1,0 +1,7 @@
+div(ng-controller='videoCtrl')
+  .row
+    label(for='fileToUpload') Youtube's url
+    input.form-control(type="text",ng-model="widget.url")
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="confirm({'widget':widget,'title' : $parent.$parent.widget.title})")
+            | `Apply`

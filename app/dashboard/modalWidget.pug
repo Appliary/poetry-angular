@@ -1,0 +1,53 @@
+div(class="modalEditWidget")
+    div#listWidget(class="form-group")
+        label
+            | Widget
+        input(type="text",ng-model="widget.type",ng-if="!newWidget", readonly)
+        select.selectNewWidget(ng-model="widget.type",ng-show="newWidget")
+            option(value='line') Line
+            //option(value='candlestick') CandleStick
+            //option(value='table') Table
+            option(value='gauge') Gauge
+            option(value='map') Map
+            option(value='image') Image
+            option(value='video') Video
+            option(value='adaptative') Adaptative
+            //option(value='svg') SVG
+            option(value='column') Column
+            option(value='pie',disabled) Pie
+            option(value='bar',disabled) Bar
+            option(value='area',disabled) Area
+            option(value='bubble',disabled) Bubble
+            option(value='combo',disabled) Combo
+            option(value='geo',disabled) Geo
+            //option(value='histogramme',disabled) Histogramme
+
+        label(ng-show="widget.type")
+            span Title
+            input.form-control(style="width:70%;",ng-model="widget.title")
+
+
+
+        
+        ng-include(src="'dashboard/widget/image/modalImage.pug'",ng-if="widget.type=='image'")
+        ng-include(src="'dashboard/widget/gauge/modalGauge.pug'",ng-if="widget.type=='gauge'")
+        ng-include(src="'dashboard/widget/line/modalLine.pug'",ng-if="widget.type=='line'")
+        ng-include(src="'dashboard/widget/adaptative/modalAdaptative.pug'",ng-if="widget.type=='adaptative'")
+        ng-include(src="'dashboard/widget/column/modalColumn.pug'",ng-if="widget.type=='column'")
+        //- ng-include(src="'/templates/dashboard/widget/svg/modalSvg.pug'",ng-if="widget.type=='svg'")
+        //- ng-include(src="'/templates/dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
+        ng-include(src="'dashboard/widget/video/modalVideo.pug'",ng-if="widget.type=='video'")
+
+        //- No modal.pug file
+        //- ng-include(src="'/templates/dashboard/widget/area/modalArea.pug'",ng-if="widget.type=='area'")
+        //- ng-include(src="'/templates/dashboard/widget/bubble/modalBubble.pug'",ng-if="widget.type=='bubble'")
+        //- ng-include(src="'/templates/dashboard/widget/combo/modalCombo.pug'",ng-if="widget.type=='combo'")
+        //- ng-include(src="'/templates/dashboard/widget/geo/modalGeo.pug'",ng-if="widget.type=='geo'")
+        //- ng-include(src="'/templates/dashboard/widget/pie/modalPie.pug'",ng-if="widget.type=='pie'")
+
+
+        //- Not in angular-google-chart
+        //- ng-include(src="'/templates/dashboard/widget/candlestick/modalCandlestick.pug'",ng-if="widget.type=='candlestick'")
+        //- ng-include(src="'/templates/dashboard/widget/histogramme/modalHistogramme.pug'",ng-if="widget.type=='histogramme'")
+        //- ng-include(src="'/templates/dashboard/widget/table/modalTable.pug'",ng-if="widget.type=='table'")
+        //- ng-include(src="'/templates/dashboard/widget/bar/modalBar.pug'",ng-if="widget.type=='bar'")
