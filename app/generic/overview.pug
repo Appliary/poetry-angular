@@ -13,5 +13,7 @@ form( ng-submit='' )
         textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
+    span.failed( ng-if=' item.__failed ' )
+        | {{ 'failed:save:' + $root.__module.name | translate }}
     button(ng-click=' save() ').pull-right
         | {{ 'save:' + $root.__module.name + ':button' | translate }}

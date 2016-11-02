@@ -5,7 +5,7 @@ app.component( 'appRouter', {
 
         // ***********************************************************
         //                  DECLARE VARIABLES
-        let lastModule = null;
+        var lastModule = null;
 
 
         $http.get( '/' + __appName + '/__sidebar.json' )

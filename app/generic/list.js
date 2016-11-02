@@ -11,9 +11,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                 showClose: true,
                 className: 'addElement'
             } );
-        
+
             $scope.open = true;
-            console.log("you can now sho the modal");      
+            console.log("you can now sho the modal");
         };
 
 
@@ -28,7 +28,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
         });
     }
-    
+
     $http.get( $scope.$root.__module.api )
         .then( function success( response ) {
 
@@ -66,7 +66,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
         } );
 
-    
+
 
 
     $scope.select = function select( id ) {
@@ -106,7 +106,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                 console.info( 'Saved!' );
                 $scope.item.__saved = true;
             }, function error( err ) {
-                console.error( err )
+                console.error( err );
+                $scope.item.__failed = true;
             } )
 
     }
