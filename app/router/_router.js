@@ -5,7 +5,7 @@ app.component( 'appRouter', {
 
         // ***********************************************************
         //                  DECLARE VARIABLES
-        let lastModuleController = null;
+        let lastModule = null;
 
 
         $http.get( '/' + __appName + '/__sidebar.json' )
@@ -111,12 +111,12 @@ app.component( 'appRouter', {
                         $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
                             $scope: $scope
                         });
-                    }else if($scope.$root.__module.controller  != lastModuleController ){
+                    }else if($scope.$root.__module  != lastModule ){
                         $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
                             $scope: $scope
                         });
                     }
-                    lastModuleController = $scope.$root.__module.controller;
+                    lastModule = $scope.$root.__module;
 
                 }
             } catch ( err ) {
