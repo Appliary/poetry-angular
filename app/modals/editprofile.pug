@@ -4,21 +4,21 @@
         a.modal-changepwd(ng-click="showChangepwd()") {{'Change password:editmodal' | translate}}
 .tab-body
     .tab-content(ng-if="editView")
-            h1 {{ 'editprofile:modal:title' | translate }}
-            label(ng-if="failedEdit")
-                | {{ failEditMsg + ':editprofile' | translate }}
+        h1.modal-title {{ 'editprofile:modal:title' | translate }}
+        label(ng-if="failedEdit")
+            | {{ failEditMsg + ':editprofile' | translate }}
 
-            form( ng-submit='edit()' )
-                label( for='firstName' ) {{ 'firstName:field:edit' | translate }}
-                input( type='text', ng-model='user.firstName', name='firstName' )
+        form( ng-submit='edit()' )
+            label( for='firstName' ) {{ 'firstName:field:edit' | translate }}
+            input( type='text', ng-model='user.firstName', name='firstName' )
 
-                label( for='lastName' ) {{ 'lastName:field:edit' | translate }}
-                input( type='text', ng-model='user.lastName', name='lastName' )
+            label( for='lastName' ) {{ 'lastName:field:edit' | translate }}
+            input( type='text', ng-model='user.lastName', name='lastName' )
 
-                label( for='email' ) {{ 'email:field:edit' | translate }}
-                input( type='text', ng-model='user.email', name='email' )
+            label( for='email' ) {{ 'email:field:edit' | translate }}
+            input( type='text', ng-model='user.email', name='email' )
 
-                button( type='submit' ).pull-right {{ 'edit:button' | translate }}
+            button( type='submit' ).pull-right {{ 'edit:button' | translate }}
     .tab-content(ng-if="pwdView")
         h1 {{ 'change password:modal:title' | translate }}
 
