@@ -27,8 +27,12 @@ input {
 
 span.unit{
     input{
-        width: 50%;
+        width: 60%;
+        padding-right: 60px;
+        margin-right: -50px;
         display: inline-block;
-        margin-right: 10px;
+    }
+    span{
+        color: $input_border_active;
     }
 }
