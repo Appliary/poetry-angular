@@ -18,7 +18,7 @@ input {
     &.ng-pristine {
         color: $input_same;
     }
-    &[disabled] {
+    &[disabled], &[readonly] {
         background: $input_bg_disabled;
         color: $input_same;
         cursor: default;

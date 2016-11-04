@@ -1,8 +1,8 @@
 form( ng-submit='' )
     div(ng-repeat=' (label, type) in $root.__module.config.tabs[__view].config ')
         label( for='{{ label }}' ) {{ label + ':field' | translate }}
-        input( name='{{ label }}', ng-if=' type=="read" ', ng-model='item[label]', disabled )
-        input( name='{{ label }}', ng-if=' type=="readObject" ', ng-model='item[label].name', disabled )
+        input( name='{{ label }}', ng-if=' type=="read" ', ng-model='item[label]', readonly )
+        input( name='{{ label }}', ng-if=' type=="readObject" ', ng-model='item[label].name', readonly )
         input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
         input( name='{{ label }}', ng-if=' type=="password" ', ng-model='item[label]' type="password" )
         span.unit( ng-if=' type.unit ' )
