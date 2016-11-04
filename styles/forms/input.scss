@@ -24,3 +24,11 @@ input {
         cursor: default;
     }
 }
+
+span.unit{
+    input{
+        width: 50%;
+        display: inline-block;
+        margin-right: 10px;
+    }
+}
