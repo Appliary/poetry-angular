@@ -34,5 +34,9 @@ span.unit{
     }
     span{
         color: $input_border_active;
+        width: 50px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
