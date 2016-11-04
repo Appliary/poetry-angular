@@ -2,7 +2,7 @@ div(ng-controller="lineCtrl")
     fieldset.form-group()
         label
             | Device
-        input.form-control(style="width:20%;",type="text",ng-model="newWidget.search")
+        input.form-control(style="width:20%;",type="text",ng-model="search")
         select.form-control(ng-model="newWidget.selected",id="newWidget.selected", ng-change="selectDevice(newWidget.selected)")
             option(ng-repeat="device in devicesData | filter:search") {{ device.name }}
         select.form-control(style="width:20%;",ng-model="measurementType",id="dataSelected", ng-click="selectMeasurement(measurementType)")
