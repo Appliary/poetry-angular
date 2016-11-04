@@ -33,10 +33,10 @@ div(ng-controller="lineCtrl")
                             | {{ measurementType }}
                     td
                         datepicker
-                            input.input-inline(ng-model="newWidget.startDate", type="text", ng-change="loadHistory()")
+                            input.input-inline(ng-model="newWidget.startDate", type="text", ng-change="loadHistory(selectedDevice._id, newWidget.startDate, newWidget.endDate, measurementType, newWidget)")
                     td
                         datepicker
-                            input.input-inline(ng-model="newWidget.endDate", type="text", ng-change="loadHistory()")
+                            input.input-inline(ng-model="newWidget.endDate", type="text", ng-change="loadHistory(selectedDevice._id, newWidget.startDate, newWidget.endDate, measurementType, newWidget)")
 
     .modalButtons
         button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : newWidget,'title' : $parent.$parent.widget.title})")

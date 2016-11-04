@@ -3,7 +3,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
 
-    if (!$scope.widget.hasOwnProperty('chartObject')) {
+    if (!$scope.widget.hasOwnProperty('chartObject') && !$scope.widget.hasOwnProperty('device')) {
         $scope.widget.chartObject = {};
         $scope.widget.chartObject.type = "LineChart";
         $scope.widget.chartObject.data = [
@@ -18,6 +18,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
             curveType: 'function',
             legend: { position: 'bottom' }
         };
+        $scope.widget.show = true;
     }
 
     $scope.newWidget = {
@@ -37,10 +38,8 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
 
     };
 
-    console.log("line scope widget", $scope.widget);
 
-
-    // ---------- Functions -------------------
+    // ---------- Old Functions -------------------
 
     $scope.loadData=function(){
         console.log("lineCtrl loadData toto");
@@ -84,7 +83,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
     }
     // Get measurement object of selected device from its type
     $scope.selectMeasurement = function(measurementType){
-        $scope.loadHistory();
+        $scope.loadHistory($scope.selectedDevice._id, $scope.newWidget.startDate, $scope.newWidget.endDate, $scope.measurementType, $scope.newWidget);
         console.log("measurementType", $scope.measurementType);
     }
 
@@ -100,29 +99,34 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
         return deviceReturn;
     }
 
-    $scope.loadHistory = function(){
+    // TODO: better management of widget/newidget
+    $scope.loadHistory = function(deviceId, startDate, endDate, measurementType, widget){
+        console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
         var result = [
-            ['Date', $scope.measurementType]
+            ['Date', measurementType]
         ];
-        var beforeDate = new Date($scope.newWidget.endDate);
-        var before = beforeDate.getTime();
-        var afterDate = new Date($scope.newWidget.startDate);
-        var after = afterDate.getTime();
-        
-        $http.get( '/api/devices/' + $scope.selectedDevice._id + '/measurements?before=' + before + '&after=' + after  )
+
+        var apiCall = '/api/devices/' + deviceId + '/measurements?before=' + endDate + '&after=' + startDate;
+        console.log("apicall", apiCall);
+
+        $http.get( apiCall  )
         .then( function success( response ) {
             console.log("linectrl history success response", response);
             if(response.data.data && response.data.data.length > 0){
                 var measurementDatas = response.data.data;
                 measurementDatas.forEach(function(measurementData){
-                    var dataLine = $scope.getMeasurement(measurementData, $scope.measurementType);
+                    var dataLine = $scope.getMeasurement(measurementData, measurementType);
                     if(dataLine.length == 2){
                         result.push(dataLine);
                     }
 
                 });
                 console.log("result", result);
-                $scope.newWidget.chartObject.data = result;
+                widget.chartObject.data = result;
+                widget.show = true;
+                console.log("widget", widget);
+
+                
             }
             else{
                 console.log("data empty");
@@ -135,6 +139,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
 
     }
 
+    // Get the right measurement type from a set of measurements with different types
     $scope.getMeasurement = function(measurementData, type){
         var result = [];
         if(measurementData.measurements){
@@ -150,7 +155,42 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
         return result;
     }
 
+    $scope.refreshFromDevice = function(){
+        if(!$scope.widget.chartObject){
+            $scope.widget.chartObject = {
+                type: "LineChart",
+                data: {},
+                options: {
+                    title: $scope.widget.device.title,
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                }
+            };
+        }
+        else{
+            $scope.widget.chartObject.options.title = $scope.widget.device.title;
+        }
+        
+        $scope.loadHistory($scope.widget.device.id, $scope.widget.device.startDate, $scope.widget.device.endDate, $scope.widget.device.measurementType, $scope.widget);
+    }
+
     // ------------------ Begining -----------------
 
+
     $scope.loadDevices();
+
+
+    // if($scope.widget.hasOwnProperty('device')){
+    //     $scope.refreshFromDevice();
+    // }
+
+    // ------------- Watchers ---------------------
+
+    $scope.$watch('widget.device.id', function(OldValue, NewValue){
+        if($scope.widget.device){
+            console.log("oldvalue", OldValue);
+        console.log("NewValue", NewValue);
+        $scope.refreshFromDevice();
+        }
+    });
 });

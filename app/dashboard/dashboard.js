@@ -12,6 +12,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     $scope.customData1 = [
         {
+            edit: true,
             size: {
                 x: 1,
                 y: 1
@@ -22,6 +23,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "pieCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -46,6 +48,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         //     dataPoints: []
         // },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -56,6 +59,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "gaugeCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -66,6 +70,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "areaCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -77,6 +82,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "bubbleCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -90,6 +96,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     ];
     $scope.customData2 = [
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -101,6 +108,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "geoCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -110,6 +118,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "lineCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -132,6 +141,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         //     controller: "candlestickCtrl"
         // },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -142,6 +152,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "tableCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -152,6 +163,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             controller: "columnCtrl"
         },
         {
+            edit: true,
             size: {
                 x: 2,
                 y: 1
@@ -242,6 +254,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         switch (data.newWidget.type) {
             case 'adaptative':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 1,
                         y: 1
@@ -256,6 +269,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'PieChart':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 1,
                         y: 1
@@ -269,6 +283,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             case 'gauge':
                 console.log("chartObject of gauge", data.newWidget.chartObject);
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -282,6 +297,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'BarChart':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -294,6 +310,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'AreaChart':
                 $scope.currentDashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -306,6 +323,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'BubbleChart':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -318,6 +336,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'ComboChart':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -330,6 +349,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'GeoChart':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -342,6 +362,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'line':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -355,6 +376,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'candlestick':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -370,6 +392,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'table':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -383,6 +406,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'column':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -397,6 +421,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'Histogram':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -409,6 +434,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'map':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -423,6 +449,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'image':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -436,6 +463,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'video':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1
@@ -449,6 +477,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 break;
             case 'svg':
                 dashboard.data.push({
+                    edit: true,
                     size: {
                         x: 2,
                         y: 1

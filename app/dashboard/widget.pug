@@ -1,5 +1,5 @@
 .widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",save-dashboard="saveDashboard()",disable-save="disableSave()",enable-save ="enableSave()")
-  .panel.panel-default.panel-widget(ng-mousedown="enableDraggable()")
+  .panel.panel-default.panel-widget(ng-mousedown="enableDraggable()", ng-if="widget.edit")
     div
       p.headerWigetTitle
         strong {{widget.title}}
