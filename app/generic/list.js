@@ -3,8 +3,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     $scope.buttons = [];
     $scope.buttons["add"] = function add() {
-            console.info( 'Try to add open addElem modal in module : ', $scope.$root.__module );
-
             return ngDialog.open( {
                 templateUrl: 'modals/addElement.pug',
                 controller: 'modals/addElement',
@@ -13,12 +11,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             } );
 
             $scope.open = true;
-            console.log("you can now sho the modal");
         };
 
 
-    console.log("show module in list", $scope.$root.__module);
-    console.log("show add func in list module", $scope.add);
     $scope.$root.__module.toolbox = {};
     if($scope.$root.__module.buttons){
         $scope.$root.__module.buttons.forEach(function(button){
@@ -29,6 +24,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         });
     }
 
+    /**
+     * Retrieve the list from the webservice
+     */
     $http.get( $scope.$root.__module.api )
         .then( function success( response ) {
 
@@ -67,8 +65,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         } );
 
 
-
-
+    /**
+     * Select an item on the list
+     *
+     * @arg {String} id Id of the item to be selected
+     */
     $scope.select = function select( id ) {
         retrieveItem( id );
         $location.path(
@@ -76,16 +77,26 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             '/' + id +
             '/' + ( $scope.__view || '' )
         );
-    }
+    };
 
+    /**
+     * Select another tabview
+     *
+     * @arg {String} name Name of the tabview to be active
+     */
     $scope.tab = function tab( name ) {
         $location.path(
             '/' + $scope.$root.__module.name +
             '/' + $scope.__id +
             '/' + name
         );
-    }
+    };
 
+    /**
+     * Scrolling handler ( infinite scroll + header mover )
+     *
+     * @arg {Event} event Native JS scroll event
+     */
     $scope.scroll = function scroll( event ) {
         var elem = event.target;
         var header = elem.querySelectorAll( 'th' );
@@ -94,12 +105,21 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         };
     }
 
+    // Give access to the isArray function on the view
     $scope.isArray = angular.isArray;
 
+    /**
+     * Save the current item
+     *
+     * @return $scope.item.__saved
+     * @throws $scope.item.__failed
+     */
     $scope.save = function save() {
 
         if ( !$scope.item || !$scope.__id )
             return console.warn( 'No item to save' );
+
+        $scope.item.__failed = $scope.item.__success = false;
 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success() {
@@ -108,10 +128,15 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
-            } )
+            } );
 
     }
 
+    /**
+     * Use the webservice to retrieve the complete selected item
+     *
+     * @arg {String} id Id of the selected item to be retrieved
+     */
     function retrieveItem( id ) {
         $scope.item = undefined;
         $http.get( $scope.$root.__module.api + '/' + id )
@@ -120,10 +145,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
-        // if ( $scope.$root.__module.config.tabs[ __view ].controller )
-        //     $scope.ctrl = $controller( $root.__module.config.tabs[ __view ].controller, {
-        //         $scope: $scope
-        //     } );
+        if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
+            $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
+                $scope: $scope
+            } );
     }
 
 

@@ -1,18 +1,26 @@
 app.component( 'appRouter', {
     templateUrl: 'router/_router.pug',
-    controller: function ( $window, $http, $scope, $templateCache, $controller, $customRoutesProvider) {
+    controller: function (
+        $window,
+        $http,
+        $scope,
+        $templateCache,
+        $controller,
+        $customRoutesProvider
+    ) {
 
 
-        // ***********************************************************
-        //                  DECLARE VARIABLES
         var lastModule = null;
 
 
+        /**
+         * Retrieve the modules from config
+         */
         $http.get( '/' + __appName + '/__sidebar.json' )
             .then( function onReceiveModulesList( r ) {
                 var modules = {
-                    'error':{
-                        name:'error',
+                    'error': {
+                        name: 'error',
                         templateUrl: 'generic/error.pug',
                         hidden: true
                     },
@@ -55,30 +63,38 @@ app.component( 'appRouter', {
                 $scope.$root.__modules = modules;
 
                 $http.get( '/' + __appName + '/__routes.json' )
-                    .then(function (result) {
+                    .then( function ( result ) {
                         var Routes = {};
 
-                        for (var key in result.data) {
-                            var _route = result.data[key];
-                            console.log('Registering route: ' + route);
-                            $customRoutesProvider.addState(key, _route);
+                        for ( var key in result.data ) {
+                            var _route = result.data[ key ];
+                            console.log( 'Registering route: ' + route );
+                            $customRoutesProvider.addState( key, _route );
                         }
 
 
                         route( null, $window.location.pathname );
                         $scope.$on( '$locationChangeStart', route );
 
-                    })
-                    .catch(function (err) {
-                        console.log('No custom routes found.');
+                    } )
+                    .catch( function ( err ) {
+                        console.log( 'No custom routes found.' );
 
                         route( null, $window.location.pathname );
                         $scope.$on( '$locationChangeStart', route );
-                    });
+                    } );
 
             } );
 
 
+        /**
+         * Redirect to the route
+         *
+         * @arg {Unknown} ev
+         * @arg {String} nextUrl
+         * @arg {String} oldUrl
+         * @arg {Unknown} n
+         */
         function route( ev, nextUrl, oldUrl, n ) {
             nextUrl = nextUrl.replace( '://', '' );
             var path = nextUrl.split( '/' )
@@ -86,7 +102,7 @@ app.component( 'appRouter', {
 
             if ( !$scope.$root.__modules[ path[ 0 ] ] ) {
                 console.warn( 'Unhandled route :', path );
-                if ($scope.$root.__module && !$scope.$root.__module.dynamic) {
+                if ( $scope.$root.__module && !$scope.$root.__module.dynamic ) {
                     $scope.$root.__module = undefined;
                 }
                 $scope.__id = undefined;
@@ -105,18 +121,19 @@ app.component( 'appRouter', {
 
 
             try {
-                if($scope.$root.__module.controller){
+                if ( $scope.$root.__module.controller && ( !$scope.__id || $scope.$root.__module.name != lastModule ) ) {
 
-                    if( $scope.$root.__module.controller != "measurements/list/measurements-list.controller.js" ) {
-                        $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
-                            $scope: $scope
-                        });
-                    }else if($scope.$root.__module  != lastModule ){
-                        $scope.$root.__module.ctrl = $controller($scope.$root.__module.controller, {
-                            $scope: $scope
-                        });
-                    }
-                    lastModule = $scope.$root.__module;
+                    Object.keys( $scope )
+                        .forEach( function ( k ) {
+                            if ( k.indexOf( '$' ) && k.indexOf( '_' ) )
+                                delete $scope[ k ];
+                        } );
+
+                    $scope.$root.__module.ctrl = $controller( $scope.$root.__module.controller, {
+                        $scope: $scope
+                    } );
+
+                    lastModule = $scope.$root.__module.name;
 
                 }
             } catch ( err ) {

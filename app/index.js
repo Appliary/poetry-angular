@@ -14,14 +14,19 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 $rootScope.session = usersResponse.data.session;
                 $rootScope.user = usersResponse.data.user;
                 $rootScope.loaded = true;
-                console.log("root session :", $rootScope.session);
-                console.log("root user :", $rootScope.user);
+
+                console.groupCollapsed( 'Session [RETRIEVED]' );
+                console.log( 'Session:', $rootScope.session );
+                console.log( 'User:', $rootScope.user );
+                console.groupEnd();
 
             }, function error( usersResponse ) {
 
-                console.warn( '/me failed', usersResponse );
+                console.group( 'Session [FAILED]' );
+                console.warn( usersResponse );
                 $rootScope.session = {};
                 $rootScope.user = {};
+                console.groupEnd();
 
             } );
 
