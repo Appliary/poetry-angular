@@ -20,8 +20,6 @@
 
             button( type='submit' ).pull-right {{ 'Save:button' | translate }}
     .tab-content(ng-if="pwdView")
-        h1 {{ 'change password:modal:title' | translate }}
-
         label(ng-if="failedChangepwd")
             | {{ failChangepwdMsg + ':changepwd' | translate }}
 

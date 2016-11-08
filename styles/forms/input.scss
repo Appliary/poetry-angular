@@ -11,32 +11,39 @@ input {
     display: block;
     outline: none;
     cursor: text;
+
     &:focus {
         border: $input_border_active solid 1px;
         box-shadow: 0 1px 1px $input_border;
     }
+
     &.ng-pristine {
         color: $input_same;
     }
-    &[disabled], &[readonly] {
+
+    &[disabled],
+    &[readonly] {
         background: $input_bg_disabled;
         color: $input_same;
         cursor: default;
     }
 }
 
-span.unit{
-    input{
+span.unit {
+    input {
         width: 60%;
         padding-right: 60px;
         margin-right: -50px;
         display: inline-block;
     }
-    span{
+
+    span {
         color: $input_border_active;
         width: 50px;
         display: inline-block;
         overflow: hidden;
         text-overflow: ellipsis;
+        position: relative;
+        top: 3px;
     }
 }

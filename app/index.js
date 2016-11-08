@@ -8,6 +8,9 @@ app.config( function ( $locationProvider, $httpProvider ) {
         $rootScope.__appName = __appName;
         $rootScope.loaded = false;
 
+        /**
+         * Retrieve session
+         */
         $http.get( '/api/users/me' )
             .then( function success( usersResponse ) {
 

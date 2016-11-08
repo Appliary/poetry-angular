@@ -2,67 +2,101 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
     $scope.buttons = [];
-    $scope.buttons["add"] = function add() {
-            return ngDialog.open( {
-                templateUrl: 'modals/addElement.pug',
-                controller: 'modals/addElement',
-                showClose: true,
-                className: 'addElement'
-            } );
+    $scope.buttons[ "add" ] = function add() {
+        return ngDialog.open( {
+            templateUrl: 'modals/addElement.pug',
+            controller: 'modals/addElement',
+            showClose: true,
+            className: 'addElement'
+        } );
 
-            $scope.open = true;
-        };
+        $scope.open = true;
+    };
+
+    $scope.buttons[ "own" ] = function own() {
+        return ngDialog.open( {
+            templateUrl: 'modals/own.pug',
+            controller: 'modals/own',
+            showClose: true,
+            className: 'own'
+        } );
+    };
 
 
     $scope.$root.__module.toolbox = {};
-    if($scope.$root.__module.buttons){
-        $scope.$root.__module.buttons.forEach(function(button){
-            if($scope.buttons[button]){
-                $scope.$root.__module.toolbox[button] = $scope.buttons[button];
+    if ( $scope.$root.__module.buttons ) {
+        $scope.$root.__module.buttons.forEach( function ( button ) {
+            if ( $scope.buttons[ button ] ) {
+                $scope.$root.__module.toolbox[ button ] = $scope.buttons[ button ];
             }
 
-        });
+        } );
     }
+
+    $scope.sorting = {
+        col: '_id',
+        order: 'asc'
+    };
+    $scope.orderBy = function orderBy( col ) {
+        if ( $scope.sorting.col != col )
+            return ( $scope.sorting = {
+                col: col,
+                order: 'asc'
+            } );
+        $scope.sorting.order = ( $scope.sorting.order == 'asc' ) ? 'desc' : 'asc';
+    };
 
     /**
      * Retrieve the list from the webservice
      */
-    $http.get( $scope.$root.__module.api )
-        .then( function success( response ) {
+    $scope.$watch( 'search', getlist );
+    $scope.$watch( 'status', getlist );
+    $scope.$watchCollection( 'sorting', getlist );
 
-            if ( response.data.data )
-                $scope.data = response.data.data;
-            else if ( response.data instanceof Array )
-                $scope.data = response.data;
-            else
-                $scope.data = [];
+    function getlist() {
+        var url = $scope.$root.__module.api + '?sort=' + $scope.sorting.col + '&order=' + $scope.sorting.order;
+        if( $scope.status ) url += '&status=' + $scope.status;
+        if( $scope.search )
+            url += '&search=' + encodeURIComponent( $scope.search );
+        $http.get( url )
+            .then( function success( response ) {
 
-            if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
-                $scope.columns = $scope.$root.__module.config.columns;
-            else $scope.columns = [];
+                if ( response.data.data )
+                    $scope.data = response.data.data;
+                else if ( response.data instanceof Array )
+                    $scope.data = response.data;
+                else
+                    $scope.data = [];
 
-            if ( !$scope.columns.length )
-                $scope.data.forEach( function ( data ) {
-                    Object.keys( data )
-                        .forEach( function ( col ) {
-                            if ( !~$scope.columns.indexOf( col ) )
-                                $scope.columns.push( col );
-                        } )
-                } );
+                $scope.total = response.data.recordsFiltered;
 
-        }, function error( response ) {
+                if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
+                    $scope.columns = $scope.$root.__module.config.columns;
+                else $scope.columns = [];
 
-            if ( response.status == 401 )
-                return ngDialog.open( {
-                    templateUrl: 'modals/login.pug',
-                    controller: 'modals/login',
-                    showClose: false,
-                    className: 'login'
-                } );
+                if ( !$scope.columns.length )
+                    $scope.data.forEach( function ( data ) {
+                        Object.keys( data )
+                            .forEach( function ( col ) {
+                                if ( !~$scope.columns.indexOf( col ) )
+                                    $scope.columns.push( col );
+                            } )
+                    } );
 
-            $location.path( '/error/' + response.status );
+            }, function error( response ) {
 
-        } );
+                if ( response.status == 401 )
+                    return ngDialog.open( {
+                        templateUrl: 'modals/login.pug',
+                        controller: 'modals/login',
+                        showClose: false,
+                        className: 'login'
+                    } );
+
+                $location.path( '/error/' + response.status );
+
+            } );
+    }
 
 
     /**

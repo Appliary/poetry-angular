@@ -1,19 +1,20 @@
 .list( ng-class='{detailed:__id}', scroll='scroll' )
     form#filters
-        input( type='search', ng-model='search' )
-        select.pull-right( ng-model='status' )
+        input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
+        select.pull-right( ng-model='$parent.status' )
             option( value='' ) {{ 'active:status:' + $root.__module | translate }}
             option( value='new' ) {{ 'new:status:' + $root.__module | translate }}
             option( value='archived' )
                 | {{ 'archived:status:' + $root.__module | translate }}
     table
         thead: tr
-            th( ng-repeat='column in columns', ng-click='orderBy(column)' )
+            th( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
                 | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
         tbody
-            tr( ng-repeat='row in data | filter:search |filter:{status:status}', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
+            tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
                 td( ng-repeat='column in columns')
                     span( ng-if='row[ column ] !== undefined' )
                         | {{ row[ column ] | localize }}
+    .noData( ng-if='' )
 
 ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
