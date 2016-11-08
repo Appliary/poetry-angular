@@ -2,10 +2,13 @@
     form#filters
         input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
         select.pull-right( ng-model='$parent.status' )
-            option( value='' ) {{ 'active:status:' + $root.__module | translate }}
-            option( value='new' ) {{ 'new:status:' + $root.__module | translate }}
+            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
             option( value='archived' )
-                | {{ 'archived:status:' + $root.__module | translate }}
+                | {{ 'archived:status:' + $root.__module.name | translate }}
+        span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
+        span.loading( ng-if='total === undefined')
+            | {{ 'loading:' + $root.__module.name | translate }}
     table
         thead: tr
             th( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
@@ -15,6 +18,7 @@
                 td( ng-repeat='column in columns')
                     span( ng-if='row[ column ] !== undefined' )
                         | {{ row[ column ] | localize }}
-    .noData( ng-if='' )
+    .noData( ng-if='total === 0' )
+        | {{ 'nodata:' + $root.__module.name | translate}}
 
 ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
