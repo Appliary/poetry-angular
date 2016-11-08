@@ -5,3 +5,4 @@ form( ng-submit='own()' )
     input( name='_id' ng-model='item._id' )
     button.pull-right
         | {{ 'own:' + $root.__module.name + ':button' | translate }}
+    span( ng-if='failed' ) {{ 'failed:own:' + $root.__module.name + ':button' | translate }}

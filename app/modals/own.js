@@ -10,7 +10,7 @@ app.controller( 'modals/own', function ( $scope, $http ) {
             }, function error( response ) {
 
                 console.warn( 'own failed', response );
-                $scope.failedAdd = response.data.message;
+                $scope.failed = response.data.message;
                 // $window.location.replace( $location.absUrl() );
 
             } );
