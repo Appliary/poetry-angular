@@ -55,7 +55,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     function getlist() {
         $scope.total = undefined;
-        var url = $scope.$root.__module.api + '?sort=' + ($scope.sorting)?$scope.sorting.col:'' + '&order=' + ($scope.sorting)?$scope.sorting.order:'';
+        var url = $scope.$root.__module.api + '?sort=' + ($scope.sorting?$scope.sorting.col:'') + '&order=' + ($scope.sorting?$scope.sorting.order:'');
         if( $scope.status ) url += '&status=' + $scope.status;
         if( $scope.search )
             url += '&search=' + encodeURIComponent( $scope.search );
