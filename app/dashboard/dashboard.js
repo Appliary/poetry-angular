@@ -397,7 +397,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceName: data.newWidget.deviceName
                 });
                 break;
             case 'candlestick':
@@ -603,7 +605,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 console.log("res of click to open in dashboard", res)
                 //console.log("dashboard", dashboard);
                 $scope.addWidget(res, dashboard);
-                dashboard.data.push(res);
+                // dashboard.data.push(res);
             });
     };
     
@@ -683,6 +685,30 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             .then(function(res) {
                 dashboard.name = res;
             });
+    }
+
+    $scope.newSave = function(dashboard){
+        console.log("dashboard to save", dashboard);
+
+        var dashboardData = {
+            name: dashboard.name,
+            widgets: [{
+                title: dashboard.data[0].title,
+                controller: dashboard.data[0].controller,
+                options: dashboard.data[0].chartObject.options,
+                size: dashboard.data[0].size,
+                deviceDatas: [{
+                    deviceId: dashboard.data[0].deviceId,
+                    startDate: dashboard.data[0].startDate,
+                    endDate: dashboard.data[0].endDate,
+                    measurementType: dashboard.data[0].measurementType,
+                    color: "blue"
+                }]
+            }]
+                
+            
+
+        }
     }
 
     // --------------- Running at the beginning ----------------

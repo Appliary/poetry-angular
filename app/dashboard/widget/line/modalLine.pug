@@ -3,10 +3,10 @@ div(ng-controller="lineCtrl")
         label
             | Device
         input.form-control(style="width:20%;",type="text",ng-model="search")
-        select.form-control(ng-model="newWidget.deviceId",id="newWidget.deviceId", ng-change="selectDevice(newWidget.deviceId)")
-            option(ng-repeat="device in devicesData | filter:search") {{ device.name }}
-        select.form-control(style="width:20%;",ng-model="measurementType",id="dataSelected", ng-click="selectMeasurement(measurementType)")
-            option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}
+        select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
+            option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
+        select.form-control(style="width:20%;",ng-model="widget.measurementType",id="widget.measurementType", ng-click="selectMeasurement(widget.measurementType)")
+            option(ng-repeat="measurement in widget.selectedDevice.last") {{ measurement.type }}
 
         table(class="table-condensed tableModalWidget")
             thead
@@ -33,11 +33,11 @@ div(ng-controller="lineCtrl")
                             | {{ measurementType }}
                     td
                         datepicker
-                            input.input-inline(ng-model="newWidget.startDate", type="text", ng-change="loadHistory(selectedDevice._id, newWidget.startDate, newWidget.endDate, measurementType, newWidget)")
+                            input.input-inline(ng-model="widget.startDate", type="text", ng-change="loadHistory(widget.deviceId, widget.startDate, widget.endDate, widget.measurementType, widget)")
                     td
                         datepicker
-                            input.input-inline(ng-model="newWidget.endDate", type="text", ng-change="loadHistory(selectedDevice._id, newWidget.startDate, newWidget.endDate, measurementType, newWidget)")
+                            input.input-inline(ng-model="widget.endDate", type="text", ng-change="loadHistory(widget.deviceId, widget.startDate, widget.endDate, widget.measurementType, widget)")
 
     .modalButtons
-        button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : newWidget,'title' : $parent.$parent.widget.title})")
+        button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'title' : $parent.$parent.widget.title})")
             | `Apply`

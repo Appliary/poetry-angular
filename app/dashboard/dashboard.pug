@@ -17,6 +17,8 @@
                     a(ng-click='clickToOpen(currentDashboard)') {{ 'Add widget:dashboardHeader' | translate }}
                     a(ng-click='clear(currentDashboard)') {{ 'Clear widgets:dashboardHeader' | translate }}
                     a(ng-click='confirmDashboardDelete(currentDashboard.id)') {{ 'Delete dashboard:dashboardHeader' | translate }}
+                    a(ng-click='newSave(currentDashboard)') {{ 'New Save:dashboardHeader' | translate }}
+
             div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
                 ul
                     li(style='background-color:white;', gridster-item='item', ng-repeat='item in currentDashboard.data ')

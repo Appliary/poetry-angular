@@ -85,38 +85,19 @@ app.service('DevicesData', function($http, $q, ngNotify) {
 
         var deferred = $q.defer();
 
-        if (timeout)
-            clearTimeout(timeout);
+        $http.post('/api/myDashboards', dashboard)
+        .then(function(res) {
+            if (res.status === 200) {
+                deferred.resolve(res.data);
+                /*Notify.success({
+                   title: 'Stored to DB',
+                   message: 'OK'
+                 });*/
+            } else {
+                console.log("Can't store your dashboard", res);
+            }
+        });
 
-        timeout = setTimeout(function() {
-            var url = '';
-
-            if (dashboard.isDevice)
-                url = window.serverUrl + '/api/myDevices/editDashboard/' + dashboard.id;
-            else
-                url = window.serverUrl + '/api/myDashboards';
-
-            var post = {};
-
-            if (dashboard.id !== null)
-                post.id = dashboard.id;
-
-            post.dashboard = dashboard.data;
-            post.name = dashboard.name;
-
-            $http.post(url, post)
-            .then(function(res) {
-                if (res.status === 200) {
-                    deferred.resolve(res.data.id);
-                    /*Notify.success({
-                       title: 'Stored to DB',
-                       message: 'OK'
-                     });*/
-                } else {
-                    console.log("Can't store your dashboard", res);
-                }
-            });
-        }, time);
 
         return deferred.promise;
 
