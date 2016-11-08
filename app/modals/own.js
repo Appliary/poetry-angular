@@ -1,4 +1,4 @@
-app.controller( 'modals/own', function ( $scope, $http ) {
+app.controller( 'modals/own', function ( $scope, $http, $window ) {
 
     $scope.own = function own(){
         $http.post( $scope.$root.__module.api + '/' + $scope.item._id, {} )
