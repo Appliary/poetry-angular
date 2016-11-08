@@ -2,8 +2,8 @@ div(class="modalEditWidget")
     div#listWidget(class="form-group")
         label
             | Widget
-        input(type="text",ng-model="widget.type",ng-if="!newWidget", readonly)
-        select.selectNewWidget(ng-model="widget.type",ng-show="newWidget")
+        input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly)
+        select.selectNewWidget(ng-model="widget.type",ng-show="createWidget")
             option(value='line') Line
             //option(value='candlestick') CandleStick
             //option(value='table') Table

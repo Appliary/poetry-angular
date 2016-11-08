@@ -1,7 +1,4 @@
-app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
-
-    console.log("editprofile controller loaded");
-    console.log("$scope.closethisdialog", $scope.closeThisDialog);
+app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {   
 
     $scope.user = { 
         email: $rootScope.user.email, 

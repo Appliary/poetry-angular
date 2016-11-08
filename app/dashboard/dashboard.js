@@ -1,4 +1,4 @@
-app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, ngDialog, ngNotify, DevicesData) {
+app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, ngDialog, ngNotify, DevicesData, $http) {
 
     console.log("dashboard controller loaded");
     // Default items to display when the gridster(dashbaord) is loading
@@ -263,8 +263,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "adaptative",
                     controller: "adaptativeCtrl",
-                    api: data.newWidget.api,
-                    dataPoints: data.newWidget.dataPoints
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
+
                 });
                 break;
             case 'PieChart':
@@ -277,7 +279,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: data.title,
                     type: "pie",
-                    controller: "pieCtrl"
+                    controller: "pieCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'gauge':
@@ -292,7 +297,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "gauge",
                     controller: "gaugeCtrl",
-                    chartObject: data.newWidget.chartObject
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'BarChart':
@@ -305,7 +313,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: data.title,
                     type: "bar",
-                    controller: "barCtrl"
+                    controller: "barCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'AreaChart':
@@ -318,7 +329,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: data.title,
                     type: "area",
-                    controller: "areaCtrl"
+                    controller: "areaCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'BubbleChart':
@@ -331,7 +345,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: data.title,
                     type: "bubble",
-                    controller: "bubbleCtrl"
+                    controller: "bubbleCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'ComboChart':
@@ -344,7 +361,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: "Combo",
                     type: "combo",
-                    controller: "comboCtrl"
+                    controller: "comboCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'GeoChart':
@@ -357,7 +377,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     position: [0, 0],
                     title: data.title,
                     type: "geo",
-                    controller: "geoCtrl"
+                    controller: "geoCtrl",
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'line':
@@ -371,7 +394,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "line",
                     controller: "lineCtrl",
-                    chartObject: data.newWidget.chartObject
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'candlestick':
@@ -385,9 +411,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "candlestick",
                     controller: "candlestickCtrl",
-                    toDisplay: data.newWidget.toDisplay,
-                    beginningdate: data.newWidget.beginningdate,
-                    endingdate: data.newWidget.endingdate
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate
                 });
                 break;
             case 'table':
@@ -566,7 +592,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         $scope.enableSaveDb = true;
     };
     $scope.clickToOpen = function(dashboard) {
-        $scope.newWidget = true;
+        $scope.createWidget = true;
         ngDialog.openConfirm({
                 template: 'dashboard/modalWidget.pug',
                 className: 'ngdialog-theme-default',
@@ -575,8 +601,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             })
             .then(function(res) {
                 console.log("res of click to open in dashboard", res)
-                console.log("dashboard", dashboard);
+                //console.log("dashboard", dashboard);
                 $scope.addWidget(res, dashboard);
+                dashboard.data.push(res);
             });
     };
     
@@ -593,7 +620,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     }
 
     $scope.showDashboard = function(id){
-        console.log("currentDashboard 1", $scope.currentDashboard);
         var index = -1;
         var i = 0;
         for(i = 0; i < $scope.dashboards.length; i++) {
@@ -603,7 +629,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         if(index >= 0){
             $scope.currentDashboard = $scope.dashboards[index];
-            console.log("currentDashboard 2", $scope.currentDashboard);
+            //console.log("currentDashboard 2", $scope.currentDashboard);
         }
     }
 

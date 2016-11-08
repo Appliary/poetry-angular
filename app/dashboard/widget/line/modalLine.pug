@@ -3,7 +3,7 @@ div(ng-controller="lineCtrl")
         label
             | Device
         input.form-control(style="width:20%;",type="text",ng-model="search")
-        select.form-control(ng-model="newWidget.selected",id="newWidget.selected", ng-change="selectDevice(newWidget.selected)")
+        select.form-control(ng-model="newWidget.deviceId",id="newWidget.deviceId", ng-change="selectDevice(newWidget.deviceId)")
             option(ng-repeat="device in devicesData | filter:search") {{ device.name }}
         select.form-control(style="width:20%;",ng-model="measurementType",id="dataSelected", ng-click="selectMeasurement(measurementType)")
             option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}

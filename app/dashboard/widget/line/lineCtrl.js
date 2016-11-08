@@ -1,5 +1,6 @@
-app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
+app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
     $scope.loading=false;
+    console.log("$scope.widget at begining of lineCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
 
@@ -21,22 +22,30 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
         $scope.widget.show = true;
     }
 
-    $scope.newWidget = {
-        type: "line",
-        startDate: Date.now(),
-        endDate: Date.now(),
-        isChart: true,
-        chartObject: {
-            type: "LineChart",
-            data: [],
-            options: {
-                title: 'Device',
-                curveType: 'function',
-                legend: { position: 'bottom' }
+    if(!$scope.newWidget){
+        $scope.newWidget = {
+            type: "line",
+            deviceId: "",
+            controller: "lineCtrl",
+            startDate: Date.now(),
+            endDate: Date.now(),
+            isChart: true,
+            chartObject: {
+                type: "LineChart",
+                data: [],
+                options: {
+                    title: 'Device',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                }
             }
-        }
 
-    };
+        };
+    }
+    else{
+        console.log("old newWidget", $scope.newWidget);
+    }
+    
 
 
     // ---------- Old Functions -------------------
@@ -54,7 +63,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
             width:'800px'
         } )
         .then( function (result) {
-            console.log("confirm edit result", result);
+            //console.log("confirm edit result", result);
             $scope.widget = result.newWidget;
             $scope.widget.title = result.title;
         } );
@@ -63,14 +72,9 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
     // ---------------- New Functions ------------------
 
     $scope.loadDevices = function() {
-        console.log("loading devices");
-       $http.get( '/api/devices' )
-        .then( function success( response ) {
-            console.log("response", response);
-            $scope.devicesData = response.data.data;
-        }, function error( response ){
-            console.log("error in linectrl getdevices", response);
-        } );
+        DevicesData.getDevicesData().then(function(devices){
+            $scope.devicesData = devices;
+        });
     }
 
     // Get device object from its name
@@ -84,7 +88,7 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
     // Get measurement object of selected device from its type
     $scope.selectMeasurement = function(measurementType){
         $scope.loadHistory($scope.selectedDevice._id, $scope.newWidget.startDate, $scope.newWidget.endDate, $scope.measurementType, $scope.newWidget);
-        console.log("measurementType", $scope.measurementType);
+        //console.log("measurementType", $scope.measurementType);
     }
 
     $scope.getDevice = function(name){
@@ -101,58 +105,22 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
 
     // TODO: better management of widget/newidget
     $scope.loadHistory = function(deviceId, startDate, endDate, measurementType, widget){
-        console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
+        //console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
         var result = [
             ['Date', measurementType]
         ];
 
-        var apiCall = '/api/devices/' + deviceId + '/measurements?before=' + endDate + '&after=' + startDate;
-        console.log("apicall", apiCall);
-
-        $http.get( apiCall  )
-        .then( function success( response ) {
-            console.log("linectrl history success response", response);
-            if(response.data.data && response.data.data.length > 0){
-                var measurementDatas = response.data.data;
-                measurementDatas.forEach(function(measurementData){
-                    var dataLine = $scope.getMeasurement(measurementData, measurementType);
-                    if(dataLine.length == 2){
-                        result.push(dataLine);
-                    }
-
+        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
+            console.log("result from devicedata", measurements);
+            if(measurements && measurements.length > 0){
+                measurements.forEach(function (measurement){
+                    result.push(measurement);
                 });
-                console.log("result", result);
-                widget.chartObject.data = result;
-                widget.show = true;
-                console.log("widget", widget);
-
-                
             }
-            else{
-                console.log("data empty");
-            }
-            
-            
-        }, function error( response ){
-            console.log("error in linectrl loadhistory", response);
-        } );
-
-    }
-
-    // Get the right measurement type from a set of measurements with different types
-    $scope.getMeasurement = function(measurementData, type){
-        var result = [];
-        if(measurementData.measurements){
-            measurementData.measurements.forEach(function(measurement){
-                if(measurement.type == type){
-                    var date = new Date(measurementData.timestamp);
-                    var dateToShow = date.getDate() + '/' + date.getMonth();
-                    result = [dateToShow, measurement.value];
-                }
-            });
-        }        
-
-        return result;
+            widget.chartObject.data = result;
+            widget.show = true;
+            //console.log("widget", widget);
+        });
     }
 
     $scope.refreshFromDevice = function(){
@@ -179,18 +147,13 @@ app.controller('lineCtrl',function($scope,ngDialog,DevicesData,$q,$state,$http){
 
     $scope.loadDevices();
 
-
-    // if($scope.widget.hasOwnProperty('device')){
-    //     $scope.refreshFromDevice();
-    // }
-
     // ------------- Watchers ---------------------
 
     $scope.$watch('widget.device.id', function(OldValue, NewValue){
         if($scope.widget.device){
-            console.log("oldvalue", OldValue);
-        console.log("NewValue", NewValue);
-        $scope.refreshFromDevice();
+            //console.log("oldvalue", OldValue);
+            console.log("NewValue of device id", NewValue);
+            $scope.refreshFromDevice();
         }
     });
 });

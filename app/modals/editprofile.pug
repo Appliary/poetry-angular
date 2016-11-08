@@ -1,10 +1,10 @@
 .tab-header
+    h1.modal-title {{ 'edit profile:modal:title' | translate }}
     tabs
         a.modal-edit(ng-class='active', ng-click="showEdit()") {{'Edit:editmodal' | translate}}
         a.modal-changepwd(ng-click="showChangepwd()") {{'Change password:editmodal' | translate}}
 .tab-body
     .tab-content(ng-if="editView")
-        h1.modal-title {{ 'editprofile:modal:title' | translate }}
         label(ng-if="failedEdit")
             | {{ failEditMsg + ':editprofile' | translate }}
 
