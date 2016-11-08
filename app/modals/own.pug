@@ -1,12 +1,7 @@
 h2
     | {{ 'own:' + module.name | translate }}
 form( ng-submit='own()' )
-    div(ng-repeat=' (label, type) in module.config.tabs[""].config ')
-        label(ng-if=' type!="read" ', for='{{ label }}' ) {{ label + ':field' | translate }}
-        input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
-        input( name='{{ label }}', ng-if=' type=="password" ', ng-model='item[label]' type="password" )
-        select( name='{{ label }}', ng-if=' isArray( type ) ', ng-model='item[label]' )
-            option( ng-repeat=' opt in type ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
-        textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
+    label( for='_id' ) {{ '_id:field' | translate }}
+    input( name='_id' ng-model='item[_id]' )
     button.pull-right
-        | {{ 'save:' + $root.__module.name + ':add:button' | translate }}
+        | {{ 'own:' + $root.__module.name + ':button' | translate }}

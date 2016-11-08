@@ -1,7 +1,7 @@
 app.controller( 'modals/own', function ( $scope, $http ) {
 
     $scope.own = function own(){
-        $http.post( $scope.module.api + '/' + $scope.item.id, {} )
+        $http.post( $scope.module.api + '/' + $scope.item._id, {} )
             .then( function success( response ) {
 
                 console.info( 'own success', response );
