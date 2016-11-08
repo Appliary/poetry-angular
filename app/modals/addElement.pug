@@ -4,7 +4,7 @@ label(ng-if="failedAdd")
     | {{ failAddMsg + ':addElem' | translate }}
 form( ng-submit='add()' )
     div(ng-repeat=' (label, type) in module.config.tabs[""].config ')
-        label(ng-if=' type!="read" ', for='{{ label }}' ) {{ label + ':field' | translate }}
+        label(ng-if=' type!="read" && type!="readObject" ', for='{{ label }}' ) {{ label + ':field' | translate }}
         input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
         input( name='{{ label }}', ng-if=' type=="password" ', ng-model='item[label]' type="password" )
         span.unit( ng-if=' type.unit ' )
