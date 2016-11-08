@@ -54,6 +54,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     $scope.$watchCollection( 'sorting', getlist );
 
     function getlist() {
+        if( $scope.$root.__module.controller != 'generic/list' ) return;
         $scope.total = undefined;
         var url = $scope.$root.__module.api + '?sort=' + ($scope.sorting?$scope.sorting.col:'_id') + '&order=' + ($scope.sorting?$scope.sorting.order:'asc');
         if( $scope.status ) url += '&status=' + $scope.status;

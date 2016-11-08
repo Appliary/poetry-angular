@@ -121,7 +121,7 @@ app.component( 'appRouter', {
 
 
             try {
-                if ( $scope.$root.__module.controller && ( /*!$scope.__id ||*/ $scope.$root.__module.name != lastModule ) ) {
+                if ( $scope.$root.__module.controller &&    $scope.$root.__module.name != lastModule ) {
 
                     Object.keys( $scope )
                         .forEach( function ( k ) {
