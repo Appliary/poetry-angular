@@ -60,7 +60,7 @@
     }
 }
 ng-include.details {
-    overflow-y: auto;
+    overflow: hidden;
     position: fixed;
     display: block;
     box-sizing: border-box;
@@ -80,6 +80,15 @@ ng-include.details {
             left: $gutter;
             width: auto;
         }
+    }
+    &>ng-include{
+        overflow-y: auto;
+        display: block;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 }
 @media( min-width:$mobile_break + 1 ) {
