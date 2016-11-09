@@ -55,19 +55,13 @@ app.service('DevicesData', function($http, $q, ngNotify) {
 
     };
 
-    this.getDashboardFromDb = function(idDevice){
+    this.getDashboardFromDb = function(){
         var deferred = $q.defer();
-        var url = '';
-
-        if (idDevice !== false)
-            url = window.serverUrl + '/api/myDevices/dashboard/' + idDevice;
-        else
-            url = window.serverUrl + '/api/myDashboards';
+        var url = '/api/myDashboards';
 
         $http.get(url)
         .then(function(res) {
-            //console.log("----------res in devicesData-----------", res);
-            deferred.resolve(res);
+            deferred.resolve(res.data);
 
             if (res.status !== 200) {
                 console.log("Can't load your dashboard", res);
@@ -95,6 +89,28 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                  });*/
             } else {
                 console.log("Can't store your dashboard", res);
+            }
+        });
+
+
+        return deferred.promise;
+
+    };
+
+    this.deleteDashboard = function(dashboardId){
+
+        var deferred = $q.defer();
+
+        $http.delete('/api/myDashboards/' + dashboardId)
+        .then(function(res) {
+            if (res.status === 200) {
+                deferred.resolve(res.data);
+                /*Notify.success({
+                   title: 'Stored to DB',
+                   message: 'OK'
+                 });*/
+            } else {
+                console.log("Can't delete your dashboard", res);
             }
         });
 

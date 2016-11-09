@@ -531,6 +531,11 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     };
     $scope.loadDashboard = function() {
         console.log("todo loaddashboard ?");
+        DevicesData.getDashboardFromDb()
+        .then(function(dashboardDatas){
+            console.log("result from db", dashboardDatas);
+            $scope.createDashboards(dashboardDatas);
+        });
         // var defer = $q.defer();
         // var dashboards = [];
         // var idDevice = false;
@@ -646,6 +651,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         if(index >= 0){
             $scope.dashboards.splice(index, 1);
+            DevicesData.deleteDashboard(id)
+            .then(function(res){
+                console.log("deleteDashboard res", res);
+            });
         }
         if($scope.dashboards.length){
             // Deleted dashboard is current dashboard
@@ -668,10 +677,12 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     $scope.newDashboard = function(){
         $scope.maxId++;
+        var newId = (Date.now() + Math.random()).toString(32);
+        console.log("newId", newId);
         $scope.dashboards.push({
             name: "- New Dashboard -",
             data: [],
-            id: $scope.maxId
+            id: newId
         });
     }
 
@@ -691,27 +702,72 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         console.log("dashboard to save", dashboard);
 
         var dashboardData = {
+            id: dashboard.id,
             name: dashboard.name,
-            widgets: [{
-                title: dashboard.data[0].title,
-                controller: dashboard.data[0].controller,
-                options: dashboard.data[0].chartObject.options,
-                size: dashboard.data[0].size,
+            widgets: []
+        };
+
+        dashboard.data.forEach(function(data){
+            console.log("data in newsave", data);
+            var startDate = new Date(data.startDate);
+            var endDate = new Date(data.endDate);
+
+            dashboardData.widgets.push({
+                title: data.title,
+                controller: data.controller,
+                options: data.chartObject.options,
+                size: data.size,
                 deviceDatas: [{
-                    deviceId: dashboard.data[0].deviceId,
-                    startDate: dashboard.data[0].startDate,
-                    endDate: dashboard.data[0].endDate,
-                    measurementType: dashboard.data[0].measurementType,
+                    id: data.deviceId,
+                    startDate: startDate.getTime(),
+                    endDate: endDate.getTime(),
+                    measurementType: data.measurementType,
                     color: "blue"
                 }]
-            }]
-                
-            
+            });
+        });
+        
 
-        }
+        console.log("dashboardData that will be saved", dashboardData);
+        DevicesData.saveDashboardToDb(dashboardData)
+        .then(function(result){
+            console.log("result from saveDashboard", result);
+        }); 
     }
 
+    $scope.createDashboards = function(dashboardDatas){
+        dashboardDatas.forEach(function(dashboardData){
+            var dashboard = {
+                id: dashboardData._id,
+                name: dashboardData.name,
+                data: []
+            };
+
+            dashboardData.widgets.forEach(function(widget){
+                var widgetData = {
+                    title: widget.title,
+                    edit: true,
+                    controller: widget.controller,
+                    size: widget.size,
+                    device: widget.deviceDatas[0],
+                    options: widget.options
+                };
+
+                dashboard.data.push(widgetData);
+            });
+
+            $scope.dashboards.push(dashboard);
+        });
+
+        console.log("dashboards after createDashboards", $scope.dashboards);
+
+    }
+
+
     // --------------- Running at the beginning ----------------
+
+    $scope.loadDashboard();
+
 
     // setTimeout(function() {
 

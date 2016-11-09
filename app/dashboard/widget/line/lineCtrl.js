@@ -1,4 +1,4 @@
-app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
+app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     $scope.loading=false;
     console.log("$scope.widget at begining of lineCtrl", $scope.widget);
     $scope.widget.isChart = true;
@@ -36,31 +36,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
         $scope.widget.show = true;
     }
 
-    if(!$scope.newWidget){
-        $scope.newWidget = {
-            type: "line",
-            controller: "lineCtrl",
-            startDate: Date.now(),
-            endDate: Date.now(),
-            isChart: true,
-            chartObject: {
-                type: "LineChart",
-                data: [],
-                options: {
-                    title: 'Device',
-                    curveType: 'function',
-                    legend: { position: 'bottom' }
-                }
-            }
-
-        };
-    }
-    else{
-        console.log("old newWidget", $scope.newWidget);
-    }
-    
-
-
     // ---------- Old Functions -------------------
 
     $scope.loadData=function(){
@@ -85,13 +60,19 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
     // ---------------- New Functions ------------------
 
     $scope.loadDevices = function() {
+        var deferred = $q.defer();
+
         console.log("measurementType", $scope.widget.measurementType);
         DevicesData.getDevicesData().then(function(devices){
+            console.log("devices", devices);
             $scope.devicesData = devices;
+            deferred.resolve(devices);
             if($scope.widget.deviceId){
                 $scope.selectDevice($scope.widget.deviceId);
             }
         });
+
+        return deferred.promise;
 
     }
 
@@ -107,7 +88,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
     // Get measurement object of selected device from its type
     $scope.selectMeasurement = function(measurementType){
         console.log("measurementType", measurementType);
-        $scope.loadHistory($scope.widget.deviceId, $scope.newWidget.startDate, $scope.newWidget.endDate, measurementType, $scope.newWidget);
+        $scope.loadHistory($scope.widget.deviceId, $scope.widget.startDate, $scope.widget.endDate, measurementType, $scope.widget);
         //console.log("measurementType", $scope.measurementType);
     }
 
@@ -125,9 +106,11 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
 
     // TODO: better management of widget/newidget
     $scope.loadHistory = function(deviceId, startDate, endDate, measurementType, widget){
+        console.log("loadHistory", deviceId, startDate, endDate, measurementType);
         //console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
-        if(!$scope.widget.deviceId){
-            $scope.selectDevice($scope.widget.deviceName);
+        if(!$scope.widget.deviceId ){
+            console
+            $scope.widget.deviceId = $scope.widget.device.deviceId;
         }
         var result = [
             ['Date', measurementType]
@@ -161,6 +144,12 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
         else{
             $scope.widget.chartObject.options.title = $scope.widget.device.title;
         }
+
+        $scope.widget.deviceId = $scope.widget.device.id;
+        $scope.widget.startDate = $scope.widget.device.startDate;
+        $scope.widget.endDate = $scope.widget.device.endDate;
+        $scope.widget.measurementType = $scope.widget.device.measurementType;
+
         
         $scope.loadHistory($scope.widget.device.id, $scope.widget.device.startDate, $scope.widget.device.endDate, $scope.widget.device.measurementType, $scope.widget);
     }
@@ -176,7 +165,15 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData){
         if($scope.widget.device){
             //console.log("oldvalue", OldValue);
             console.log("NewValue of device id", NewValue);
-            $scope.refreshFromDevice();
+            if(!$scope.devicesData){
+                $scope.loadDevices()
+                .then(function(){
+                    $scope.refreshFromDevice();
+                })
+            }
+            else{
+                $scope.refreshFromDevice();
+            }
         }
     });
 });
