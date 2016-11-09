@@ -397,7 +397,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceName: data.newWidget.deviceName
                 });
                 break;
             case 'candlestick':
@@ -529,6 +531,11 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     };
     $scope.loadDashboard = function() {
         console.log("todo loaddashboard ?");
+        DevicesData.getDashboardFromDb()
+        .then(function(dashboardDatas){
+            console.log("result from db", dashboardDatas);
+            $scope.createDashboards(dashboardDatas);
+        });
         // var defer = $q.defer();
         // var dashboards = [];
         // var idDevice = false;
@@ -603,7 +610,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 console.log("res of click to open in dashboard", res)
                 //console.log("dashboard", dashboard);
                 $scope.addWidget(res, dashboard);
-                dashboard.data.push(res);
+                // dashboard.data.push(res);
             });
     };
     
@@ -644,6 +651,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         if(index >= 0){
             $scope.dashboards.splice(index, 1);
+            DevicesData.deleteDashboard(id)
+            .then(function(res){
+                console.log("deleteDashboard res", res);
+            });
         }
         if($scope.dashboards.length){
             // Deleted dashboard is current dashboard
@@ -666,10 +677,12 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     $scope.newDashboard = function(){
         $scope.maxId++;
+        var newId = (Date.now() + Math.random()).toString(32);
+        console.log("newId", newId);
         $scope.dashboards.push({
             name: "- New Dashboard -",
             data: [],
-            id: $scope.maxId
+            id: newId
         });
     }
 
@@ -685,7 +698,76 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             });
     }
 
+    $scope.newSave = function(dashboard){
+        console.log("dashboard to save", dashboard);
+
+        var dashboardData = {
+            id: dashboard.id,
+            name: dashboard.name,
+            widgets: []
+        };
+
+        dashboard.data.forEach(function(data){
+            console.log("data in newsave", data);
+            var startDate = new Date(data.startDate);
+            var endDate = new Date(data.endDate);
+
+            dashboardData.widgets.push({
+                title: data.title,
+                controller: data.controller,
+                options: data.chartObject.options,
+                size: data.size,
+                deviceDatas: [{
+                    id: data.deviceId,
+                    startDate: startDate.getTime(),
+                    endDate: endDate.getTime(),
+                    measurementType: data.measurementType,
+                    color: "blue"
+                }]
+            });
+        });
+        
+
+        console.log("dashboardData that will be saved", dashboardData);
+        DevicesData.saveDashboardToDb(dashboardData)
+        .then(function(result){
+            console.log("result from saveDashboard", result);
+        }); 
+    }
+
+    $scope.createDashboards = function(dashboardDatas){
+        dashboardDatas.forEach(function(dashboardData){
+            var dashboard = {
+                id: dashboardData._id,
+                name: dashboardData.name,
+                data: []
+            };
+
+            dashboardData.widgets.forEach(function(widget){
+                var widgetData = {
+                    title: widget.title,
+                    edit: true,
+                    controller: widget.controller,
+                    size: widget.size,
+                    device: widget.deviceDatas[0],
+                    options: widget.options
+                };
+
+                dashboard.data.push(widgetData);
+            });
+
+            $scope.dashboards.push(dashboard);
+        });
+
+        console.log("dashboards after createDashboards", $scope.dashboards);
+
+    }
+
+
     // --------------- Running at the beginning ----------------
+
+    $scope.loadDashboard();
+
 
     // setTimeout(function() {
 
