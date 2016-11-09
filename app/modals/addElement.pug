@@ -5,7 +5,7 @@ label(ng-if="failedAdd")
 form( ng-submit='add()' )
     div(ng-repeat=' type in module.config.columns ')
         label(ng-if=' type!="_id" && type!="createdAt" ', for='{{ type }}' ) {{ type + ':field' | translate }}
-        input( name='{{ type }}', ng-if=' type!="text" ', ng-model='item[type]' )
+        input( name='{{ type }}', ng-if=' type!="_id" && type!="createdAt" ', ng-model='item[type]' )
         //- label(ng-if=' type!="read" && type!="readObject" ', for='{{ label }}' ) {{ label + ':field' | translate }}
         //- input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
         //- input( name='{{ label }}', ng-if=' type=="password" ', ng-model='item[label]' type="password" )
