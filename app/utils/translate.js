@@ -3,7 +3,7 @@ var i18n_registry = {},
         var out = '# ' + Date.now() + '\nmsgid ""\nmsgstr ""\n\n';
         pot.active = true;
         pot.registry.forEach( function ( k ) {
-            out += 'msgctxt "' + k.split( ":" )[0] + '"\n';
+            out += 'msgctxt "' + k.split( ":" )[ 0 ] + '"\n';
             out += 'msgid "' + k + '"\nmsgstr ""\n\n';
         } );
         window.location.replace(
@@ -17,12 +17,14 @@ pot.activate = function () {
     pot.active = true
 };
 
-app.run( function getTranslations($http){
-    $http.get('/i18n/en')
-        .then(function ok(i18n){
-            i18n_registry= i18n.data;
-        });
-});
+app.run( function getTranslations( $http ) {
+    var lang = 'en'
+    $http.get( '/i18n/' + lang )
+        .then( function ok( i18n ) {
+            i18n_registry = i18n.data;
+            i18n_registry.lang = lang;
+        } );
+} );
 
 app.filter( 'translate', function () {
 
