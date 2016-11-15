@@ -182,21 +182,44 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     }
 
     $scope.removeDevice = function(device){
+        console.log("device to remove", device);
+        var position = $scope.widget.chartObject.data[0].indexOf(device.id);
+        if(position > 0){
+            $scope.widget.chartObject.data.forEach(function(dataRow){
+                dataRow.splice(position, 1);
+            });
+            $scope.widget.deviceList.splice(position - 1, 1);
+        }
         //TODO
     }
 
     $scope.mergeData = function(resultData, newData){
+        var position = resultData[0].length;
+        console.log("merge starting, position : ", position);
         newData.forEach(function(elem){
             var dataRow = $scope.getDataRow(resultData, elem[0]);
             if(dataRow.length){
                 dataRow.push(elem[1]);
-                console.log("key found", elem);
             }
             else{
-                console.log("new key or not found");
-                //TODO
+                dataRow = [elem[0]];
+                for (i = 1; i < position; i++) { 
+                    dataRow.push(null);
+                }
+                dataRow.push(elem[1]);
+                resultData.push(dataRow);
+            }
+
+        });
+
+        resultData.forEach(function(elem){
+            var dataRow = $scope.getDataRow(newData, elem[0]);
+            if(dataRow.length == 0){
+                elem.push(null);
             }
         });
+
+        console.log("merge finished");
     }
 
     $scope.getDataRow = function (data, key){
