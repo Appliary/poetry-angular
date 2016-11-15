@@ -299,8 +299,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "gaugeCtrl",
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList
                 });
                 break;
             case 'BarChart':
@@ -707,20 +707,27 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
         dashboard.data.forEach(function(data){
             console.log("data in newsave", data);
-            var startDate = new Date(data.startDate);
-            var endDate = new Date(data.endDate);
-
-            dashboardData.widgets.push({
+            
+            
+            var widget = {
                 title: data.title,
                 controller: data.controller,
                 options: data.chartObject.options,
                 sizeX: data.sizeX,
                 sizeY: data.sizeY,
-                startDate: startDate.getTime(),
-                endDate: endDate.getTime(),
                 measurementType: data.measurementType,
                 deviceList: data.deviceList
-            });
+            };
+            if(data.startDate && data.endDate){
+                var startDate = new Date(data.startDate);
+                var endDate = new Date(data.endDate);
+                widget.startDate = startDate.getTime();
+                widget.endDate = endDate.getTime();
+            }
+
+            console.log("widget in new save", widget);
+
+            dashboardData.widgets.push(widget);
         });
         
 

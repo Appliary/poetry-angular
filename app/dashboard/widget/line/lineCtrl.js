@@ -28,7 +28,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
             type: "LineChart",
             data: [],
             options: {
-                title: 'Device',
+                //title: 'Device',
                 curveType: 'function',
                 legend: { position: 'bottom' }
             }
@@ -127,7 +127,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                 type: "LineChart",
                 data: {},
                 options: {
-                    title: $scope.widget.device.title,
+                    title: $scope.widget.measurementType,
                     curveType: 'function',
                     legend: { position: 'bottom' }
                 }
@@ -138,7 +138,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
             });
 
         }
-        if($scope.widget.chartObject.data.length == 0){
+        if($scope.widget.chartObject.data.length == 0 && $scope.widget.deviceList){
             $scope.widget.deviceList.forEach(function(device){
                 $scope.addDevice(device.id, false);
             });
@@ -217,23 +217,28 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     // ------------------ Begining -----------------
 
 
-    $scope.loadDevices();
+    $scope.loadDevices()
+    .then(function(){
+        if(!$scope.widget.deviceId){
+            $scope.refreshFromDevice();
+        } 
+    });
 
     // ------------- Watchers ---------------------
 
-    $scope.$watch('widget.deviceList', function(OldValue, NewValue){
-        if($scope.widget.deviceList && $scope.widget.deviceList.length > 0){
-            //console.log("oldvalue", OldValue);
-            console.log("NewValue of device id", NewValue);
-            if(!$scope.devicesData){
-                $scope.loadDevices()
-                .then(function(){
-                    $scope.refreshFromDevice();
-                })
-            }
-            else{
-                $scope.refreshFromDevice();
-            }
-        }
-    });
+    // $scope.$watch('widget.deviceList', function(OldValue, NewValue){
+    //     if($scope.widget.deviceList && $scope.widget.deviceList.length > 0){
+    //         //console.log("oldvalue", OldValue);
+    //         console.log("NewValue of device id", NewValue);
+    //         if(!$scope.devicesData){
+    //             $scope.loadDevices()
+    //             .then(function(){
+    //                 $scope.refreshFromDevice();
+    //             })
+    //         }
+    //         else{
+    //             $scope.refreshFromDevice();
+    //         }
+    //     }
+    // });
 });
