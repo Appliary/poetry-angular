@@ -1,30 +1,27 @@
 div(class="modalEditWidget")
     div#listWidget(class="form-group")
-        label
-            | Widget
-        input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly)
-        select.selectNewWidget(ng-model="widget.type",ng-show="createWidget")
-            option(value='line') Line
-            //option(value='candlestick') CandleStick
-            //option(value='table') Table
-            option(value='gauge') Gauge
-            option(value='map') Map
-            option(value='image') Image
-            option(value='video') Video
-            option(value='adaptative') Adaptative
-            //option(value='svg') SVG
-            option(value='column') Column
-            option(value='pie',disabled) Pie
-            option(value='bar',disabled) Bar
-            option(value='area',disabled) Area
-            option(value='bubble',disabled) Bubble
-            option(value='combo',disabled) Combo
-            option(value='geo',disabled) Geo
-            //option(value='histogramme',disabled) Histogramme
+        span
+            input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly, style="width:150px;")
+            select.selectNewWidget(ng-model="widget.type",ng-show="createWidget", placeholder="Type", style="width:150px;")
+                option(value='line') Line
+                //option(value='candlestick') CandleStick
+                //option(value='table') Table
+                option(value='gauge') Gauge
+                option(value='map') Map
+                option(value='image') Image
+                option(value='video') Video
+                option(value='adaptative') Adaptative
+                //option(value='svg') SVG
+                option(value='column') Column
+                option(value='pie',disabled) Pie
+                option(value='bar',disabled) Bar
+                option(value='area',disabled) Area
+                option(value='bubble',disabled) Bubble
+                option(value='combo',disabled) Combo
+                option(value='geo',disabled) Geo
+                //option(value='histogramme',disabled) Histogramme
 
-        label(ng-show="widget.type")
-            span Title
-            input.form-control(style="width:70%;",ng-model="widget.title")
+            input.form-control(style="width:200px;",ng-model="widget.title", placeholder=" Title")
 
 
 

@@ -19,7 +19,7 @@ app.service('DevicesData', function($http, $q, ngNotify) {
     this.getDeviceData = function(device, startDate, endDate, measurementType){
 
         var deferred = $q.defer();
-        var url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate;
+        var url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate + '&sort=asc';
         var datas = [];
 
         $http.get(url)
@@ -33,8 +33,8 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                             if(measurement.type == measurementType && !found){
                                 found = true;
                                 var date = new Date(measurementData.timestamp);
-                                var dateToShow = date.getDate() + '/' + date.getMonth();
-                                datas.push([dateToShow, measurement.value]);
+                                var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
+                                datas.push([date, measurement.value]);
                             }
                         });
                     }  

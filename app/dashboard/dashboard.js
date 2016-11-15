@@ -386,10 +386,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             case 'line':
                 dashboard.data.push({
                     edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
                     position: [0, 0],
                     title: data.title,
                     type: "line",
@@ -399,7 +397,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     startDate: data.newWidget.startDate,
                     endDate: data.newWidget.endDate,
                     measurementType: data.newWidget.measurementType,
-                    deviceName: data.newWidget.deviceName
+                    deviceList: data.newWidget.deviceList
                 });
                 break;
             case 'candlestick':
@@ -716,14 +714,12 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 title: data.title,
                 controller: data.controller,
                 options: data.chartObject.options,
-                size: data.size,
-                deviceDatas: [{
-                    id: data.deviceId,
-                    startDate: startDate.getTime(),
-                    endDate: endDate.getTime(),
-                    measurementType: data.measurementType,
-                    color: "blue"
-                }]
+                sizeX: data.sizeX,
+                sizeY: data.sizeY,
+                startDate: startDate.getTime(),
+                endDate: endDate.getTime(),
+                measurementType: data.measurementType,
+                deviceList: data.deviceList
             });
         });
         
@@ -744,16 +740,18 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             };
 
             dashboardData.widgets.forEach(function(widget){
-                var widgetData = {
-                    title: widget.title,
-                    edit: true,
-                    controller: widget.controller,
-                    size: widget.size,
-                    device: widget.deviceDatas[0],
-                    options: widget.options
-                };
+                // var widgetData = {
+                //     title: widget.title,
+                //     edit: true,
+                //     controller: widget.controller,
+                //     sizeX: widget.sizeX,
+                //     sizeY: widget.sizeY,
+                //     deviceList: widget.deviceList,
+                //     options: widget.options
+                // };
+                widget.edit = true;
 
-                dashboard.data.push(widgetData);
+                dashboard.data.push(widget);
             });
 
             $scope.dashboards.push(dashboard);

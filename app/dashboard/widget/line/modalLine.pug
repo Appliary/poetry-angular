@@ -1,12 +1,21 @@
 div(ng-controller="lineCtrl")
-    fieldset.form-group()
-        label
-            | Device
-        input.form-control(style="width:20%;",type="text",ng-model="search")
-        select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
-            option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
-        select.form-control(style="width:20%;",ng-model="widget.measurementType",id="widget.measurementType", ng-click="selectMeasurement(widget.measurementType)")
-            option(ng-repeat="measurement in widget.selectedDevice.last") {{ measurement.type }}
+    fieldset()
+        span(style="width: 100%")
+            label
+                | {{ 'From:editwidget' | translate }}
+            datepicker
+                input(ng-model="widget.startDate", type="text")
+            label
+                | {{'To:editwidget' | translate }}
+            datepicker
+                input(ng-model="widget.endDate", type="text")
+        span(style="width: 100%;")
+            input.form-control(style="width:20%;",type="text",ng-model="search", placeholder="search")
+            select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
+                option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
+            select.form-control(style="width:20%;",ng-model="widget.measurementType",id="widget.measurementType")
+                option(ng-repeat="measurement in widget.selectedDevice.last") {{ measurement.type }}
+            button(ng-click="addDevice(widget.deviceId, true)") {{ '+' }}
 
         table(class="table-condensed tableModalWidget")
             thead
@@ -16,28 +25,21 @@ div(ng-controller="lineCtrl")
                             | Device
                     th
                         span
-                            | Data
+                            | Color
                     th
                         span
-                            | From
-                    th
-                        span
-                            | To
+                            | Actions
             tbody
-                tr
+                tr(ng-repeat="device in widget.deviceList")
                     td
                         span.modalInputWidget
-                            | {{ selectedDevice.name }}
+                            | {{ device.id }}
                     td
                         span.modalInputWidget
-                            | {{ measurementType }}
+                            | {{ device.color }}
                     td
-                        datepicker
-                            input.input-inline(ng-model="widget.startDate", type="text", ng-change="loadHistory(widget.deviceId, widget.startDate, widget.endDate, widget.measurementType, widget)")
-                    td
-                        datepicker
-                            input.input-inline(ng-model="widget.endDate", type="text", ng-change="loadHistory(widget.deviceId, widget.startDate, widget.endDate, widget.measurementType, widget)")
-
+                        span.modalInputWidget(ng-click="removeDevice(device)")
+                            | {{ 'Remove:modalLine' | translate }}
     .modalButtons
         button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'title' : $parent.$parent.widget.title})")
             | `Apply`

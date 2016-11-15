@@ -51,7 +51,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
             width:'800px'
         } )
         .then( function (result) {
-            //console.log("confirm edit result", result);
+            console.log("confirm edit result", result);
             $scope.widget = result.newWidget;
             $scope.widget.title = result.title;
         } );
@@ -85,12 +85,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
             }
         });
     }
-    // Get measurement object of selected device from its type
-    $scope.selectMeasurement = function(measurementType){
-        console.log("measurementType", measurementType);
-        $scope.loadHistory($scope.widget.deviceId, $scope.widget.startDate, $scope.widget.endDate, measurementType, $scope.widget);
-        //console.log("measurementType", $scope.measurementType);
-    }
 
     $scope.getDevice = function(name){
         var deviceReturn = {};
@@ -104,16 +98,12 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
         return deviceReturn;
     }
 
-    // TODO: better management of widget/newidget
-    $scope.loadHistory = function(deviceId, startDate, endDate, measurementType, widget){
-        console.log("loadHistory", deviceId, startDate, endDate, measurementType);
-        //console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
-        if(!$scope.widget.deviceId ){
-            console
-            $scope.widget.deviceId = $scope.widget.device.deviceId;
-        }
+    $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
+        var deferred = $q.defer();
+        console.log("getHistory", deviceId, startDate, endDate, measurementType);
+    
         var result = [
-            ['Date', measurementType]
+            [ 'date', deviceId]
         ];
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
@@ -123,13 +113,15 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                     result.push(measurement);
                 });
             }
-            widget.chartObject.data = result;
-            widget.show = true;
-            //console.log("widget", widget);
+            deferred.resolve(result);
         });
+
+        return deferred.promise;
     }
 
+
     $scope.refreshFromDevice = function(){
+        console.log("widget in refresh", $scope.widget);
         if(!$scope.widget.chartObject){
             $scope.widget.chartObject = {
                 type: "LineChart",
@@ -140,18 +132,86 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                     legend: { position: 'bottom' }
                 }
             };
+
+            $scope.widget.deviceList.forEach(function(device){
+                $scope.addDevice(device.id);
+            });
+
+        }
+        if($scope.widget.chartObject.data.length == 0){
+            $scope.widget.deviceList.forEach(function(device){
+                $scope.addDevice(device.id, false);
+            });
+        }
+
+    }
+
+    $scope.addDevice = function(id, newDevice){
+        if(id && $scope.widget.measurementType && $scope.widget.startDate && $scope.widget.endDate){
+            var currentDevice = {
+                id: id,
+                color: "blue"
+            }
+            if(!$scope.widget.deviceList){
+                $scope.widget.deviceList = [];
+            }
+            if(newDevice){
+                $scope.widget.deviceList.push(currentDevice);
+            }
+            
+            console.log("currentDevice to add", currentDevice);
+
+            $scope.getHistory(currentDevice.id, $scope.widget.startDate, $scope.widget.endDate, $scope.widget.measurementType)
+            .then(function(result){
+                if(!$scope.widget.chartObject.data || !$scope.widget.chartObject.data.length){
+                    $scope.widget.chartObject.data = [];
+                    result.forEach(function(elem){
+                        $scope.widget.chartObject.data.push(elem);
+                    });
+                }
+                else{
+                    console.log("chartObject", $scope.widget.chartObject);
+                    $scope.mergeData($scope.widget.chartObject.data, result);
+                }
+                console.log("chart data afer merge", $scope.widget.chartObject.data);
+            });
         }
         else{
-            $scope.widget.chartObject.options.title = $scope.widget.device.title;
+            console.log("all fields not completed");
         }
+    }
 
-        $scope.widget.deviceId = $scope.widget.device.id;
-        $scope.widget.startDate = $scope.widget.device.startDate;
-        $scope.widget.endDate = $scope.widget.device.endDate;
-        $scope.widget.measurementType = $scope.widget.device.measurementType;
+    $scope.removeDevice = function(device){
+        //TODO
+    }
 
-        
-        $scope.loadHistory($scope.widget.device.id, $scope.widget.device.startDate, $scope.widget.device.endDate, $scope.widget.device.measurementType, $scope.widget);
+    $scope.mergeData = function(resultData, newData){
+        newData.forEach(function(elem){
+            var dataRow = $scope.getDataRow(resultData, elem[0]);
+            if(dataRow.length){
+                dataRow.push(elem[1]);
+                console.log("key found", elem);
+            }
+            else{
+                console.log("new key or not found");
+                //TODO
+            }
+        });
+    }
+
+    $scope.getDataRow = function (data, key){
+        var result = [];
+        var found = false
+        data.forEach(function(elem){
+            var date1 = new Date(key).getTime();
+            var date2 = new Date(elem[0]).getTime();
+            if((key == 'date' && elem[0] == 'date' || date1 == date2) && !found){
+                result = elem;
+                found = true;
+            }
+        })
+
+        return result;
     }
 
     // ------------------ Begining -----------------
@@ -161,8 +221,8 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     // ------------- Watchers ---------------------
 
-    $scope.$watch('widget.device.id', function(OldValue, NewValue){
-        if($scope.widget.device){
+    $scope.$watch('widget.deviceList', function(OldValue, NewValue){
+        if($scope.widget.deviceList && $scope.widget.deviceList.length > 0){
             //console.log("oldvalue", OldValue);
             console.log("NewValue of device id", NewValue);
             if(!$scope.devicesData){
