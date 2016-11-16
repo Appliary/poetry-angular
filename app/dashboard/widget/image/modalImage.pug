@@ -8,5 +8,5 @@ div(ng-controller='imageCtrl')
     //-     img(ng-class="{modalImageSelected : widget.currentImage==$index}",ng-repeat="image in widget.imagesPath",src="{{image.url}}", alt="{{image.name}}",ng-click="setCurrentImage($index)",ng-if="$index!==0")
     //- .modalImages(ng-show="loadingImagePath")
     .modalButtons
-        button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : widget,'file' : toUpload,'title' : $parent.$parent.widget.title})")
-            | `Apply`
+        button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'file' : toUpload,'title' : $parent.$parent.widget.title})")
+            | {{ 'Save:chart' | translate }}

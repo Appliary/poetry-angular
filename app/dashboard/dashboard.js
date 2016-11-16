@@ -720,7 +720,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 measurementType: data.measurementType,
                 deviceList: data.deviceList,
                 customDate: data.customDate,
-                dateOption: data.dateOption
+                dateOption: data.dateOption,
+                url: data.url
             };
             if(data.startDate && data.endDate){
                 var startDate = new Date(data.startDate);
