@@ -32,7 +32,7 @@ div(class="modalEditWidget")
         ng-include(src="'dashboard/widget/adaptative/modalAdaptative.pug'",ng-if="widget.type=='adaptative'")
         ng-include(src="'dashboard/widget/column/modalColumn.pug'",ng-if="widget.type=='column'")
         //- ng-include(src="'/templates/dashboard/widget/svg/modalSvg.pug'",ng-if="widget.type=='svg'")
-        //- ng-include(src="'/templates/dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
+        ng-include(src="'dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
         ng-include(src="'dashboard/widget/video/modalVideo.pug'",ng-if="widget.type=='video'")
 
         //- No modal.pug file

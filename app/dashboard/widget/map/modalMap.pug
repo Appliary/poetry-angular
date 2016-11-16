@@ -1,0 +1,49 @@
+div(ng-controller='mapCtrl')
+    fieldset.form-group()
+        label
+            span Device
+        input.form-control(ng-if="!isForDevice",style="width:20%;",type="text",ng-model="filterDevice",ng-change="filterDeviceList(filterDevice)")
+        select.form-control(ng-options="device as device.name +checkIfExist(device.name)+ device.id for device in devicesData | filter : filterDevice | orderBy:'name' track by device.id",ng-model="selected",id="selected",ng-change="selectedLoadData(selected.id)")
+        select.form-control(style="width:20%;",ng-show="selected",ng-model="dataSelected",id="dataSelected")
+            option(ng-repeat="(key,value) in selected.position")
+                | {{key}}
+        fa(name="plus-circle",ng-show="selected && dataSelected",ng-click="addDataPoint(selected,dataSelected);")
+
+        table(class="table-condensed tableModalWidget",ng-show="widget.dataPoints.length!=0")
+            thead
+                tr
+                    th `Device`
+                    th `Latitude` 
+                    th `Longitude` 
+                    th `Label`
+                    th `Actions` 
+            tbody
+                tr(ng-repeat="dataPoint in widget.dataPoints")
+                    //- td(style="width=20%")
+                    //-     | #{dataPoint.marker.device.name || dataPoint.marker.device.id}
+                    //- td(style="width=20%")
+                    //-     | #{dataPoint.marker.lat}
+                    //- td(style="width=20%")
+                    //-     | #{dataPoint.marker.lon}
+                    //- td(style="width=20%")
+                    //-     span(ng-show="!edit")
+                    //-         | #{dataPoint.marker.label.messageLabel}
+                    //-     span(ng-show="edit")
+                    //-         textarea.modalInputWidget(type="text",ng-model="dataPoint.marker.label.messageLabel")
+                    td(style="width=20%")
+                        fa.dataPointActions(ng-show="!edit",name="edit",ng-click="edit=true",title="Edit")
+                        fa.dataPointActions(ng-show="edit",name="save",ng-click="edit=false;",title="Save change")
+                        fa.dataPointActions(name="remove",ng-click="removeDatePoint(dataPoint)",title="Remove")
+                table.tableLegende
+                  caption `Label's codes legende`
+                  th `Name`
+                  th `Legende`
+                  th `Code`
+                  tr(ng-repeat="(key,label) in labelLegende")
+                    td {{key}}
+                    td(width="40%") {{label.legende}}
+                    td {{label.code}}
+                
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : widget,'title' : $parent.$parent.widget.title})")
+            | `Apply`

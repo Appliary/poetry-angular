@@ -396,6 +396,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
                     endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
                     deviceList: data.newWidget.deviceList
                 });
@@ -716,7 +718,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 sizeX: data.sizeX,
                 sizeY: data.sizeY,
                 measurementType: data.measurementType,
-                deviceList: data.deviceList
+                deviceList: data.deviceList,
+                customDate: data.customDate,
+                dateOption: data.dateOption
             };
             if(data.startDate && data.endDate){
                 var startDate = new Date(data.startDate);

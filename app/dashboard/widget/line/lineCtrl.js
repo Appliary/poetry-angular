@@ -3,25 +3,14 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     console.log("$scope.widget at begining of lineCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
+    $scope.dateOptions = ["today", "week", "month"];
 
-
-    // if (!$scope.widget.hasOwnProperty('chartObject') && !$scope.widget.hasOwnProperty('device')) {
-    //     $scope.widget.chartObject = {};
-    //     $scope.widget.chartObject.type = "LineChart";
-    //     $scope.widget.chartObject.data = [
-    //         ['Year', 'Sales', 'Expenses'],
-    //         ['2004',  1000,      400],
-    //         ['2005',  1170,      460],
-    //         ['2006',  660,       1120],
-    //         ['2007',  1030,      540]
-    //     ];
-    //     $scope.widget.chartObject.options = {
-    //         title: 'Company Performance',
-    //         curveType: 'function',
-    //         legend: { position: 'bottom' }
-    //     };
-    //     $scope.widget.show = true;
-    // }
+    if($scope.widget.deviceList){
+        $scope.tempDeviceList = $scope.widget.deviceList.slice(0);
+    }
+    else{
+        $scope.tempDeviceList = [];
+    }
 
     if (!$scope.widget.hasOwnProperty('chartObject') && !$scope.widget.hasOwnProperty('device')) {
         $scope.widget.chartObject = {
@@ -30,7 +19,8 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
             options: {
                 //title: 'Device',
                 curveType: 'function',
-                legend: { position: 'bottom' }
+                legend: { position: 'bottom' },
+                interpolateNulls: true
             }
         };
         $scope.widget.show = true;
@@ -43,7 +33,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     };
 
     $scope.clickToOpen = function () {
-        //$scope.devicesData=[];
         ngDialog.openConfirm( {
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
@@ -147,21 +136,30 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     }
 
     $scope.addDevice = function(id, newDevice){
-        if(id && $scope.widget.measurementType && $scope.widget.startDate && $scope.widget.endDate){
-            var currentDevice = {
-                id: id,
-                color: "blue"
+        if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
+            var startDate = "";
+            var endDate = "";
+            if($scope.widget.customDate){
+                console.log("using customDate");
+                startDate = $scope.widget.startDate;
+                endDate = $scope.widget.endDate;
             }
-            if(!$scope.widget.deviceList){
-                $scope.widget.deviceList = [];
+            else{
+                console.log("using dateOption");
+                endDate = new Date();
+                switch($scope.widget.dateOption){
+                    case "week": 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()).getTime() - endDate.getDay() * 24 * 60 * 60 * 1000;
+                        break;
+                    case "month": 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                        break;
+                    default: 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+                }
             }
-            if(newDevice){
-                $scope.widget.deviceList.push(currentDevice);
-            }
-            
-            console.log("currentDevice to add", currentDevice);
 
-            $scope.getHistory(currentDevice.id, $scope.widget.startDate, $scope.widget.endDate, $scope.widget.measurementType)
+            $scope.getHistory(id, startDate, endDate, $scope.widget.measurementType)
             .then(function(result){
                 if(!$scope.widget.chartObject.data || !$scope.widget.chartObject.data.length){
                     $scope.widget.chartObject.data = [];
@@ -170,10 +168,19 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                     });
                 }
                 else{
-                    console.log("chartObject", $scope.widget.chartObject);
                     $scope.mergeData($scope.widget.chartObject.data, result);
                 }
-                console.log("chart data afer merge", $scope.widget.chartObject.data);
+
+                var head = [$scope.widget.chartObject.data[0]];
+                var body = $scope.widget.chartObject.data.slice(1);
+                body.sort(function(a, b){
+                    var aDate = new Date(a[0]).getTime();
+                    var bDate = new Date(b[0]).getTime();
+                    return aDate - bDate;
+                });
+
+                $scope.widget.chartObject.data = head.concat(body);
+
             });
         }
         else{
@@ -182,15 +189,20 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     }
 
     $scope.removeDevice = function(device){
-        console.log("device to remove", device);
-        var position = $scope.widget.chartObject.data[0].indexOf(device.id);
-        if(position > 0){
-            $scope.widget.chartObject.data.forEach(function(dataRow){
-                dataRow.splice(position, 1);
-            });
-            $scope.widget.deviceList.splice(position - 1, 1);
+        var position = -1;
+        for(i=0; i<$scope.tempDeviceList.length; i++){
+
+            if($scope.tempDeviceList[i].id == device.id)
+                position = i;
         }
-        //TODO
+
+        if(position >= 0){
+
+            $scope.tempDeviceList.splice(position - 1, 1);
+        }
+        else{
+            console.log("device to remove not found");
+        }
     }
 
     $scope.mergeData = function(resultData, newData){
@@ -237,8 +249,30 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
         return result;
     }
 
-    // ------------------ Begining -----------------
+    $scope.addTempDevice = function(id){
+        var currentDevice = {
+                id: id,
+                color: "blue"
+        };
 
+        $scope.tempDeviceList.push(currentDevice);
+    }
+
+    $scope.apply = function(){
+        $scope.widget.deviceList = $scope.tempDeviceList;
+        $scope.widget.chartObject.data = [];
+        
+        $scope.widget.deviceList.forEach(function(device){
+            $scope.addDevice(device.id);
+        });
+
+        $scope.confirm({
+            'newWidget' : $scope.widget,
+            'title' : $scope.$parent.$parent.widget.title
+        });
+    }
+
+    // ------------------ Begining -----------------
 
     $scope.loadDevices()
     .then(function(){
@@ -249,19 +283,4 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     // ------------- Watchers ---------------------
 
-    // $scope.$watch('widget.deviceList', function(OldValue, NewValue){
-    //     if($scope.widget.deviceList && $scope.widget.deviceList.length > 0){
-    //         //console.log("oldvalue", OldValue);
-    //         console.log("NewValue of device id", NewValue);
-    //         if(!$scope.devicesData){
-    //             $scope.loadDevices()
-    //             .then(function(){
-    //                 $scope.refreshFromDevice();
-    //             })
-    //         }
-    //         else{
-    //             $scope.refreshFromDevice();
-    //         }
-    //     }
-    // });
 });
