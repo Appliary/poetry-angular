@@ -1,9 +1,11 @@
 app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
-    $scope.loading=false;
-    console.log("$scope.widget at begining of lineCtrl", $scope.widget);
+    console.log("widget at begining of linceCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
     $scope.dateOptions = ["today", "week", "month"];
+
+    if(!$scope.widget.chartObject)
+        $scope.loading = true;
 
     if($scope.widget.deviceList){
         $scope.tempDeviceList = $scope.widget.deviceList.slice(0);
@@ -28,7 +30,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     // ---------- Old Functions -------------------
 
-    $scope.loadData=function(){
+    $scope.loadData = function(){
         console.log("lineCtrl loadData toto");
     };
 
@@ -51,9 +53,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     $scope.loadDevices = function() {
         var deferred = $q.defer();
 
-        console.log("measurementType", $scope.widget.measurementType);
         DevicesData.getDevicesData().then(function(devices){
-            console.log("devices", devices);
             $scope.devicesData = devices;
             deferred.resolve(devices);
             if($scope.widget.deviceId){
@@ -65,9 +65,8 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     }
 
-    // Get device object from its name
+    // Select device object from its id
     $scope.selectDevice = function(deviceId){
-        console.log("deviceName", deviceId);
         $scope.devicesData.forEach(function(device){
             if(device._id == deviceId){
                 $scope.widget.selectedDevice = device;
@@ -75,28 +74,14 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
         });
     }
 
-    $scope.getDevice = function(name){
-        var deviceReturn = {};
-
-        $scope.devicesData.forEach(function(device){
-          if(device.name == name){
-            deviceReturn = device;
-          }
-        });
-
-        return deviceReturn;
-    }
-
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
-        console.log("getHistory", deviceId, startDate, endDate, measurementType);
     
         var result = [
             [ 'date', deviceId]
         ];
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
-            console.log("result from devicedata", measurements);
             if(measurements && measurements.length > 0){
                 measurements.forEach(function (measurement){
                     result.push(measurement);
@@ -110,7 +95,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
 
     $scope.refreshFromDevice = function(){
-        console.log("widget in refresh", $scope.widget);
+        console.log("refreshFromDevice");
         if(!$scope.widget.chartObject){
             $scope.widget.chartObject = {
                 type: "LineChart",
@@ -132,10 +117,12 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                 $scope.addDevice(device.id, false);
             });
         }
+        $scope.widget.refreshed = true;
 
     }
 
     $scope.addDevice = function(id, newDevice){
+        console.log("scope in adddevice", $scope);
         if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
             var startDate = "";
             var endDate = "";
@@ -180,6 +167,9 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                 });
 
                 $scope.widget.chartObject.data = head.concat(body);
+                console.log("loading end HHHEEERREEEE");
+                $scope.loading = false;
+                console.log("loading ?", $scope.loading);                
 
             });
         }
@@ -262,6 +252,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
         $scope.widget.deviceList = $scope.tempDeviceList;
         $scope.widget.chartObject.data = [];
         
+        console.log("deviceList in apply", $scope.widget.deviceList);
         $scope.widget.deviceList.forEach(function(device){
             $scope.addDevice(device.id);
         });
@@ -276,7 +267,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     $scope.loadDevices()
     .then(function(){
-        if(!$scope.widget.deviceId){
+        if(!$scope.widget.refreshed){
             $scope.refreshFromDevice();
         } 
     });

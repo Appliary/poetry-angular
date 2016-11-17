@@ -399,7 +399,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     dateOption: data.newWidget.dateOption,
                     customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
                 });
                 break;
             case 'candlestick':
@@ -472,7 +473,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     type: "map",
                     controller: "mapCtrl",
                     dataPoints: data.newWidget.dataPoints,
-                    center: data.newWidget.center
+                    deviceList: data.newWidget.deviceList,
+                    center: data.newWidget.center,
+                    refreshed: data.newWidget.refreshed
                 });
                 break;
             case 'image':

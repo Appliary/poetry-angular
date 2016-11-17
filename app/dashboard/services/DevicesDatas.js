@@ -19,9 +19,15 @@ app.service('DevicesData', function($http, $q, ngNotify) {
     this.getDeviceData = function(device, startDate, endDate, measurementType){
 
         var deferred = $q.defer();
-        var url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate + '&sort=asc';
+        var url = '';
+        if(startDate && endDate && measurementType){
+            url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate + '&sort=asc';
+        }
+        else{
+            url = '/api/devices/' + device;
+        }
         var datas = [];
-
+        console.log("getdevicesdata url", url);
         $http.get(url)
         .then(function(response) {
             if (response.data.data) {
@@ -44,7 +50,7 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                 
             // }
             else {
-                console.log("error in getdevicedata", response);
+                datas = response.data;
             }
 
             deferred.resolve(datas);

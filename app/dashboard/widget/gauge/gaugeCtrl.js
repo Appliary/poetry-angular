@@ -5,6 +5,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
     }
     $scope.selectedDevice = {};
     $scope.selectedMeasurement = {};
+    $scope.loading = true;
 
     if (!$scope.widget.hasOwnProperty('chartObject')) {
         $scope.widget.chartObject = {};
@@ -72,11 +73,15 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     // Get device object from its name
     $scope.selectDevice = function(deviceId){
-        $scope.devicesData.forEach(function(device){
-            if(device._id == deviceId){
-                $scope.selectedDevice = device;
-            }
+
+        var deferred = $q.defer();
+        DevicesData.getDeviceData(deviceId)
+        .then(function(result){
+            $scope.selectedDevice = result;
+            deferred.resolve(result);
         });
+
+        return deferred.promise;
     }
     // Get measurement object of selected device from its type
     $scope.selectMeasurement = function(measurementType){
@@ -109,18 +114,20 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     $scope.addDevice = function(){
         if($scope.widget.deviceId && $scope.widget.measurementType){
-            $scope.selectDevice($scope.widget.deviceId);
-            $scope.selectMeasurement($scope.widget.measurementType);
-            $scope.widget.device = {
-                id: $scope.widget.deviceId,
-                type: $scope.widget.measurementType,
-                value: $scope.selectedMeasurement.value
-            };
-            $scope.widget.deviceList = [{
-                id: $scope.widget.deviceId
-            }];
+            $scope.selectDevice($scope.widget.deviceId)
+            .then(function(result){
+                $scope.selectMeasurement($scope.widget.measurementType);
+                $scope.widget.device = {
+                    id: $scope.widget.deviceId,
+                    type: $scope.widget.measurementType,
+                    value: $scope.selectedMeasurement.value
+                };
+                $scope.widget.deviceList = [{
+                    id: $scope.widget.deviceId
+                }];
+                $scope.loading = false;
+            });
         }
-        
     }
 
     $scope.refreshFromDevice = function(){
@@ -139,17 +146,11 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
         }
 
     }
-    $scope.refreshDevice = function(){
-        console.log('refresh device', $scope.widget);
-        $scope.addDevice();
-        
-    }
 
     // ------------ Begining ---------------
 
     $scope.loadDevices()
     .then(function(){
-        console.log("widget", $scope.widget);
         if(!$scope.widget.device && $scope.widget.deviceList){
             $scope.refreshFromDevice();
         }

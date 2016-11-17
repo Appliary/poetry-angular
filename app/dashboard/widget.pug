@@ -23,3 +23,5 @@
     //.widgetContent(ng-if="widget.isSVG",ng-bind-html="widget.svg")
     .widgetContent(ng-if="widget.isSVG")
       svg-electricmeter(widget="widget")
+  label(ng-if="loading")
+      | Loading ...
