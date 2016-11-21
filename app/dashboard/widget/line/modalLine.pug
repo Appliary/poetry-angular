@@ -1,6 +1,6 @@
 div(ng-controller="lineCtrl")
     fieldset()
-        span(style="width: 100%")
+        span
             select.form-control(ng-model="widget.dateOption",id="widget.dateOption", ng-change="setDateOption(widget.dateOption)")
                 option(ng-repeat="options in dateOptions" ) {{ options + ':chart' | translate }}
             input(type="checkbox", ng-model="widget.customDate")
@@ -13,11 +13,11 @@ div(ng-controller="lineCtrl")
                     | {{'To:editwidget' | translate }}
                 datepicker
                     input(ng-model="widget.endDate", type="text")
-        span(style="width: 100%;")
-            input.form-control(style="width:20%;",type="text",ng-model="search", placeholder="search")
+        span
+            input.form-control(type="text",ng-model="search", placeholder="search")
             select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
                 option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
-            select.form-control(style="width:20%;",ng-model="widget.measurementType",id="widget.measurementType")
+            select.form-control(ng-model="widget.measurementType",id="widget.measurementType")
                 option(ng-repeat="measurement in widget.selectedDevice.last") {{ measurement.type }}
             button(ng-click="addTempDevice(widget.deviceId)") {{ '+' }}
 

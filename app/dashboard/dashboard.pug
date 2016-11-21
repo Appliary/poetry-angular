@@ -1,4 +1,4 @@
-.panel.panel-default
+.panel.panel-default(style="position: absolute; right: 15px; top: 70px; left: 15px; bottom: 15px; overflow: scroll;")
     .panel-body(style="padding:0px;")
         div(style='background: none' )
             .panel.headerDashboard
@@ -11,12 +11,10 @@
                 //-     a(ng-click='showDashboard(dashboard.id)') {{ 'Show dashboard:dashboardHeader' | translate }}
                 button(ng-repeat="dashboard in dashboards", ng-click="showDashboard(dashboard.id)", ng-class=' { active: isCurrent(dashboard) }', ng-dblclick="rename(dashboard)") {{ dashboard.name }}
                 button(ng-click='newDashboard(); saveAllDashboards()') {{ '+:dashboardHeader' | translate }}
-                dropdown.pull-right(text="'V'")
-                    //- a(ng-click="rename(currentDashboard)") {{ 'Rename:dashboardHeader' | translate }}       
+                dropdown.pull-right(text="'V'") 
                     a(ng-click='clickToOpen(currentDashboard)') {{ 'Add widget:dashboardHeader' | translate }}
                     a(ng-click='clear(currentDashboard); saveAllDashboards();') {{ 'Clear widgets:dashboardHeader' | translate }}
                     a(ng-click='confirmDashboardDelete(currentDashboard.id); saveAllDashboards;') {{ 'Delete dashboard:dashboardHeader' | translate }}
-                    //- a(ng-click='newSave(currentDashboard)') {{ 'Save dashboard:dashboardHeader' | translate }}
                     a(ng-click='enableDraggable()', ng-if='!gridsterOpts.draggable.enabled') {{ 'Enable draggable:dashboardHeader' | translate }}
                     a(ng-click='disableDraggable()',  ng-if='gridsterOpts.draggable.enabled') {{ 'Disable draggable:dashboardHeader' | translate }}
 

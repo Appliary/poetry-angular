@@ -1,9 +1,9 @@
 div(ng-controller='mapCtrl')
     fieldset.form-group()
-        input.form-control(style="width:20%;",type="text",ng-model="search", placeholder="search")
+        input.form-control(type="text",ng-model="search", placeholder="search")
         select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
             option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
-        select.form-control(style="width:20%;",ng-model="widget.positionType",id="widget.positionType")
+        select.form-control(ng-model="widget.positionType",id="widget.positionType")
                 option(ng-repeat="measurement in widget.selectedDevice.last | filter:filterMeasurement") {{ measurement.id }}
         button(name="plus-circle",ng-show="widget.deviceId && widget.positionType",ng-click="addTempDevice(widget.selectedDevice, widget.positionType);") {{'+'}}
 
@@ -15,11 +15,11 @@ div(ng-controller='mapCtrl')
                     th {{ 'Action:chart' | translate }}
             tbody
                 tr(ng-repeat="device in tempDeviceList")
-                    td(style="width=33%")
+                    td
                         | {{device.id}}
-                    td(style="width=33%")
+                    td
                         | {{device.positionType}}
-                    td(style="width=33%")
+                    td
                         label(name="remove",ng-click="removeDevice(device)")
                             | {{ 'Remove:chart' | translate }}                
     .modalButtons

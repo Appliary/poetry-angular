@@ -1,8 +1,8 @@
 div(class="modalEditWidget")
     div#listWidget(class="form-group")
         span
-            input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly, style="width:150px;")
-            select.selectNewWidget(ng-model="widget.type",ng-show="createWidget", placeholder="Type", style="width:150px;")
+            input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly)
+            select.selectNewWidget(ng-model="widget.type",ng-show="createWidget", placeholder="Type")
                 option(value='line') Line
                 //option(value='candlestick') CandleStick
                 //option(value='table') Table
@@ -21,7 +21,7 @@ div(class="modalEditWidget")
                 option(value='geo',disabled) Geo
                 //option(value='histogramme',disabled) Histogramme
 
-            input.form-control(style="width:200px;",ng-model="widget.title", placeholder=" Title")
+            input.form-control(ng-model="widget.title", placeholder=" Title")
 
 
 

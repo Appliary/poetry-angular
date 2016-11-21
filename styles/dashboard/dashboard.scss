@@ -93,61 +93,7 @@ text-transform: uppercase;
     color: #c7d6d1;
     background: #eaeeed;
 }
-.modalContentToUpdate{
-    width:100%;
-    height:auto;
-}
-.modalUpdateOption{
-    width:100%;
-    height:auto;
-    border-top:solid 1px #91c1b5;
-}
-.modalContentToUpdate span{
-    display:inline-block;
-}
-.modalContentToUpdate label{
-    display:inline-block;
-    width:150px;
-}
-.modalContentToUpdate input{
-    display:inline-block;
-}
 
-.modalUpdateOption label{
-    display: block;
-    padding-left: 15px;
-    text-indent: -15px;
-}
-.modalUpdateOption input{
-    width: 13px;
-    height: 13px;
-    padding: 0;
-    margin-left:10px;
-    vertical-align: bottom;
-    position: relative;
-    top: -1px;
-    overflow: hidden;
-
-}
-.modalButtons{
-    width:auto;
-    height:50px;
-    border-top:solid 1px #eaeaea;
-}
-.modalButtons button{
-    position:relative;
-    margin-top:10px;
-    color: #8db3a9;
-    background: #91c1b5;
-    border: none;
-    padding-left: 9px;
-}
-.tableModalWidget{
-  width:100%;
-}
-.tableModalWidget th, .tableModalWidget td{
-    text-align:center;
-}
 .devicesData{
     position:relative;
     width:100%;
@@ -165,32 +111,6 @@ text-transform: uppercase;
     text-align:center;
 }
 
-.modalEditWidget{
-    font-family :DIN,Helvetica,Arial,sans-serif;
-}
-.modalEditWidget .form-control{
-    width:40%;
-    display:inline;
-    padding: 1px;
-    background-color: #fff !important;
-    margin-left: 6px;
-    border: 1px solid #ddd;
-}
-.modalInputWidget{
-    font-size:12px;
-    width : 100%;
-}
-.modalDataPointGauge{
-    font-size:12px;
-    border-radius : 0;
-    line-height : 10px;
-    height:20px;
-    width:40px;
-}
-.modalEditWidget th,.modalEditWidget td.table{
-    text-align:center;
-    color: #91c1b5;
-}
 .miniTitle{
     font-size:65%;
 }
@@ -230,23 +150,8 @@ text-transform: uppercase;
     margin-left:20px;
     margin-right:100px;
 }
-.tableModalWidget>tbody>tr>td{
-    text-align:center;
-}
 .textareaAlert{
     height:auto;
-}
-.modalImages{
-  width:100%;
-  height:auto;
-  border:solid 1px #91c1b5;
-}
-.modalImages > img{
-  width:200px;
-  height:200px;
-}
-.modalImageSelected{
-  border : solid 3px #91c1b5;
 }
 .previewSvg{
   position:relative;
@@ -343,4 +248,11 @@ width: 20px;
    transform: rotate(-90deg);
    right: 1px;
    top: 5px;
+}
+.panel-dashboard {
+  position: absolute;
+  right: $gutter;
+  top: $gutter;
+  left: $gutter;
+  overflow: scroll;
 }
