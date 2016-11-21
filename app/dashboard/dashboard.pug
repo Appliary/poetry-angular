@@ -9,15 +9,14 @@
                 //-     a(ng-click='clear(dashboard)') {{ 'Clear widgets:dashboardHeader' | translate }}
                 //-     a(ng-click='confirmDashboardDelete(dashboard.id)') {{ 'Delete dashboard:dashboardHeader' | translate }}
                 //-     a(ng-click='showDashboard(dashboard.id)') {{ 'Show dashboard:dashboardHeader' | translate }}
-                button(ng-repeat="dashboard in dashboards", ng-click="showDashboard(dashboard.id)") {{ dashboard.name }}
-                button(ng-click='newDashboard()') {{ '+:dashboardHeader' | translate }}
-                dropdown(text="'V'")
-                    a(ng-click="rename(currentDashboard)") {{ 'Rename:dashboardHeader' | translate }}     
-                    a(ng-click="refreshData()") {{ 'Refresh:dashboardHeader' | translate }}     
+                button(ng-repeat="dashboard in dashboards", ng-click="showDashboard(dashboard.id)", ng-class=' { active: isCurrent(dashboard) }', ng-dblclick="rename(dashboard)") {{ dashboard.name }}
+                button(ng-click='newDashboard(); saveAllDashboards()') {{ '+:dashboardHeader' | translate }}
+                dropdown.pull-right(text="'V'")
+                    //- a(ng-click="rename(currentDashboard)") {{ 'Rename:dashboardHeader' | translate }}       
                     a(ng-click='clickToOpen(currentDashboard)') {{ 'Add widget:dashboardHeader' | translate }}
-                    a(ng-click='clear(currentDashboard)') {{ 'Clear widgets:dashboardHeader' | translate }}
-                    a(ng-click='confirmDashboardDelete(currentDashboard.id)') {{ 'Delete dashboard:dashboardHeader' | translate }}
-                    a(ng-click='newSave(currentDashboard)') {{ 'Save dashboard:dashboardHeader' | translate }}
+                    a(ng-click='clear(currentDashboard); saveAllDashboards();') {{ 'Clear widgets:dashboardHeader' | translate }}
+                    a(ng-click='confirmDashboardDelete(currentDashboard.id); saveAllDashboards;') {{ 'Delete dashboard:dashboardHeader' | translate }}
+                    //- a(ng-click='newSave(currentDashboard)') {{ 'Save dashboard:dashboardHeader' | translate }}
                     a(ng-click='enableDraggable()', ng-if='!gridsterOpts.draggable.enabled') {{ 'Enable draggable:dashboardHeader' | translate }}
                     a(ng-click='disableDraggable()',  ng-if='gridsterOpts.draggable.enabled') {{ 'Disable draggable:dashboardHeader' | translate }}
 

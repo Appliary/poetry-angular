@@ -209,8 +209,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 }
             }, // optional callback fired when item is resized,
             stop: function(event, $element, widget) {
+                console.log("stop resize");
                     console.log("widget resize", widget);
                     widget.resize = true;
+                    $scope.newSave($scope.currentDashboard);
                     // if (widget.type === "map") {
                     //     widget.resize = true;
                     // }
@@ -225,22 +227,22 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
     };
 
-    $scope.customItems1 = {
-        name: "Dashboard demo1",
-        data: $scope.customData1,
-        id: $scope.maxId
-    };
+    // $scope.customItems1 = {
+    //     name: "Dashboard demo1",
+    //     data: $scope.customData1,
+    //     id: $scope.maxId
+    // };
 
-    $scope.customItems2 = {
-        name: "Dashboard demo2",
-        data: $scope.customData2,
-        id: ++$scope.maxId
-    };
+    // $scope.customItems2 = {
+    //     name: "Dashboard demo2",
+    //     data: $scope.customData2,
+    //     id: ++$scope.maxId
+    // };
 
     $scope.dashboards = [];
-    $scope.dashboards.push($scope.customItems1);
-    $scope.dashboards.push($scope.customItems2);
-    $scope.currentDashboard = $scope.customItems1;
+    // $scope.dashboards.push($scope.customItems1);
+    // $scope.dashboards.push($scope.customItems2);
+    // $scope.currentDashboard = $scope.customItems1;
 
     // Delete Widget from current dashboard
     $scope.deleteWidget = function(widget) {
@@ -566,6 +568,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             .then(function(res) {
                 console.log("res of click to open in dashboard", res)
                 $scope.addWidget(res, dashboard);
+                $scope.newSave($scope.currentDashboard);
             });
     };
     
@@ -633,11 +636,13 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         $scope.maxId++;
         var newId = (Date.now() + Math.random()).toString(32);
         console.log("newId", newId);
-        $scope.dashboards.push({
+        var newDashboard = {
             name: "- New Dashboard -",
             data: [],
             id: newId
-        });
+        }
+        $scope.dashboards.push(newDashboard);
+        $scope.currentDashboard = newDashboard;
     }
 
     $scope.rename = function(dashboard){
@@ -649,6 +654,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             })
             .then(function(res) {
                 dashboard.name = res;
+                $scope.newSave(dashboard);
             });
     }
 
@@ -725,6 +731,19 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
         console.log("dashboards after createDashboards", $scope.dashboards);
 
+    }
+
+    $scope.isCurrent = function(dashboard){
+        var result = dashboard.id == $scope.currentDashboard.id;
+        console.log(dashboard.id, $scope.currentDashboard.id, result);
+        return result;
+
+    }
+
+    $scope.saveAllDashboards = function(){
+        $scope.dashboards.forEach(function(dashboard){
+            $scope.newSave(dashboard);
+        });
     }
 
 
