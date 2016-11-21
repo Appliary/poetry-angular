@@ -1,4 +1,4 @@
-app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
+app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     console.log("widget at begining of linceCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
@@ -101,6 +101,8 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
                 type: "LineChart",
                 data: {},
                 options: {
+                    height:100,
+                    width:100,
                     title: $scope.widget.measurementType,
                     curveType: 'function',
                     legend: { position: 'bottom' }
@@ -273,5 +275,23 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     });
 
     // ------------- Watchers ---------------------
+
+    angular.element($window).on('resize',function(){
+        console.log("angular elem resize line");
+      $scope.widget.resize=true;
+    });
+
+    $scope.$watch('widget.resize',function(){
+        console.log("lineChart resize");
+        $scope.isChart = false;
+        setTimeout(function(){
+            if($scope.widget.resize == true){
+                $scope.isChart = true;
+                $scope.widget.resize=false;
+                console.log("resize line");
+            }
+            
+        }, 1000);
+    });
 
 });

@@ -205,13 +205,15 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             start: function(event, $element, widget) {}, // optional callback fired when resize is started,
             resize: function(event, $element, widget) {
                 if (widget.type === "map") {
-                    widget.resize = true;
+                    //widget.resize = true;
                 }
             }, // optional callback fired when item is resized,
             stop: function(event, $element, widget) {
-                    if (widget.type === "map") {
-                        widget.resize = true;
-                    }
+                    console.log("widget resize", widget);
+                    widget.resize = true;
+                    // if (widget.type === "map") {
+                    //     widget.resize = true;
+                    // }
                 } // optional callback fired when item is finished resizing
         },
         draggable: {

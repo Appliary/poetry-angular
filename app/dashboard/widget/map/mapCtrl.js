@@ -257,14 +257,18 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
     // ------------------ Watchers -----------------
 
     $scope.$watch('widget.resize',function(){
-      console.log("resize widget");
+      setTimeout(function(){
         if($scope.widget.resize===true){
             olData.getMap().then(function(map){
                 map.updateSize();
             });
             $scope.calculateCenter();
             $scope.widget.resize=false;
+            console.log("resize widget");
         }
+      }, 1000);
+      
+        
     });
 
     $scope.$watch('widget.forceReload',function(){

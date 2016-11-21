@@ -16,5 +16,5 @@ form( ng-submit='' )
         | {{ 'saved:' + $root.__module.name | translate }}
     span.failed( ng-if=' item.__failed ' )
         | {{ 'failed:save:' + $root.__module.name | translate }}
-    button(ng-click=' save() ').pull-right
+    button(ng-click=' save() ').pull-right.lightButton
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
