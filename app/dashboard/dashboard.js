@@ -246,6 +246,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     // Delete Widget from current dashboard
     $scope.deleteWidget = function(widget) {
+        
         $scope.currentDashboard.data.splice($scope.currentDashboard.data.indexOf(widget), 1);
         //$scope.saveDashboard();
     };
@@ -538,6 +539,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         .then(function(dashboardDatas){
             console.log("result from db", dashboardDatas);
             $scope.createDashboards(dashboardDatas);
+            if($scope.dashboards.length){
+                $scope.currentDashboard = $scope.dashboards[0];
+            }
         });
     };
     $scope.saveDashboard = function() {
@@ -647,15 +651,15 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     $scope.rename = function(dashboard){
         ngDialog.openConfirm({
-                template: 'dashboard/rename.pug',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                width: '400px'
-            })
-            .then(function(res) {
-                dashboard.name = res;
-                $scope.newSave(dashboard);
-            });
+            template: 'dashboard/rename.pug',
+            className: 'ngdialog-theme-default',
+            scope: $scope,
+            width: '400px'
+        })
+        .then(function(res) {
+            dashboard.name = res;
+            $scope.newSave(dashboard);
+        });
     }
 
     $scope.newSave = function(dashboard){
