@@ -212,7 +212,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     if (widget.type === "map") {
                         widget.resize = true;
                     }
-                    $scope.saveDashboard();
                 } // optional callback fired when item is finished resizing
         },
         draggable: {
@@ -220,9 +219,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             handle: '.widget', // optional selector for drag handle
             start: function(event, $element, widget) {}, // optional callback fired when drag is started,
             drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
-            stop: function(event, $element, widget) {
-                    $scope.saveDashboard();
-                } // optional callback fired when item is finished dragging
+            stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
         }
     };
 
@@ -522,7 +519,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 });
                 break;
         }
-        $scope.saveDashboard();
     };
     // Clear all widget from dashboard
     $scope.clear = function(dashboard) {
@@ -539,62 +535,18 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             console.log("result from db", dashboardDatas);
             $scope.createDashboards(dashboardDatas);
         });
-        // var defer = $q.defer();
-        // var dashboards = [];
-        // var idDevice = false;
-        // if ($state.params.id) {
-        //     idDevice = $state.params.id;
-        // }
-        // DevicesData.getDashboardFromDb(idDevice).then(function(res) {
-        //     angular.forEach(res.data, function(dashboard) {
-        //         if (!$state.params.id) {
-        //             if (dashboard.data.length !== 0) {
-        //                 dashboards.push(dashboard);
-        //             }
-        //         } else {
-        //             dashboards = res;
-        //         }
-
-        //     })
-        //     defer.resolve(dashboards)
-        //     setTimeout(function() {
-        //         $scope.enableSaveDb = true;
-        //     }, 10000);
-        // });
-        // return defer.promise;
     };
     $scope.saveDashboard = function() {
         console.log("todo savedashboard");
-        // if ($scope.enableSaveDb) {
-        //     if ($state.params.id) {
-        //         $scope.customItems.isDevice = true;
-        //         $scope.customItems.id = $state.params.id;
-        //     }
-        //     var copy = JSON.parse(JSON.stringify($scope.customItems));
-        //     angular.forEach(copy.data, function(widget) {
-        //         // if (widget.dataPoints)
-        //         //     delete widget.dataPoints[0].datas;
-        //         if (widget.toDisplay)
-        //             angular.forEach(widget.toDisplay, function(device) {
-        //                 if (device.daysData)
-        //                     delete device.daysData;
-        //                 if (device.device)
-        //                     delete device.device;
-        //             })
-        //         if (widget.chartObject)
-        //             if (widget.chartObject.data)
-        //                 delete widget.chartObject.data
-        //     });
-        //     DevicesData.saveDashboardToDb(copy)
-        //         .then(function(id) {
-        //             $scope.customItems.id = id;
-        //         });
-        //     delete copy;
-        // }
     };
     $scope.enableDraggable = function() {
         $scope.gridsterOpts.draggable.enabled = true;
     };
+    $scope.disableDraggable = function() {
+        $scope.gridsterOpts.draggable.enabled = false;
+    };
+
+
     $scope.disableSave = function() {
         $scope.enableSaveDb = false;
     };
@@ -611,9 +563,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             })
             .then(function(res) {
                 console.log("res of click to open in dashboard", res)
-                //console.log("dashboard", dashboard);
                 $scope.addWidget(res, dashboard);
-                // dashboard.data.push(res);
             });
     };
     
@@ -639,7 +589,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         if(index >= 0){
             $scope.currentDashboard = $scope.dashboards[index];
-            //console.log("currentDashboard 2", $scope.currentDashboard);
         }
     }
 

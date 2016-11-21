@@ -35,31 +35,6 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
         $scope.tempDeviceList = [];
     }
 
-    // $scope.widget.dataPoints.push({
-    //     marker : {
-    //         lat : 0,
-    //         lon : 10,
-    //         label: {
-    //             message:'',
-    //             messageLabel : 'messageForLabel',
-    //             show: false,
-    //             showOnMouseOver: true
-    //         }
-    //     }
-    // });
-    // $scope.widget.dataPoints.push({
-    //     marker : {
-    //         lat : 10,
-    //         lon : 10,
-    //         label: {
-    //             message:'',
-    //             messageLabel : 'messageForLabel',
-    //             show: false,
-    //             showOnMouseOver: true
-    //         }
-    //     }
-    // });
-
     $scope.clickToOpen = function() {
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
@@ -80,15 +55,15 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
         if(measurement != null){
           var lat = parseFloat(measurement.value.lat);
           var lon = parseFloat(measurement.value.lng);
-          var messageForLabel="[name][id][br][type][br][day][hour]";
+          var message = '<div>' + device.name + '</div>' + '<div>' + date + '</div>';
 
           $scope.widget.dataPoints.push({
               marker : {
                   lat : lat,
                   lon : lon,
                   label: {
-                      message:'',
-                      messageLabel : messageForLabel,
+                      message: message,
+                      messageLabel : '',
                       show: false,
                       showOnMouseOver: true
                   },
@@ -111,7 +86,6 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
     };
 
     $scope.calculateCenter=function(){
-      console.log("scope.loaded in calculateCenter", $scope.loading);
       if(!$scope.loading){
         olData.getMap().then(function(map){
             var minLon=$scope.widget.dataPoints[0].marker.lon;
@@ -129,17 +103,19 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
                     minLon=dataPoint.marker.lon;
             });
             if($scope.widget.dataPoints.length===1){
+              console.log("calculateCenter 1 dataPoint");
                 $scope.widget.center.lat=maxLat;
                 $scope.widget.center.lon=maxLon;
-                $scope.widget.center.zoom=5;
+                $scope.widget.center.zoom=15;
             }
             else{
+              console.log("calculateCenter more than 1 datapoint");
                 $scope.widget.center.lat=(maxLat+minLat)/2;
                 $scope.widget.center.lon=(maxLon+minLon)/2;
                 var extent=[minLon,minLat,maxLon,maxLat];
                 var textent = ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
-                var zoom=5;
-                var z2=5;
+                var zoom=25;
+                var z2=25;
                 var to =[];
                 do{
                     to.push(setTimeout(function(){
@@ -162,6 +138,7 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
     };
 
     $scope.goToDetails=function(id){
+      console.log("go to detailes", id);
         if($scope.linkToDetails)
             $location.path('/devices/'+id+'/detail');
     };
@@ -197,13 +174,26 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
         $scope.widget.dataPoints = [];
 
         if($scope.widget.deviceList){
-            $scope.widget.deviceList.forEach(function(device){
-                DevicesData.getDeviceData(device.id)
-                .then(function(deviceData){
-                  $scope.addDataPoint(deviceData, device.positionType);
-                  deferred.resolve(deviceData);
-                })
-            });
+            var device = $scope.widget.deviceList.length;
+
+            for (i = 0; i < $scope.widget.deviceList.length; i++) { 
+                var device = $scope.widget.deviceList[i];
+                if(i == $scope.widget.deviceList.length - 1){
+                  DevicesData.getDeviceData(device.id)
+                  .then(function(deviceData){
+                    $scope.addDataPoint(deviceData, device.positionType);
+                    setTimeout(function(){
+                      deferred.resolve(deviceData);
+                    }, 100);
+                  })
+                }
+                else{
+                  DevicesData.getDeviceData(device.id)
+                  .then(function(deviceData){
+                    $scope.addDataPoint(deviceData, device.positionType);
+                  })
+                }
+            }
         }
         $scope.widget.refreshed = true
         return deferred.promise;
@@ -245,6 +235,10 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
             'newWidget' : $scope.widget,
             'title' : $scope.$parent.$parent.widget.title
           });
+          setTimeout(function(){
+            $scope.calculateCenter();
+          }, 2000);
+          
         })        
     }
 
@@ -263,6 +257,7 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
     // ------------------ Watchers -----------------
 
     $scope.$watch('widget.resize',function(){
+      console.log("resize widget");
         if($scope.widget.resize===true){
             olData.getMap().then(function(map){
                 map.updateSize();
@@ -274,6 +269,7 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
 
     $scope.$watch('widget.forceReload',function(){
       if($scope.widget.forceReload===true)
+        console.log("forceReload");
         $scope.calculateCenter();
     })
 
