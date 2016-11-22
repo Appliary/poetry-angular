@@ -66,7 +66,7 @@ div(ng-controller="gaugeCtrl")
                       td
                           input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.redTo", ng-click="showWidget()")
 
-      .modalButtons
-          //- button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : newWidget,'title' : $parent.$parent.widget.title})")
-          button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'title' : $parent.$parent.widget.title})")
-              | `Apply`
+  .modalButtons
+      //- button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : newWidget,'title' : $parent.$parent.widget.title})")
+      button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'title' : $parent.$parent.widget.title})")
+          | `Apply`
