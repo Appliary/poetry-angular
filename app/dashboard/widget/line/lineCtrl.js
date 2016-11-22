@@ -243,8 +243,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     $scope.addTempDevice = function(id){
         var currentDevice = {
-                id: id,
-                color: "blue"
+                id: id
         };
 
         $scope.tempDeviceList.push(currentDevice);

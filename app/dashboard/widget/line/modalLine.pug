@@ -29,18 +29,12 @@ div(ng-controller="lineCtrl")
                             | Device
                     th
                         span
-                            | Color
-                    th
-                        span
                             | Actions
             tbody
                 tr(ng-repeat="device in tempDeviceList")
                     td
                         span.modalInputWidget
                             | {{ device.id }}
-                    td
-                        span.modalInputWidget
-                            | {{ device.color }}
                     td
                         span.modalInputWidget(ng-click="removeDevice(device)")
                             | {{ 'Remove:modalLine' | translate }}
