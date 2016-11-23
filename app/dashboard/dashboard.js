@@ -647,6 +647,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         $scope.dashboards.push(newDashboard);
         $scope.currentDashboard = newDashboard;
+        $scope.newSave(newDashboard);
     }
 
     $scope.rename = function(dashboard){
@@ -739,7 +740,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     $scope.isCurrent = function(dashboard){
         var result = dashboard.id == $scope.currentDashboard.id;
-        console.log(dashboard.id, $scope.currentDashboard.id, result);
         return result;
 
     }

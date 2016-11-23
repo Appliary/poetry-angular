@@ -10,7 +10,7 @@
                 //-     a(ng-click='confirmDashboardDelete(dashboard.id)') {{ 'Delete dashboard:dashboardHeader' | translate }}
                 //-     a(ng-click='showDashboard(dashboard.id)') {{ 'Show dashboard:dashboardHeader' | translate }}
                 button(ng-repeat="dashboard in dashboards", ng-click="showDashboard(dashboard.id)", ng-class=' { active: isCurrent(dashboard) }', ng-dblclick="rename(dashboard)") {{ dashboard.name }}
-                button(ng-click='newDashboard(); saveAllDashboards()') {{ '+:dashboardHeader' | translate }}
+                button(ng-click='newDashboard()') {{ '+:dashboardHeader' | translate }}
                 dropdown.pull-right(text="'V'") 
                     a(ng-click='clickToOpen(currentDashboard)') {{ 'Add widget:dashboardHeader' | translate }}
                     a(ng-click='clear(currentDashboard); saveAllDashboards();') {{ 'Clear widgets:dashboardHeader' | translate }}
