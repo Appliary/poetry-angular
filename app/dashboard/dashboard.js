@@ -210,8 +210,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             }, // optional callback fired when item is resized,
             stop: function(event, $element, widget) {
                 console.log("stop resize");
-                    console.log("widget resize", widget);
-                    widget.resize = true;
+                    setTimeout(function(){
+                        widget.resize = true;
+                    }, 500);
+                    
                     $scope.newSave($scope.currentDashboard);
                     // if (widget.type === "map") {
                     //     widget.resize = true;
@@ -679,7 +681,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             var widget = {
                 title: data.title,
                 controller: data.controller,
-                options: data.chartObject.options,
                 sizeX: data.sizeX,
                 sizeY: data.sizeY,
                 measurementType: data.measurementType,
@@ -688,6 +689,11 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 dateOption: data.dateOption,
                 url: data.url
             };
+
+            if(data.chartObject){
+                widget.options = data.chartObject.options;
+            }
+
             if(data.startDate && data.endDate){
                 var startDate = new Date(data.startDate);
                 var endDate = new Date(data.endDate);

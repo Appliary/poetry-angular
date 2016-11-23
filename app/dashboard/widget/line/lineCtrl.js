@@ -290,7 +290,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
                 console.log("resize line");
             }
             
-        }, 1000);
+        }, 2000);
     });
 
 });

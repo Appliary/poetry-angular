@@ -304,7 +304,10 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
           $scope.refreshFromDeviceList()
           .then(function(){
               $scope.loading = false;
-              $scope.calculateCenter();
+              setTimeout(function(){
+                $scope.calculateCenter();
+              }, 500);
+              
           });
         }
         else{
