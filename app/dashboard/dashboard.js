@@ -568,8 +568,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         ngDialog.openConfirm({
                 template: 'dashboard/modalWidget.pug',
                 className: 'ngdialog-theme-default',
-                scope: $scope,
-                width: '800px'
+                scope: $scope
             })
             .then(function(res) {
                 console.log("res of click to open in dashboard", res)
