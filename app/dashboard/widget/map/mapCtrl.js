@@ -39,8 +39,7 @@ app.controller('mapCtrl',function($scope,DevicesData,ngDialog,olData,$location,$
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope:$scope,
-            width:'800px'
+            scope:$scope
         })
         .then( function (result) {
             $scope.widget = result.newWidget;

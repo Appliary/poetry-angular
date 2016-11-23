@@ -38,8 +38,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         ngDialog.openConfirm( {
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope:$scope,
-            width:'800px'
+            scope:$scope
         } )
         .then( function (result) {
             console.log("confirm edit result", result);

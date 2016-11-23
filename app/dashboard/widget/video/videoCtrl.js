@@ -12,8 +12,7 @@ app.controller('videoCtrl',function($scope,ngDialog,DevicesData){
   ngDialog.openConfirm({
           template: 'dashboard/modalWidget.pug',
           className: 'ngdialog-theme-default',
-          scope:$scope,
-          width:'800px'
+          scope:$scope
       })
       .then( function () {
 

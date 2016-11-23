@@ -44,8 +44,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope: $scope,
-            width: '800px'
+            scope: $scope
         })
         .then(function(res) {
             console.log("modalWidget res", res);
