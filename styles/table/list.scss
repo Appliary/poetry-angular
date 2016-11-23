@@ -73,7 +73,7 @@ ng-include.details {
     &.detailed {
         transform: translateX(0);
         @media( max-width:1200px ) {
-            left: $sidebar_width + $gutter;
+            //left: $sidebar_width + $gutter;
             width: auto;
         }
         @media( max-width: $mobile_break ) {
