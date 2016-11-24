@@ -250,7 +250,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     $scope.deleteWidget = function(widget) {
         
         $scope.currentDashboard.data.splice($scope.currentDashboard.data.indexOf(widget), 1);
-        //$scope.saveDashboard();
+        $scope.newSave($scope.currentDashboard);
     };
     // Add widget to the current dashboard
     // @Param type : add the widget with the good controller
@@ -273,7 +273,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
                 });
                 break;
-            case 'PieChart':
+            case 'pie':
                 dashboard.data.push({
                     edit: true,
                     size: {
@@ -284,9 +284,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "pie",
                     controller: "pieCtrl",
+                    chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList
                 });
                 break;
             case 'gauge':
@@ -407,6 +408,26 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     refreshed : data.newWidget.refreshed
                 });
                 break;
+            case 'combo':
+                dashboard.data.push({
+                    edit: true,
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
+                    position: [0, 0],
+                    title: data.title,
+                    type: "combo",
+                    controller: "comboCtrl",
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
+                });
+                break;
             case 'candlestick':
                 dashboard.data.push({
                     edit: true,
@@ -440,16 +461,21 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             case 'column':
                 dashboard.data.push({
                     edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
                     position: [0, 0],
                     title: data.title,
-                    type: "table",
+                    type: "column",
                     controller: "columnCtrl",
-                    columns: data.newWidget.columns,
-                    api: data.newWidget.api
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
                 });
                 break;
             case 'Histogram':

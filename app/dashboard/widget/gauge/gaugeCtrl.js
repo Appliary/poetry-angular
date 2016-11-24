@@ -5,9 +5,9 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
     }
     $scope.selectedDevice = {};
     $scope.selectedMeasurement = {};
-    $scope.loading = true;
 
     if (!$scope.widget.hasOwnProperty('chartObject')) {
+        $scope.loading = true;
         $scope.widget.chartObject = {};
         $scope.widget.chartObject.options = {
             width: 400,
@@ -137,7 +137,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
                 options: $scope.widget.options
             };
 
-        }        
+        }      
         
         if($scope.widget.deviceList && $scope.widget.deviceList.length > 0 ){
             $scope.widget.deviceId = $scope.widget.deviceList[0].id;

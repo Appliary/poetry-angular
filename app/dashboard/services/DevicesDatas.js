@@ -20,8 +20,11 @@ app.service('DevicesData', function($http, $q, ngNotify) {
 
         var deferred = $q.defer();
         var url = '';
+
         if(startDate && endDate && measurementType){
-            url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate + '&sort=asc';
+            var newStart = new Date(startDate).getTime();
+            var newEnd = new Date(endDate).getTime();
+            url = '/api/devices/' + device + '/measurements?before=' + newEnd + '&after=' + newStart + '&sort=asc';
         }
         else{
             url = '/api/devices/' + device;

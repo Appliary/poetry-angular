@@ -2,16 +2,9 @@
     .panel-body(style="padding:0px;")
         div(style='background: none' )
             .panel.headerDashboard
-                //- dropdown(ng-repeat="dashboard in dashboards", text="dashboard.name")
-                //-     a(ng-click="rename(dashboard)") {{ 'Rename:dashboardHeader' | translate }}     
-                //-     a(ng-click="refreshData()") {{ 'Refresh:dashboardHeader' | translate }}     
-                //-     a(ng-click='clickToOpen(dashboard)') {{ 'Add widget:dashboardHeader' | translate }}
-                //-     a(ng-click='clear(dashboard)') {{ 'Clear widgets:dashboardHeader' | translate }}
-                //-     a(ng-click='confirmDashboardDelete(dashboard.id)') {{ 'Delete dashboard:dashboardHeader' | translate }}
-                //-     a(ng-click='showDashboard(dashboard.id)') {{ 'Show dashboard:dashboardHeader' | translate }}
                 button(ng-repeat="dashboard in dashboards", ng-click="showDashboard(dashboard.id)", ng-class=' { active: isCurrent(dashboard) }', ng-dblclick="rename(dashboard)") {{ dashboard.name }}
-                button(ng-click='newDashboard()') {{ '+:dashboardHeader' | translate }}
                 dropdown.pull-right(text="'V'") 
+                    a(ng-click='newDashboard()') {{ 'New dashboard:dashboardHeader' | translate }}
                     a(ng-click='clickToOpen(currentDashboard)') {{ 'Add widget:dashboardHeader' | translate }}
                     a(ng-click='clear(currentDashboard); saveAllDashboards();') {{ 'Clear widgets:dashboardHeader' | translate }}
                     a(ng-click='confirmDashboardDelete(currentDashboard.id); saveAllDashboards;') {{ 'Delete dashboard:dashboardHeader' | translate }}

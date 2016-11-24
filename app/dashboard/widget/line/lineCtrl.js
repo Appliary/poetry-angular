@@ -115,14 +115,14 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         }
         if($scope.widget.chartObject.data.length == 0 && $scope.widget.deviceList){
             $scope.widget.deviceList.forEach(function(device){
-                $scope.addDevice(device.id, false);
+                $scope.addDevice(device.id);
             });
         }
         $scope.widget.refreshed = true;
 
     }
 
-    $scope.addDevice = function(id, newDevice){
+    $scope.addDevice = function(id){
         console.log("scope in adddevice", $scope);
         if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
             var startDate = "";

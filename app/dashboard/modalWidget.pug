@@ -9,15 +9,15 @@ div(class="modalEditWidget")
                 option(value='gauge') Gauge
                 option(value='map') Map
                 option(value='image') Image
-                option(value='video',disabled) Video
+                option(value='video') Video
+                option(value='combo') Combo
+                option(value='pie') Pie
+                option(value='column', disabled) Column
                 option(value='adaptative',disabled) Adaptative
                 //option(value='svg') SVG
-                option(value='column',disabled) Column
-                option(value='pie',disabled) Pie
                 option(value='bar',disabled) Bar
                 option(value='area',disabled) Area
                 option(value='bubble',disabled) Bubble
-                option(value='combo',disabled) Combo
                 option(value='geo',disabled) Geo
                 //option(value='histogramme',disabled) Histogramme
 
@@ -34,13 +34,14 @@ div(class="modalEditWidget")
         //- ng-include(src="'/templates/dashboard/widget/svg/modalSvg.pug'",ng-if="widget.type=='svg'")
         ng-include(src="'dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
         ng-include(src="'dashboard/widget/video/modalVideo.pug'",ng-if="widget.type=='video'")
+        ng-include(src="'dashboard/widget/combo/modalCombo.pug'",ng-if="widget.type=='combo'")
+        ng-include(src="'dashboard/widget/pie/modalPie.pug'",ng-if="widget.type=='pie'")
 
         //- No modal.pug file
         //- ng-include(src="'/templates/dashboard/widget/area/modalArea.pug'",ng-if="widget.type=='area'")
         //- ng-include(src="'/templates/dashboard/widget/bubble/modalBubble.pug'",ng-if="widget.type=='bubble'")
         //- ng-include(src="'/templates/dashboard/widget/combo/modalCombo.pug'",ng-if="widget.type=='combo'")
         //- ng-include(src="'/templates/dashboard/widget/geo/modalGeo.pug'",ng-if="widget.type=='geo'")
-        //- ng-include(src="'/templates/dashboard/widget/pie/modalPie.pug'",ng-if="widget.type=='pie'")
 
 
         //- Not in angular-google-chart

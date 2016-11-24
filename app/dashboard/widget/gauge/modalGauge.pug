@@ -9,63 +9,65 @@ div(ng-controller="gaugeCtrl")
           button(ng-click="addDevice()") {{ '+' }}
 
       table(class="table-condensed tableModalWidget")
-              thead
-                  tr
-                      th {{ 'Device' + ':editwidget' | translate }}
-                      th {{ 'Data' + ':editwidget' | translate }}
-                      th {{ 'Value' + ':editwidget' | translate }}
-                      th {{ 'Ticks' + ':editwidget' | translate }}
-                      th {{ 'Min' + ':editwidget' | translate }}
-                      th {{ 'Max' + ':editwidget' | translate }}
-                      th {{ 'Yellow' + ':editwidget' | translate }}
-                      th {{ 'Yellow' + ':editwidget' | translate }}
-                      th {{ 'Red' + ':editwidget' | translate }}
-                      th {{ 'Red' + ':editwidget' | translate }}
-                  tr
-                      th
-                      th
-                      th
-                      th
-                      th
-                      th
-                      th
-                          span.miniTitle
-                              | {{ 'from' + ':editwidget' | translate }}
-                      th
-                          span.miniTitle
-                              | {{ 'to' + ':editwidget' | translate }}
-                      th
-                          span.miniTitle
-                              | {{ 'from' + ':editwidget' | translate }}
-                      th
-                          span.miniTitle
-                              | {{ 'to' + ':editwidget' | translate }}
-              tbody
-                  tr
-                      td
-                          span.modalInputWidget
-                              | {{ widget.device.id }}
-                      td
-                          span.modalInputWidget
-                              | {{ widget.device.type }}
-                      td
-                          span.modalDataPointGauge
-                              | {{ widget.device.value }}
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.minorTicks")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.min")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.max")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.yellowFrom")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.yellowTo")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.redFrom")
-                      td
-                          input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.redTo", ng-click="showWidget()")
-
+          thead
+              tr
+                  th {{ 'Ticks' + ':editwidget' | translate }}
+                  th {{ 'Min' + ':editwidget' | translate }}
+                  th {{ 'Max' + ':editwidget' | translate }}
+                  th {{ 'Yellow' + ':editwidget' | translate }}
+                  th {{ 'Yellow' + ':editwidget' | translate }}
+                  th {{ 'Red' + ':editwidget' | translate }}
+                  th {{ 'Red' + ':editwidget' | translate }}
+              tr
+                  th
+                  th
+                  th
+                  th
+                      span.miniTitle
+                          | {{ 'from' + ':editwidget' | translate }}
+                  th
+                      span.miniTitle
+                          | {{ 'to' + ':editwidget' | translate }}
+                  th
+                      span.miniTitle
+                          | {{ 'from' + ':editwidget' | translate }}
+                  th
+                      span.miniTitle
+                          | {{ 'to' + ':editwidget' | translate }}
+          tbody
+              tr
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.minorTicks", min="0", max="20")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.min")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.max")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.yellowFrom")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.yellowTo")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.redFrom")
+                  td
+                      input.modalDataPointGauge(type="number",ng-model="widget.chartObject.options.redTo")
+      table(class="table-condensed tableModalWidget")
+          thead
+              tr
+                  th {{ 'Device' + ':editwidget' | translate }}
+                  th {{ 'Data' + ':editwidget' | translate }}
+                  th {{ 'Value' + ':editwidget' | translate }}
+                  
+          tbody
+              tr
+                  td
+                      span.modalInputWidget
+                          | {{ widget.device.id }}
+                  td
+                      span.modalInputWidget
+                          | {{ widget.device.type }}
+                  td
+                      span.modalDataPointGauge
+                          | {{ widget.device.value }}
   .modalButtons
       //- button.btn.btn-primary.pull-right(ng-click="confirm({'widget' : newWidget,'title' : $parent.$parent.widget.title})")
       button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'title' : $parent.$parent.widget.title})")
