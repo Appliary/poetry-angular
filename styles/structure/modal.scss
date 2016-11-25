@@ -12,15 +12,15 @@
         position: fixed;
         z-index: 1001;
         top: 25%;
-        left: 25%;
+        left: 50%;
+        margin-left: -230px;
         background: $modal_bg;
+        width: 460px;
         border: $modal_border solid 1px;
         border-radius: 4px;
         box-shadow: 0 0 100px $modal_mask;
         padding: $gutter;
         max-height: 50%;
-        max-width: 50%;
-        min-width: 500px;
         overflow-y: auto;
         .ngdialog-close:before {
             position: absolute;
