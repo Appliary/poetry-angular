@@ -225,7 +225,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             handle: '.widget', // optional selector for drag handle
             start: function(event, $element, widget) {}, // optional callback fired when drag is started,
             drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
-            stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
+            stop: function(event, $element, widget) {
+                $scope.newSave($scope.currentDashboard);
+            } // optional callback fired when item is finished dragging
         }
     };
 
@@ -627,8 +629,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             $scope.currentDashboard = $scope.dashboards[index];
         }
     }
-
-
+    
     $scope.confirmDashboardDelete = function(id) {
         var index = -1;
         var i = 0;
@@ -712,7 +713,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 deviceList: data.deviceList,
                 customDate: data.customDate,
                 dateOption: data.dateOption,
-                url: data.url
+                url: data.url,
+                col: data.col,
+                row: data.row
             };
 
             if(data.chartObject){
@@ -748,15 +751,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             };
 
             dashboardData.widgets.forEach(function(widget){
-                // var widgetData = {
-                //     title: widget.title,
-                //     edit: true,
-                //     controller: widget.controller,
-                //     sizeX: widget.sizeX,
-                //     sizeY: widget.sizeY,
-                //     deviceList: widget.deviceList,
-                //     options: widget.options
-                // };
                 widget.edit = true;
 
                 dashboard.data.push(widget);

@@ -11,7 +11,6 @@
                     a(ng-click='enableDraggable()', ng-if='!gridsterOpts.draggable.enabled') {{ 'Enable draggable:dashboardHeader' | translate }}
                     a(ng-click='disableDraggable()',  ng-if='gridsterOpts.draggable.enabled') {{ 'Disable draggable:dashboardHeader' | translate }}
 
-
             div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
                 ul
                     li(style='background-color:white;', gridster-item='item', ng-repeat='item in currentDashboard.data ')
