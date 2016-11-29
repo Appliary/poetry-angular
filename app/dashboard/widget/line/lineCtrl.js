@@ -30,10 +30,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     // ---------- Old Functions -------------------
 
-    $scope.loadData = function(){
-        console.log("lineCtrl loadData toto");
-    };
-
     $scope.clickToOpen = function () {
         ngDialog.openConfirm( {
             template: 'dashboard/modalWidget.pug',
@@ -48,30 +44,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     };
 
     // ---------------- New Functions ------------------
-
-    $scope.loadDevices = function() {
-        var deferred = $q.defer();
-
-        DevicesData.getDevicesData().then(function(devices){
-            $scope.devicesData = devices;
-            deferred.resolve(devices);
-            if($scope.widget.deviceId){
-                $scope.selectDevice($scope.widget.deviceId);
-            }
-        });
-
-        return deferred.promise;
-
-    }
-
-    // Select device object from its id
-    $scope.selectDevice = function(deviceId){
-        $scope.devicesData.forEach(function(device){
-            if(device._id == deviceId){
-                $scope.widget.selectedDevice = device;
-            }
-        });
-    }
 
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
@@ -240,9 +212,9 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         return result;
     }
 
-    $scope.addTempDevice = function(id){
+    $scope.addTempDevice = function(){
         var currentDevice = {
-                id: id
+                id: $scope.widget.deviceId
         };
 
         $scope.tempDeviceList.push(currentDevice);
@@ -265,12 +237,9 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     // ------------------ Begining -----------------
 
-    $scope.loadDevices()
-    .then(function(){
-        if(!$scope.widget.refreshed){
-            $scope.refreshFromDevice();
-        } 
-    });
+    if(!$scope.widget.refreshed){
+        $scope.refreshFromDevice();
+    } 
 
     // ------------- Watchers ---------------------
 
