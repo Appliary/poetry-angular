@@ -1,6 +1,6 @@
 form( ng-submit='' )
     div(ng-repeat=' field in $root.__module.config.tabs[__view].fields ' ng-class="{ error: __validation.indexOf(field) !==-1 }")
-        label( for='{{field}}', ng-class="{ required: __joi[field]._flags.presence == required }" )
+        label( for='{{field}}', ng-class="{ required: __joi[field]._flags.presence == 'required' }" )
             | {{field + ':field' | translate}}
 
         //- Unknown => Read only

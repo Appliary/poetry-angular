@@ -72,7 +72,7 @@ ng-include.details {
     transition: transform 0.3s ease-out;
     &.detailed {
         transform: translateX(0);
-        @media( max-width:1200px ) {
+        @media( max-width:1024px ) {
             //left: $sidebar_width + $gutter;
             width: auto;
         }
