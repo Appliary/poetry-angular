@@ -1,17 +1,32 @@
 form( ng-submit='' )
-    div(ng-repeat=' (label, type) in $root.__module.config.tabs[__view].config ')
-        label( for='{{ label }}' ) {{ label + ':field' | translate }}
-        input( name='{{ label }}', ng-if=' type=="read" ', ng-model='item[label]', readonly )
-        input( name='{{ label }}', ng-if=' type=="readObject" ', ng-model='item[label].name', readonly )
-        input( name='{{ label }}', ng-if=' type=="readLocal" ', value='{{ item[label] | localize }}', readonly )
-        input( name='{{ label }}', ng-if=' type=="text" ', ng-model='item[label]' )
-        input( name='{{ label }}', ng-if=' type=="password" ', ng-model='item[label]' type="password" )
-        span.unit( ng-if=' type.unit ' )
-            input( name='{{ label }}', ng-model='item[label]', type="number" )
-            span {{ type.unit + ':unit' | translate }}
-        select( name='{{ label }}', ng-if=' isArray( type ) ', ng-model='item[label]' )
-            option( ng-repeat=' opt in type ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
-        textarea( name='{{ label }}', ng-if=' type=="textarea" ', ng-model='item[label]' )
+    div(ng-repeat=' field in $root.__module.config.tabs[__view].fields ' ng-class="{ error: __validation.indexOf(field) !==-1 }")
+        label( for='{{field}}', ng-class="{ required: __joi[field]._flags.presence == required }" )
+            | {{field + ':field' | translate}}
+
+        //- Unknown => Read only
+        input( name='{{field}}', ng-if='!__joi[field] && !item[field].name', ng-value='item[field] | localize', readonly )
+        input( name='{{field}}', ng-if='!__joi[field] && item[field].name', ng-value='item[field].name', readonly )
+
+        //- Numbers (with or without units)
+        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "number" && !__joi[field]._unit', ng-model='item[field]' )
+        span.unit( ng-if='__joi[field]._type == "number" && __joi[field]._unit' )
+            input( name='{{field}}', ng-model='item[field]', type="number" )
+            span {{ __joi[field]._unit + ':unit' | translate }}
+
+        //- Strings
+        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("password") === -1 && __joi[field]._tags.indexOf("textarea") === -1', ng-model='item[field]' )
+
+        //- Passwords
+        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("password") !== -1', ng-model='item[field]', type="password" )
+
+        //- Enums
+        select( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && __joi[field]._flags.allowOnly', ng-model='item[field]' )
+            option( ng-repeat=' opt in __joi[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+
+        //- Textareas
+        textarea( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("textarea") !== -1 ', ng-model='item[label]' )
+
+
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
     span.failed( ng-if=' item.__failed ' )

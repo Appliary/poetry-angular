@@ -51,7 +51,7 @@
         right: $gutter*2 + 500px;
         @media( max-width:1200px ) {
             display: none;
-            left: $sidebar_width_collapsed + $gutter;
+            //left: $sidebar_width_collapsed + $gutter;
         }
     }
     #filters > * {
@@ -98,6 +98,7 @@ ng-include.details {
         }
     }
 }
+
 table {
     width: 100%;
 }

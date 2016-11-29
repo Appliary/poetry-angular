@@ -49,16 +49,18 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     /**
      * Retrieve the list from the webservice
      */
+    getlist(true);
     $scope.$watch( 'search', getlist );
     $scope.$watch( 'status', getlist );
     $scope.$watchCollection( 'sorting', getlist );
 
-    function getlist() {
-        if( $scope.$root.__module.controller != 'generic/list' ) return;
+    function getlist( o, n ) {
+        if( o == n ) return;
+        if ( $scope.$root.__module.controller != 'generic/list' ) return;
         $scope.total = undefined;
-        var url = $scope.$root.__module.api + '?sort=' + ($scope.sorting?$scope.sorting.col:'_id') + '&order=' + ($scope.sorting?$scope.sorting.order:'asc');
-        if( $scope.status ) url += '&status=' + $scope.status;
-        if( $scope.search )
+        var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
+        if ( $scope.status ) url += '&status=' + $scope.status;
+        if ( $scope.search )
             url += '&search=' + encodeURIComponent( $scope.search );
         $http.get( url )
             .then( function success( response ) {
@@ -160,10 +162,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success() {
                 console.info( 'Saved!' );
+                $scope.__validation = [];
                 $scope.item.__saved = true;
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
+
+                if( err.status == 400 && err.data && err.data.validation )
+                    $scope.__validation = err.data.validation.keys;
             } );
 
     }
@@ -174,19 +180,38 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
      * @arg {String} id Id of the selected item to be retrieved
      */
     function retrieveItem( id ) {
+
+        if( !id ) return console.warn('No ID');
+        $scope.__validation = [];
+
+        // Load controller
+        if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
+            return $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
+                $scope: $scope
+            } );
+
+        // Clean item
         $scope.item = undefined;
+
+        // Get item from API
         $http.get( $scope.$root.__module.api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
-        if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
-            $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
-                $scope: $scope
-            } );
+
     }
 
+    // Get validation object
+    $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
+        .then( function success( response ) {
+            if(!response.data.payload._inner)
+                return $scope.__joi = response.data.payload;
 
-
+            $scope.__joi = {};
+            response.data.payload._inner.children.forEach( function(elem){
+                $scope.__joi[elem.key] = elem.schema;
+            })
+        }, function error( err ) {} );
 } );
