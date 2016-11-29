@@ -3,6 +3,6 @@ h2
 form( ng-submit='own()' )
     label( for='_id' ) {{ '_id:field' | translate }}
     input( name='_id' ng-model='item._id' )
-    button.pull-right
+    button.pull-right.lightButton
         | {{ 'own:' + $root.__module.name + ':button' | translate }}
     span( ng-if='failed' ) {{ 'failed:own:' + $root.__module.name + ':button' | translate }}

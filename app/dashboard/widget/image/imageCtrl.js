@@ -13,14 +13,18 @@ app.controller('imageCtrl',function($scope,ngDialog,DevicesData,$http,$q){
 
   $scope.widget.chartObject.type="Image";
   $scope.image = {};
+  if($scope.widget.url){
+    $scope.image.url = $scope.widget.url;
+  }
+
+  console.log("widget in imagectrl", $scope.widget);
 
   $scope.clickToOpen = function() {
     console.log("click to open");
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope:$scope,
-            width:'800px'
+            scope:$scope
         })
       .then( function (res) {
           if(res.file){
@@ -49,23 +53,23 @@ app.controller('imageCtrl',function($scope,ngDialog,DevicesData,$http,$q){
     return defer.promise;
   }
   $scope.loadData=function(){
-    getImages().then(function(res){
-      $scope.widget.imagesPath=res.data;
-      var url='';
-      if($scope.widget.currentImage)
-        url=res.data[$scope.widget.currentImage].url;
-      else
-        url=res.data[1].url
+    // getImages().then(function(res){
+    //   $scope.widget.imagesPath=res.data;
+    //   var url='';
+    //   if($scope.widget.currentImage)
+    //     url=res.data[$scope.widget.currentImage].url;
+    //   else
+    //     url=res.data[1].url
 
-      $scope.widget.url=res.data[$scope.widget.currentImage].url;
-    });
-    $scope.widget.forceReload===false;
+    //   $scope.widget.url=res.data[$scope.widget.currentImage].url;
+    // });
+    // $scope.widget.forceReload===false;
   };
-  $scope.$watch('widget.forceReload',function(){
-    if($scope.widget.forceReload===true)
-      $scope.loadData();
-  });
-  $scope.loadData();
+  // $scope.$watch('widget.forceReload',function(){
+  //   if($scope.widget.forceReload===true)
+  //     $scope.loadData();
+  // });
+  // $scope.loadData();
 
   $scope.updateImage = function(){
     $scope.widget.url = $scope.image.url;

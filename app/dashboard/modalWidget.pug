@@ -1,30 +1,27 @@
 div(class="modalEditWidget")
     div#listWidget(class="form-group")
-        label
-            | Widget
-        input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly)
-        select.selectNewWidget(ng-model="widget.type",ng-show="createWidget")
-            option(value='line') Line
-            //option(value='candlestick') CandleStick
-            //option(value='table') Table
-            option(value='gauge') Gauge
-            option(value='map') Map
-            option(value='image') Image
-            option(value='video') Video
-            option(value='adaptative') Adaptative
-            //option(value='svg') SVG
-            option(value='column') Column
-            option(value='pie',disabled) Pie
-            option(value='bar',disabled) Bar
-            option(value='area',disabled) Area
-            option(value='bubble',disabled) Bubble
-            option(value='combo',disabled) Combo
-            option(value='geo',disabled) Geo
-            //option(value='histogramme',disabled) Histogramme
+        span
+            input(type="text",ng-model="widget.type",ng-if="!createWidget", readonly)
+            select.selectNewWidget(ng-model="widget.type",ng-show="createWidget", placeholder="Type")
+                option(value='line') Line
+                //option(value='candlestick') CandleStick
+                //option(value='table') Table
+                option(value='gauge') Gauge
+                option(value='map') Map
+                option(value='image') Image
+                option(value='video') Video
+                option(value='combo') Combo
+                option(value='pie') Pie
+                option(value='column', disabled) Column
+                option(value='adaptative',disabled) Adaptative
+                //option(value='svg') SVG
+                option(value='bar',disabled) Bar
+                option(value='area',disabled) Area
+                option(value='bubble',disabled) Bubble
+                option(value='geo',disabled) Geo
+                //option(value='histogramme',disabled) Histogramme
 
-        label(ng-show="widget.type")
-            span Title
-            input.form-control(style="width:70%;",ng-model="widget.title")
+            input.form-control(ng-model="widget.title", placeholder=" Title")
 
 
 
@@ -35,15 +32,16 @@ div(class="modalEditWidget")
         ng-include(src="'dashboard/widget/adaptative/modalAdaptative.pug'",ng-if="widget.type=='adaptative'")
         ng-include(src="'dashboard/widget/column/modalColumn.pug'",ng-if="widget.type=='column'")
         //- ng-include(src="'/templates/dashboard/widget/svg/modalSvg.pug'",ng-if="widget.type=='svg'")
-        //- ng-include(src="'/templates/dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
+        ng-include(src="'dashboard/widget/map/modalMap.pug'",ng-if="widget.type=='map'")
         ng-include(src="'dashboard/widget/video/modalVideo.pug'",ng-if="widget.type=='video'")
+        ng-include(src="'dashboard/widget/combo/modalCombo.pug'",ng-if="widget.type=='combo'")
+        ng-include(src="'dashboard/widget/pie/modalPie.pug'",ng-if="widget.type=='pie'")
 
         //- No modal.pug file
         //- ng-include(src="'/templates/dashboard/widget/area/modalArea.pug'",ng-if="widget.type=='area'")
         //- ng-include(src="'/templates/dashboard/widget/bubble/modalBubble.pug'",ng-if="widget.type=='bubble'")
         //- ng-include(src="'/templates/dashboard/widget/combo/modalCombo.pug'",ng-if="widget.type=='combo'")
         //- ng-include(src="'/templates/dashboard/widget/geo/modalGeo.pug'",ng-if="widget.type=='geo'")
-        //- ng-include(src="'/templates/dashboard/widget/pie/modalPie.pug'",ng-if="widget.type=='pie'")
 
 
         //- Not in angular-google-chart

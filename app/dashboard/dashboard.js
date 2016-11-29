@@ -205,14 +205,19 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             start: function(event, $element, widget) {}, // optional callback fired when resize is started,
             resize: function(event, $element, widget) {
                 if (widget.type === "map") {
-                    widget.resize = true;
+                    //widget.resize = true;
                 }
             }, // optional callback fired when item is resized,
             stop: function(event, $element, widget) {
-                    if (widget.type === "map") {
+                console.log("stop resize");
+                    setTimeout(function(){
                         widget.resize = true;
-                    }
-                    $scope.saveDashboard();
+                    }, 500);
+                    
+                    $scope.newSave($scope.currentDashboard);
+                    // if (widget.type === "map") {
+                    //     widget.resize = true;
+                    // }
                 } // optional callback fired when item is finished resizing
         },
         draggable: {
@@ -221,32 +226,33 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             start: function(event, $element, widget) {}, // optional callback fired when drag is started,
             drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
             stop: function(event, $element, widget) {
-                    $scope.saveDashboard();
-                } // optional callback fired when item is finished dragging
+                $scope.newSave($scope.currentDashboard);
+            } // optional callback fired when item is finished dragging
         }
     };
 
-    $scope.customItems1 = {
-        name: "Dashboard demo1",
-        data: $scope.customData1,
-        id: $scope.maxId
-    };
+    // $scope.customItems1 = {
+    //     name: "Dashboard demo1",
+    //     data: $scope.customData1,
+    //     id: $scope.maxId
+    // };
 
-    $scope.customItems2 = {
-        name: "Dashboard demo2",
-        data: $scope.customData2,
-        id: ++$scope.maxId
-    };
+    // $scope.customItems2 = {
+    //     name: "Dashboard demo2",
+    //     data: $scope.customData2,
+    //     id: ++$scope.maxId
+    // };
 
     $scope.dashboards = [];
-    $scope.dashboards.push($scope.customItems1);
-    $scope.dashboards.push($scope.customItems2);
-    $scope.currentDashboard = $scope.customItems1;
+    // $scope.dashboards.push($scope.customItems1);
+    // $scope.dashboards.push($scope.customItems2);
+    // $scope.currentDashboard = $scope.customItems1;
 
     // Delete Widget from current dashboard
     $scope.deleteWidget = function(widget) {
+        
         $scope.currentDashboard.data.splice($scope.currentDashboard.data.indexOf(widget), 1);
-        //$scope.saveDashboard();
+        $scope.newSave($scope.currentDashboard);
     };
     // Add widget to the current dashboard
     // @Param type : add the widget with the good controller
@@ -269,7 +275,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
                 });
                 break;
-            case 'PieChart':
+            case 'pie':
                 dashboard.data.push({
                     edit: true,
                     size: {
@@ -280,9 +286,10 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "pie",
                     controller: "pieCtrl",
+                    chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList
                 });
                 break;
             case 'gauge':
@@ -299,8 +306,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "gaugeCtrl",
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList
                 });
                 break;
             case 'BarChart':
@@ -386,10 +393,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             case 'line':
                 dashboard.data.push({
                     edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
                     position: [0, 0],
                     title: data.title,
                     type: "line",
@@ -398,8 +403,31 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
                     endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
-                    deviceName: data.newWidget.deviceName
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
+                });
+                break;
+            case 'combo':
+                dashboard.data.push({
+                    edit: true,
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
+                    position: [0, 0],
+                    title: data.title,
+                    type: "combo",
+                    controller: "comboCtrl",
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
                 });
                 break;
             case 'candlestick':
@@ -435,16 +463,21 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             case 'column':
                 dashboard.data.push({
                     edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
+                    sizeX: data.sizeX,
+                    sizeY: data.sizeY,
                     position: [0, 0],
                     title: data.title,
-                    type: "table",
+                    type: "column",
                     controller: "columnCtrl",
-                    columns: data.newWidget.columns,
-                    api: data.newWidget.api
+                    chartObject: data.newWidget.chartObject,
+                    deviceId: data.newWidget.deviceId,
+                    startDate: data.newWidget.startDate,
+                    endDate: data.newWidget.endDate,
+                    dateOption: data.newWidget.dateOption,
+                    customDate: data.newWidget.customDate,
+                    measurementType: data.newWidget.measurementType,
+                    deviceList: data.newWidget.deviceList,
+                    refreshed : data.newWidget.refreshed
                 });
                 break;
             case 'Histogram':
@@ -472,7 +505,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     type: "map",
                     controller: "mapCtrl",
                     dataPoints: data.newWidget.dataPoints,
-                    center: data.newWidget.center
+                    deviceList: data.newWidget.deviceList,
+                    center: data.newWidget.center,
+                    refreshed: data.newWidget.refreshed
                 });
                 break;
             case 'image':
@@ -519,7 +554,6 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 });
                 break;
         }
-        $scope.saveDashboard();
     };
     // Clear all widget from dashboard
     $scope.clear = function(dashboard) {
@@ -535,63 +569,22 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         .then(function(dashboardDatas){
             console.log("result from db", dashboardDatas);
             $scope.createDashboards(dashboardDatas);
+            if($scope.dashboards.length){
+                $scope.currentDashboard = $scope.dashboards[0];
+            }
         });
-        // var defer = $q.defer();
-        // var dashboards = [];
-        // var idDevice = false;
-        // if ($state.params.id) {
-        //     idDevice = $state.params.id;
-        // }
-        // DevicesData.getDashboardFromDb(idDevice).then(function(res) {
-        //     angular.forEach(res.data, function(dashboard) {
-        //         if (!$state.params.id) {
-        //             if (dashboard.data.length !== 0) {
-        //                 dashboards.push(dashboard);
-        //             }
-        //         } else {
-        //             dashboards = res;
-        //         }
-
-        //     })
-        //     defer.resolve(dashboards)
-        //     setTimeout(function() {
-        //         $scope.enableSaveDb = true;
-        //     }, 10000);
-        // });
-        // return defer.promise;
     };
     $scope.saveDashboard = function() {
         console.log("todo savedashboard");
-        // if ($scope.enableSaveDb) {
-        //     if ($state.params.id) {
-        //         $scope.customItems.isDevice = true;
-        //         $scope.customItems.id = $state.params.id;
-        //     }
-        //     var copy = JSON.parse(JSON.stringify($scope.customItems));
-        //     angular.forEach(copy.data, function(widget) {
-        //         // if (widget.dataPoints)
-        //         //     delete widget.dataPoints[0].datas;
-        //         if (widget.toDisplay)
-        //             angular.forEach(widget.toDisplay, function(device) {
-        //                 if (device.daysData)
-        //                     delete device.daysData;
-        //                 if (device.device)
-        //                     delete device.device;
-        //             })
-        //         if (widget.chartObject)
-        //             if (widget.chartObject.data)
-        //                 delete widget.chartObject.data
-        //     });
-        //     DevicesData.saveDashboardToDb(copy)
-        //         .then(function(id) {
-        //             $scope.customItems.id = id;
-        //         });
-        //     delete copy;
-        // }
     };
     $scope.enableDraggable = function() {
         $scope.gridsterOpts.draggable.enabled = true;
     };
+    $scope.disableDraggable = function() {
+        $scope.gridsterOpts.draggable.enabled = false;
+    };
+
+
     $scope.disableSave = function() {
         $scope.enableSaveDb = false;
     };
@@ -603,14 +596,12 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         ngDialog.openConfirm({
                 template: 'dashboard/modalWidget.pug',
                 className: 'ngdialog-theme-default',
-                scope: $scope,
-                width: '800px'
+                scope: $scope
             })
             .then(function(res) {
                 console.log("res of click to open in dashboard", res)
-                //console.log("dashboard", dashboard);
                 $scope.addWidget(res, dashboard);
-                // dashboard.data.push(res);
+                $scope.newSave($scope.currentDashboard);
             });
     };
     
@@ -636,11 +627,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         }
         if(index >= 0){
             $scope.currentDashboard = $scope.dashboards[index];
-            //console.log("currentDashboard 2", $scope.currentDashboard);
         }
     }
-
-
+    
     $scope.confirmDashboardDelete = function(id) {
         var index = -1;
         var i = 0;
@@ -679,23 +668,27 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         $scope.maxId++;
         var newId = (Date.now() + Math.random()).toString(32);
         console.log("newId", newId);
-        $scope.dashboards.push({
+        var newDashboard = {
             name: "- New Dashboard -",
             data: [],
             id: newId
-        });
+        }
+        $scope.dashboards.push(newDashboard);
+        $scope.currentDashboard = newDashboard;
+        $scope.newSave(newDashboard);
     }
 
     $scope.rename = function(dashboard){
         ngDialog.openConfirm({
-                template: 'dashboard/rename.pug',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                width: '400px'
-            })
-            .then(function(res) {
-                dashboard.name = res;
-            });
+            template: 'dashboard/rename.pug',
+            className: 'ngdialog-theme-default',
+            scope: $scope,
+            width: '400px'
+        })
+        .then(function(res) {
+            dashboard.name = res;
+            $scope.newSave(dashboard);
+        });
     }
 
     $scope.newSave = function(dashboard){
@@ -709,22 +702,36 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
         dashboard.data.forEach(function(data){
             console.log("data in newsave", data);
-            var startDate = new Date(data.startDate);
-            var endDate = new Date(data.endDate);
-
-            dashboardData.widgets.push({
+            
+            
+            var widget = {
                 title: data.title,
                 controller: data.controller,
-                options: data.chartObject.options,
-                size: data.size,
-                deviceDatas: [{
-                    id: data.deviceId,
-                    startDate: startDate.getTime(),
-                    endDate: endDate.getTime(),
-                    measurementType: data.measurementType,
-                    color: "blue"
-                }]
-            });
+                sizeX: data.sizeX,
+                sizeY: data.sizeY,
+                measurementType: data.measurementType,
+                deviceList: data.deviceList,
+                customDate: data.customDate,
+                dateOption: data.dateOption,
+                url: data.url,
+                col: data.col,
+                row: data.row
+            };
+
+            if(data.chartObject){
+                widget.options = data.chartObject.options;
+            }
+
+            if(data.startDate && data.endDate){
+                var startDate = new Date(data.startDate);
+                var endDate = new Date(data.endDate);
+                widget.startDate = startDate.getTime();
+                widget.endDate = endDate.getTime();
+            }
+
+            console.log("widget in new save", widget);
+
+            dashboardData.widgets.push(widget);
         });
         
 
@@ -744,16 +751,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             };
 
             dashboardData.widgets.forEach(function(widget){
-                var widgetData = {
-                    title: widget.title,
-                    edit: true,
-                    controller: widget.controller,
-                    size: widget.size,
-                    device: widget.deviceDatas[0],
-                    options: widget.options
-                };
+                widget.edit = true;
 
-                dashboard.data.push(widgetData);
+                dashboard.data.push(widget);
             });
 
             $scope.dashboards.push(dashboard);
@@ -761,6 +761,18 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
         console.log("dashboards after createDashboards", $scope.dashboards);
 
+    }
+
+    $scope.isCurrent = function(dashboard){
+        var result = dashboard.id == $scope.currentDashboard.id;
+        return result;
+
+    }
+
+    $scope.saveAllDashboards = function(){
+        $scope.dashboards.forEach(function(dashboard){
+            $scope.newSave(dashboard);
+        });
     }
 
 

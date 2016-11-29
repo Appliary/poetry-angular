@@ -1,7 +1,8 @@
 div(ng-controller='videoCtrl')
   .row
-    label(for='fileToUpload') Youtube's url
-    input.form-control(type="text",ng-model="widget.url")
+    label(for='fileToUpload') Enter Youtube's url
+    form
+        input(type="text",ng-model="video.url")
     .modalButtons
-        button.btn.btn-primary.pull-right(ng-click="confirm({'widget':widget,'title' : $parent.$parent.widget.title})")
-            | `Apply`
+        button.btn.btn-primary.pull-right(ng-click="apply()")
+            | {{ 'Save:chart' | translate }}

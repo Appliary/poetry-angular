@@ -2,5 +2,5 @@ label
     | {{ 'Enter new name:dashboard' | translate }}
 input(type="text", ng-model="nameValue")
 div.pull-right(class="ngdialog-buttons")
-    button(type="button", class="ngdialog-button ngdialog-button-secondary", ng-click="closeThisDialog(0)") {{ 'Cancel:dashboard' | translate }}
-    button(type="button", class="ngdialog-button ngdialog-button-primary", ng-click="confirm(nameValue)") {{ 'Confirm:dashboard' | translate }}
+    button.lightButton.pull-right(type="button", class="ngdialog-button ngdialog-button-secondary", ng-click="closeThisDialog(0)") {{ 'Cancel:dashboard' | translate }}
+    button.lightButton.pull-right(type="button", class="ngdialog-button ngdialog-button-primary", ng-click="confirm(nameValue)") {{ 'Confirm:dashboard' | translate }}

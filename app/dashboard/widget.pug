@@ -1,4 +1,4 @@
-.widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",save-dashboard="saveDashboard()",disable-save="disableSave()",enable-save ="enableSave()")
+.widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",disable-save="disableSave()",enable-save ="enableSave()")
   .panel.panel-default.panel-widget(ng-mousedown="enableDraggable()", ng-if="widget.edit")
     div
       p.headerWigetTitle
@@ -17,9 +17,12 @@
       openlayers(ol-center="widget.center",height="100%",width="100%")
         ol-marker(ng-repeat="point in widget.dataPoints",ol-marker-properties="point.marker")
     .widgetContent(ng-if="widget.isImage")
-      img(ng-src="{{widget.url}}",style='height:100%;width:100%;')
+      img(ng-src="{{ widget.url }}",style='height:100%;width:100%;')
     .widgetContent(ng-if="widget.isVideo")
-      youtube-video(video-url="widget.url",player-width="'100%'",player-height="'100%'")
+      iframe(src="{{trustUrl(widget.url)}}", frameborder="0", allowfullscreen, height="100%", width="100%")
+      //- youtube-video(video-url="widget.url",player-width="'100%'",player-height="'100%'")
     //.widgetContent(ng-if="widget.isSVG",ng-bind-html="widget.svg")
     .widgetContent(ng-if="widget.isSVG")
       svg-electricmeter(widget="widget")
+  label(ng-if="loading")
+      | Loading ...

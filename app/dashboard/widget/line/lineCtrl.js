@@ -1,36 +1,28 @@
-app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
-    $scope.loading=false;
-    console.log("$scope.widget at begining of lineCtrl", $scope.widget);
+app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
+    console.log("widget at begining of linceCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
+    $scope.dateOptions = ["today", "week", "month"];
 
+    if(!$scope.widget.chartObject)
+        $scope.loading = true;
 
-    // if (!$scope.widget.hasOwnProperty('chartObject') && !$scope.widget.hasOwnProperty('device')) {
-    //     $scope.widget.chartObject = {};
-    //     $scope.widget.chartObject.type = "LineChart";
-    //     $scope.widget.chartObject.data = [
-    //         ['Year', 'Sales', 'Expenses'],
-    //         ['2004',  1000,      400],
-    //         ['2005',  1170,      460],
-    //         ['2006',  660,       1120],
-    //         ['2007',  1030,      540]
-    //     ];
-    //     $scope.widget.chartObject.options = {
-    //         title: 'Company Performance',
-    //         curveType: 'function',
-    //         legend: { position: 'bottom' }
-    //     };
-    //     $scope.widget.show = true;
-    // }
+    if($scope.widget.deviceList){
+        $scope.tempDeviceList = $scope.widget.deviceList.slice(0);
+    }
+    else{
+        $scope.tempDeviceList = [];
+    }
 
     if (!$scope.widget.hasOwnProperty('chartObject') && !$scope.widget.hasOwnProperty('device')) {
         $scope.widget.chartObject = {
             type: "LineChart",
             data: [],
             options: {
-                title: 'Device',
+                //title: 'Device',
                 curveType: 'function',
-                legend: { position: 'bottom' }
+                legend: { position: 'bottom' },
+                interpolateNulls: true
             }
         };
         $scope.widget.show = true;
@@ -38,20 +30,18 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     // ---------- Old Functions -------------------
 
-    $scope.loadData=function(){
+    $scope.loadData = function(){
         console.log("lineCtrl loadData toto");
     };
 
     $scope.clickToOpen = function () {
-        //$scope.devicesData=[];
         ngDialog.openConfirm( {
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope:$scope,
-            width:'800px'
+            scope:$scope
         } )
         .then( function (result) {
-            //console.log("confirm edit result", result);
+            console.log("confirm edit result", result);
             $scope.widget = result.newWidget;
             $scope.widget.title = result.title;
         } );
@@ -62,9 +52,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
     $scope.loadDevices = function() {
         var deferred = $q.defer();
 
-        console.log("measurementType", $scope.widget.measurementType);
         DevicesData.getDevicesData().then(function(devices){
-            console.log("devices", devices);
             $scope.devicesData = devices;
             deferred.resolve(devices);
             if($scope.widget.deviceId){
@@ -76,104 +64,232 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q){
 
     }
 
-    // Get device object from its name
+    // Select device object from its id
     $scope.selectDevice = function(deviceId){
-        console.log("deviceName", deviceId);
         $scope.devicesData.forEach(function(device){
             if(device._id == deviceId){
                 $scope.widget.selectedDevice = device;
             }
         });
     }
-    // Get measurement object of selected device from its type
-    $scope.selectMeasurement = function(measurementType){
-        console.log("measurementType", measurementType);
-        $scope.loadHistory($scope.widget.deviceId, $scope.widget.startDate, $scope.widget.endDate, measurementType, $scope.widget);
-        //console.log("measurementType", $scope.measurementType);
-    }
 
-    $scope.getDevice = function(name){
-        var deviceReturn = {};
-
-        $scope.devicesData.forEach(function(device){
-          if(device.name == name){
-            deviceReturn = device;
-          }
-        });
-
-        return deviceReturn;
-    }
-
-    // TODO: better management of widget/newidget
-    $scope.loadHistory = function(deviceId, startDate, endDate, measurementType, widget){
-        console.log("loadHistory", deviceId, startDate, endDate, measurementType);
-        //console.log("loadHistory", deviceId, startDate, endDate, measurementType, widget);
-        if(!$scope.widget.deviceId ){
-            console
-            $scope.widget.deviceId = $scope.widget.device.deviceId;
-        }
+    $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
+        var deferred = $q.defer();
+    
         var result = [
-            ['Date', measurementType]
+            [ 'date', deviceId]
         ];
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
-            console.log("result from devicedata", measurements);
             if(measurements && measurements.length > 0){
                 measurements.forEach(function (measurement){
                     result.push(measurement);
                 });
             }
-            widget.chartObject.data = result;
-            widget.show = true;
-            //console.log("widget", widget);
+            deferred.resolve(result);
         });
+
+        return deferred.promise;
     }
 
+
     $scope.refreshFromDevice = function(){
+        console.log("refreshFromDevice");
         if(!$scope.widget.chartObject){
             $scope.widget.chartObject = {
                 type: "LineChart",
                 data: {},
                 options: {
-                    title: $scope.widget.device.title,
+                    height:100,
+                    width:100,
+                    title: $scope.widget.measurementType,
                     curveType: 'function',
                     legend: { position: 'bottom' }
                 }
             };
+
+            $scope.widget.deviceList.forEach(function(device){
+                $scope.addDevice(device.id);
+            });
+
+        }
+        if($scope.widget.chartObject.data.length == 0 && $scope.widget.deviceList){
+            $scope.widget.deviceList.forEach(function(device){
+                $scope.addDevice(device.id);
+            });
+        }
+        $scope.widget.refreshed = true;
+
+    }
+
+    $scope.addDevice = function(id){
+        console.log("scope in adddevice", $scope);
+        if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
+            var startDate = "";
+            var endDate = "";
+            if($scope.widget.customDate){
+                console.log("using customDate");
+                startDate = $scope.widget.startDate;
+                endDate = $scope.widget.endDate;
+            }
+            else{
+                console.log("using dateOption");
+                endDate = new Date();
+                switch($scope.widget.dateOption){
+                    case "week": 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()).getTime() - endDate.getDay() * 24 * 60 * 60 * 1000;
+                        break;
+                    case "month": 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                        break;
+                    default: 
+                        startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+                }
+            }
+
+            $scope.getHistory(id, startDate, endDate, $scope.widget.measurementType)
+            .then(function(result){
+                if(!$scope.widget.chartObject.data || !$scope.widget.chartObject.data.length){
+                    $scope.widget.chartObject.data = [];
+                    result.forEach(function(elem){
+                        $scope.widget.chartObject.data.push(elem);
+                    });
+                }
+                else{
+                    $scope.mergeData($scope.widget.chartObject.data, result);
+                }
+
+                var head = [$scope.widget.chartObject.data[0]];
+                var body = $scope.widget.chartObject.data.slice(1);
+                body.sort(function(a, b){
+                    var aDate = new Date(a[0]).getTime();
+                    var bDate = new Date(b[0]).getTime();
+                    return aDate - bDate;
+                });
+
+                $scope.widget.chartObject.data = head.concat(body);
+                console.log("loading end HHHEEERREEEE");
+                $scope.loading = false;
+                console.log("loading ?", $scope.loading);                
+
+            });
         }
         else{
-            $scope.widget.chartObject.options.title = $scope.widget.device.title;
+            console.log("all fields not completed");
+        }
+    }
+
+    $scope.removeDevice = function(device){
+        var position = -1;
+        for(i=0; i<$scope.tempDeviceList.length; i++){
+
+            if($scope.tempDeviceList[i].id == device.id)
+                position = i;
         }
 
-        $scope.widget.deviceId = $scope.widget.device.id;
-        $scope.widget.startDate = $scope.widget.device.startDate;
-        $scope.widget.endDate = $scope.widget.device.endDate;
-        $scope.widget.measurementType = $scope.widget.device.measurementType;
+        if(position >= 0){
 
+            $scope.tempDeviceList.splice(position - 1, 1);
+        }
+        else{
+            console.log("device to remove not found");
+        }
+    }
+
+    $scope.mergeData = function(resultData, newData){
+        var position = resultData[0].length;
+        console.log("merge starting, position : ", position);
+        newData.forEach(function(elem){
+            var dataRow = $scope.getDataRow(resultData, elem[0]);
+            if(dataRow.length){
+                dataRow.push(elem[1]);
+            }
+            else{
+                dataRow = [elem[0]];
+                for (i = 1; i < position; i++) { 
+                    dataRow.push(null);
+                }
+                dataRow.push(elem[1]);
+                resultData.push(dataRow);
+            }
+
+        });
+
+        resultData.forEach(function(elem){
+            var dataRow = $scope.getDataRow(newData, elem[0]);
+            if(dataRow.length == 0){
+                elem.push(null);
+            }
+        });
+
+        console.log("merge finished");
+    }
+
+    $scope.getDataRow = function (data, key){
+        var result = [];
+        var found = false
+        data.forEach(function(elem){
+            var date1 = new Date(key).getTime();
+            var date2 = new Date(elem[0]).getTime();
+            if((key == 'date' && elem[0] == 'date' || date1 == date2) && !found){
+                result = elem;
+                found = true;
+            }
+        })
+
+        return result;
+    }
+
+    $scope.addTempDevice = function(id){
+        var currentDevice = {
+                id: id
+        };
+
+        $scope.tempDeviceList.push(currentDevice);
+    }
+
+    $scope.apply = function(){
+        $scope.widget.deviceList = $scope.tempDeviceList;
+        $scope.widget.chartObject.data = [];
         
-        $scope.loadHistory($scope.widget.device.id, $scope.widget.device.startDate, $scope.widget.device.endDate, $scope.widget.device.measurementType, $scope.widget);
+        console.log("deviceList in apply", $scope.widget.deviceList);
+        $scope.widget.deviceList.forEach(function(device){
+            $scope.addDevice(device.id);
+        });
+
+        $scope.confirm({
+            'newWidget' : $scope.widget,
+            'title' : $scope.$parent.$parent.widget.title
+        });
     }
 
     // ------------------ Begining -----------------
 
-
-    $scope.loadDevices();
+    $scope.loadDevices()
+    .then(function(){
+        if(!$scope.widget.refreshed){
+            $scope.refreshFromDevice();
+        } 
+    });
 
     // ------------- Watchers ---------------------
 
-    $scope.$watch('widget.device.id', function(OldValue, NewValue){
-        if($scope.widget.device){
-            //console.log("oldvalue", OldValue);
-            console.log("NewValue of device id", NewValue);
-            if(!$scope.devicesData){
-                $scope.loadDevices()
-                .then(function(){
-                    $scope.refreshFromDevice();
-                })
-            }
-            else{
-                $scope.refreshFromDevice();
-            }
-        }
+    angular.element($window).on('resize',function(){
+        console.log("angular elem resize line");
+      $scope.widget.resize=true;
     });
+
+    $scope.$watch('widget.resize',function(){
+        console.log("lineChart resize");
+        $scope.isChart = false;
+        setTimeout(function(){
+            if($scope.widget.resize == true){
+                $scope.isChart = true;
+                $scope.widget.resize=false;
+                console.log("resize line");
+            }
+            
+        }, 2000);
+    });
+
 });

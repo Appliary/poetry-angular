@@ -1,0 +1,27 @@
+div(ng-controller='mapCtrl')
+    fieldset.form-group()
+        input.form-control(type="text",ng-model="search", placeholder="search")
+        select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
+            option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
+        select.form-control(ng-model="widget.positionType",id="widget.positionType")
+                option(ng-repeat="measurement in widget.selectedDevice.last | filter:filterMeasurement") {{ measurement.id }}
+        button(name="plus-circle",ng-show="widget.deviceId && widget.positionType",ng-click="addTempDevice(widget.selectedDevice, widget.positionType);") {{'+'}}
+
+        table(class="table-condensed tableModalWidget")
+            thead
+                tr
+                    th {{ 'Device:chart' | translate }}
+                    th {{ 'Measurement:chart' | translate }} 
+                    th {{ 'Action:chart' | translate }}
+            tbody
+                tr(ng-repeat="device in tempDeviceList")
+                    td
+                        | {{device.id}}
+                    td
+                        | {{device.positionType}}
+                    td
+                        label(name="remove",ng-click="removeDevice(device)")
+                            | {{ 'Remove:chart' | translate }}                
+    .modalButtons
+        button.btn.btn-primary.pull-right(ng-click="apply()")
+            | {{ 'Save:chart' | translate }}

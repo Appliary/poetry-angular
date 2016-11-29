@@ -1,7 +1,4 @@
-app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, ngNotify, $http, $state) {
-
-    $scope.linkToDetails = true;
-    $scope.loading = false;
+app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, ngNotify, $http, $state, $q) {
 
     if (!$scope.widget) {
         $scope.widget = {};
@@ -9,9 +6,8 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
     $scope.selectedDevice = {};
     $scope.selectedMeasurement = {};
 
-    $scope.widget.filterDevice = '';
-
     if (!$scope.widget.hasOwnProperty('chartObject')) {
+        $scope.loading = true;
         $scope.widget.chartObject = {};
         $scope.widget.chartObject.options = {
             width: 400,
@@ -23,11 +19,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
             minorTicks: 5
         };
 
-        $scope.widget.chartObject.data = [
-            ['Label', 'Value'],
-            ['Memory', 80],
-            ['CPU', 55]
-        ];
+        $scope.widget.chartObject.data = [];
     }
 
     $scope.widget.type = "gauge";
@@ -38,43 +30,13 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
     $scope.devicesData = [];
     $scope.devices = [];
 
-    $scope.newWidget = {
-      type: "gauge",
-      isChart: true,
-      chartObject: {
-        data: [],
-        options: {
-          width: 400,
-          height: 120,
-          redFrom: 75,
-          redTo: 100,
-          yellowFrom: 50,
-          yellowTo: 75,
-          minorTicks: 5
-        }
-      }
-
-    };
-
-    console.log("gauge scope widget", $scope.widget);
-
     $scope.loadData = function() {
 
-        /*$scope.loading=true;
-
-          $scope.widget.chartObject.data = [
-
-                 [ 'Label', 'Value' ],
-
-                 [ $scope.widget.dataPoint.data, $scope.widget.dataPoint.value ]
-
-             ];
-
-          $scope.widget.chartObject.options = $scope.widget.dataPoint.options;
-
-          $scope.loading=false;
-
-          $scope.widget.forceReload===false;*/
+        //console.log("loadData", $scope.widget);
+        // if($scope.widget.deviceList && $scope.widget.deviceList.length > 0 ){
+        //     $scope.widget.deviceId = $scope.widget.deviceList[0].id;
+        //     $scope.addDevice();
+        // }
 
     };
 
@@ -82,8 +44,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
             className: 'ngdialog-theme-default',
-            scope: $scope,
-            width: '800px'
+            scope: $scope
         })
         .then(function(res) {
             console.log("modalWidget res", res);
@@ -93,124 +54,52 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     };
 
-    $scope.addDataPoint = function(device, data) {
-        $scope.widget.dataPoint.idDevice = device.id;
-        $scope.widget.dataPoint.data = data.type;
-        $scope.widget.dataPoint.value = data.value;
-        $scope.widget.dataPoint.name = device.name;
-
-    };
-
-    $scope.removeDatapoint = function() {
-        $scope.widget.dataPoint.device = '';
-        $scope.widget.dataPoint.data = '';
-        $scope.widget.dataPoint.value = '';
-
-    }
-
-    $scope.editDataPoint = function(device, data) {
-        console.log('device', device)
-        console.log('data', data)
-        $scope.widget.dataPoint.device = device.id;
-        $scope.widget.dataPoint.data = data;
-        $scope.widget.dataPoint.value = device.lastValue[data.replace(/ /g, "")];
-        
-        Notify.success({
-            title: 'Updated',
-            message: 'Your chart has been updated'
-        });
-    };
-
-
-
-    $scope.errorHandler = function(error) {
-        //simply remove the error, the user never see it
-        //google.visualization.errors.removeError(error.id);
-    };
-
-    $scope.goToDetails = function() {
-        console.log($scope.widget.dataPoint.device);
-        if ($scope.linkToDetails)
-            $location.path('/devices/' + $scope.widget.dataPoint.device + '/detail');
-    };
-
-    $scope.checkIfExist = function(attribute) {
-        if (!angular.isUndefined(attribute)) {
-            return ' - ';
-        }
-    };
-
-    $scope.$watch('widget.forceReload', function() {
-        if ($scope.widget.forceReload === true) {
-            //$scope.loadData();
-        }
-    });
-
-    $scope.filterDeviceList = function(filter) {
-        console.log('relaod', filter)
-        if (filter != '') {
-            /*$http.get(window.serverUrl+'/api/myDevices/filter/'+filter)
-            .then(function(res){
-                $scope.devicesData=res.data;
-            })*/
-        } else {
-            $scope.devicesData = [];
-        }
-    }
-
-    if ($state.params.id) {
-        $scope.isForDevice = true;
-        $scope.filterDeviceList($state.params.id);
-    } else {
-        $scope.filterDevice = '';
-    }
-
-    /*if($scope.widget.dataPoint.device){
-      $http.get(window.serverUrl+'/api/myDevices/getlastvalue/'+$scope.widget.dataPoint.device)
-      .then(function(res){
-        angular.forEach(res.data.lastValue,function(value){
-          if(value.type==$scope.widget.dataPoint.data){
-            $scope.widget.dataPoint.value=value.value;
-          }
-        })
-      });
-    }*/
-
-    //google.charts.setOnLoadCallback($scope.loadData());
 
     $scope.loadDevices = function() {
-       $http.get( '/api/devices' )
-        .then( function success( response ) {
-            $scope.devicesData = response.data.data;
-        } );
+        var deferred = $q.defer();
+
+        DevicesData.getDevicesData().then(function(devices){
+            $scope.devicesData = devices;
+            deferred.resolve(devices);
+            if($scope.widget.deviceId){
+                $scope.selectDevice($scope.widget.deviceId);
+            }
+        });
+
+        return deferred.promise;
+
     }
 
     // Get device object from its name
-    $scope.selectDevice = function(deviceName){
-      $scope.devicesData.forEach(function(device){
-          if(device.name == deviceName){
-            $scope.selectedDevice = device;
-          }
+    $scope.selectDevice = function(deviceId){
+
+        var deferred = $q.defer();
+        DevicesData.getDeviceData(deviceId)
+        .then(function(result){
+            $scope.selectedDevice = result;
+            deferred.resolve(result);
         });
+
+        return deferred.promise;
     }
     // Get measurement object of selected device from its type
     $scope.selectMeasurement = function(measurementType){
-      $scope.selectedDevice.last.forEach(function(measurement){
-          if(measurement.type == measurementType){
-            $scope.selectedMeasurement = measurement;
-            $scope.newWidget.chartObject.data = [
-              ['Label', 'Value'],
-              [measurementType, measurement.value]
-            ];
-          }
+        $scope.selectedDevice.last.forEach(function(measurement){
+            if(measurement.type == measurementType){
+                $scope.selectedMeasurement = measurement;
+                $scope.widget.chartObject.data = [
+                    ['Label', 'Value'],
+                    [measurementType, measurement.value]
+                ];
+            }
         });
     }
 
-    $scope.getDevice = function(name){
+    $scope.getDevice = function(id){
         var deviceReturn = {};
 
         $scope.devicesData.forEach(function(device){
-          if(device.name == name){
+          if(device.id == id){
             deviceReturn = device;
           }
         });
@@ -222,14 +111,64 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
       console.log("scope widget", $scope.newWidget);
     }
 
-    $scope.createWidget = function(){
-      $scope.confirm({
-        newWidget : $scope.newWidget,
-        title : $scope.$parent.$parent.widget.title
-      });
+    $scope.addDevice = function(){
+        if($scope.widget.deviceId && $scope.widget.measurementType){
+            $scope.selectDevice($scope.widget.deviceId)
+            .then(function(result){
+                $scope.selectMeasurement($scope.widget.measurementType);
+                $scope.widget.device = {
+                    id: $scope.widget.deviceId,
+                    type: $scope.widget.measurementType,
+                    value: $scope.selectedMeasurement.value
+                };
+                $scope.widget.deviceList = [{
+                    id: $scope.widget.deviceId
+                }];
+                $scope.loading = false;
+            });
+        }
+    }
+
+    $scope.refreshFromDevice = function(){
+        if(!$scope.widget.chartObject){
+            $scope.widget.chartObject = {
+                type: "Gauge",
+                data: {},
+                options: $scope.widget.options
+            };
+
+        }      
+        
+        if($scope.widget.deviceList && $scope.widget.deviceList.length > 0 ){
+            $scope.widget.deviceId = $scope.widget.deviceList[0].id;
+            $scope.addDevice();
+        }
+
     }
 
     // ------------ Begining ---------------
 
-    $scope.loadDevices();
+    $scope.loadDevices()
+    .then(function(){
+        if(!$scope.widget.device && $scope.widget.deviceList){
+            $scope.refreshFromDevice();
+        }
+    })
+
+    // ------------- Watchers --------------
+
+    // $scope.$watch('widget.deviceList', function(OldValue, NewValue){
+    //     if($scope.widget.deviceList && $scope.widget.deviceList.length > 0){
+    //         //console.log("oldvalue", OldValue);
+    //         if(!$scope.devicesData){
+    //             $scope.loadDevices()
+    //             .then(function(){
+    //                 $scope.refreshFromDevice();
+    //             })
+    //         }
+    //         else{
+    //             $scope.refreshFromDevice();
+    //         }
+    //     }
+    // });
 });

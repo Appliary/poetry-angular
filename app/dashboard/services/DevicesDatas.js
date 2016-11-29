@@ -19,9 +19,18 @@ app.service('DevicesData', function($http, $q, ngNotify) {
     this.getDeviceData = function(device, startDate, endDate, measurementType){
 
         var deferred = $q.defer();
-        var url = '/api/devices/' + device + '/measurements?before=' + endDate + '&after=' + startDate;
-        var datas = [];
+        var url = '';
 
+        if(startDate && endDate && measurementType){
+            var newStart = new Date(startDate).getTime();
+            var newEnd = new Date(endDate).getTime();
+            url = '/api/devices/' + device + '/measurements?before=' + newEnd + '&after=' + newStart + '&sort=asc';
+        }
+        else{
+            url = '/api/devices/' + device;
+        }
+        var datas = [];
+        console.log("getdevicesdata url", url);
         $http.get(url)
         .then(function(response) {
             if (response.data.data) {
@@ -33,8 +42,8 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                             if(measurement.type == measurementType && !found){
                                 found = true;
                                 var date = new Date(measurementData.timestamp);
-                                var dateToShow = date.getDate() + '/' + date.getMonth();
-                                datas.push([dateToShow, measurement.value]);
+                                var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
+                                datas.push([date, measurement.value]);
                             }
                         });
                     }  
@@ -44,7 +53,7 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                 
             // }
             else {
-                console.log("error in getdevicedata", response);
+                datas = response.data;
             }
 
             deferred.resolve(datas);

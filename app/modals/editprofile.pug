@@ -1,11 +1,11 @@
 .tab-header
     h1.modal-title {{ 'edit profile:modal:title' | translate }}
     tabs
-        a.modal-edit(ng-class='active', ng-click="showEdit()") {{'Edit:editmodal' | translate}}
-        a.modal-changepwd(ng-click="showChangepwd()") {{'Change password:editmodal' | translate}}
+        a.modal-edit(ng-click="showEdit()", ng-class=' { active: editView }') {{'Edit:editmodal' | translate}}
+        a.modal-changepwd(ng-click="showChangepwd()", ng-class=' { active: pwdView }') {{'Change password:editmodal' | translate}}
 .tab-body
     .tab-content(ng-if="editView")
-        label(ng-if="failedEdit")
+        label(ng-if="failedEdit", style='width: 100%; color: red;')
             | {{ failEditMsg + ':editprofile' | translate }}
 
         form( ng-submit='edit()' )
@@ -18,9 +18,13 @@
             label( for='email' ) {{ 'email:field:edit' | translate }}
             input( type='text', ng-model='user.email', name='email' )
 
-            button( type='submit' ).pull-right {{ 'Save:button' | translate }}
+            label( for='language' ) {{ 'language:field:edit' | translate }}
+            select(type='text', ng-model='user.language', name='language' )
+                option(ng-repeat='language in languageList') {{ language + ':field:edit' | translate }}
+
+            button.lightButton( type='submit' ).pull-right {{ 'Save:button' | translate }}
     .tab-content(ng-if="pwdView")
-        label(ng-if="failedChangepwd")
+        label(ng-if="failedChangepwd", style='width: 100%; color: red;')
             | {{ failChangepwdMsg + ':changepwd' | translate }}
 
         form( ng-submit='changePassword()' )
@@ -33,4 +37,4 @@
             label( for='newPassword2' ) {{ 'new Password:field:edit' | translate }}
             input( type='password', ng-model='password.newPassword2', name='newPassword2' )
 
-            button( type='submit' ).pull-right {{ 'Change password:button' | translate }}
+            button.lightButton( type='submit' ).pull-right {{ 'Change password:button' | translate }}
