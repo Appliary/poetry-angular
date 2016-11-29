@@ -557,7 +557,14 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     };
     // Clear all widget from dashboard
     $scope.clear = function(dashboard) {
-        dashboard.data = [];
+        ngDialog.openConfirm({
+            template: 'modals/confirmation.pug',
+            className: 'ngdialog-theme-default'
+        })
+        .then(function() {
+            dashboard.data = [];
+        });
+        
     };
     // Emit event 'resizeMsg' known by Google-Chart to resize the widget
     $scope.resizeWidgets = function() {
@@ -631,33 +638,39 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
     }
     
     $scope.confirmDashboardDelete = function(id) {
-        var index = -1;
-        var i = 0;
-        for(i = 0; i < $scope.dashboards.length; i++) {
-            if ($scope.dashboards[i].id == id) {
-                index = i;
-            }
-        }
-        if(index >= 0){
-            $scope.dashboards.splice(index, 1);
-            DevicesData.deleteDashboard(id)
-            .then(function(res){
-                console.log("deleteDashboard res", res);
+
+        ngDialog.openConfirm({
+                template: 'modals/confirmation.pug',
+                className: 'ngdialog-theme-default'
+            })
+            .then(function() {
+                var index = -1;
+                var i = 0;
+                for(i = 0; i < $scope.dashboards.length; i++) {
+                    if ($scope.dashboards[i].id == id) {
+                        index = i;
+                    }
+                }
+                if(index >= 0){
+                    $scope.dashboards.splice(index, 1);
+                    DevicesData.deleteDashboard(id)
+                    .then(function(res){
+                        console.log("deleteDashboard res", res);
+                    });
+                }
+                if($scope.dashboards.length){
+                    // Deleted dashboard is current dashboard
+                    if($scope.currentDashboard.id == id){
+                        $scope.currentDashboard = $scope.dashboards[0];
+                    }
+                }
+                //Dashboards is now empty
+                else{
+                    $scope.currentDashboard = {};
+                }
             });
-        }
-        if($scope.dashboards.length){
-            // Deleted dashboard is current dashboard
-            if($scope.currentDashboard.id == id){
-                $scope.currentDashboard = $scope.dashboards[0];
-            }
-        }
-        //Dashboards is now empty
-        else{
-            $scope.currentDashboard = {};
-        }
-        
-        
     }
+
     $scope.refreshData = function() {
         angular.forEach($scope.customItems.data, function(widget) {
             widget.forceReload = true;
