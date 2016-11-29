@@ -1,0 +1,6 @@
+input.form-control(type="text",ng-model="search", placeholder="search")
+select.form-control(ng-model="deviceId",id="deviceId", ng-change="selectDevice(deviceId)")
+    option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
+select.form-control(ng-model="measurementType")
+    option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}
+button(ng-click="addMeasurement()") {{ '+' }}

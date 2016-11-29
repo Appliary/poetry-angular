@@ -14,12 +14,7 @@ div(ng-controller="lineCtrl")
                 datepicker(date-format="MM/dd/yyyy")
                     input(ng-model="widget.endDate", type="text")
         span
-            input.form-control(type="text",ng-model="search", placeholder="search")
-            select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
-                option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
-            select.form-control(ng-model="widget.measurementType",id="widget.measurementType")
-                option(ng-repeat="measurement in widget.selectedDevice.last") {{ measurement.type }}
-            button(ng-click="addTempDevice(widget.deviceId)") {{ '+' }}
+            measurement-selector(device-id="widget.deviceId", measurement-type="widget.measurementType", add-measurement="addTempDevice()")
 
         table(class="table-condensed tableModalWidget")
             thead

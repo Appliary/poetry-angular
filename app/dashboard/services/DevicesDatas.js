@@ -1,6 +1,6 @@
 app.service('DevicesData', function($http, $q, ngNotify) {
 
-    this.getDevicesData=function () {
+    this.getDevicesData = function () {
         var deferred = $q.defer();
         var devices = [];
 
