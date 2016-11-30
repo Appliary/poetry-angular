@@ -24,7 +24,7 @@ form( ng-submit='' )
             option( ng-repeat=' opt in __joi[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
         //- Textareas
-        textarea( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("textarea") !== -1 ', ng-model='item[label]' )
+        textarea( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("textarea") !== -1 ', ng-model='item[field]' )
 
 
     span.saved( ng-if=' item.__saved ' )
