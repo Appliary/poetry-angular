@@ -15,7 +15,7 @@
     "mime-types": "^2.1.12",
     "ng-dialog": "^0.6.4",
     "node-sass": "^3.8.0",
-    "poetry": "git+https://github.com/Appliary/Poetry.git",
+    "poetry": "0.0.71",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0"
   },
