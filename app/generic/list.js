@@ -164,9 +164,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                 console.info( 'Saved!' );
                 $scope.__validation = [];
                 $scope.item.__saved = true;
+                $scope.item.__failed = false;
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
+                $scope.item.__saved = false;
 
                 if( err.status == 400 && err.data && err.data.validation )
                     $scope.__validation = err.data.validation.keys;
