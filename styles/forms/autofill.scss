@@ -3,6 +3,8 @@
     background: $modal_bg;
     padding: $gutter/2 $gutter;
     border: 1px solid $modal_border;
+    height: 150px;
+    overflow-y: auto;
     a{
         display: block;
         cursor: pointer;
