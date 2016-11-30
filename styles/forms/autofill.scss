@@ -1,0 +1,10 @@
+.autofill {
+    position: absolute;
+    background: $modal_bg;
+    padding: $gutter/2 $gutter;
+    border: 1px solid $modal_border;
+    a{
+        display: block;
+        cursor: pointer;
+    }
+}
