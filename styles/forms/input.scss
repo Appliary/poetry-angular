@@ -54,6 +54,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-.error input{
+.error input, .error select, .error textarea{
     border-color: $danger;
 }
