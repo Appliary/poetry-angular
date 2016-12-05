@@ -1,7 +1,7 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
-    $scope.fields = $scope.$root.__module.config.fields;
+    $scope.fields = $scope.$root.__module.config.tabs[$scope.__view].fields;
 
     $scope.sorting = {
         col: '_id',
