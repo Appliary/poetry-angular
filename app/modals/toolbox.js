@@ -21,7 +21,7 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location )
     }
 
     $scope.save = function save(){
-        $http.post( $scope.module.api, $scope.item )
+        $http.post( $scope.$root.__module.api, $scope.item )
             .then( function success( response ) {
 
                 $window.location.replace( $location.absUrl() );

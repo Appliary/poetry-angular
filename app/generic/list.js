@@ -1,8 +1,6 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
-    $scope.fields = $scope.$root.__module.config.tabs[$scope.__view].fields;
-
     $scope.sorting = {
         col: '_id',
         order: 'asc'
@@ -172,6 +170,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
+        $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields;
 
     }
 
