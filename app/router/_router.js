@@ -6,7 +6,8 @@ app.component( 'appRouter', {
         $scope,
         $templateCache,
         $controller,
-        $customRoutesProvider
+        $customRoutesProvider,
+        ngDialog
     ) {
 
 
@@ -121,7 +122,7 @@ app.component( 'appRouter', {
 
 
             try {
-                if ( $scope.$root.__module.controller &&    $scope.$root.__module.name != lastModule ) {
+                if ( $scope.$root.__module.controller && $scope.$root.__module.name != lastModule ) {
 
                     Object.keys( $scope )
                         .forEach( function ( k ) {
@@ -138,6 +139,25 @@ app.component( 'appRouter', {
                 }
             } catch ( err ) {
                 console.error( err );
+            }
+
+            $scope.openToolbox = function openToolbox( name ) {
+
+                if( !$scope.$root.__module.config || !$scope.$root.__module.config.toolbox || !$scope.$root.__module.config.toolbox[ name ] )
+                    return console.error( 'Toolbox', name, 'not found' );
+
+                $scope.__config = $scope.$root.__module.config.toolbox[ name ];
+                $scope.__config.toolboxName = name;
+
+                console.info( 'Opening toolbox:', $scope.__config );
+
+                return ngDialog.open( {
+                    templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
+                    controller: $scope.__config.controller || 'modals/toolbox',
+                    showClose: true,
+                    scope: $scope
+                } );
+
             }
 
         }

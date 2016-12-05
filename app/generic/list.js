@@ -1,38 +1,6 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
-    $scope.buttons = [];
-    $scope.buttons[ "add" ] = function add() {
-        return ngDialog.open( {
-            templateUrl: 'modals/addElement.pug',
-            controller: 'modals/addElement',
-            showClose: true,
-            className: 'addElement'
-        } );
-
-        $scope.open = true;
-    };
-
-    $scope.buttons[ "own" ] = function own() {
-        return ngDialog.open( {
-            templateUrl: 'modals/own.pug',
-            controller: 'modals/own',
-            showClose: true,
-            className: 'own'
-        } );
-    };
-
-
-    $scope.$root.__module.toolbox = {};
-    if ( $scope.$root.__module.buttons ) {
-        $scope.$root.__module.buttons.forEach( function ( button ) {
-            if ( $scope.buttons[ button ] ) {
-                $scope.$root.__module.toolbox[ button ] = $scope.buttons[ button ];
-            }
-
-        } );
-    }
-
     $scope.sorting = {
         col: '_id',
         order: 'asc'
