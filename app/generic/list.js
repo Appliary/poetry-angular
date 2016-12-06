@@ -155,6 +155,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $scope.__validation = [];
 
         // Load controller
+        $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields;
         if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
             return $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
                 $scope: $scope
@@ -170,7 +171,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
-        $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields;
 
     }
 
