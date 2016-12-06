@@ -16,8 +16,10 @@
         tbody
             tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if='row[ column ] !== undefined' )
+                    span( ng-if='row[ column ] !== undefined && column != "_id"' )
                         | {{ row[ column ] | localize }}
+                    em( ng-if='column == "_id"')
+                        | {{ row[ column ] }}
     .noData( ng-if='total === 0' )
         | {{ 'nodata:' + $root.__module.name | translate}}
 
