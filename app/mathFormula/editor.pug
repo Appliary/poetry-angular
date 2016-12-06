@@ -1,0 +1,51 @@
+div.mathFormula(ng-controller='mathFormula/editor')
+    h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
+    table
+        thead: tr
+            th {{ 'varName:' + $root.__module.name + ':col' | translate }}
+            th {{ 'device:' + $root.__module.name + ':col' | translate }}
+            th {{ 'measurement:' + $root.__module.name + ':col' | translate }}
+            th {{ 'currentValue:' + $root.__module.name + ':col' | translate }}
+            th &nbsp;
+        tbody
+            tr( ng-repeat=' (i,input) in item.inputs ')
+                td: b {{ input.varName }}
+                td {{ input.device }}
+                td {{ input.type }}&nbsp;
+                    em {{ input.id }}
+                td.muted {{ inputValues[ input.varName ] }}
+                td: button.rmInput.lightButton(ng-click='item.inputs.splice(i,1)') X
+            tr
+                td(ng-class='{error:checkVarName() && newInput.varName}')
+                    input( ng-model='newInput.varName' )
+                td(ng-class='{error: !newInput.device && !checkVarName() }', ng-if='!newInput.device')
+                    input( ng-model='newInput.deviceSearch', ng-disabled='checkVarName()', ng-focus='newInput.autofill=true', ng-blur='newInput.autofill=false' )
+                    div.autofill( ng-if='newInput.autofill' )
+                        .muted(ng-if='!newInput.searchResults')
+                            | {{ 'loading:autofill' | translate }}
+                        a(ng-repeat='device in newInput.searchResults', ng-mousedown='newInput.device=device')
+                            | {{ device.name }}
+                td(ng-if='newInput.device', ng-click='newInput.device = 0')
+                    | {{ newInput.device.name || newInput.device._id }}
+                td: select( ng-disabled='!newInput.device', ng-model='newInput.measurement' )
+                    option(ng-repeat='(i, measurement) in newInput.device.last', value='{{i}}')
+                        | {{measurement.type}} {{measurement.id}}
+                td.muted(ng-if='newInput.measurement')
+                    | {{ newInput.device.last[ newInput.measurement ].value }}
+                td( ng-if='!checkVarName() && newInput.device.last[ newInput.measurement ]' )
+                    button.addInput.lightButton(ng-click='addInput()')
+                        | {{ 'add:input:mathFormula' | translate}}
+
+    br
+    h4 {{ 'formula:' + $root.__module.name + ':title' | translate }}
+    div.formula(ng-class='{error: currentOutputErr}')
+        textarea( ng-model='item.formula' )
+        input( readonly, ng-value='currentOutput' )
+
+br
+span.saved( ng-if=' item.__saved ' )
+    | {{ 'saved:' + $root.__module.name | translate }}
+span.failed( ng-if=' item.__failed ' )
+    | {{ 'failed:save:' + $root.__module.name | translate }}
+button(ng-click='save()', ng-disabled='currentOutputErr').pull-right.lightButton
+    | {{ 'save:' + $root.__module.name + ':button' | translate }}
