@@ -17,13 +17,17 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     /**
      * Retrieve the list from the webservice
      */
-    getlist(true);
+    getlist( true );
     $scope.$watch( 'search', getlist );
     $scope.$watch( 'status', getlist );
     $scope.$watchCollection( 'sorting', getlist );
 
+    $scope.$watch( '__view', function loadView() {
+        $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
+    } );
+
     function getlist( o, n ) {
-        if( o == n ) return;
+        if ( o == n ) return;
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         $scope.total = undefined;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
@@ -138,7 +142,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                 $scope.item.__failed = true;
                 $scope.item.__saved = false;
 
-                if( err.status == 400 && err.data && err.data.validation )
+                if ( err.status == 400 && err.data && err.data.validation )
                     $scope.__validation = err.data.validation.keys;
             } );
 
@@ -151,11 +155,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
      */
     function retrieveItem( id ) {
 
-        if( !id ) return console.warn('No ID');
+        if ( !id ) return console.warn( 'No ID' );
         $scope.__validation = [];
 
         // Load controller
-        $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields;
         if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
             return $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
                 $scope: $scope
@@ -177,12 +180,12 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
         .then( function success( response ) {
-            if(!response.data.payload._inner)
+            if ( !response.data.payload._inner )
                 return $scope.__joi = response.data.payload;
 
             $scope.__joi = {};
-            response.data.payload._inner.children.forEach( function(elem){
-                $scope.__joi[elem.key] = elem.schema;
-            })
+            response.data.payload._inner.children.forEach( function ( elem ) {
+                $scope.__joi[ elem.key ] = elem.schema;
+            } )
         }, function error( err ) {} );
 } );
