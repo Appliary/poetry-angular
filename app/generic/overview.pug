@@ -26,6 +26,9 @@ form( ng-submit='' )
         //- Textareas
         textarea( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("textarea") !== -1 ', ng-model='item[field]' )
 
+        //- Boolean
+        input( name='{{field}}', type="checkbox", ng-if='__joi[field] && item[field]._type == "boolean"', ng-model='item[field]' )
+
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
