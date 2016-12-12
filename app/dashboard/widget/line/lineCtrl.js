@@ -20,7 +20,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             data: [],
             options: {
                 //title: 'Device',
-                curveType: 'function',
+                pointSize: 5,
                 legend: { position: 'bottom' },
                 interpolateNulls: true
             }
