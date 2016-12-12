@@ -15,7 +15,8 @@ app.filter( 'localize', function ( $filter ) {
             return _number( input );
         }
 
-        if ( _date( input ) != "Invalid Date" ) return _date( input );
+        if( input.length == 24 || input instanceof Date )
+            if ( _date( input ) != "Invalid Date" ) return _date( input );
 
         if ( typeof input == 'object' ) {
             if ( input.name ) return input.name;
