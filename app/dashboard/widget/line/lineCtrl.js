@@ -52,7 +52,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             [ 'date', deviceId]
         ];
 
-        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
+        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart).then(function(measurements){
             if(measurements && measurements.length > 0){
                 measurements.forEach(function (measurement){
                     result.push(measurement);
@@ -161,7 +161,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
         if(position >= 0){
 
-            $scope.tempDeviceList.splice(position - 1, 1);
+            $scope.tempDeviceList.splice(position, 1);
         }
         else{
             console.log("device to remove not found");

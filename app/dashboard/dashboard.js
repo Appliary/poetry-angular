@@ -271,7 +271,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "adaptativeCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
 
                 });
                 break;
@@ -289,7 +290,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
                     measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList
+                    deviceList: data.newWidget.deviceList,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'gauge':
@@ -307,7 +309,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     chartObject: data.newWidget.chartObject,
                     deviceId: data.newWidget.deviceId,
                     measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList
+                    deviceList: data.newWidget.deviceList,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'BarChart':
@@ -323,7 +326,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "barCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'AreaChart':
@@ -339,7 +343,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "areaCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'BubbleChart':
@@ -355,7 +360,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "bubbleCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'ComboChart':
@@ -371,7 +377,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "comboCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'GeoChart':
@@ -387,7 +394,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "geoCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'line':
@@ -407,7 +415,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
                     deviceList: data.newWidget.deviceList,
-                    refreshed : data.newWidget.refreshed
+                    refreshed : data.newWidget.refreshed,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'combo':
@@ -427,7 +436,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
                     deviceList: data.newWidget.deviceList,
-                    refreshed : data.newWidget.refreshed
+                    refreshed : data.newWidget.refreshed,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'candlestick':
@@ -443,7 +453,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     controller: "candlestickCtrl",
                     deviceId: data.newWidget.deviceId,
                     startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate
+                    endDate: data.newWidget.endDate,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'table':
@@ -457,7 +468,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     title: data.title,
                     type: "table",
                     controller: "tableCtrl",
-                    toDisplay: data.newWidget.toDisplay
+                    toDisplay: data.newWidget.toDisplay,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'column':
@@ -477,7 +489,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     customDate: data.newWidget.customDate,
                     measurementType: data.newWidget.measurementType,
                     deviceList: data.newWidget.deviceList,
-                    refreshed : data.newWidget.refreshed
+                    refreshed : data.newWidget.refreshed,
+                    smart: data.newWidget.smart
                 });
                 break;
             case 'Histogram':
@@ -728,7 +741,9 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 dateOption: data.dateOption,
                 url: data.url,
                 col: data.col,
-                row: data.row
+                row: data.row,
+                smart: data.smart
+
             };
 
             if(data.chartObject){

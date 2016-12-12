@@ -14,7 +14,7 @@ div(ng-controller="lineCtrl")
                 datepicker(date-format="MM/dd/yyyy")
                     input(ng-model="widget.endDate", type="text")
         span
-            measurement-selector(device-id="widget.deviceId", measurement-type="widget.measurementType", add-measurement="addTempDevice()")
+            measurement-selector(device-id="widget.deviceId", measurement-type="widget.measurementType", smart="widget.smart", add-measurement="addTempDevice()")
 
         table(class="table-condensed tableModalWidget")
             thead

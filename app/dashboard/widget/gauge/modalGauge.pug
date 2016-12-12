@@ -1,12 +1,7 @@
 div(ng-controller="gaugeCtrl")
   fieldset.form-group()
       span
-          input.form-control(type="text",ng-model="search", placeholder="search")
-          select.form-control(ng-model="widget.deviceId",id="widget.deviceId", ng-change="selectDevice(widget.deviceId)")
-              option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
-          select.form-control(ng-model="widget.measurementType",id="widget.measurementType")
-              option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}
-          button(ng-click="addDevice()") {{ '+' }}
+            measurement-selector(device-id="widget.deviceId", measurement-type="widget.measurementType", smart="widget.smart", add-measurement="addDevice()")
 
       table(class="table-condensed tableModalWidget")
           thead

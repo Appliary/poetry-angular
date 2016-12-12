@@ -5,6 +5,7 @@ app.directive('measurementSelector', [ '$q', '$http', 'DevicesData', function($q
         scope: { 
             deviceId: '=',
             measurementType: '=',
+            smart: '=',
             addMeasurement: '&'
         },
         templateUrl: 'dashboard/directives/measurement-selector.directive.pug',
@@ -15,8 +16,8 @@ app.directive('measurementSelector', [ '$q', '$http', 'DevicesData', function($q
 
 
             // ------- Functions ---------
-            $scope.loadDevices = function(){
-                DevicesData.getDevicesData()
+            $scope.loadDevices = function(smart){
+                DevicesData.getDevicesData(smart)
                 .then(function(devices){
                     $scope.devicesData = devices;
                     $scope.selectDevice($scope.deviceId);
@@ -32,7 +33,7 @@ app.directive('measurementSelector', [ '$q', '$http', 'DevicesData', function($q
             }
 
             // ------- Begining ----------
-            $scope.loadDevices();
+            $scope.loadDevices($scope.smart);
         }
     };
 }]);

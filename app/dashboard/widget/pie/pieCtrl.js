@@ -61,19 +61,19 @@ app.controller('pieCtrl', function($scope, $location, ngDialog, DevicesData, ngN
 
     }
 
-    // Get measurement object of selected device from its type
-    $scope.getMeasurement = function(device, measurementType){
-        var result = null;
-        var found = false;
-        device.last.forEach(function(measurement){
-            if(measurement.type == measurementType && !found){
-                result = measurement;
-                found = true;
-            }
-        });
+    $scope.getMeasurement = function(deviceId, measurementType, smart){
 
-        return result;
+        var deferred = $q.defer();
+
+        DevicesData.getLastData(deviceId, measurementType, smart)
+        .then(function (measurement){
+
+            deferred.resolve(measurement);
+        });  
+
+        return deferred.promise;      
     }
+
 
     $scope.getDevice = function(id){
         var deviceReturn = {};
@@ -87,23 +87,15 @@ app.controller('pieCtrl', function($scope, $location, ngDialog, DevicesData, ngN
         return deviceReturn;
     }
 
-    $scope.selectDevice = function(deviceId){
-        $scope.devicesData.forEach(function(device){
-            if(device._id == deviceId){
-                $scope.widget.selectedDevice = device;
-            }
-        });
-    }
-
     $scope.showWidget = function(){
       console.log("scope widget", $scope.newWidget);
     }
 
     $scope.addDevice = function(id){
         if($scope.widget.measurementType){
-            DevicesData.getDeviceData(id)
-            .then(function(result){
-                var measurement = $scope.getMeasurement(result, $scope.widget.measurementType);
+            
+            $scope.getMeasurement(id, $scope.widget.measurementType, $scope.widget.smart)
+            .then(function (measurement){
                 if(!$scope.widget.chartObject.data || $scope.widget.chartObject.data.length == 0){
                     $scope.widget.chartObject.data = [['Device', $scope.widget.measurementType]];
                 }
@@ -113,7 +105,6 @@ app.controller('pieCtrl', function($scope, $location, ngDialog, DevicesData, ngN
                     $scope.widget.chartObject.options.title = $scope.widget.measurementType;
                     $scope.loading = false;
                 }
-                    
             });
         }
     }
@@ -151,8 +142,8 @@ app.controller('pieCtrl', function($scope, $location, ngDialog, DevicesData, ngN
         });
     }
 
-    $scope.addTempDevice = function(deviceId){
-        var device = {id: deviceId}
+    $scope.addTempDevice = function(){
+        var device = {id: $scope.widget.deviceId}
         $scope.tempDeviceList.push(device);
     }
 
@@ -166,7 +157,7 @@ app.controller('pieCtrl', function($scope, $location, ngDialog, DevicesData, ngN
 
         if(position >= 0){
 
-            $scope.tempDeviceList.splice(position - 1, 1);
+            $scope.tempDeviceList.splice(position, 1);
         }
         else{
             console.log("device to remove not found");
