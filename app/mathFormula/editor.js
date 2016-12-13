@@ -56,7 +56,8 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout ) {
                 'xgcd',
                 'unit',
                 'to',
-                'in'
+                'in',
+                'not'
             ].indexOf( varName ) )
             return true;
 
