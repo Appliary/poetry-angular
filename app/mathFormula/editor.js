@@ -9,6 +9,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout ) {
         if (autofill) {
             searchDevice( '' );
         }
+    }
 
     $scope.checkVarName = function checkVarName() {
 
