@@ -1,6 +1,10 @@
-input.form-control(type="text",ng-model="search", placeholder="search")
+label
+    input.form-control(type="checkbox",ng-model="smart", ng-click="loadDevices(smart)")
+    | {{ 'Smartdevices' }}
+input.form-control(type="text",ng-model="deviceSearch", placeholder="search")
 select.form-control(ng-model="deviceId",id="deviceId", ng-change="selectDevice(deviceId)")
-    option(ng-repeat="device in devicesData | filter:search") {{ device._id }}
+    option(ng-repeat="device in searchResults", ng-value="device._id") {{ device.name }}
 select.form-control(ng-model="measurementType")
-    option(ng-repeat="measurement in selectedDevice.last") {{ measurement.type }}
+    option(ng-repeat="measurement in selectedDevice.last", ng-if="!smart") {{ measurement.type }}
+    option(ng-if="smart") {{ selectedDevice.type }}
 button(ng-click="addMeasurement()") {{ '+' }}

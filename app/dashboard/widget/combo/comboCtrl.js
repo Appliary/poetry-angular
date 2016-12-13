@@ -28,10 +28,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     // ---------- Old Functions -------------------
 
-    $scope.loadData = function(){
-        console.log("comboCtrl loadData toto");
-    };
-
     $scope.clickToOpen = function () {
         ngDialog.openConfirm( {
             template: 'dashboard/modalWidget.pug',
@@ -47,30 +43,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     // ---------------- New Functions ------------------
 
-    $scope.loadDevices = function() {
-        var deferred = $q.defer();
-
-        DevicesData.getDevicesData().then(function(devices){
-            $scope.devicesData = devices;
-            deferred.resolve(devices);
-            if($scope.widget.deviceId){
-                $scope.selectDevice($scope.widget.deviceId);
-            }
-        });
-
-        return deferred.promise;
-
-    }
-
-    // Select device object from its id
-    $scope.selectDevice = function(deviceId){
-        $scope.devicesData.forEach(function(device){
-            if(device._id == deviceId){
-                $scope.widget.selectedDevice = device;
-            }
-        });
-    }
-
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
     
@@ -78,7 +50,7 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             [ 'date', deviceId]
         ];
 
-        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType).then(function(measurements){
+        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart).then(function(measurements){
             if(measurements && measurements.length > 0){
                 measurements.forEach(function (measurement){
                     result.push(measurement);
@@ -110,14 +82,14 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         }
         if($scope.widget.chartObject.data.length == 0 && $scope.widget.deviceList){
             $scope.widget.deviceList.forEach(function(device){
-                $scope.addDevice(device.id, false);
+                $scope.addDevice(device.id);
             });
         }
         $scope.widget.refreshed = true;
 
     }
 
-    $scope.addDevice = function(id, newDevice){
+    $scope.addDevice = function(id){
         console.log("scope in adddevice", $scope);
         if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
             var startDate = "";
@@ -184,7 +156,7 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
         if(position >= 0){
 
-            $scope.tempDeviceList.splice(position - 1, 1);
+            $scope.tempDeviceList.splice(position, 1);
         }
         else{
             console.log("device to remove not found");
@@ -235,9 +207,9 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         return result;
     }
 
-    $scope.addTempDevice = function(id){
+    $scope.addTempDevice = function(){
         var currentDevice = {
-                id: id
+                id: $scope.widget.deviceId
         };
 
         $scope.tempDeviceList.push(currentDevice);
@@ -260,12 +232,9 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     // ------------------ Begining -----------------
 
-    $scope.loadDevices()
-    .then(function(){
-        if(!$scope.widget.refreshed){
-            $scope.refreshFromDevice();
-        } 
-    });
+    if(!$scope.widget.refreshed){
+        $scope.refreshFromDevice();
+    } 
 
     // ------------- Watchers ---------------------
 

@@ -30,16 +30,6 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
     $scope.devicesData = [];
     $scope.devices = [];
 
-    $scope.loadData = function() {
-
-        //console.log("loadData", $scope.widget);
-        // if($scope.widget.deviceList && $scope.widget.deviceList.length > 0 ){
-        //     $scope.widget.deviceId = $scope.widget.deviceList[0].id;
-        //     $scope.addDevice();
-        // }
-
-    };
-
     $scope.clickToOpen = function() {
         ngDialog.openConfirm({
             template: 'dashboard/modalWidget.pug',
@@ -54,45 +44,24 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     };
 
-
-    $scope.loadDevices = function() {
-        var deferred = $q.defer();
-
-        DevicesData.getDevicesData().then(function(devices){
-            $scope.devicesData = devices;
-            deferred.resolve(devices);
-            if($scope.widget.deviceId){
-                $scope.selectDevice($scope.widget.deviceId);
-            }
-        });
-
-        return deferred.promise;
-
-    }
-
-    // Get device object from its name
-    $scope.selectDevice = function(deviceId){
-
-        var deferred = $q.defer();
-        DevicesData.getDeviceData(deviceId)
-        .then(function(result){
-            $scope.selectedDevice = result;
-            deferred.resolve(result);
-        });
-
-        return deferred.promise;
-    }
     // Get measurement object of selected device from its type
-    $scope.selectMeasurement = function(measurementType){
-        $scope.selectedDevice.last.forEach(function(measurement){
-            if(measurement.type == measurementType){
-                $scope.selectedMeasurement = measurement;
-                $scope.widget.chartObject.data = [
-                    ['Label', 'Value'],
-                    [measurementType, measurement.value]
-                ];
-            }
-        });
+    $scope.selectMeasurement = function(deviceId, measurementType, smart){
+
+        var deferred = $q.defer();
+
+        DevicesData.getLastData(deviceId, measurementType, smart)
+        .then(function (measurement){
+            console.log("last result", measurement);
+            $scope.selectedMeasurement = measurement;
+            $scope.widget.chartObject.data = [
+                ['Label', 'Value'],
+                [measurementType, measurement.value]
+            ];
+
+            deferred.resolve(measurement);
+        });  
+
+        return deferred.promise;      
     }
 
     $scope.getDevice = function(id){
@@ -107,15 +76,11 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
         return deviceReturn;
     }
 
-    $scope.showWidget = function(){
-      console.log("scope widget", $scope.newWidget);
-    }
-
     $scope.addDevice = function(){
         if($scope.widget.deviceId && $scope.widget.measurementType){
-            $scope.selectDevice($scope.widget.deviceId)
-            .then(function(result){
-                $scope.selectMeasurement($scope.widget.measurementType);
+            
+            $scope.selectMeasurement($scope.widget.deviceId, $scope.widget.measurementType, $scope.widget.smart)
+            .then(function (){
                 $scope.widget.device = {
                     id: $scope.widget.deviceId,
                     type: $scope.widget.measurementType,
@@ -148,12 +113,9 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     // ------------ Begining ---------------
 
-    $scope.loadDevices()
-    .then(function(){
-        if(!$scope.widget.device && $scope.widget.deviceList){
-            $scope.refreshFromDevice();
-        }
-    })
+    if(!$scope.widget.device && $scope.widget.deviceList){
+        $scope.refreshFromDevice();
+    }
 
     // ------------- Watchers --------------
 

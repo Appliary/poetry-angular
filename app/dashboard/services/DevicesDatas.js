@@ -1,10 +1,12 @@
 app.service('DevicesData', function($http, $q, ngNotify) {
 
-    this.getDevicesData = function () {
+    this.getDevicesData = function (smart) {
         var deferred = $q.defer();
         var devices = [];
 
-        $http.get( '/api/devices' )
+        var url = smart ? '/api/smartdevices' : '/api/devices';
+
+        $http.get( url )
             .then( function ( res ) {
               //console.log('res',res)
                 if ( res.status == 200 )
@@ -16,18 +18,19 @@ app.service('DevicesData', function($http, $q, ngNotify) {
         return deferred.promise;
     };
 
-    this.getDeviceData = function(device, startDate, endDate, measurementType){
+    this.getDeviceData = function (device, startDate, endDate, measurementType, smart){
 
         var deferred = $q.defer();
+        var apiUrl = smart ? '/api/smartdevices/' : '/api/devices/'
         var url = '';
 
         if(startDate && endDate && measurementType){
             var newStart = new Date(startDate).getTime();
             var newEnd = new Date(endDate).getTime();
-            url = '/api/devices/' + device + '/measurements?before=' + newEnd + '&after=' + newStart + '&sort=asc';
+            url = apiUrl + device + '/measurements?before=' + newEnd + '&after=' + newStart + '&sort=asc';
         }
         else{
-            url = '/api/devices/' + device;
+            url = apiUrl + device;
         }
         var datas = [];
         console.log("getdevicesdata url", url);
@@ -64,7 +67,57 @@ app.service('DevicesData', function($http, $q, ngNotify) {
 
     };
 
-    this.getDashboardFromDb = function(){
+    this.getLastData = function (device, measurementType, smart){
+
+        var deferred = $q.defer();
+        var apiUrl = smart ? '/api/smartdevices/' : '/api/devices/'
+        var url = apiUrl + device + '/measurements?limit=1';
+        var result = {};
+
+        console.log("getdevicesdata url", url);
+        $http.get(url)
+        .then(function(response) {
+            console.log("response in devicesdata lastdata and data.data", response, response.data.data);
+            if (response.data.data && response.data.data.length > 0) {
+                var measurementData = response.data.data[0];
+                var found = false;
+                console.log("measurementData", measurementData);
+                if(measurementData.measurements){
+                    measurementData.measurements.forEach(function(measurement){
+                        console.log("measurement", measurement);
+                        console.log("measurementType", measurementType);
+
+                        if(measurement.type == measurementType && !found){
+                            found = true;
+                            result = measurement;
+                        }
+                    });
+                }  
+            } 
+
+            deferred.resolve(result);
+
+        });
+
+        return deferred.promise;
+
+    };
+
+    this.searchDevice = function (search, smart){
+        var deferred = $q.defer();
+        var apiUrl = smart ? '/api/smartdevices' : '/api/devices'
+        var url = apiUrl + '?limit=20&search=' + encodeURIComponent( search || '' ) ;
+
+        $http.get(url)
+        .then( function success ( res ) {
+            console.log("searchDevice res", res);
+            deferred.resolve(res.data.data || []);
+        } );
+
+        return deferred.promise;
+    };
+
+    this.getDashboardFromDb = function (){
         var deferred = $q.defer();
         var url = '/api/myDashboards';
 
