@@ -695,7 +695,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         var newId = (Date.now() + Math.random()).toString(32);
         console.log("newId", newId);
         var newDashboard = {
-            name: "- New Dashboard -",
+            name: "New Dashboard",
             data: [],
             id: newId
         }
