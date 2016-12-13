@@ -41,9 +41,10 @@ Poetry.route( {
                     .concat( files3 );
 
                 let r = 'app.run( function($templateCache){';
+                let errorJade;
                 files.forEach( ( file ) => {
 
-                    if ( file.name == 'index.pug' || file.name == 'index.html' )
+                    if ( file.name == 'index.pug' || file.name == 'index.html' || errorJade )
                         return;
 
                     try {
@@ -62,12 +63,12 @@ Poetry.route( {
 
                     } catch ( err ) {
                         Poetry.log.error( err );
-                        return reply( err );
+                        errorJade = err;
                     }
 
                 } );
                 r += '} )';
-                reply( r )
+                reply( errorJade, r )
                     .type( 'script/javascript' );
 
                 if ( process.env.node_env == 'prod' ||
