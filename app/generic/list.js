@@ -159,7 +159,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $scope.__validation = [];
 
         // Load controller
-        if ( $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
+        if ( $scope.$root.__module.config && $scope.$root.__module.config.tabs && $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
             return $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
                 $scope: $scope
             } );

@@ -53,11 +53,14 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout ) {
                 'substract',
                 'pow',
                 'norm',
-                'xgcd'
+                'xgcd',
+                'unit',
+                'to',
+                'in'
             ].indexOf( varName ) )
             return true;
 
-        if ( !varName.match( /^[a-z_]+$/i ) )
+        if ( !varName.match( /^[a-z_][a-z0-9_]*$/i ) )
             return true;
 
         var error = false;
