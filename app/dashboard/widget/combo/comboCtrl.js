@@ -51,11 +51,16 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         ];
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart).then(function(measurements){
-            if(measurements && measurements.length > 0){
-                measurements.forEach(function (measurement){
+            if(measurements.datas && measurements.datas.length > 0){
+                measurements.datas.forEach(function (measurement){
                     result.push(measurement);
                 });
             }
+
+            $scope.widget.chartObject.options.vAxis = {
+                title: $scope.widget.measurementType +  ' (' + measurements.unit + ')'
+            };
+
             deferred.resolve(result);
         });
 
@@ -64,7 +69,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
 
     $scope.refreshFromDevice = function(){
-        console.log("refreshFromDevice");
         if(!$scope.widget.chartObject){
             $scope.widget.chartObject = {
                 type: "ComboChart",
@@ -90,17 +94,14 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     }
 
     $scope.addDevice = function(id){
-        console.log("scope in adddevice", $scope);
         if(id && $scope.widget.measurementType && ($scope.widget.dateOption || ($scope.widget.startDate && $scope.widget.endDate))){
             var startDate = "";
             var endDate = "";
             if($scope.widget.customDate){
-                console.log("using customDate");
                 startDate = $scope.widget.startDate;
                 endDate = $scope.widget.endDate;
             }
             else{
-                console.log("using dateOption");
                 endDate = new Date();
                 switch($scope.widget.dateOption){
                     case "week": 
@@ -135,9 +136,7 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
                 });
 
                 $scope.widget.chartObject.data = head.concat(body);
-                console.log("loading end HHHEEERREEEE");
                 $scope.loading = false;
-                console.log("loading ?", $scope.loading);                
 
             });
         }
@@ -165,11 +164,11 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
     $scope.mergeData = function(resultData, newData){
         var position = resultData[0].length;
-        console.log("merge starting, position : ", position);
         newData.forEach(function(elem){
             var dataRow = $scope.getDataRow(resultData, elem[0]);
             if(dataRow.length){
-                dataRow.push(elem[1]);
+                if(dataRow.length <= position)
+                    dataRow.push(elem[1]);
             }
             else{
                 dataRow = [elem[0]];
@@ -189,7 +188,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             }
         });
 
-        console.log("merge finished");
     }
 
     $scope.getDataRow = function (data, key){
@@ -219,7 +217,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         $scope.widget.deviceList = $scope.tempDeviceList;
         $scope.widget.chartObject.data = [];
         
-        console.log("deviceList in apply", $scope.widget.deviceList);
         $scope.widget.deviceList.forEach(function(device){
             $scope.addDevice(device.id);
         });
@@ -244,13 +241,11 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     });
 
     $scope.$watch('widget.resize',function(){
-        console.log("comboChart resize");
         $scope.isChart = false;
         setTimeout(function(){
             if($scope.widget.resize == true){
                 $scope.isChart = true;
                 $scope.widget.resize=false;
-                console.log("resize combo");
             }
             
         }, 2000);
