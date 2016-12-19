@@ -33,6 +33,7 @@ app.service('DevicesData', function($http, $q, ngNotify) {
             url = apiUrl + device;
         }
         var datas = [];
+        let result = {};
         console.log("getdevicesdata url", url);
         $http.get(url)
         .then(function(response) {
@@ -47,6 +48,10 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                                 var date = new Date(measurementData.timestamp);
                                 var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
                                 datas.push([date, measurement.value]);
+
+                                if(!result.unit){
+                                    result.unit = measurement.unit;
+                                }
                             }
                         });
                     }  
@@ -59,7 +64,9 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                 datas = response.data;
             }
 
-            deferred.resolve(datas);
+            result.datas = datas;
+
+            deferred.resolve(result);
 
         });
 
@@ -77,15 +84,11 @@ app.service('DevicesData', function($http, $q, ngNotify) {
         console.log("getdevicesdata url", url);
         $http.get(url)
         .then(function(response) {
-            console.log("response in devicesdata lastdata and data.data", response, response.data.data);
             if (response.data.data && response.data.data.length > 0) {
                 var measurementData = response.data.data[0];
                 var found = false;
-                console.log("measurementData", measurementData);
                 if(measurementData.measurements){
                     measurementData.measurements.forEach(function(measurement){
-                        console.log("measurement", measurement);
-                        console.log("measurementType", measurementType);
 
                         if(measurement.type == measurementType && !found){
                             found = true;
