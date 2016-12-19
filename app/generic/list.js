@@ -30,8 +30,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     $scope.data = [];
 
     function getlist( o, n ) {
+        var page = 0;
         if ( o == n || isLoading ) return;
-        if( o !== true ) $scope.data = [];
+        if ( o !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
         $scope.total = undefined;
@@ -39,16 +40,21 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         if ( $scope.status ) url += '&status=' + $scope.status;
         if ( $scope.search )
             url += '&search=' + encodeURIComponent( $scope.search );
-        if ( $scope.data && $scope.data.length )
-            url += '&limit=100&page=' + $scope.data.length / 100;
+        if ( $scope.data && $scope.data.length ){
+            page = $scope.data.length / 100;
+            url += '&limit=100&page=' + page;
+        }
         $http.get( url )
             .then( function success( response ) {
                 isLoading = false;
 
-                if ( response.data.data )
-                    $scope.data = $scope.data.concat(response.data.data);
-                else if ( response.data instanceof Array )
-                    $scope.data = $scope.data.concat(response.data);
+                if ( response.data.data ){
+                    if( page )
+                        $scope.data = $scope.data.concat( response.data.data );
+                    else
+                        $scope.data = response.data.data;
+                }else if ( response.data instanceof Array )
+                    $scope.data = $scope.data.concat( response.data );
 
                 $scope.total = response.data.recordsFiltered;
 
