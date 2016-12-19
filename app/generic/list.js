@@ -31,7 +31,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     function getlist( o, n ) {
         if ( o == n || isLoading ) return;
-        if( o === true ) $scope.data = [];
+        if( o !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
         $scope.total = undefined;
