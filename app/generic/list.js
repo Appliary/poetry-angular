@@ -26,23 +26,28 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
     } );
 
+    var isLoading = false;
+    $scope.data = [];
+
     function getlist( o, n ) {
-        if ( o == n ) return;
+        if ( o == n || isLoading ) return;
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
+        isLoading = true;
         $scope.total = undefined;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
         if ( $scope.status ) url += '&status=' + $scope.status;
         if ( $scope.search )
             url += '&search=' + encodeURIComponent( $scope.search );
+        if ( $scope.data && $scope.data.length && !( $scope.data.length % 100 ) )
+            url += '&limit=100&page=' + $scope.data.length / 100;
         $http.get( url )
             .then( function success( response ) {
+                isLoading = false;
 
                 if ( response.data.data )
-                    $scope.data = response.data.data;
+                    $scope.data = $scope.data.concat(response.data.data);
                 else if ( response.data instanceof Array )
-                    $scope.data = response.data;
-                else
-                    $scope.data = [];
+                    $scope.data = $scope.data.concat(response.data);
 
                 $scope.total = response.data.recordsFiltered;
 
@@ -60,6 +65,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                     } );
 
             }, function error( response ) {
+                isLoading = false;
 
                 if ( response.status == 401 )
                     return ngDialog.open( {
@@ -113,6 +119,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         for ( var i = 0; i < header.length; i++ ) {
             header[ i ].style.top = elem.scrollTop + 'px';
         };
+        if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight ) {
+            getlist( true );
+        }
     }
 
     // Give access to the isArray function on the view
