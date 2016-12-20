@@ -57,7 +57,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
                     else
                         $scope.data = response.data.data;
                 }else if ( response.data instanceof Array )
-                    $scope.data = $scope.data.concat( response.data );
+                    response.data.forEach( function loop(i){
+                        if( $scope.data && !~$scope.data.indexOf(i))
+                            $scope.data.push(i);
+                    });
 
                 $scope.total = response.data.recordsFiltered;
 
