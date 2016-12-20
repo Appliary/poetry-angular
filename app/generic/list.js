@@ -50,7 +50,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
                 if ( response.data.data ){
                     if( page )
-                        $scope.data = $scope.data.concat( response.data.data );
+                        response.data.data.forEach( function loop(i){
+                            if( $scope.data && !~$scope.data.indexOf(i))
+                                $scope.data.push(i);
+                        });
                     else
                         $scope.data = response.data.data;
                 }else if ( response.data instanceof Array )
