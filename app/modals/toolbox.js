@@ -4,8 +4,11 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location )
     $scope.item = {};
     $scope.fields = $scope.__config.fields;
 
+    var api = $scope.__config.api || $scope.$root.__module.api,
+        method = $scope.__config.method || 'post';
+
     // Get validation
-    $http.post( '/__joi' + $scope.$root.__module.api )
+    $http[method]( '/__joi' + api )
         .then( function success( response ) {
             if(!response.data.payload._inner)
                 return $scope.__joi = response.data.payload;
@@ -21,7 +24,7 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location )
     }
 
     $scope.save = function save(){
-        $http.post( $scope.$root.__module.api, $scope.item )
+        $http[method]( api, $scope.item )
             .then( function success( response ) {
 
                 $window.location.replace( $location.absUrl() );
