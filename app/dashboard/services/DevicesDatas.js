@@ -24,7 +24,7 @@ app.service('DevicesData', function($http, $q, ngNotify) {
         var apiUrl = smart ? '/api/smartdevices/' : '/api/devices/'
         var url = '';
 
-        let smartAggregation = (smart && aggregation) ? aggregation : "";
+        let smartAggregation = (smart && aggregation) ? '/' + aggregation : "";
 
         if(startDate && endDate && measurementType){
             var newStart = new Date(startDate).getTime();
