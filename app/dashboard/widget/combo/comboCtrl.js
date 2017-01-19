@@ -1,5 +1,4 @@
 app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
-    console.log("widget at begining of comboCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
     $scope.dateOptions = ["today", "week", "month"];
@@ -46,11 +45,13 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
     
-        var result = [
-            [ 'date', deviceId]
-        ];
+        var result;
 
-        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart).then(function(measurements){
+        let aggregation = $scope.widget.aggregation || "";
+        DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation).then(function(measurements){
+            result = [
+                [ 'date', measurements.name]
+            ];
             if(measurements.datas && measurements.datas.length > 0){
                 measurements.datas.forEach(function (measurement){
                     result.push(measurement);
@@ -137,7 +138,6 @@ app.controller('comboCtrl',function($scope, ngDialog, DevicesData, $q, $window){
 
                 $scope.widget.chartObject.data = head.concat(body);
                 $scope.loading = false;
-
             });
         }
         else{
