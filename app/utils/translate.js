@@ -17,14 +17,6 @@ pot.activate = function () {
     pot.active = true
 };
 
-app.run( function getTranslations( $http ) {
-    $http.get( '/i18n/' + lang )
-        .then( function ok( i18n ) {
-            i18n_registry = i18n.data;
-            i18n_registry.lang = i18n_registry.lang || 'en';
-        } );
-} );
-
 app.filter( 'translate', function () {
 
     var translate = function translate( key ) {
