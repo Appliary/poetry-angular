@@ -91,13 +91,6 @@ ng-include.details {
         bottom: 0;
     }
 }
-@media( min-width:$mobile_break + 1 ) {
-    body.collapsed {
-        .list {
-            left: $sidebar_width_collapsed + $gutter;
-        }
-    }
-}
 
 table {
     width: 100%;

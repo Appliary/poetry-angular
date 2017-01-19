@@ -18,16 +18,18 @@ app.service('DevicesData', function($http, $q, ngNotify) {
         return deferred.promise;
     };
 
-    this.getDeviceData = function (device, startDate, endDate, measurementType, smart){
+    this.getDeviceData = function (device, startDate, endDate, measurementType, smart, aggregation){
 
         var deferred = $q.defer();
         var apiUrl = smart ? '/api/smartdevices/' : '/api/devices/'
         var url = '';
 
+        let smartAggregation = (smart && aggregation) ? '/' + aggregation : "";
+
         if(startDate && endDate && measurementType){
             var newStart = new Date(startDate).getTime();
             var newEnd = new Date(endDate).getTime();
-            url = apiUrl + device + '/measurements?before=' + newEnd + '&after=' + newStart + '&sort=asc';
+            url = apiUrl + device + '/measurements' + smartAggregation + '?before=' + newEnd + '&after=' + newStart + '&sort=asc';
         }
         else{
             url = apiUrl + device;

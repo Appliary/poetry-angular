@@ -3,6 +3,14 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout ) {
     $scope.inputValues = {};
     $scope.newInput = {};
 
+    $scope.setAutofill = function (autofill) {
+        $scope.newInput.autofill = autofill;
+
+        if (autofill) {
+            searchDevice( '' );
+        }
+    }
+
     $scope.checkVarName = function checkVarName() {
 
         if ( !$scope.newInput ) $scope.newInput = {};

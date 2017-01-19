@@ -19,7 +19,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
                 td(ng-class='{error:checkVarName() && newInput.varName}')
                     input( ng-model='newInput.varName' )
                 td(ng-class='{error: !newInput.device && !checkVarName() }', ng-if='!newInput.device')
-                    input( ng-model='newInput.deviceSearch', ng-disabled='checkVarName()', ng-focus='newInput.autofill=true', ng-blur='newInput.autofill=false' )
+                    input( ng-model='newInput.deviceSearch', ng-disabled='checkVarName()', ng-focus='setAutofill(true)', ng-blur='setAutofill(false)' )
                     div.autofill( ng-if='newInput.autofill' )
                         .muted(ng-if='!newInput.searchResults')
                             | {{ 'loading:autofill' | translate }}
