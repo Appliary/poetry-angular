@@ -18,11 +18,10 @@ pot.activate = function () {
 };
 
 app.run( function getTranslations( $http ) {
-    var lang = 'en'
     $http.get( '/i18n/' + lang )
         .then( function ok( i18n ) {
             i18n_registry = i18n.data;
-            i18n_registry.lang = lang;
+            i18n_registry.lang = i18n_registry.lang || 'en';
         } );
 } );
 
