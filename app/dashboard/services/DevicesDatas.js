@@ -40,6 +40,9 @@ app.service('DevicesData', function($http, $q, ngNotify) {
         $http.get(url)
         .then(function(response) {
             if (response.data.data) {
+                result.name = response.data.parent.name;
+                result.unit = response.data.parent.unit || "";
+                console.log("parent", response.data.parent);
                 var measurementDatas = response.data.data;
                 measurementDatas.forEach(function(measurementData){
                     var found = false;
@@ -50,14 +53,9 @@ app.service('DevicesData', function($http, $q, ngNotify) {
                                 var date = new Date(measurementData.timestamp);
                                 var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
                                 datas.push([date, measurement.value]);
-
-                                if(!result.unit){
-                                    result.unit = measurement.unit;
-                                }
                             }
                         });
                     }  
-
                 });
             } 
                 

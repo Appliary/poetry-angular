@@ -1,5 +1,4 @@
 app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
-    console.log("widget at begining of linceCtrl", $scope.widget);
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
     $scope.dateOptions = ["today", "week", "month"];
@@ -48,13 +47,14 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
     
-        var result = [
-            [ 'date', deviceId]
-        ];
+        var result;
 
         let aggregation = $scope.widget.aggregation || "";
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation).then(function(measurements){
+            result = [
+                [ 'date', measurements.name]
+            ];
             if(measurements.datas && measurements.datas.length > 0){
                 measurements.datas.forEach(function (measurement){
                     result.push(measurement);
