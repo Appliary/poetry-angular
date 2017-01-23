@@ -20,7 +20,7 @@
 
             label( for='language' ) {{ 'language:field:edit' | translate }}
             select(type='text', ng-model='user.language', name='language' )
-                option(ng-repeat='language in languageList' value="language") {{ language + ':field:edit' | translate }}
+                option(ng-repeat='language in languageList' ng-value="language") {{ language + ':field:edit' | translate }}
 
             button.lightButton( type='submit' ).pull-right {{ 'Save:button' | translate }}
     .tab-content(ng-if="pwdView")
