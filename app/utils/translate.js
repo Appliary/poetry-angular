@@ -3,8 +3,9 @@ var i18n_registry = {},
         var out = '# ' + Date.now() + '\nmsgid ""\nmsgstr ""\n\n';
         pot.active = true;
         pot.registry.forEach( function ( k ) {
-            out += 'msgctxt "' + k.split( ":" )[ 0 ] + '"\n';
-            out += 'msgid "' + k + '"\nmsgstr ""\n\n';
+            out += '#. ' + k.split( ":" )[ 0 ] + '\n';
+            out += 'msgid "' + k + '"\n';
+            out += 'msgstr "' + k.split( ":" )[ 0 ] + '"\n\n';
         } );
         window.location.replace(
             'data:application/octet-stream,' + encodeURIComponent( out )

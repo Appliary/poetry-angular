@@ -1,9 +1,9 @@
-app.filter( 'localize', function ( $filter ) {
+app.filter( 'localize', function ( $filter, $rootScope ) {
 
     function localize( input ) {
 
         if ( input === undefined ) return undefined;
-        if ( input === null ) return $filter('translate')( 'null:value' );
+        if ( input === null ) return $filter( 'translate' )( 'null:value' );
         if ( input === false ) return $filter( 'translate' )( 'false:value' );
         if ( input === true ) return $filter( 'translate' )( 'true:value' );
 
@@ -15,7 +15,7 @@ app.filter( 'localize', function ( $filter ) {
             return _number( input );
         }
 
-        if( input.length == 24 || input instanceof Date )
+        if ( input.length == 24 || input instanceof Date )
             if ( _date( input ) != "Invalid Date" ) return _date( input );
 
         if ( typeof input == 'object' ) {
@@ -26,7 +26,7 @@ app.filter( 'localize', function ( $filter ) {
             var output = '';
             Object.keys( input )
                 .forEach( function ( key ) {
-                    output += $filter('translate')( key + ':subvalue' );
+                    output += $filter( 'translate' )( key + ':subvalue' );
                     output += ': ' + localize( input[ key ] ) + '\n';
                 } );
             return output;
@@ -38,13 +38,13 @@ app.filter( 'localize', function ( $filter ) {
 
     function _date( input ) {
         var output = new Date( input );
-        if( output.getFullYear() == 1970 )
-            output = new Date ( output.getTime() * 1000 );
-        return output.toLocaleString( i18n_registry[ 'lang' ] );
+        if ( output.getFullYear() == 1970 )
+            output = new Date( output.getTime() * 1000 );
+        return output.toLocaleString( $rootScope.user.locale || undefined );
     }
 
     function _number( input ) {
-        return input.toLocaleString( i18n_registry[ 'lang' ] );
+        return input.toLocaleString( $rootScope.user.locale || undefined );
     }
 
     return localize;
