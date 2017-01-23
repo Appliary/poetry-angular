@@ -6,7 +6,7 @@ form( ng-submit='' )
         //- Unknown => Read only
         input( name='{{field}}', ng-if='!__joi[field] && !item[field].name', ng-value='item[field] | localize', readonly )
         input( name='{{field}}', ng-if='!__joi[field] && item[field].name', ng-value='item[field].name', readonly )
-        input( name='{{field}}', ng-if='!__joi[field] && field=='_id'', ng-value='item[field]', readonly )
+        input( name='{{field}}', ng-if='!__joi[field] && field=="_id"', ng-value='item[field]', readonly )
 
         //- Numbers (with or without units)
         input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "number" && !__joi[field]._unit', ng-model='item[field]' )
