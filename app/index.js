@@ -1,5 +1,12 @@
 var app = angular.module( __appName, __appDependencies );
 
+if ( webshims ) {
+    webshims.setOptions( 'forms-ext', {
+        types: 'date'
+    } );
+    webshims.polyfill( 'forms forms-ext' );
+}
+
 app.config( function ( $locationProvider, $httpProvider ) {
         $locationProvider.html5Mode( true );
         $httpProvider.defaults.withCredentials = true;
