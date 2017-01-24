@@ -1,5 +1,6 @@
 var app = angular.module( __appName, __appDependencies );
 
+webshims = webshims || null;
 if ( webshims ) {
     webshims.setOptions( 'forms-ext', {
         types: 'date'
