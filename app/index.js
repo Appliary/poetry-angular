@@ -39,6 +39,7 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 console.groupCollapsed( 'Session [RETRIEVED]' );
                 console.log( 'Session:', $rootScope.session );
                 console.log( 'User:', $rootScope.user );
+                console.log( 'Team:', $rootScope.team );
                 console.groupEnd();
 
             }, function error( usersResponse ) {
