@@ -95,3 +95,9 @@ ng-include.details {
 table {
     width: 100%;
 }
+
+body.collapsed .list{
+    @media( min-width: $mobile_break ) {
+        left: $gutter + $sidebar_width_collapsed;
+    }
+}
