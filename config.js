@@ -7,7 +7,7 @@ let files = [],
 try {
     files = fs.readdirSync( './config' );
 } catch ( err ) {
-    throw Poetry.log.fatal( 'Unable to access config directory', file );
+    throw Poetry.log.fatal( 'Unable to access config directory', err );
 }
 
 files.forEach( ( file ) => {
