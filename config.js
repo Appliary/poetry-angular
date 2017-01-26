@@ -13,7 +13,7 @@ try {
     poaFiles = require(poetryAngularConf);
     Poetry.log.info('Sucessfully read the poetry-angular files: ', poaFiles)
 } catch ( err ) {
-    throw Poetry.log.fatal( 'Unable to access config directory', err );
+    throw Poetry.log.error( 'Unable to access config directory', err );
 }
 
 files.forEach( ( file ) => {
