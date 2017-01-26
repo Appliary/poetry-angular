@@ -7,6 +7,7 @@ let files = [],
     config = require('./default.json');
 
 try {
+    debugger;
     files = fs.readdirSync( './config' );
 
     Poetry.log.info('Attempting to read poetry-angular dependencies');
@@ -17,6 +18,7 @@ try {
 }
 
 files.forEach( ( file ) => {
+    debugger;
     let name = file.split( '.', 1 )[ 0 ];
     try {
 
