@@ -11,7 +11,7 @@ try {
     files = fs.readdirSync( './config' );
 
     Poetry.log.info('Attempting to read poetry-angular dependencies');
-    poaFiles = require(poetryAngularConf);
+    //poaFiles = require(poetryAngularConf);
     Poetry.log.info('Sucessfully read the poetry-angular files: ', poaFiles)
 } catch ( err ) {
     throw Poetry.log.error( 'Unable to access config directory', err );
