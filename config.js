@@ -39,7 +39,7 @@ try {
     files = fs.readdirSync( './config' );
 
     Poetry.log.info('Attempting to read poetry-angular dependencies');
-    if (fs.existsSync(path)) {
+    if (fs.existsSync(poetryAngularConf)) {
         poaFiles = fs.readdirSync(poetryAngularConf);
     }
     Poetry.log.info('Sucessfully read the poetry-angular files: ', poaFiles)
