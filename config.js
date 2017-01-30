@@ -35,7 +35,6 @@ let _processFiles = (files, parentFolder) => {
 }
 
 try {
-    debugger;
     files = fs.readdirSync( './config' );
 
     Poetry.log.info('Attempting to read poetry-angular dependencies');
@@ -52,7 +51,5 @@ _processFiles(files, '../../config/')
 
 // Process then the poetry-angular's own dependencies
 _processFiles(poaFiles, './config/')
-
-
 
 module.exports = config;
