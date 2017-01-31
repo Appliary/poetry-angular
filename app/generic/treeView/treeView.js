@@ -342,7 +342,8 @@ return {
                         };
 
                         if ($scope.isGroups) {
-                            newItem.data.group = parent.isRoot ? {_id: "root", name: $filter('translate')("Root:EnergyBlocks:Column")} : parent.data;
+                            var prop = (type === 'groups' ? 'parent' : 'group');
+                            newItem.data[prop] = parent.isRoot ? {_id: "root", name: $filter('translate')("Root:EnergyBlocks:Column")} : parent.data;
                         }
 
                         $scope.editItem = newItem;
