@@ -4,7 +4,7 @@ return {
     scope: {
         options:'=options'
     },
-    templateUrl: 'multiView/multiView.pug',
+    templateUrl: 'generic/multiView/multiView.pug',
     controller: function ($scope) {
         var _enableCache = !!$scope.options.cache;
 
