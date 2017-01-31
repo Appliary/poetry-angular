@@ -1,0 +1,4 @@
+button.back(ng-click="cancelEdit()") {{ "Back:Buttons" | translate }}
+tabs
+    a(ng-repeat="tab in actions.getBOEditTabs()", ng-click="actions.setActiveTab(tab.name)", ng-class="{'active': general.activeEditTab === tab.name}") {{tab.title + ":AssetManager:Tabs" | translate}}
+ng-include(src="actions.resolveEditTabInclude()")
