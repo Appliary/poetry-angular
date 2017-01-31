@@ -238,7 +238,7 @@ return {
             },
             getMultiViewEdit: function () {
                 if ($scope.editItem) {
-                    return 'multiView/multiViewEdit.pug';
+                    return 'generic/multiView/multiViewEdit.pug';
                 } else {
                     return null;
                 }
