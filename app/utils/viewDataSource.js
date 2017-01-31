@@ -99,7 +99,7 @@ app.service('ViewDataSource', function ($q, $filter) {
         // Add the group children to the groups
         for(var i = 0, len = result.length; i < len; i++) {
             var topLevelGroup = result[i];
-            topLevelGroup.children = _findGroupChildren(topLevelGroup, result);
+            topLevelGroup.children = _findGroupChildren(topLevelGroup, data.groups);
         }
 
         // Start adding non-group assets to the array
