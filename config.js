@@ -46,10 +46,11 @@ try {
     throw Poetry.log.error( 'Unable to access config directory', err );
 }
 
-// Process first the app's dependencies
-_processFiles(files, '../../config/')
 
-// Process then the poetry-angular's own dependencies
+// Process first the poetry-angular's own dependencies
 _processFiles(poaFiles, './config/')
+
+// Process then the app's dependencies
+_processFiles(files, '../../config/')
 
 module.exports = config;

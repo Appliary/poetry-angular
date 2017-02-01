@@ -87,7 +87,9 @@
     "webshim": "^1.16.0",
     "jstree": "^3.3.2",
     "datatables": "^1.10.12",
-    "angular-datatables": "^0.5.5"
+    "angular-datatables": "^0.5.5",
+    "jquery": "2.2.4",
+    "angular": "^1.5.8"
   },
   "devDependencies": {},
   "gitHead": "dca4643247161e0ec34a5ff97443b604bed541ac",
