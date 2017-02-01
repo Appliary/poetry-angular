@@ -27,7 +27,7 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__core.js`)
         script(src=`/${app.name}/__templates.js`)
         script(src=`/${app.name}/__app.js`)
-        script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
+        //- script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
         link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
         link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)
 
@@ -51,4 +51,4 @@ html(ng-app=app.name)
         //- Custom routing
         ui-view(ng-show="!$root.__module || $root.__module.dynamic")
 
-        script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )
+        //- script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )
