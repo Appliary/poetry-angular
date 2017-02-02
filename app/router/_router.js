@@ -152,8 +152,8 @@ app.component( 'appRouter', {
                 console.info( 'Opening toolbox:', $scope.__config );
 
                 if ($scope.__config.onListEdit) {
-                    $scope.__id = true;
-                    $scope.__view = "";
+                    $scope.__id = "New";
+                    $scope.tab('new');                    
                 } else {
                     return ngDialog.open( {
                         templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
