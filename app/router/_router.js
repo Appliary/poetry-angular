@@ -153,7 +153,7 @@ app.component( 'appRouter', {
 
                 if ($scope.__config.onListEdit) {
                     $scope.__id = "New";
-                    $scope.tab('new');                    
+                    $scope.tab('edit');                    
                 } else {
                     return ngDialog.open( {
                         templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
