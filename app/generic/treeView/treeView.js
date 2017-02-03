@@ -92,11 +92,14 @@ return {
                     var boData = selected.node.data,
                         boType = selected.node.data.boType;
 
-                    if (boData.isRoot && $scope.isGroups) {
+                    if (boData.isRoot && ($scope.isGroups || !$scope.boMeta[boType].editTemplate)) {
                         $scope.editItem = null;
                     } else {
                         if ($scope.boMeta[boType].edit) {
-                            boData.parent = $.jstree.reference(this).get_json(selected.node.parent).data;
+                            if (!boData.isRoot) {
+                                boData.parent = $.jstree.reference(this).get_json(selected.node.parent).data;
+                            }
+                            
                             if (!boData.data && $scope.boMeta[boType].apiService) {
                                 $scope.boMeta[boType].apiService.get(boData._id)
                                     .then(function (response) {                                        

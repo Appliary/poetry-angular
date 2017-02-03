@@ -23,7 +23,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
     $scope.$watchCollection( 'sorting', getlist );
 
     $scope.$watch( '__view', function loadView() {
-        $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
+        if (typeof $scope.__view === "undefined") {
+            $scope.fields = [];
+        } else {
+            $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
+        }
     } );
 
     var isLoading = false;

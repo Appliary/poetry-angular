@@ -151,12 +151,17 @@ app.component( 'appRouter', {
 
                 console.info( 'Opening toolbox:', $scope.__config );
 
-                return ngDialog.open( {
-                    templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
-                    controller: $scope.__config.controller || 'modals/toolbox',
-                    showClose: true,
-                    scope: $scope
-                } );
+                if ($scope.__config.onListEdit) {
+                    $scope.__id = "new";
+                    $scope.tab('');                    
+                } else {
+                    return ngDialog.open( {
+                        templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
+                        controller: $scope.__config.controller || 'modals/toolbox',
+                        showClose: true,
+                        scope: $scope
+                    } );
+                }                
 
             }
 
