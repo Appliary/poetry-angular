@@ -16,7 +16,9 @@
         tbody
             tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if='row[ column ] !== undefined && column != "_id"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                    span( ng-if='row[ column ] !== undefined && column === "icon"')
+                        i(class="{{row[ column ]}}")
+                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
                         | {{ row[ column ] | localize }}
                     em( ng-if='column == "_id"')
                         | {{ row[ column ] }}
