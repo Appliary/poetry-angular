@@ -1,14 +1,14 @@
+form#filters
+    input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
+    select.pull-right( ng-model='$parent.status' )
+        option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+        option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
+        option( value='archived' )
+            | {{ 'archived:status:' + $root.__module.name | translate }}
+    span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
+    span.loading( ng-if='total === undefined')
+        | {{ 'loading:' + $root.__module.name | translate }}
 .list( ng-class='{detailed:__id}', scroll='scroll' )
-    form#filters
-        input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
-        select.pull-right( ng-model='$parent.status' )
-            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-            option( value='archived' )
-                | {{ 'archived:status:' + $root.__module.name | translate }}
-        span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
-        span.loading( ng-if='total === undefined')
-            | {{ 'loading:' + $root.__module.name | translate }}
     table
         thead: tr
             th( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
