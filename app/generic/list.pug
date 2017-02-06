@@ -1,7 +1,3 @@
-div(ng-if="$root.__module.dependencies")
-    link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", href="{{file}}")
-    script(ng-repeat="file in $root.__module.dependencies.script", src="{{file}}")
-
 form#filters
     input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
     select.pull-right( ng-model='$parent.status' )
