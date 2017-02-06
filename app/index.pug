@@ -46,8 +46,8 @@ html(ng-app=app.name)
         app-sidebar
 
         div(ng-if="$root.__module.dependencies")
-            link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", href="{{file}}")
-            script(ng-repeat="file in $root.__module.dependencies.script", src="{{file}}")
+            link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
+            script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
 
         //- Content of the page, routed using url
         app-router(module="{{$root.__module.name}}")
