@@ -1,71 +1,4 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-        "scope": null,
-        "escapedName": "poetry-angular",
-        "name": "poetry-angular",
-        "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-        "spec": "git+https://github.com/Appliary/poetry-angular.git",
-        "type": "hosted",
-        "hosted": {
-          "type": "github",
-          "ssh": "git@github.com:Appliary/poetry-angular.git",
-          "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-          "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-          "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-          "shortcut": "github:Appliary/poetry-angular",
-          "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-        }
-      },
-      "/Users/miccarr/Desktop/APPTIVATOR/Projets/iotfactory/App/deviceManager"
-    ]
-  ],
-  "_from": "git+https://github.com/Appliary/poetry-angular.git",
-  "_id": "poetry-angular@0.1.0",
-  "_inCache": true,
-  "_location": "/poetry-angular",
-  "_phantomChildren": {
-    "async": "2.0.1",
-    "bcrypt": "0.8.7",
-    "buffertools": "2.1.4",
-    "cli": "1.0.1",
-    "commander": "2.9.0",
-    "debug": "2.2.0",
-    "hapi": "14.2.0",
-    "inert": "4.0.2",
-    "multicast-events": "2.1.2",
-    "patrun": "0.5.1",
-    "promised-mongo": "1.2.0",
-    "winston": "2.3.0"
-  },
-  "_requested": {
-    "raw": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-    "scope": null,
-    "escapedName": "poetry-angular",
-    "name": "poetry-angular",
-    "rawSpec": "git+https://github.com/Appliary/poetry-angular.git",
-    "spec": "git+https://github.com/Appliary/poetry-angular.git",
-    "type": "hosted",
-    "hosted": {
-      "type": "github",
-      "ssh": "git@github.com:Appliary/poetry-angular.git",
-      "sshUrl": "git+ssh://git@github.com/Appliary/poetry-angular.git",
-      "httpsUrl": "git+https://github.com/Appliary/poetry-angular.git",
-      "gitUrl": "git://github.com/Appliary/poetry-angular.git",
-      "shortcut": "github:Appliary/poetry-angular",
-      "directUrl": "https://raw.githubusercontent.com/Appliary/poetry-angular/master/package.json"
-    }
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+https://github.com/Appliary/poetry-angular.git#dca4643247161e0ec34a5ff97443b604bed541ac",
-  "_shasum": "1e4c194b771357eb335af8800bc9af4e6ec1941e",
-  "_shrinkwrap": null,
-  "_spec": "poetry-angular@git+https://github.com/Appliary/poetry-angular.git",
-  "_where": "/Users/miccarr/Desktop/APPTIVATOR/Projets/iotfactory/App/deviceManager",
   "author": {
     "name": "MicCarr",
     "email": "miccarr@me.com"
@@ -81,7 +14,7 @@
     "mime-types": "^2.1.12",
     "ng-dialog": "^0.6.4",
     "node-sass": "^3.8.0",
-    "poetry": "0.0.71",
+    "poetry": "0.0.77",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0",
     "webshim": "^1.16.0",
@@ -92,7 +25,6 @@
     "angular": "^1.5.8"
   },
   "devDependencies": {},
-  "gitHead": "dca4643247161e0ec34a5ff97443b604bed541ac",
   "homepage": "https://github.com/Appliary/poetry-angular#readme",
   "license": "ISC",
   "main": "index.js",
