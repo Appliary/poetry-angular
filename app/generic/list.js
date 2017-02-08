@@ -1,4 +1,4 @@
-app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) {
+app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $q ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
     $scope.sorting = {
@@ -32,6 +32,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     var isLoading = false;
     $scope.data = [];
+    $scope.tags = [];
 
     function getlist( o, n ) {
         var page = 0;
@@ -158,8 +159,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
         $scope.item.__failed = $scope.item.__success = false;
 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
-            .then( function success() {
-                console.info( 'Saved!' );
+            .then( function success(smartdevice) {
+                console.info( 'Saved!' , smartdevice);
                 $scope.__validation = [];
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
@@ -174,13 +175,36 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
 
     }
 
+    $scope.loadTags = function(query) {
+        var deferred = $q.defer();
+
+        $http.get( $scope.$root.__module.api + '/tags/' + query)
+            .then( function success( response ) {
+                deferred.resolve(response.data);
+            }, function error( response ) {
+                $location.path( '/error/' + response.status );
+            } );
+
+        return deferred.promise;
+    };
+
+    function retrieveTags(){
+        if($scope.$root.__module.api == "/api/devices" || $scope.$root.__module.api == "/api/smartdevices"){
+            $http.get( $scope.$root.__module.api + '/tags' )
+            .then( function success( response ) {
+                $scope.tags = response.data
+            }, function error( response ) {
+                $location.path( '/error/' + response.status );
+            } );
+        }
+    }
+
     /**
      * Use the webservice to retrieve the complete selected item
      *
      * @arg {String} id Id of the selected item to be retrieved
      */
     function retrieveItem( id ) {
-
         if ( !id ) return console.warn( 'No ID' );
         $scope.__validation = [];
 
@@ -200,8 +224,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog ) 
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
-
     }
+    
 
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )

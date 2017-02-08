@@ -101,3 +101,7 @@ body.collapsed .list{
         left: $gutter + $sidebar_width_collapsed;
     }
 }
+
+.static-list {
+    position: static;
+}

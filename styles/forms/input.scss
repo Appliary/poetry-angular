@@ -57,3 +57,13 @@ input[type=number]::-webkit-outer-spin-button {
 .error input, .error select, .error textarea{
     border-color: $danger;
 }
+
+.tags-input-overview {
+    width: 60%; 
+    display: inline-block;
+}
+
+.tag-input {
+    width: 80%; 
+    display: inline-block;
+}

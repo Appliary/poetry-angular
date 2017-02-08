@@ -32,6 +32,10 @@ form( ng-submit='' )
         //- Boolean
         input( name='{{field}}', type="checkbox", ng-if='__joi[field] && item[field]._type == "boolean"', ng-model='item[field]' )
 
+        //- Tags
+        tags-input.tags-input-overview( name='{{field}}', ng-if='__joi[field] && field == "tags"', ng-model='item[field]' )
+            auto-complete(source="loadTags($query)")
+
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}

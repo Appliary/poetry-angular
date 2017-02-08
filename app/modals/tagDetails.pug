@@ -1,0 +1,24 @@
+h1.center
+    | {{ 'Devices:title:tagdetails' | translate }}
+div
+    label.left.tag-label
+        | {{ "Tags list:tags:tagdetails" | translate }}
+    tags-input.tag-input( disabled="true", ng-model="ngDialogData.tags")
+label.left
+    | {{ 'Devices selection:tagdetails' | translate }}
+div.list.static-list
+    table
+        thead: tr
+            th {{ 'device:' + $root.__module.name + ':col' | translate }}
+            th {{ 'value:' + $root.__module.name + ':col' | translate }}
+            th {{ 'unit:' + $root.__module.name + ':col' | translate }}
+
+        tbody
+            tr(ng-repeat="device in devices")
+                td()
+                    | {{ device.name }}
+                td()
+                    | {{ device.value }}
+                td()
+                    | {{ device.unit || ""}}
+
