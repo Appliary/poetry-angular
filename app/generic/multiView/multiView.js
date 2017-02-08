@@ -1,4 +1,4 @@
-app.directive( 'multiView', function (DTOptionsBuilder, DTColumnBuilder, $q, $compile, ViewDataSource, ListViewService, fileService, $cacheFactory, $filter) {
+app.directive( 'multiView', function (DTOptionsBuilder, DTColumnBuilder, $q, $compile, ViewDataSource, ListViewService, $cacheFactory, $filter) {
 return {
     restrict: 'E',
     scope: {
@@ -63,8 +63,20 @@ return {
             search: '',
             hasSwitchToFV: !!$scope.options.general.switchToFullView,
             activeEditTab: '',
-            editTabs: $scope.options.general.editTabs
+            editTabs: $scope.options.general.editTabs            
         };
+
+        if (!$scope.options.general.fileService) {
+            $scope.options.general.fileService = {
+                processFileQuee: function () {
+                    return $q(function (fulfill, reject) {
+                        fulfill();
+                    });
+                }
+            }
+        } else if (!$scope.options.general.fileService.processFileQuee) {
+            throw "The fileService that was passed to the MultiView is missing the processFileQuee method for uploading files. Please override and add it!";
+        }
 
         $scope.$watch('general.activeView', function (newValue, oldValue) {
             applySearchFilter($scope.searchText);
@@ -191,7 +203,7 @@ return {
                             _viewDS.addItem(savedItem, savedItem.parent);
                         });
                 } else {
-                    fileService.processFileQuee($scope.fileUploadQuee)
+                    $scope.options.general.fileService.processFileQuee($scope.fileUploadQuee)
                         .then(function () {
                             $scope.options.general.saveItem($scope.editItem)
                                 .then(function (savedItem) {
