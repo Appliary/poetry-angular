@@ -239,44 +239,40 @@ return {
             var obj = $.jstree.reference(_controlSelector).get_json(node),
                 parent = $.jstree.reference(_controlSelector).get_node(node.parent).data;
 
-            if ($scope.isAssets) {
-                if ($scope.options.defaultActions) {
-                    $scope.options.defaultActions.forEach(function (action) {
-                        if (action === 'add') {
-                            if ($scope.boMeta[obj.data.boType].canHave) {
-                                $scope.boMeta[obj.data.boType].canHave.forEach(function (type) {
-                                    result['add_' + type] = _getAddItemActon(type, obj.data);
-                                });
-                            }
-                        } else if (action === 'delete' && !obj.data.isRoot) {
-                            result.delete = _getAssetDeleteAction(obj, parent);
-                        }
-                    });
-                }
-            } else if ($scope.isGroups) {
-                var contextItems = $scope.boMeta[obj.data.boType].contextItems;
-                if (contextItems) {
-                    for(var i = 0, len = contextItems.length; i < len; i++) {
-                        var item = contextItems[i];
-                            action = {
-                                label: item.label,
-                                icon: item.icon || $scope.boMeta[obj.data.boType].icon                                
-                            };
+            var contextItems = $scope.boMeta[obj.data.boType].contextItems;
+            if (contextItems) {
+                for(var i = 0, len = contextItems.length; i < len; i++) {
+                    var item = contextItems[i];
+                        action = {
+                            label: item.label,
+                            icon: item.icon || $scope.boMeta[obj.data.boType].icon                                
+                        };
 
-                        if (typeof item.action === "string" ) {
-                            var actions = item.action.split('_');
-                            if (actions[0] === 'add') {
-                                action.action = _getAddItemActon(actions[1], obj.data).action;
-                            }
-
-                        } else if (typeof item.action === 'function') {
-                            action.action = item.action;
+                    if (typeof item.action === "string" ) {
+                        var actions = item.action.split('_');
+                        if (actions[0] === 'add') {
+                            action.action = _getAddItemActon(actions[1], obj.data).action;
                         }
 
-                        result[item.id] = action;
+                    } else if (typeof item.action === 'function') {
+                        action.action = item.action;
                     }
+
+                    result[item.id] = action;
                 }
-            }
+            } else if ($scope.options.defaultActions) {
+                $scope.options.defaultActions.forEach(function (action) {
+                    if (action === 'add') {
+                        if ($scope.boMeta[obj.data.boType].canHave) {
+                            $scope.boMeta[obj.data.boType].canHave.forEach(function (type) {
+                                result['add_' + type] = _getAddItemActon(type, obj.data);
+                            });
+                        }
+                    } else if (action === 'delete' && !obj.data.isRoot) {
+                        result.delete = _getAssetDeleteAction(obj, parent);
+                    }
+                });
+            }            
 
             return result;
         }
