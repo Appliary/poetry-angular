@@ -319,13 +319,28 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
         $scope.tagInput.searchResults.forEach(function (device){
             if(device.last){
                 device.last.forEach(function (measurement){
-                    $scope.tagTypes.push({
-                        type: measurement.type,
-                        id: measurement.id
-                    });
+                    if(!containsType($scope.tagTypes, measurement.type, measurement.id)){
+                        $scope.tagTypes.push({
+                            type: measurement.type,
+                            id: measurement.id
+                        });
+                    }
                 })
             }
         });
+
+    }
+
+    function containsType(tagTypes, type, id){
+        var result = false;
+        for(var i = 0; i < tagTypes.length; i++) {
+            if(tagTypes[i].type == type && tagTypes[i].id == id){
+                result = true;
+                break;
+            }
+        }
+
+        return result;
 
     }
 
