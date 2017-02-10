@@ -128,7 +128,8 @@ return {
                 boMeta: $scope.options.treeView.boMeta,
                 viewDS: _viewDS,
                 dragAndDrop: $scope.options.treeView.dragAndDrop,
-                defaultActions: $scope.options.treeView.defaultActions
+                defaultActions: $scope.options.treeView.defaultActions,
+                actionBlacklist: $scope.options.treeView.actionBlacklist
             }
         }
 
