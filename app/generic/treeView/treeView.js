@@ -237,15 +237,16 @@ return {
         var initContextMenu = function (node) {
             var result = {};
             var obj = $.jstree.reference(_controlSelector).get_json(node),
-                parent = $.jstree.reference(_controlSelector).get_node(node.parent).data;
+                parent = $.jstree.reference(_controlSelector).get_node(node.parent).data,
+                boMeta = $scope.boMeta[obj.data.boType];
 
-            var contextItems = $scope.boMeta[obj.data.boType].contextItems;
+            var contextItems = boMeta.contextItems;
             if (contextItems) {
                 for(var i = 0, len = contextItems.length; i < len; i++) {
                     var item = contextItems[i];
                         action = {
                             label: item.label,
-                            icon: item.icon || $scope.boMeta[obj.data.boType].icon                                
+                            icon: item.icon || boMeta.icon                                
                         };
 
                     if (typeof item.action === "string" ) {
@@ -262,13 +263,13 @@ return {
                 }
             } else if ($scope.options.defaultActions) {
                 $scope.options.defaultActions.forEach(function (action) {
-                    if (action === 'add') {
-                        if ($scope.boMeta[obj.data.boType].canHave) {
-                            $scope.boMeta[obj.data.boType].canHave.forEach(function (type) {
+                    if (action === 'add' && !_isActionBlacklisted(obj, boMeta, $scope.options.actionBlacklist, action)) {
+                        if (boMeta.canHave) {
+                            boMeta.canHave.forEach(function (type) {
                                 result['add_' + type] = _getAddItemActon(type, obj.data);
                             });
                         }
-                    } else if (action === 'delete' && !obj.data.isRoot) {
+                    } else if (action === 'delete' && !obj.data.isRoot && !_isActionBlacklisted(obj, boMeta, $scope.options.actionBlacklist, action)) {
                         result.delete = _getAssetDeleteAction(obj, parent);
                     }
                 });
@@ -355,6 +356,14 @@ return {
             };
 
             return result;
+        }
+
+        var _isActionBlacklisted = function (obj, boMeta, actionBlacklist, action) {
+            if (actionBlacklist && actionBlacklist[action]) {
+                return actionBlacklist[action](obj);
+            } else {
+                return false;
+            }
         }
 
         $timeout($scope.tvActions.initTreeControl, 0);
