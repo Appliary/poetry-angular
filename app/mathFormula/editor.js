@@ -200,12 +200,24 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
         return deferred.promise;
     }
 
+    function arrayUnique(array) {
+        var a = array.concat();
+        for(var i=0; i<a.length; ++i) {
+            for(var j=i+1; j<a.length; ++j) {
+                if(a[i] === a[j])
+                    a.splice(j--, 1);
+            }
+        }
+
+        return a;
+    }
+
     $scope.loadTags = function(query) {
         var deferred = $q.defer();
 
         $q.all([deviceTags(query, "devices"), deviceTags(query, "smartdevices")])
         .then(function (values){
-            deferred.resolve([].concat.apply([], values));
+            deferred.resolve(arrayUnique([].concat.apply([], values)));
         });
 
         return deferred.promise;
