@@ -52,6 +52,8 @@ return {
                 } else {
                     $scope.actions.redrawListView();
                 }
+            } else if ($scope.options.treeView.boMeta[obj.boType].apiService) {
+                $scope.options.treeView.boMeta[obj.boType].apiService.save(obj.data);
             }
         });
 
@@ -125,7 +127,8 @@ return {
                 topTierBO: $scope.topTierBO,
                 boMeta: $scope.options.treeView.boMeta,
                 viewDS: _viewDS,
-                dragAndDrop: $scope.options.treeView.dragAndDrop
+                dragAndDrop: $scope.options.treeView.dragAndDrop,
+                defaultActions: $scope.options.treeView.defaultActions
             }
         }
 

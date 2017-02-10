@@ -37,7 +37,7 @@ app.service('ViewDataSource', function ($q, $filter) {
         var result = [];
         for(var i = 0, len = allGroups.length; i < len; i++) {
             var _group = allGroups[i];
-            if (_group.parent && _group.parent._id === group.data._id) {
+            if (_group.parent && (typeof _group.parent === "string" ? _group.parent === group.data._id : group.parent._id === group.data._id) {
                 result.push(_formatAsset(_group, 'groups'));
             }
         }
@@ -728,7 +728,7 @@ app.service('ViewDataSource', function ($q, $filter) {
                 if (_this.isAssets) {
                     _changeAssetParent.call(this, obj, newParent, params);
                 } else if (_this.isGroups) {
-                    obj.data.group = newParent.data;
+                    obj.data.parent = newParent.data;
                     _updateItemGroup(obj);
                     _this.eventEmitter.emitEvent('change_parent', [obj, newParent]);
                 }
