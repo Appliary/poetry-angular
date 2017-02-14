@@ -1,0 +1,142 @@
+.mvTitleBar {
+	padding: 10px;
+	border: 1px solid $color_celeste_approx;
+
+	i.mvTitleIcon {
+		font-size: 1.4em;
+	}
+
+	span.mvTitle {
+		font-size: 1.4em;
+		font-weight: bold;
+	}
+}
+
+.mvActionsBar {
+	padding-top: 7px;
+	padding-bottom: 10px;
+
+	.actionCol {
+		button {
+			background-color: rgba(99, 148, 188, 0.1);
+			color: #6394bc;
+			text-shadow: none;
+
+			&:hover {
+				background-color: #daeaf9;
+			}
+		}
+		//padding-left: 14px;
+		padding-right: 5px;
+		display: inline-block;
+	}
+
+	.searchContainer {
+		margin-top: -11px;
+	}
+}
+
+.mvTreeView {
+	min-height: 300px;
+	border: none;
+	background-color: $white;
+
+	.fa-building {
+		color: $apartment;
+	}
+
+	.fa-university {
+		color: $building;
+	}
+
+	.fa-bolt {
+		//color:$block;
+	}
+
+	.fa-cog {
+		color: $device;
+	}
+}
+
+#mvAddEntityBtn,
+.mvAddEntityBtn {
+	position: absolute;
+	top: 15px !important;
+	right: 15px !important;
+}
+
+.filePickerRow > * {
+	margin-bottom: -15px;
+}
+
+.filePickerRow {
+	span {
+		display: inline-block;
+		height: 32px;
+		vertical-align: middle;
+		padding-top: 14px;
+		width: 181px;
+		text-align: right;
+	}
+
+	.filePicker {
+		display: inline-block;
+		margin-left: 10px;
+
+		label {
+			width: 100%;
+		}
+	}
+}
+
+.fileUploader > label {
+	background-color: transparent;
+	margin-top: 10px;
+
+	&:hover {
+		background-color: transparent;
+		color: $main_color_asset;
+	}
+}
+
+.fileUploader {
+	.clearFile {
+		background-color: transparent !important;
+		margin-top: 10px;
+
+		&:hover {
+			background-color: transparent !important;
+			color: $main_color_asset !important;
+		}
+	}
+}
+
+multi-view .col-md-6 {
+  margin: 0;
+}
+
+.mvTitleBar {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+.mvTitleBar i.mvTitleIcon {
+  font-size: 1.4em;
+}
+.mvTitleBar span.mvTitle {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.mvActionsBar {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mvActionsBar .actionCol {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.mvTreeView {
+  border: 1px solid #ccc;
+  min-height: 200px;
+}
