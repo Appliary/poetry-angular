@@ -94,6 +94,9 @@ return {
 
                     if (boData.isRoot && ($scope.isGroups || !$scope.boMeta[boType].editTemplate)) {
                         $scope.editItem = null;
+                        if ($scope.updateItem) {
+                            $scope.updateItem(null);
+                        }
                     } else {
                         if ($scope.boMeta[boType].edit) {
                             if (!boData.isRoot) {
