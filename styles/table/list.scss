@@ -105,3 +105,12 @@ body.collapsed .list{
 .static-list {
     position: static;
 }
+ug-perm-explorer{
+    table.selector{
+        border: grey;
+        tr.active{
+            backgound: grey;
+            color: white;
+        }
+    }
+}
