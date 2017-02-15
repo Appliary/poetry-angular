@@ -1,6 +1,6 @@
 .mvTitleBar {
 	padding: 10px;
-	border: 1px solid $color_celeste_approx;
+	border: 1px solid #6394bc;
 
 	i.mvTitleIcon {
 		font-size: 1.4em;
@@ -44,23 +44,7 @@
 .mvTreeView {
 	min-height: 300px;
 	border: none;
-	background-color: $white;
-
-	.fa-building {
-		color: $apartment;
-	}
-
-	.fa-university {
-		color: $building;
-	}
-
-	.fa-bolt {
-		//color:$block;
-	}
-
-	.fa-cog {
-		color: $device;
-	}
+	background-color: white;
 }
 
 #mvAddEntityBtn,
@@ -100,7 +84,6 @@
 
 	&:hover {
 		background-color: transparent;
-		color: $main_color_asset;
 	}
 }
 
@@ -111,7 +94,6 @@
 
 		&:hover {
 			background-color: transparent !important;
-			color: $main_color_asset !important;
 		}
 	}
 }
