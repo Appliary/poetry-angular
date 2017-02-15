@@ -109,13 +109,14 @@ ug-perm-explorer{
     table.selector{
         border-collapse: collapse;
         border: grey solid 1px;
+        margin-top: 20px;
         th{
             background: grey;
             font-weight: bold;
+            color: white;
         }
         tr.active{
             background: lightgrey;
-            color: white;
         }
         td{
             padding: 0 10px;
