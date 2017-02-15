@@ -1,2 +1,2 @@
-a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && $root.team.permissions.APP[$root.__appName][module.name]', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ", icon="{{module.icon}}")
+a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.team.permissions.APP[$root.__appName][module.name]  || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ", icon="{{module.icon}}")
     | {{ module.name + ':module:sidebar' | translate }}
