@@ -107,10 +107,18 @@ body.collapsed .list{
 }
 ug-perm-explorer{
     table.selector{
+        border-collapse: collapse;
         border: grey solid 1px;
+        th{
+            background: grey;
+            font-weight: bold;
+        }
         tr.active{
-            backgound: grey;
+            background: lightgrey;
             color: white;
+        }
+        td{
+            padding: 0 10px;
         }
     }
 }
