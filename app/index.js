@@ -28,7 +28,7 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 $rootScope.team = usersResponse.data.team;
                 $rootScope.loaded = true;
 
-                var lang = usersResponse.data.user.language || 'en'
+                var lang = usersResponse.data.user.language || 'en';
 
                 $http.get( '/i18n/' + lang )
                     .then( function ok( i18n ) {
@@ -55,5 +55,5 @@ app.config( function ( $locationProvider, $httpProvider ) {
 
         $rootScope.print = function ( elem ) {
             console.log( 'elem to print: ', elem );
-        }
+        };
     } );
