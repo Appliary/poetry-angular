@@ -26,9 +26,14 @@
 				background-color: #daeaf9;
 			}
 		}
-		//padding-left: 14px;
+
 		padding-right: 5px;
 		display: inline-block;
+
+        input[type=radio] {
+            visibility: hidden;
+            position: absolute;
+        }
 	}
 
 	.searchContainer {
