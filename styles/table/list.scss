@@ -119,6 +119,10 @@ ug-perm-explorer{
         }
         td{
             padding: 0 10px;
+            &.check{
+                width: 20px;
+                text-align: right;
+            }
         }
     }
 }
