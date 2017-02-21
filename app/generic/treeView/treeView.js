@@ -28,7 +28,8 @@ return {
         $scope.boMeta = $scope.options.boMeta;
         $scope.topTierBO = $scope.options.topTierBO || 'groups';
         $scope.isGroups = _mode === 'groups';
-        $scope.isAssets = _mode === 'assets';        
+        $scope.isAssets = _mode === 'assets';
+        $scope.saveState = !($scope.options.saveState === false);
         var _viewDS = null;
         $scope.editItem = null;
         if ($scope.options.viewDS) {
@@ -178,7 +179,9 @@ return {
                 }
 
                 $jsTree.bind('refresh.jstree', function (args) {
-                    $scope.options.instance.restore_state();
+                    if ($scope.saveState) {
+                        $scope.options.instance.restore_state();
+                    }
                 });
 
                 $scope.options.instance = $jsTree.jstree();
@@ -193,7 +196,10 @@ return {
             redrawTreeView: function (selector) {
                 var jstree = $(selector).jstree(true);                                                    
                 if (jstree) { 
-                    jstree.save_state();
+                    if ($scope.saveState) {
+                        jstree.save_state();
+                    }
+                    
                     jstree.settings.core.data = _viewDS.getTreeViewData();
                     jstree.refresh();                    
                 }
