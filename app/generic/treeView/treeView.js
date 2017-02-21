@@ -56,7 +56,7 @@ return {
         $scope.tvActions = {
             initTreeControl: function () {
                 var $jsTree = $(_controlSelector);
-                var plugins = ["wholerow", "contextmenu", "search", "state"];
+                var plugins = ["wholerow", "contextmenu", "search"];
 
                 if ($scope.options.dragAndDrop) {
                     plugins.push("dnd");
@@ -64,6 +64,10 @@ return {
 
                 if ($scope.options.checkbox) {
                     plugins.push("checkbox");
+                }
+
+                if ($scope.options.saveState) {
+                    plugins.push("state");
                 }
 
                 $jsTree
@@ -199,7 +203,7 @@ return {
                     if ($scope.saveState) {
                         jstree.save_state();
                     }
-                    
+
                     jstree.settings.core.data = _viewDS.getTreeViewData();
                     jstree.refresh();                    
                 }
