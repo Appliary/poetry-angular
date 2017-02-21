@@ -14,8 +14,8 @@ return {
     restrict: 'E',
     scope: {
         options: '=',
-        editItem: '=editItem',
-        updateItem: '='
+        editItem: '=?',
+        updateItem: '=?'
     },
     //templateUrl: 'treeView/treeView.pug',
     template: '<div class="mvTreeView"><div id="{{controlId}}"></div></div>',
