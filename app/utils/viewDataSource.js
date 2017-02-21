@@ -369,6 +369,8 @@ app.service('ViewDataSource', function ($q, $filter) {
                     var _root = _prepareAssetsRoot(_rawData);
                     _root.children = _tvData;
                     _this.treeViewData = [_root];
+                } else {
+                    _this.treeViewData = _tvData;
                 }
             }
         };
