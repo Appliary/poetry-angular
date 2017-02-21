@@ -61,6 +61,10 @@ return {
                     plugins.push("dnd");
                 }
 
+                if ($scope.options.checkbox) {
+                    plugins.push("checkbox");
+                }
+
                 $jsTree
                     .jstree({
                         core : {
