@@ -66,7 +66,7 @@ return {
                     plugins.push("checkbox");
                 }
 
-                if ($scope.options.saveState) {
+                if ($scope.saveState) {
                     plugins.push("state");
                 }
 
