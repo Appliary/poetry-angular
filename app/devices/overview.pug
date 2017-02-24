@@ -1,0 +1,13 @@
+ng-include( src='"generic/overview.pug"' )
+
+.panel( style=' margin-top:50px ')
+    .muted.pull-right {{ item.timestamp | localize }}
+    h4 {{ 'last:device' | translate }}
+    table
+        tr( ng-repeat=" measurement in item.last " )
+            td
+                b {{ measurement.type + ':mtype' | translate }} &nbsp;
+                i {{ measurement.id }}
+                .muted {{ measurement.timestamp | localize }}
+            td.right
+                pre {{ measurement.value | localize }} {{ measurement.unit + ':unit' | translate }}
