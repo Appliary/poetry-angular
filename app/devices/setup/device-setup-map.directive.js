@@ -7,7 +7,7 @@
         var directive = {
             replace: true,
             restrict: 'E',
-            templateUrl: "devices/setup/device-setup-map.directive.html",
+            templateUrl: "devices/setup/device-setup-map.directive.pug",
             controller: deviceSetupMapController,
             scope:{
                 position: "=",

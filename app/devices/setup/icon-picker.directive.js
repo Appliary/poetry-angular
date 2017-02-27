@@ -7,7 +7,7 @@
         var directive = {
             replace: true,
             restrict: 'E',
-            templateUrl: "devices/setup/icon-picker.directive.html",
+            templateUrl: "devices/setup/icon-picker.directive.pug",
             controller: deviceSetupMapController,
             scope:{
                 iconSelected: "=",
