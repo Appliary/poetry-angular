@@ -1,11 +1,13 @@
 'use strict';
-var mime = require('mime-types');
+var mime = require( 'mime-types' );
 
 const Poetry = require( 'poetry' ),
     fs = require( 'fs' ),
     config = require( './config' ),
     angular = require( './handlers/angular' );
 
+
+let ngcache = [];
 
 Poetry.route( {
 
@@ -18,11 +20,15 @@ Poetry.route( {
     }
 
 }, ( request, reply ) => {
-    console.log(request.params.file);
+
+    if ( ~ngcache.indexOf( request.params.file ) )
+        return reply( angular() );
+
     fs.readFile( './assets/' + request.params.file, ( err, file ) => {
-        console.log(err, file);
+        Poetry.log.silly( err, file );
         if ( !err )
-            return reply( file ).type(mime.lookup(request.params.file));
+            return reply( file )
+                .type( mime.lookup( request.params.file ) );
 
         if ( request.params.file && request.params.file.length > 4 &&
             (
@@ -30,6 +36,7 @@ Poetry.route( {
             ) ) return reply()
             .code( 404 );
 
+        ngcache.push( request.params.file );
         return reply( angular() );
 
     } );
