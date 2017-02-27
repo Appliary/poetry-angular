@@ -23,19 +23,19 @@ Poetry.route( {
                     file: file,
                     pug: true,
                     name: file.slice( __dirname.length - 4 )
-                } ) )
+                } ) );
                 files2 = files2.map( file => ( {
                     file: file,
                     pug: true,
                     name: file.slice( process.cwd()
                         .length + 5 )
-                } ) )
+                } ) );
                 files3 = files3.map( file => ( {
                     file: file,
                     pug: false,
                     name: file.slice( process.cwd()
                         .length + 5 )
-                } ) )
+                } ) );
 
                 files = files.concat( files2 )
                     .concat( files3 );
