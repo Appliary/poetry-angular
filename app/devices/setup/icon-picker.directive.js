@@ -56,7 +56,7 @@
         }
 
         function openConfirmModal() {
-            ngDialog.openConfirm({template: 'popupConfirm.html',
+            ngDialog.openConfirm({template: 'popupConfirm.pug',
                 scope:$scope
             }).then((res)=>{}).catch((res)=>{});
         }
