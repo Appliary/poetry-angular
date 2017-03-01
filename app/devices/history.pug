@@ -1,0 +1,11 @@
+div(ng-controller='devices/history')
+    accordion( ng-repeat=' measurement in measurements | orderBy:"timestamp":true ', ng-class=' {open:measurement.$open} ', ng-init=' measurement.$open = !$index ' )
+        header(ng-click=' measurement.$open = !measurement.$open ')
+            span {{ measurement.timestamp | localize }}
+        table.content
+            tr( ng-repeat=' data in measurement.measurements ')
+                td
+                    b {{ data.type }} &nbsp;
+                    i {{ data.id }}
+                td.right
+                    pre {{ data.value | localize }} {{ data.unit + ':unit' | translate }}

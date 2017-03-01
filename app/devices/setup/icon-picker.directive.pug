@@ -1,0 +1,8 @@
+span
+    script(type='text/ng-template', id='popupConfirm.pug').
+        <input type="text" ng-model="filterIconsName">
+        <div style="overflow-y: auto; max-height:400px;" >
+            <span ng-repeat="icon in icons   | filter: { name : filterIconsName } track by $index"  >
+                <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon );closeThisDialog()" />
+            </span>
+        </div>

@@ -1,4 +1,5 @@
 [
     "datatables",
-    "datatables.options"
+    "datatables.options",
+    "leaflet-directive"
 ]

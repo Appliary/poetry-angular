@@ -1,0 +1,4 @@
+div(ng-controller='devices/rules')
+    div( ng-repeat=' rule in rules | orderBy:"timestamp":true ' )
+        span.pull-right.muted {{ rule.lastOutput }}
+        span {{ rule.name }}

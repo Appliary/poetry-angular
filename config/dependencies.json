@@ -5,5 +5,15 @@
     "jstree/dist/themes/default/style.min.css",
     "datatables/media/js/jquery.dataTables.min.js",
     "angular-datatables/dist/angular-datatables.min.js",
-    "angular-datatables/dist/css/angular-datatables.min.css"
+    "angular-datatables/dist/css/angular-datatables.min.css",
+    "leaflet/dist/leaflet.js",
+    "angular-leaflet-directive/dist/angular-leaflet-directive.js",
+    "leaflet/dist/leaflet.css",
+    "leaflet.markercluster/dist/leaflet.markercluster.js",
+    "leaflet.markercluster/dist/MarkerCluster.css",
+    "leaflet.markercluster/dist/MarkerCluster.Default.css",
+    "leaflet-google-places-autocomplete/src/js/leaflet-gplaces-autocomplete.js",
+    "leaflet-google-places-autocomplete/src/css/leaflet-gplaces-autocomplete.css",
+    "leaflet-draw/dist/leaflet.draw.js",
+    "leaflet-draw/dist/leaflet.draw-src.css"
 ]
