@@ -270,7 +270,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 return 'textarea';
 
             // Select enums
-            if ( $scope.__joi.computed[ field ]._flags.allowOnly && $scope.__joi.computed[ field ]._flags.allowOnly.length )
+            if ( $scope.__joi.computed[ name ]._flags.allowOnly && $scope.__joi.computed[ name ]._flags.allowOnly.length )
                 return 'enum';
 
             // Default string otherwise

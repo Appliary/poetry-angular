@@ -2,9 +2,9 @@ form( ng-submit='' )
     .muted( ng-if='item.updatedAt || item.updatedBy' )
         span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
         span(ng-if='item.updatedAt')
-            span(ng-if='item.updateBy') {{'at:iteminfo'|translate}}
+            span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
             span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
-            | {{ item.updatedAt | date }}
+            | &nbsp;{{ item.updatedAt | localize }}
     .muted( ng-if='!item.updatedAt && !item.updatedBy' )
         span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
         span(ng-if='item.createdAt')
