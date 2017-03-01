@@ -23,7 +23,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.$watchCollection( 'sorting', getlist );
 
     $scope.$watch( '__view', function loadView() {
-        if (typeof $scope.__view === "undefined") {
+        if ( typeof $scope.__view === "undefined" ) {
             $scope.fields = [];
         } else {
             $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
@@ -45,7 +45,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( $scope.status ) url += '&status=' + $scope.status;
         if ( $scope.search )
             url += '&search=' + encodeURIComponent( $scope.search );
-        if ( $scope.data && $scope.data.length ){
+        if ( $scope.data && $scope.data.length ) {
             page = $scope.data.length / 100;
             url += '&limit=100&page=' + page;
         }
@@ -53,19 +53,19 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             .then( function success( response ) {
                 isLoading = false;
 
-                if ( response.data.data ){
-                    if( page )
-                        response.data.data.forEach( function loop(i){
-                            if( $scope.data && !~$scope.data.indexOf(i))
-                                $scope.data.push(i);
-                        });
+                if ( response.data.data ) {
+                    if ( page )
+                        response.data.data.forEach( function loop( i ) {
+                            if ( $scope.data && !~$scope.data.indexOf( i ) )
+                                $scope.data.push( i );
+                        } );
                     else
                         $scope.data = response.data.data;
-                }else if ( response.data instanceof Array )
-                    response.data.forEach( function loop(i){
-                        if( $scope.data && !~$scope.data.indexOf(i))
-                            $scope.data.push(i);
-                    });
+                } else if ( response.data instanceof Array )
+                    response.data.forEach( function loop( i ) {
+                        if ( $scope.data && !~$scope.data.indexOf( i ) )
+                            $scope.data.push( i );
+                    } );
 
                 $scope.total = response.data.recordsFiltered;
 
@@ -79,7 +79,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                             .forEach( function ( col ) {
                                 if ( !~$scope.columns.indexOf( col ) )
                                     $scope.columns.push( col );
-                            } )
+                            } );
                     } );
 
             }, function error( response ) {
@@ -136,11 +136,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         var header = elem.querySelectorAll( 'th' );
         for ( var i = 0; i < header.length; i++ ) {
             header[ i ].style.top = elem.scrollTop + 'px';
-        };
+        }
         if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight ) {
             getlist( true );
         }
-    }
+    };
 
     // Give access to the isArray function on the view
     $scope.isArray = angular.isArray;
@@ -159,8 +159,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $scope.item.__failed = $scope.item.__success = false;
 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
-            .then( function success(smartdevice) {
-                console.info( 'Saved!' , smartdevice);
+            .then( function success( smartdevice ) {
+                console.info( 'Saved!', smartdevice );
                 $scope.__validation = [];
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
@@ -173,14 +173,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                     $scope.__validation = err.data.validation.keys;
             } );
 
-    }
+    };
 
-    $scope.loadTags = function(query) {
+    $scope.loadTags = function ( query ) {
         var deferred = $q.defer();
 
-        $http.get( $scope.$root.__module.api + '/tags/' + query)
+        $http.get( $scope.$root.__module.api + '/tags/' + query )
             .then( function success( response ) {
-                deferred.resolve(response.data);
+                deferred.resolve( response.data );
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
@@ -188,14 +188,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         return deferred.promise;
     };
 
-    function retrieveTags(){
-        if($scope.$root.__module.api == "/api/devices" || $scope.$root.__module.api == "/api/smartdevices"){
+    function retrieveTags() {
+        if ( $scope.$root.__module.api == "/api/devices" || $scope.$root.__module.api == "/api/smartdevices" ) {
             $http.get( $scope.$root.__module.api + '/tags' )
-            .then( function success( response ) {
-                $scope.tags = response.data
-            }, function error( response ) {
-                $location.path( '/error/' + response.status );
-            } );
+                .then( function success( response ) {
+                    $scope.tags = response.data;
+                }, function error( response ) {
+                    $location.path( '/error/' + response.status );
+                } );
         }
     }
 
@@ -210,9 +210,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
         // Load controller
         if ( $scope.$root.__module.config && $scope.$root.__module.config.tabs && $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
-            return $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
+            return ( $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
                 $scope: $scope
-            } );
+            } ) );
 
         // Clean item
         $scope.item = undefined;
@@ -220,22 +220,126 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         // Get item from API
         $http.get( $scope.$root.__module.api + '/' + id )
             .then( function success( response ) {
-                $scope.item = response.data
+                $scope.item = response.data;
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
     }
-    
+
 
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
         .then( function success( response ) {
             if ( !response.data.payload._inner )
-                return $scope.__joi = response.data.payload;
+                return ( $scope.__joi = response.data.payload );
 
             $scope.__joi = {};
             response.data.payload._inner.children.forEach( function ( elem ) {
                 $scope.__joi[ elem.key ] = elem.schema;
-            } )
+            } );
         }, function error( err ) {} );
+
+    $scope.inputType = function ( name ) {
+
+        // If there's no validation
+        if ( !$scope.__joi )
+            return 'string';
+
+        // Id are not localized
+        if ( name === '_id' )
+            return 'id';
+
+        // Return the type if in the list
+        if ( ~[
+                'array',
+                'boolean',
+                'date'
+            ].indexOf( $scope.__joi.computed[ name ]._type ) )
+            return $scope.__joi.computed[ name ]._type;
+
+        // Strings
+        if ( $scope.__joi.computed[ name ]._type == 'string' ) {
+
+            // Special strings
+            if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'password' ) )
+                return 'password';
+            if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )
+                return 'textarea';
+
+            // Select enums
+            if ( __joi.computed[ field ]._flags.allowOnly && __joi.computed[ field ]._flags.allowOnly.length )
+                return 'enum';
+
+            // Default string otherwise
+            return 'string';
+
+        }
+
+        // Numbers
+        if ( $scope.__joi.computed[ name ]._type == 'numbers' ) {
+
+            // With an unit
+            if ( $scope.__joi.computed[ name ]._unit )
+                return 'unit';
+
+            // Default number
+            return 'number';
+
+        }
+
+        // Readonly specials
+        if ( $scope.item.name ) return 'readOnlyName';
+        if ( $scope.item.id ) return 'readOnlyId';
+        if ( $scope.item._id ) return 'readOnly_Id';
+
+        // Default readonly
+        return 'readOnly';
+
+    };
+
+    $scope.inputVisible = function ( name ) {
+
+        // If not alternatives
+        if ( $scope.__joi._type != 'alternatives' ) {
+            if ( !$scope.__joi.computed )
+                $scope.__joi.computed = $scope.__joi;
+            return true;
+        }
+
+        if ( !$scope.__joi.af ) {
+
+            // Get the field that defines which alt
+            $scope.__joi.af = $scope.__joi._inner.matches[ 0 ].schema._inner.children.some( function ( a, i ) {
+                try {
+                    if ( a._valids._set.length == 1 ) return i;
+                } catch ( e ) {}
+            } );
+
+            // Failed, show anyway
+            if ( !$scope.__joi.af )
+                return true;
+
+        }
+
+        if ( !$scope.__joi.alt ) {
+
+            // Get the alts
+            $scope.__joi.alt = {};
+            $scope.__joi._inner.matches.forEach( function ( a ) {
+                $scope.__joi.alt[ a.schema._inner.children[ $scope.__joi.af ]._valids._set[ 0 ] ] = a.schema._inner.children;
+            } );
+
+        }
+
+        $scope.__joi.computed = $scope.__joi.alt[ $scope.item[ $scope.__joi.af ] ];
+
+        if ( name == $scope.__joi.af )
+            return true;
+
+        if ( $scope.__joi.computed[ name ] ) return true;
+
+        return false;
+
+    };
+
 } );

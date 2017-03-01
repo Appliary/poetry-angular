@@ -1,39 +1,41 @@
 form( ng-submit='' )
-    div(ng-repeat=' field in fields ' ng-class="{ error: __validation.indexOf(field) !==-1 }")
-        label( for='{{field}}', ng-class="{ required: __joi[field]._flags.presence == 'required' }" )
+    div( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible" )
+        label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
             | {{field + ':field' | translate}}
 
         //- Unknown => Read only
-        input( name='{{field}}', ng-if="!__joi[field] && !item[field].name && field!='_id'", ng-value='item[field] | localize', readonly )
-        input( name='{{field}}', ng-if='!__joi[field] && item[field].name', ng-value='item[field].name', readonly )
+        input( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
+        input( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
+        input( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
+        input( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
 
         //- _id
-        input( name='{{field}}', ng-if="!__joi[field] && field=='_id'", ng-value='item[field]', readonly )
+        input( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
 
         //- Numbers (with or without units)
-        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "number" && !__joi[field]._unit', ng-model='item[field]' )
-        span.unit( ng-if='__joi[field]._type == "number" && __joi[field]._unit' )
+        input( name='{{field}}', ng-if="inputType(field) = 'number'", ng-model='item[field]' )
+        span.unit( ng-if="inputType(field) = 'unit'" )
             input( name='{{field}}', ng-model='item[field]', type="number" )
-            span {{ __joi[field]._unit + ':unit' | translate }}
+            span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
         //- Strings
-        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("password") === -1 && __joi[field]._tags.indexOf("textarea") === -1', ng-model='item[field]' )
+        input( name='{{field}}', ng-if="inputType(field) = 'string'", ng-model='item[field]' )
 
         //- Passwords
-        input( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("password") !== -1', ng-model='item[field]', type="password" )
+        input( name='{{field}}', ng-if="inputType(field) = 'password'", ng-model='item[field]', type="password" )
 
         //- Enums
-        select( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && __joi[field]._flags.allowOnly', ng-model='item[field]' )
-            option( ng-repeat=' opt in __joi[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+        select( name='{{field}}', ng-if="inputType(field) = 'enum'", ng-model='item[field]' )
+            option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
         //- Textareas
-        textarea( name='{{field}}', ng-if='__joi[field] && __joi[field]._type == "string" && !__joi[field]._flags.allowOnly && __joi[field]._tags.indexOf("textarea") !== -1 ', ng-model='item[field]' )
+        textarea( name='{{field}}', ng-if="inputType(field) = 'textarea'", ng-model='item[field]' )
 
         //- Boolean
-        input( name='{{field}}', type="checkbox", ng-if='__joi[field] && item[field]._type == "boolean"', ng-model='item[field]' )
+        input( name='{{field}}', type="checkbox", ng-if="inputType(field) = 'boolean'", ng-model='item[field]' )
 
         //- Tags
-        tags-input.tags-input-overview( name='{{field}}', ng-if='__joi[field] && field == "tags"', ng-model='item[field]' )
+        tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) = 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)")
 
 
