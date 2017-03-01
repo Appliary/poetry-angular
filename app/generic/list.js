@@ -240,63 +240,67 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         }, function error( err ) {} );
 
     $scope.inputType = function ( name ) {
+        try {
+            // If there's no validation
+            if ( !$scope.__joi )
+                return 'string';
 
-        // If there's no validation
-        if ( !$scope.__joi )
+            if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
+                $scope.__joi.computed = $scope.__joi;
+
+            // Id are not localized
+            if ( name === '_id' )
+                return 'id';
+
+            // Return the type if in the list
+            if ( ~[
+                    'array',
+                    'boolean',
+                    'date'
+                ].indexOf( $scope.__joi.computed[ name ]._type ) )
+                return $scope.__joi.computed[ name ]._type;
+
+            // Strings
+            if ( $scope.__joi.computed[ name ]._type == 'string' ) {
+
+                // Special strings
+                if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'password' ) )
+                    return 'password';
+                if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )
+                    return 'textarea';
+
+                // Select enums
+                if ( $scope.__joi.computed[ name ]._flags.allowOnly )
+                    return 'enum';
+
+                // Default string otherwise
+                return 'string';
+
+            }
+
+            // Numbers
+            if ( $scope.__joi.computed[ name ]._type == 'number' ) {
+
+                // With an unit
+                if ( $scope.__joi.computed[ name ]._unit )
+                    return 'unit';
+
+                // Default number
+                return 'number';
+
+            }
+
+            // Readonly specials
+            if ( $scope.item.name ) return 'readOnlyName';
+            if ( $scope.item.id ) return 'readOnlyId';
+            if ( $scope.item._id ) return 'readOnly_Id';
+
+            // Default readonly
+            return 'readOnly';
+
+        } catch ( e ) {
             return 'string';
-
-        if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
-            $scope.__joi.computed = $scope.__joi;
-
-        // Id are not localized
-        if ( name === '_id' )
-            return 'id';
-
-        // Return the type if in the list
-        if ( ~[
-                'array',
-                'boolean',
-                'date'
-            ].indexOf( $scope.__joi.computed[ name ]._type ) )
-            return $scope.__joi.computed[ name ]._type;
-
-        // Strings
-        if ( $scope.__joi.computed[ name ]._type == 'string' ) {
-
-            // Special strings
-            if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'password' ) )
-                return 'password';
-            if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )
-                return 'textarea';
-
-            // Select enums
-            if ( $scope.__joi.computed[ name ]._flags.allowOnly )
-                return 'enum';
-
-            // Default string otherwise
-            return 'string';
-
         }
-
-        // Numbers
-        if ( $scope.__joi.computed[ name ]._type == 'numbers' ) {
-
-            // With an unit
-            if ( $scope.__joi.computed[ name ]._unit )
-                return 'unit';
-
-            // Default number
-            return 'number';
-
-        }
-
-        // Readonly specials
-        if ( $scope.item.name ) return 'readOnlyName';
-        if ( $scope.item.id ) return 'readOnlyId';
-        if ( $scope.item._id ) return 'readOnly_Id';
-
-        // Default readonly
-        return 'readOnly';
 
     };
 
