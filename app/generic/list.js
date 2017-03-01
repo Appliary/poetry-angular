@@ -230,7 +230,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
         .then( function success( response ) {
-            if ( !response.data.payload._inner )
+            if ( !response.data.payload._inner || !response.data.payload._inner.children )
                 return ( $scope.__joi = response.data.payload );
 
             $scope.__joi = {};
