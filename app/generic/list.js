@@ -301,7 +301,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             return 'readOnly';
 
         } catch ( e ) {
-            return 'string';
+            console.warn( e );
+            return 'readOnly';
         }
 
     };
