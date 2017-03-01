@@ -38,18 +38,18 @@ form( ng-submit='' )
         tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)")
 
-    .muted.pull-right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
+    .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
         span(ng-if='item.updatedAt')
             span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
             span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
             | &nbsp;{{ item.updatedAt | localize }}
-    .muted.pull-right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
+    .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
         span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
         span(ng-if='item.createdAt')
             span(ng-if='item.createdBy') {{'at:iteminfo'|translate}}
             span(ng-if='!item.createdBy') {{'createdAt:iteminfo'|translate}}
-            | {{ item.updatedAt | date }}
+            | {{ item.createdAt | localize }}
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
