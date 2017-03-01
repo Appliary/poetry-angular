@@ -241,12 +241,12 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     $scope.inputType = function ( name ) {
 
-        if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
-            $scope.__joi.computed = $scope.__joi;
-
         // If there's no validation
         if ( !$scope.__joi )
             return 'string';
+
+        if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
+            $scope.__joi.computed = $scope.__joi;
 
         // Id are not localized
         if ( name === '_id' )
