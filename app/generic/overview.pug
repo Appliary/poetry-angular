@@ -1,16 +1,4 @@
 form( ng-submit='' )
-    .muted( ng-if='item.updatedAt || item.updatedBy' )
-        span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
-        span(ng-if='item.updatedAt')
-            span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
-            span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
-            | &nbsp;{{ item.updatedAt | localize }}
-    .muted( ng-if='!item.updatedAt && !item.updatedBy' )
-        span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
-        span(ng-if='item.createdAt')
-            span(ng-if='item.createdBy') {{'at:iteminfo'|translate}}
-            span(ng-if='!item.createdBy') {{'createdAt:iteminfo'|translate}}
-            | {{ item.updatedAt | date }}
     div( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible" )
         label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
             | {{ field + ':field' | translate }}
@@ -50,6 +38,18 @@ form( ng-submit='' )
         tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)")
 
+    .muted( ng-if='item.updatedAt || item.updatedBy' )
+        span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
+        span(ng-if='item.updatedAt')
+            span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
+            span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
+            | &nbsp;{{ item.updatedAt | localize }}
+    .muted( ng-if='!item.updatedAt && !item.updatedBy' )
+        span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
+        span(ng-if='item.createdAt')
+            span(ng-if='item.createdBy') {{'at:iteminfo'|translate}}
+            span(ng-if='!item.createdBy') {{'createdAt:iteminfo'|translate}}
+            | {{ item.updatedAt | date }}
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
