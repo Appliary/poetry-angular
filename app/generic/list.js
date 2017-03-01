@@ -248,9 +248,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
             $scope.__joi.computed = $scope.__joi;
 
-        if ( !$scope.__joi.computed[ name ] )
-            return 'hidden';
-
         // Id are not localized
         if ( name === '_id' )
             return 'id';
