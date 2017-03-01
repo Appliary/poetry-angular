@@ -38,13 +38,13 @@ form( ng-submit='' )
         tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)")
 
-    .muted.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
+    .muted.pull-right.lightButton.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
         span(ng-if='item.updatedAt')
             span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
             span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
             | &nbsp;{{ item.updatedAt | localize }}
-    .muted.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
+    .muted.pull-right.lightButton.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
         span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
         span(ng-if='item.createdAt')
             span(ng-if='item.createdBy') {{'at:iteminfo'|translate}}
