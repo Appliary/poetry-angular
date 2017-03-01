@@ -252,6 +252,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             if ( name === '_id' )
                 return 'id';
 
+            // Readonly specials
+            if ( $scope.item[ name ].name ) return 'readOnlyName';
+            if ( $scope.item[ name ].id ) return 'readOnlyId';
+            if ( $scope.item[ name ]._id ) return 'readOnly_Id';
+
             // Return the type if in the list
             if ( ~[
                     'array',
@@ -289,11 +294,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 return 'number';
 
             }
-
-            // Readonly specials
-            if ( $scope.item.name ) return 'readOnlyName';
-            if ( $scope.item.id ) return 'readOnlyId';
-            if ( $scope.item._id ) return 'readOnly_Id';
 
             // Default readonly
             return 'readOnly';
