@@ -22,7 +22,11 @@
     "datatables": "^1.10.12",
     "angular-datatables": "^0.5.5",
     "jquery": "2.2.4",
-    "angular": "^1.5.8"
+    "angular": "^1.5.8",
+    "leaflet": "^1.0.2",
+    "leaflet-draw": "^0.4.9",
+    "leaflet-google-places-autocomplete": "0.0.5",
+    "leaflet.markercluster": "^1.0.0"
   },
   "devDependencies": {},
   "homepage": "https://github.com/Appliary/poetry-angular#readme",
