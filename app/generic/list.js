@@ -248,6 +248,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( !$scope.__joi.computed && $scope.__joi._type != 'alternatives' )
             $scope.__joi.computed = $scope.__joi;
 
+        if ( !$scope.__joi.computed[ name ] )
+            return 'hidden';
+
         // Id are not localized
         if ( name === '_id' )
             return 'id';
@@ -270,7 +273,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 return 'textarea';
 
             // Select enums
-            if ( __joi.computed[ field ]._flags.allowOnly && __joi.computed[ field ]._flags.allowOnly.length )
+            if ( $scope.__joi.computed[ field ]._flags.allowOnly && $scope.__joi.computed[ field ]._flags.allowOnly.length )
                 return 'enum';
 
             // Default string otherwise
