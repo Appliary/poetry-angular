@@ -253,9 +253,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 return 'id';
 
             // Readonly specials
-            if ( $scope.item[ name ].name ) return 'readOnlyName';
-            if ( $scope.item[ name ].id ) return 'readOnlyId';
-            if ( $scope.item[ name ]._id ) return 'readOnly_Id';
+            if ( $scope.item[ name ] ) {
+                if ( $scope.item[ name ].name ) return 'readOnlyName';
+                if ( $scope.item[ name ].id ) return 'readOnlyId';
+                if ( $scope.item[ name ]._id ) return 'readOnly_Id';
+            }
 
             // Return the type if in the list
             if ( ~[
