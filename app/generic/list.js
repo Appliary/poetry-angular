@@ -67,7 +67,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $http.get( url )
             .then( function success( response ) {
 
-                if ( !isNan( reqID ) && $scope.reqID != reqID )
+                if ( !isNaN( reqID ) && $scope.reqID != reqID )
                     return console.warn( 'Response dropped', $scope.reqID, reqID );
 
                 isLoading = false;
