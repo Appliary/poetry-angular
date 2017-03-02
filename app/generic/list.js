@@ -30,8 +30,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         }
     } );
 
-    var isLoading = false,
-        requestId = 0;
+    var isLoading = false;
     $scope.data = [];
     $scope.tags = [];
 
@@ -41,7 +40,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( n !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
-        var currentReqId = ++requestId;
         $scope.total = undefined;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
         if ( $scope.status ) url += '&status=' + $scope.status;
@@ -53,8 +51,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         }
         $http.get( url )
             .then( function success( response ) {
-                if ( currentReqId != requestId )
-                    return console.warn( 'Request', currentReqId, 'aborded' );
 
                 isLoading = false;
 
