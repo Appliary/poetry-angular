@@ -31,11 +31,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     } );
 
     var isLoading = false;
+    $scope.reqID = 0;
     $scope.data = [];
     $scope.tags = [];
 
     function getlist( n, o ) {
         var page = 0;
+        var reqID = parseInt( ++$scope.reqID );
+        console.log( 'GETTING LIST', n, o, $scope.search );
         if ( o == n || isLoading ) return;
         if ( n !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
@@ -51,6 +54,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         }
         $http.get( url )
             .then( function success( response ) {
+
+                if ( $scope.reqID != reqID )
+                    return console.warn( 'Response dropped', $scope.reqID, reqID );
 
                 isLoading = false;
 
