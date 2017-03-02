@@ -181,7 +181,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
                 // Update list
                 if ( res.data && res.data._id ) {
-                    $scope.item = res.data;
+                    $scope.item = angular.copy( res.data );
                     $scope.data.some( function ( v, i ) {
 
                         // Not this one, continue the search
@@ -189,7 +189,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                             return false;
 
                         // Same ID, replace it and stop search
-                        $scope.data[ i ] = res.data;
+                        $scope.data[ i ] = angular.copy( res.data );
                         return true;
 
                     } );
