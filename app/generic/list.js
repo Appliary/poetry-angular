@@ -39,7 +39,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         var page = 0;
         var reqID = parseInt( ++$scope.reqID );
         console.log( 'GETTING LIST', n, o, $scope.search );
-        if ( o == n || isLoading ) return;
+        if ( o == n ) return;
         if ( n !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
