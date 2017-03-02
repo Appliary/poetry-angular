@@ -22,6 +22,19 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.$watch( 'status', getlist );
     $scope.$watchCollection( 'sorting', getlist );
 
+    var cvr;
+
+    function cleanVisualReturn( n ) {
+        if ( !n ) return;
+        if ( cvr ) clearTimeout( cvr );
+        cvr = setTimeout( function () {
+            $scope.item.__saved = false;
+            $scope.item.__failed = false;
+        }, 3000 );
+    }
+    $scope.$watch( 'item.__saved', cleanVisualReturn );
+    $scope.$watch( 'item.__failed', cleanVisualReturn );
+
     $scope.$watch( '__view', function loadView() {
         if ( typeof $scope.__view === "undefined" ) {
             $scope.fields = [];
@@ -163,24 +176,26 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $scope.item.__failed = $scope.item.__success = false;
 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
-            .then( function success( smartdevice ) {
-                console.info( 'Saved!', smartdevice );
+            .then( function success( res ) {
                 $scope.__validation = [];
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
 
                 // Update list
-                $scope.data.some( function ( v, i ) {
+                if ( res.data && res.data._id ) {
+                    $scope.item = res.data;
+                    $scope.data.some( function ( v, i ) {
 
-                    // Not this one, continue the search
-                    if ( v._id !== smartdevice._id )
-                        return false;
+                        // Not this one, continue the search
+                        if ( v._id !== res.data._id )
+                            return false;
 
-                    // Same ID, replace it and stop search
-                    $scope.data[ i ] = smartdevice;
-                    return true;
+                        // Same ID, replace it and stop search
+                        $scope.data[ i ] = res.data;
+                        return true;
 
-                } );
+                    } );
+                }
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
