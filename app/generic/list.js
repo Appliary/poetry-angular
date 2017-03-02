@@ -35,10 +35,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.data = [];
     $scope.tags = [];
 
-    function getlist( o, n ) {
+    function getlist( n, o ) {
         var page = 0;
         if ( o == n || isLoading ) return;
-        if ( o !== true ) $scope.data = [];
+        if ( n !== true ) $scope.data = [];
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
         var currentReqId = ++requestId;
