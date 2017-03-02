@@ -167,6 +167,19 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 $scope.__validation = [];
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
+
+                // Update list
+                $scope.data.some( function ( v, i ) {
+
+                    // Not this one, continue the search
+                    if ( v._id !== smartdevice._id )
+                        return false;
+
+                    // Same ID, replace it and stop search
+                    $scope.data[ i ] = smartdevice;
+                    return true;
+
+                } );
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
