@@ -178,8 +178,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success( res ) {
                 $scope.__validation = [];
-                $scope.item.__saved = true;
-                $scope.item.__failed = false;
 
                 // Update list
                 if ( res.data && res.data._id ) {
@@ -196,6 +194,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
                     } );
                 }
+
+                $scope.item.__saved = true;
+                $scope.item.__failed = false;
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;
