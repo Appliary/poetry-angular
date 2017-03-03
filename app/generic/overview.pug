@@ -46,17 +46,20 @@ form( ng-submit='' )
             auto-complete(source="loadTags($query)")
 
     .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
-        span(ng-if='item.updatedBy') {{ 'lastUpdateBy:iteminfo' | translate }} {{item.updatedBy}}
+        | {{ 'lastUpdate:itemInfo' | translate }}
         span(ng-if='item.updatedAt')
-            span(ng-if='item.updateBy') &nbsp;{{'at:iteminfo'|translate}}
-            span(ng-if='!item.updateBy') {{'lastUpdateAt:iteminfo'|translate}}
+            | &nbsp;{{ item.updatedAt | localize }}
+        span(ng-if='item.updatedBy')
+            | &nsbp;{{'by:iteminfo'|translate}}
             | &nbsp;{{ item.updatedAt | localize }}
     .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
-        span(ng-if='item.createdBy') {{ 'createdBy:iteminfo' | translate }} {{item.createdBy}}
-        span(ng-if='item.createdAt')
-            span(ng-if='item.createdBy') {{'at:iteminfo'|translate}}
-            span(ng-if='!item.createdBy') {{'createdAt:iteminfo'|translate}}
-            | {{ item.createdAt | localize }}
+        span(ng-if='item.createdAt || item.createdBy')
+            | {{ 'createdAt:itemInfo' | translate }}
+            span(ng-if='item.createdAt')
+                | &nbsp;{{ item.createdAt | localize }}
+            span(ng-if='item.createdBy')
+                | &nsbp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ item.createdAt | localize }}
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
