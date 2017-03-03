@@ -171,7 +171,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             } )
             .then( function confirmed() {
                 $http.delete( $scope.$root.__module.api + '/' + $scope.__id )
-                    .then( function () {
+                    .then( function ( res ) {
                         $scope.data.some( function ( v, i ) {
 
                             // Not this one, continue the search
