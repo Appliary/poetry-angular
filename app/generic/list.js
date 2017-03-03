@@ -172,7 +172,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 className: 'login'
             } )
             .then( function () {
-                $http.delete( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
+                $http.delete( $scope.$root.__module.api + '/' + $scope.__id )
                     .then( function () {
                         $scope.data.some( function ( v, i ) {
 
@@ -185,7 +185,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                             return true;
 
                         } );
-                        //Close panel
+                        // Close panel
                         $scope.$root.go( $scope.$root.__module );
                     } );
             } );
