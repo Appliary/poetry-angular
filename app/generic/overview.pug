@@ -28,6 +28,11 @@ form( ng-submit='' )
         select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]' )
             option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
+        //- API Enums
+        select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]' )
+            option(ng-repeat='opt in inputEnums(field)',value='{{opt.val}ue}')
+                | {{ opt.show }}
+
         //- Textareas
         textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]' )
 

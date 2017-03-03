@@ -313,6 +313,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 if ( $scope.__joi.computed[ name ]._flags.allowOnly )
                     return 'enum';
 
+                // Select from API
+                if ( $scope.__joi.computed[ name ]._meta[ 0 ] )
+                    return 'api';
+
                 // Default string otherwise
                 return 'string';
 
@@ -382,6 +386,28 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
         return false;
 
+    };
+
+    $scope.inputEnums = function ( field ) {
+
+        var joi = $scope.__joi.computed[ field ];
+        if ( !$joi ) return;
+        if ( !$scope.__inputEnums ) $scope.__inputEnums = {};
+
+        if ( !$scope.__inputEnums[ field ] )
+            $http[ joi._meta[ 0 ].method ]( joi._meta[ 0 ].path )
+            .then( function success( response ) {
+                $scope.__inputEnums[ field ] = response.data.map(
+                    function ( opt ) {
+                        return {
+                            val: opt[ joi._meta[ 0 ].value ],
+                            show: opt[ joi._meta[ 0 ].show ],
+                        };
+                    }
+                );
+            } );
+
+        return $scope.__inputEnums[ filed ];
     };
 
 } );
