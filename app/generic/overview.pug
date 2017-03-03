@@ -50,16 +50,18 @@ form( ng-submit='' )
         span(ng-if='item.updatedAt')
             | &nbsp;{{ item.updatedAt | localize }}
         span(ng-if='item.updatedBy')
-            | &nsbp;{{'by:iteminfo'|translate}}
-            | &nbsp;{{ item.updatedAt | localize }}
+            | &nbsp;{{'by:iteminfo'|translate}}
+            | &nbsp;{{ item.updatedBy.firstName }}
+            | &nbsp;{{ item.updatedBy.lastName }}
     .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
         span(ng-if='item.createdAt || item.createdBy')
             | {{ 'createdAt:itemInfo' | translate }}
             span(ng-if='item.createdAt')
                 | &nbsp;{{ item.createdAt | localize }}
             span(ng-if='item.createdBy')
-                | &nsbp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ item.createdAt | localize }}
+                | &nbsp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ item.createdBy.firstName }}
+                | &nbsp;{{ item.createdBy.lastName }}
 
     span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
