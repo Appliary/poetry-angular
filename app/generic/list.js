@@ -391,7 +391,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.inputEnums = function ( field ) {
 
         var joi = $scope.__joi.computed[ field ];
-        if ( !$joi ) return;
+        if ( !joi ) return;
         if ( !$scope.__inputEnums ) $scope.__inputEnums = {};
 
         if ( !$scope.__inputEnums[ field ] )
