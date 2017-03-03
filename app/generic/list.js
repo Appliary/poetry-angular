@@ -165,13 +165,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     /**
      * Delete the current item
      */
-    $scope.confirmDeletion = function () {
-        return ngDialog.confirm( {
-                templateUrl: 'modals/confirmation.pug',
-                showClose: false,
-                className: 'login'
+    $scope.confirmDeletion = function confirmDeletion() {
+        return ngDialog.openConfirm( {
+                templateUrl: 'modals/confirmation.pug'
             } )
-            .then( function () {
+            .then( function confirmed() {
                 $http.delete( $scope.$root.__module.api + '/' + $scope.__id )
                     .then( function () {
                         $scope.data.some( function ( v, i ) {
