@@ -30,7 +30,7 @@ form( ng-submit='' )
 
         //- API Enums
         select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]' )
-            option(ng-repeat='opt in inputEnums(field)',value='{{opt.val}ue}')
+            option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
                 | {{ opt.show }}
 
         //- Textareas
