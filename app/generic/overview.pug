@@ -31,7 +31,7 @@ form( ng-submit='' )
         //- API Enums
         select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]' )
             option( value='SUPER' ng-if="item[field]=='SUPER' || $root.user.role == 'SUPER'")
-                | SUPER USER
+                | {{ 'superUser:userGroups' | translate }}
             option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
                 | {{ opt.show }}
 
