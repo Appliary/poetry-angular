@@ -397,6 +397,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( !$scope.__inputEnums[ field ] )
             $http[ joi._meta[ 0 ].method ]( joi._meta[ 0 ].path )
             .then( function success( response ) {
+                if ( !response.data || !response.data.map )
+                    return console.warn( response );
                 $scope.__inputEnums[ field ] = response.data.map(
                     function ( opt ) {
                         return {
