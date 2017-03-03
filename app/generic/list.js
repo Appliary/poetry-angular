@@ -400,8 +400,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 $scope.__inputEnums[ field ] = response.data.map(
                     function ( opt ) {
                         return {
-                            val: opt[ joi._meta[ 0 ].value ],
-                            show: opt[ joi._meta[ 0 ].show ],
+                            val: opt[ joi._meta[ 0 ].value || '_id' ],
+                            show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ],
                         };
                     }
                 );
