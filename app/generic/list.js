@@ -394,22 +394,24 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( !joi ) return;
         if ( !$scope.__inputEnums ) $scope.__inputEnums = {};
 
-        if ( !$scope.__inputEnums[ field ] )
+        if ( !$scope.__inputEnums[ field ] ) {
+            $scope.__inputEnums[ field ] = [];
             $http[ joi._meta[ 0 ].method ]( joi._meta[ 0 ].path )
-            .then( function success( response ) {
-                if ( response.data && response.data.data )
-                    response.data = response.data.data;
-                if ( !response.data || !response.data.map )
-                    return console.warn( response );
-                $scope.__inputEnums[ field ] = response.data.map(
-                    function ( opt ) {
-                        return {
-                            value: opt[ joi._meta[ 0 ].value || '_id' ],
-                            show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ]
-                        };
-                    }
-                );
-            } );
+                .then( function success( response ) {
+                    if ( response.data && response.data.data )
+                        response.data = response.data.data;
+                    if ( !response.data || !response.data.map )
+                        return console.warn( response );
+                    $scope.__inputEnums[ field ] = response.data.map(
+                        function ( opt ) {
+                            return {
+                                value: opt[ joi._meta[ 0 ].value || '_id' ],
+                                show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ]
+                            };
+                        }
+                    );
+                } );
+        }
 
         return $scope.__inputEnums[ field ];
     };
