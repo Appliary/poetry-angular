@@ -401,13 +401,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                     function ( opt ) {
                         return {
                             val: opt[ joi._meta[ 0 ].value || '_id' ],
-                            show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ],
+                            show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ]
                         };
                     }
                 );
             } );
 
-        return $scope.__inputEnums[ filed ];
+        return $scope.__inputEnums[ field ];
     };
 
 } );
