@@ -443,4 +443,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         return $scope.__inputEnums[ field ];
     };
 
+    $scope.isTimedOut = function isTimedOut( row ) {
+        if ( !row.timeout || !row.timestamp )
+            return false;
+        return ( ( row.timestamp + ( row.timeout * 60000 ) ) < Date.now() );
+    };
+
 } );
