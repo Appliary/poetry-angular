@@ -297,9 +297,11 @@ app.service('ViewDataSource', function ($q, $filter) {
             var result = [];
 
             for(var i = 0, len = data.length; i < len; i++) {
-                if ((_this.isGroups && (data[i].boType === _this.topTierBO || data[i].boType === 'groups')) || _this.isAssets) {
-                    result.push(_prepareTreeViewObj(data[i]));
-                }
+                // if ((_this.isGroups && (data[i].boType === _this.topTierBO || data[i].boType === 'groups')) || _this.isAssets) {
+                //     result.push(_prepareTreeViewObj(data[i]));
+                // }
+
+                result.push(_prepareTreeViewObj(data[i]));
             }
 
             return result;
