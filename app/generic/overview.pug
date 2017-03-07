@@ -1,5 +1,5 @@
 form( ng-submit='' )
-    div( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
+    div( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if-DISABLED="inputVisible(field)" )
         label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
             | {{ field + ':field' | translate }}
 
