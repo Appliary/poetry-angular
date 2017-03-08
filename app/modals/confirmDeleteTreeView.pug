@@ -1,0 +1,6 @@
+.panel.panel-default
+    .panel-heading {{ "Confirm deleting this item!:ModalDialogs:DeleteInTreeView" | translate}}
+    .panel-body 
+        p {{"Warning! Deleting this asset may also remove any directly attached and depending on it!:ModalDialogs:DeleteInTreeView" | translate}}
+    .panel-footer
+        button.lightButton.center-block(ng-click="confirm()") {{ "Confirm:Buttons" | translate }}

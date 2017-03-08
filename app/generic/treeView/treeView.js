@@ -297,7 +297,7 @@ return {
 
         var _getAssetDeleteAction = function (obj, parent) {
             return {
-                label: $filter('translate')("Delete " + $scope.boMeta[obj.data.boType].label + ":EnergyBlocks:Column"),
+                label: $filter('translate')("Delete " + $scope.boMeta[obj.data.boType].label + ":TreeView"),
                 icon: 'fa fa-times', 
                 action: function (event) {
                     _openDeleteConfim($scope.boMeta[obj.data.boType]).then( function () {
@@ -334,7 +334,7 @@ return {
 
         var _openDeleteConfim = function (meta) {
             return ngDialog.openConfirm( {
-                template: meta.deleteConfirmTemplate || 'custom/modals/confirmDeleteTreeView.pug',
+                template: meta.deleteConfirmTemplate || 'modals/confirmDeleteTreeView.pug',
                 className: 'ngdialog-theme-default',
                 width:'450px'
             } );
