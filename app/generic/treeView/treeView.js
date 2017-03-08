@@ -307,7 +307,7 @@ return {
                         
                         // Malfunctioning/Non-service related object, just remove from the tree and update parent                        
                         if (meta.apiService && (obj._id || obj.data._id)) {
-                            meta.apiService.delete(obj._id || obj.data._id)
+                            meta.apiService.delete(obj._id || obj.data._id, obj.data)
                                 .then(function (result) {
                                     _viewDS.removeItem(obj.data, parent);
                                     jsTree.delete_node(event.reference);
