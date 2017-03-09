@@ -2,20 +2,18 @@ button#mvAddEntityBtn.btn-action(ng-click="actions.addTopEntity()") {{ "Add:Butt
 .mvActionsBar
     .actionCol.searchContainer
         input(type="text", ng-model="searchText" ng-model-options="{debounce: 250}", placeholder="{{'search ...:General' | translate}}")
-    .alignR.actionCol.viewTypeContainer
+    .alignR.actionCol.viewTypeContainer(ng-if='options.viewSwitch === false')
         .btn-group
             label.btn.btn-default(for="setListActive", ng-class="{'active': general.activeView === 'list'}")
                 input#setListActive.dispNone(type="radio", name="activeView", value="list", ng-model="general.activeView")
                 | {{ "List:Buttons" | translate}}
             label.btn.btn-default(for="setTreeViewActive", ng-class="{'active': general.activeView === 'tree'}")
                 input#setTreeViewActive.dispNone(type="radio", name="activeView", value="tree", ng-model="general.activeView")
-                | {{ "Tree:Buttons" | translate}}            
+                | {{ "Tree:Buttons" | translate}}
 
-div.multiViewBody    
+div.multiViewBody
     div.list.noHeaderRow(ng-show="general.activeView === 'list'", ng-class="{detailed: editItem}")
         table.table.table-striped.table-hover.table-bordered.dataTable(datatable="", dt-options="listView.dtListOptions", dt-columns="listView.dtListColumns", dt-instance="listView.dtInstanceCallback")
     div.list.treeViewContainer(ng-if="general.activeView === 'tree'", ng-class="{detailed: editItem}")
-        tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")        
-    ng-include.details(src="actions.getMultiViewEdit()", ng-class="{detailed: editItem}") 
-
-
+        tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
+    ng-include.details(src="actions.getMultiViewEdit()", ng-class="{detailed: editItem}")

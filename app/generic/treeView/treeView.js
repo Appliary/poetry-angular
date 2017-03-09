@@ -297,7 +297,7 @@ return {
 
         var _getAssetDeleteAction = function (obj, parent) {
             return {
-                label: $filter('translate')("Delete " + $scope.boMeta[obj.data.boType].label + ":EnergyBlocks:Column"),
+                label: $filter('translate')("Delete " + $scope.boMeta[obj.data.boType].label + ":TreeView"),
                 icon: 'fa fa-times', 
                 action: function (event) {
                     _openDeleteConfim($scope.boMeta[obj.data.boType]).then( function () {
@@ -307,7 +307,7 @@ return {
                         
                         // Malfunctioning/Non-service related object, just remove from the tree and update parent                        
                         if (meta.apiService && (obj._id || obj.data._id)) {
-                            meta.apiService.delete(obj._id || obj.data._id)
+                            meta.apiService.delete(obj._id || obj.data._id, obj.data)
                                 .then(function (result) {
                                     _viewDS.removeItem(obj.data, parent);
                                     jsTree.delete_node(event.reference);
@@ -334,7 +334,7 @@ return {
 
         var _openDeleteConfim = function (meta) {
             return ngDialog.openConfirm( {
-                template: meta.deleteConfirmTemplate || 'custom/modals/confirmDeleteTreeView.pug',
+                template: meta.deleteConfirmTemplate || 'modals/confirmDeleteTreeView.pug',
                 className: 'ngdialog-theme-default',
                 width:'450px'
             } );
