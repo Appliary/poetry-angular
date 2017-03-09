@@ -1,6 +1,8 @@
 app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $q ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
+    var lastCall = {};
+
     $scope.sorting = {
         col: '_id',
         order: 'asc'
@@ -64,57 +66,63 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             page = $scope.data.length / 100;
             url += '&limit=100&page=' + page;
         }
-        $http.get( url )
-            .then( function success( response ) {
+        if ( lastCall.timestamp + 5000 < Date.now() || lastCall.url != url ) {
+            lastCall = {
+                url: url,
+                timestamp: Date.now()
+            };
+            $http.get( url )
+                .then( function success( response ) {
 
-                if ( !isNaN( reqID ) && $scope.reqID != reqID )
-                    return console.warn( 'Response dropped', $scope.reqID, reqID );
+                    if ( !isNaN( reqID ) && $scope.reqID != reqID )
+                        return console.warn( 'Response dropped', $scope.reqID, reqID );
 
-                isLoading = false;
+                    isLoading = false;
 
-                if ( response.data.data ) {
-                    if ( page )
-                        response.data.data.forEach( function loop( i ) {
+                    if ( response.data.data ) {
+                        if ( page )
+                            response.data.data.forEach( function loop( i ) {
+                                if ( $scope.data && !~$scope.data.indexOf( i ) )
+                                    $scope.data.push( i );
+                            } );
+                        else
+                            $scope.data = response.data.data;
+                    } else if ( response.data instanceof Array )
+                        response.data.forEach( function loop( i ) {
                             if ( $scope.data && !~$scope.data.indexOf( i ) )
                                 $scope.data.push( i );
                         } );
-                    else
-                        $scope.data = response.data.data;
-                } else if ( response.data instanceof Array )
-                    response.data.forEach( function loop( i ) {
-                        if ( $scope.data && !~$scope.data.indexOf( i ) )
-                            $scope.data.push( i );
-                    } );
 
-                $scope.total = response.data.recordsFiltered;
+                    $scope.total = response.data.recordsFiltered;
 
-                if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
-                    $scope.columns = $scope.$root.__module.config.columns;
-                else $scope.columns = [];
+                    if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
+                        $scope.columns = $scope.$root.__module.config.columns;
+                    else $scope.columns = [];
 
-                if ( !$scope.columns.length )
-                    $scope.data.forEach( function ( data ) {
-                        Object.keys( data )
-                            .forEach( function ( col ) {
-                                if ( !~$scope.columns.indexOf( col ) )
-                                    $scope.columns.push( col );
-                            } );
-                    } );
+                    if ( !$scope.columns.length )
+                        $scope.data.forEach( function ( data ) {
+                            Object.keys( data )
+                                .forEach( function ( col ) {
+                                    if ( !~$scope.columns.indexOf( col ) )
+                                        $scope.columns.push( col );
+                                } );
+                        } );
 
-            }, function error( response ) {
-                isLoading = false;
+                }, function error( response ) {
+                    isLoading = false;
 
-                if ( response.status == 401 )
-                    return ngDialog.open( {
-                        templateUrl: 'modals/login.pug',
-                        controller: 'modals/login',
-                        showClose: false,
-                        className: 'login'
-                    } );
+                    if ( response.status == 401 )
+                        return ngDialog.open( {
+                            templateUrl: 'modals/login.pug',
+                            controller: 'modals/login',
+                            showClose: false,
+                            className: 'login'
+                        } );
 
-                $location.path( '/error/' + response.status );
+                    $location.path( '/error/' + response.status );
 
-            } );
+                } );
+        }
     }
 
 
