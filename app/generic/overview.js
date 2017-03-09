@@ -1,4 +1,4 @@
-app.controller( 'generic/overview', function ( $scope, $http ) {
+app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
         .then( function success( response ) {
@@ -154,6 +154,16 @@ app.controller( 'generic/overview', function ( $scope, $http ) {
 
         return $scope.__inputEnums[ field ];
     };
+
+    /**
+     * Convert a field value into a date object
+     */
+    $scope.toDateObject = function(field){
+      $scope.item[field] = new Date($scope.item[field]);
+
+      $scope.item.__dateFields = $scope.item.__dateFields || [];
+      $scope.item.__dateFields.push(field);
+    }
 
     /**
      * Delete the current item

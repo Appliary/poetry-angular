@@ -45,6 +45,9 @@ form( ng-submit='', ng-controller='generic/overview' )
         tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)")
 
+        //- Date
+        input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]' )
+
     .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         | {{ 'lastUpdate:itemInfo' | translate }}
         span(ng-if='item.updatedAt')
