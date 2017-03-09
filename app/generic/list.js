@@ -163,33 +163,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.isArray = angular.isArray;
 
     /**
-     * Delete the current item
-     */
-    $scope.confirmDeletion = function confirmDeletion() {
-        return ngDialog.openConfirm( {
-                templateUrl: 'modals/confirmation.pug'
-            } )
-            .then( function confirmed() {
-                $http.delete( $scope.$root.__module.api + '/' + $scope.__id )
-                    .then( function ( res ) {
-                        $scope.data.some( function ( v, i ) {
-
-                            // Not this one, continue the search
-                            if ( v._id !== res.data._id )
-                                return false;
-
-                            // Same ID, delete and stop search
-                            $scope.data.splice( i, 1 );
-                            return true;
-
-                        } );
-                        // Close panel
-                        $scope.$root.go( $scope.$root.__module );
-                    } );
-            } );
-    };
-
-    /**
      * Save the current item
      *
      * @return $scope.item.__saved
