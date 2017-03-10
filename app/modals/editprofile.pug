@@ -5,9 +5,6 @@
         a.modal-changepwd(ng-click="showChangepwd()", ng-class=' { active: pwdView }') {{'Change password:editmodal' | translate}}
 .tab-body
     .tab-content(ng-if="editView")
-        label(ng-if="failedEdit", style='width: 100%; color: red;')
-            | {{ failEditMsg + ':editprofile' | translate }}
-
         form( ng-submit='edit()' )
             label( for='firstName', ng-class="{ required: __joi['firstName']._flags.presence == 'required' }") {{ 'firstName:field:edit' | translate }}
             input( type='text', ng-model='user.firstName', name='firstName' )
@@ -22,11 +19,13 @@
             select(type='text', ng-model='user.language', name='language' )
                 option(ng-repeat='language in languageList' ng-value="language") {{ language + ':field:edit' | translate }}
 
-            button.lightButton( type='submit' ).pull-right {{ 'Save:button' | translate }}
+            span.saved( ng-if=' editState.saved ' )
+                | {{ 'saved:' | translate }}
+            span.failed( ng-if=' editState.failed ' )
+                | {{ 'failed:' | translate }}
+            button(type='submit').pull-right.lightButton
+                | {{ 'save:button' | translate }}
     .tab-content(ng-if="pwdView")
-        label(ng-if="failedChangepwd", style='width: 100%; color: red;')
-            | {{ failChangepwdMsg + ':changepwd' | translate }}
-
         form( ng-submit='changePassword()' )
             label( for='oldPassword', class="required") {{ 'old password:field:edit' | translate }}
             input( type='password', ng-model='password.oldPassword', name='oldPassword' )
@@ -37,4 +36,9 @@
             label( for='newPassword2', class="required") {{ 'new Password:field:edit' | translate }}
             input( type='password', ng-model='password.newPassword2', name='newPassword2' )
 
-            button.lightButton( type='submit' ).pull-right {{ 'Change password:button' | translate }}
+            span.saved( ng-if=' pwdState.saved ' )
+                | {{ 'saved:' | translate }}
+            span.failed( ng-if=' pwdState.failed ' )
+                | {{ 'failed:' | translate }}
+            button(type='submit').pull-right.lightButton
+                | {{ 'Change password:button' | translate }}

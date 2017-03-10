@@ -29,6 +29,20 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     $scope.pwdView = false;
     $scope.languageList = ["en", "fr", "nl"];
 
+    $scope.error = false;
+    $scope.success = false;
+
+
+    $scope.pwdState = {
+      failed: false,
+      saved: false
+    };
+
+    $scope.editState = {
+      failed: false,
+      saved: false
+    };
+
 
     $scope.cancel = function cancel (){
         console.log("Refreshing page");
@@ -36,20 +50,22 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     }
 
     $scope.edit = function edit() {
+      $scope.editState = {
+        failed: false,
+        saved: false
+      };
 
         console.info( 'Try to edit profile', $scope.user );
 
         $http.put('/api/users/' + $rootScope.user._id, $scope.user)
         .then( function success(response) {
             console.info('User edit succes', response);
-            $scope.failedEdit = true;
-            $scope.failEditMsg = "Profile successfully updated";
+            $scope.editState.saved = true;
             $scope.cancel();
 
         }, function error(response) {
             console.warn( 'Users edit failed', response );
-            $scope.failedEdit = true;
-            $scope.failEditMsg = response.data.message;
+            $scope.editState.failed = true;
         })
     };
 
