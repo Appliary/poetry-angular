@@ -13,30 +13,30 @@ form( ng-submit='', ng-controller='generic/overview' )
         input( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
 
         //- Numbers (with or without units)
-        input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number" )
+        input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
         span.unit( ng-if="inputType(field) == 'unit'" )
-            input( name='{{field}}', ng-model='item[field]', type="number" )
+            input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
             span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
         //- Strings
-        input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]' )
+        input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
         //- Passwords
         input( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
 
         //- Enums
-        select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]' )
+        select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
             option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
         //- API Enums
-        select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]' )
+        select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
             option( value='SUPER' ng-if="item[field]=='SUPER' || $root.user.role == 'SUPER'" ng-disabled="$root.user.role != 'SUPER'")
                 | {{ 'superUser:userGroups' | translate }}
             option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
                 | {{ opt.show }}
 
         //- Textareas
-        textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]' )
+        textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
         //- Boolean
         input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
@@ -46,7 +46,7 @@ form( ng-submit='', ng-controller='generic/overview' )
             auto-complete(source="loadTags($query)")
 
         //- Date
-        input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]' )
+        input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
     .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         | {{ 'lastUpdate:itemInfo' | translate }}
