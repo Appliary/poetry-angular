@@ -26,6 +26,8 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 $rootScope.session = usersResponse.data.session;
                 $rootScope.user = usersResponse.data.user;
                 $rootScope.team = usersResponse.data.team;
+                $rootScope.role = usersResponse.data.role;
+
                 $rootScope.loaded = true;
 
                 var lang = usersResponse.data.user.language || 'en';
