@@ -10,6 +10,6 @@ app.component( 'appAppselector', {
         $scope.current = __appName;
         $scope.select = function ( app ) {
             window.location.replace( '/' + app );
-        }
+        };
     }
 } );

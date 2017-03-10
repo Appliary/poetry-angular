@@ -1,11 +1,17 @@
-app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {   
+app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
 
-    $scope.user = { 
-        email: $rootScope.user.email, 
+    $scope.user = {
+        email: $rootScope.user.email,
         firstName: $rootScope.user.firstName,
         lastName: $rootScope.user.lastName,
         language: $rootScope.user.language
     };
+
+    $scope.__joi = {};
+    $http.put( '/__joi/api/users/id' )
+        .then( function success( response ) {
+            return ( $scope.__joi = response.data.payload );
+        }, function error( err ) {} );
 
     $rootScope.user;
     $scope.email = "";
@@ -80,7 +86,7 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
             $scope.failChangepwdMsg = "Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character";
         }
 
-        
+
     };
 
     $scope.showEdit = function showEdit(){
