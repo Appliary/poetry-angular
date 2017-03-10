@@ -47,7 +47,7 @@ app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $c
 
             _viewDS.events.addListener( 'change_parent', function ( obj, newParent ) {
                 if ( $scope.options.events.onChangeParent ) {
-                    var result = $scope.options.events.onChangeParent( obj, newParent );
+                    var result = $scope.options.events.onChangeParent( obj, newParent, $scope );
                     if ( result.then ) {
                         result.then( function () {
                             $scope.actions.redrawListView();

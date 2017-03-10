@@ -162,7 +162,7 @@ return {
                     if (newParent.data && newParent.data.boType === params.node.data.boType) {
                         var parentMeta = $scope.boMeta[newParent.data.boType];
                         // In such cases we have a reordering of elements. Now we need to reverse this
-                        if (parentMeta.canHave.indexOf(newParent.data.boType) === -1) {
+                        if (parentMeta.canHave && parentMeta.canHave.indexOf(newParent.data.boType) === -1) {
                             var moveParent = $.jstree.reference(_controlSelector).get_node(newParent.parent);
                             var moveIndex = moveParent.children.indexOf(newParent.id) + 1;
 
