@@ -106,23 +106,27 @@ body.collapsed .list{
     position: static;
 }
 ug-perm-explorer{
-    table.selector{
-        border-collapse: collapse;
-        border: grey solid 1px;
-        margin-top: 20px;
-        th{
-            background: grey;
-            font-weight: bold;
-            color: white;
-        }
-        tr.active{
-            background: lightgrey;
-        }
-        td{
-            padding: 0 10px;
-            &.check{
-                width: 20px;
-                text-align: right;
+    .scroller{
+        max-height: 200px;
+        overflow: auto;
+        table.selector{
+            border-collapse: collapse;
+            border: grey solid 1px;
+            margin-top: 20px;
+            th{
+                background: grey;
+                font-weight: bold;
+                color: white;
+            }
+            tr.active{
+                background: lightgrey;
+            }
+            td{
+                padding: 0 10px;
+                &.check{
+                    width: 20px;
+                    text-align: right;
+                }
             }
         }
     }
