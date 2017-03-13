@@ -76,8 +76,9 @@ form( ng-submit='' )
         | {{ 'delete:button' | translate }}
 
 .panel( style='margin-top:50px', ng-if= "item.last" )
-    .muted.pull-right(ng-if="item.timestamp")
-        | {{ item.timestamp | localize }}
+    .muted.pull-right
+        span(ng-if="item.timestamp") {{ item.timestamp | localize }}
+        span(ng-if="item.lastExecution") {{ item.lastExecution | localize }}
     h4 {{ 'last:' + $root.__module.name | translate }}
     table
         tr( ng-repeat=" element in item.last " )
@@ -87,5 +88,4 @@ form( ng-submit='' )
                 .muted {{ element.timestamp | localize }}
             td.right
                 pre
-                    | {{ element.value | localize }}
-                    | {{ element.unit + ':unit' | translate }}
+                    | {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
