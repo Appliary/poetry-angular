@@ -82,6 +82,9 @@
                     vm.gps = {};
                     vm.network = {};
                     vm.staticPosition = {};
+                    $scope.__saved = false;
+                    $scope.__failed = false;
+
 
                     deviceService.getDevicePositions( idDevice )
                         .then( function ( response ) {
@@ -91,6 +94,10 @@
 
                             vm.icon = response.device.icon;
                             vm.device = response.device;
+
+                            vm.device.updatedAt = newValue.updatedAt;
+                            vm.device.updatedBy = newValue.updatedBy;
+
                             initColorPicker( response.device );
                             vm.gps = response.gps;
                             vm.network = response.network;
@@ -108,6 +115,8 @@
             if( vm.loadingUpdate ){
                 return;
             }
+            $scope.__saved = false;
+            $scope.__failed = false;
             vm.loadingUpdate = true;
             var idDevice = vm.device._id;
             var payload = { iconHistory: vm.iconHistory };
@@ -123,14 +132,18 @@
             if( vm.iconSelected ){
                 payload['icon'] = vm.iconSelected;
             }
+            payload.name = vm.device.name;
+            payload.status = vm.device.status;
             deviceService.updateDevice(  idDevice,  payload  )
                 .then( function ( response ) {
                     console.log( response );
                     vm.loadingUpdate = false;
+                    $scope.__saved = true;
                 })
                 .catch( function ( error ) {
                     console.log( error );
                     vm.loadingUpdate = false;
+                    $scope.__failed = true;
                 })
         }
 
@@ -248,4 +261,3 @@
 
     }
 })();
-

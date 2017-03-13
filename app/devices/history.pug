@@ -9,3 +9,8 @@ div(ng-controller='devices/history')
                     i {{ data.id }}
                 td.right
                     pre {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
+            tr
+                td
+                td.right
+                    pre
+                      a(ng-href="measurements/{{measurement._id}}/" class="link") link
