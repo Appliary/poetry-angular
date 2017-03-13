@@ -7,6 +7,9 @@ app.controller( 'devices/history', function ( $scope, $http ) {
         $http.get( $scope.$root.__module.api + '/' + $scope.__id + '/measurements')
             .then( function success( response ) {
 
+                console.log("HISTORY");
+                console.log(response);
+
                 $scope.measurements = response.data.data;
 
             } );
