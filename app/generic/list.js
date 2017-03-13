@@ -184,12 +184,12 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $scope.item.__failed = $scope.item.__success = false;
 
         //If there are date fields and the date is not valid, delete them
-        if(angular.isArray($scope.item.__dateFields)){
-          $scope.item.__dateFields.forEach( function(field){
-            if($scope.item[field] == null || ( $scope.item[field] && isNaN($scope.item[field].getTime()) ) ){
-              delete $scope.item[field];
-            }
-          });
+        if ( angular.isArray( $scope.item.__dateFields ) ) {
+            $scope.item.__dateFields.forEach( function ( field ) {
+                if ( !$scope.item[ field ] || ( $scope.item[ field ] && isNaN( $scope.item[ field ].getTime() ) ) ) {
+                    delete $scope.item[ field ];
+                }
+            } );
         }
 
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
@@ -276,9 +276,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             } );
     }
 
-    $scope.isTimedOut = function isTimedOut( row ) {
+    $scope.isTOut = function isTOut( row ) {
         if ( !row.timeout || !row.timestamp )
             return false;
+        if ( typeof row.timestamp == 'string' )
+            row.timestamp = Date( row.timestamp );
+        if ( row.timestamp.getTime )
+            row.timestamp = row.timestamp.getTime();
         return ( ( row.timestamp + ( row.timeout * 60000 ) ) < Date.now() );
     };
 
