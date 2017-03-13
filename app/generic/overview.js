@@ -96,6 +96,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
             // Get the field that defines which alt
             $scope.__joi.af = $scope.__joi._inner.matches[ 0 ].schema._inner.children.some( function ( a, i ) {
                 try {
+                    console.log( a, i );
                     if ( a._valids._set.length == 1 ) return i;
                 } catch ( e ) {}
             } );
@@ -117,7 +118,9 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
         }
 
         $scope.$watch( '__joi.af', function () {
-            $scope.__joi.computed = $scope.__joi.alt[ $scope.item[ $scope.__joi.af ] ];
+            $scope.__joi.computed = $scope.__joi.alt[
+                $scope.item[ $scope.__joi.af ]
+            ];
         } );
 
         if ( name == $scope.__joi.af )
