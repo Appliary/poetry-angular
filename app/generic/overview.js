@@ -116,7 +116,9 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
 
         }
 
-        $scope.__joi.computed = $scope.__joi.alt[ $scope.item[ $scope.__joi.af ] ];
+        $scope.$watch( '__joi.af', function () {
+            $scope.__joi.computed = $scope.__joi.alt[ $scope.item[ $scope.__joi.af ] ];
+        } );
 
         if ( name == $scope.__joi.af )
             return true;
@@ -158,12 +160,12 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     /**
      * Convert a field value into a date object
      */
-    $scope.toDateObject = function(field){
-      $scope.item[field] = new Date($scope.item[field]);
+    $scope.toDateObject = function ( field ) {
+        $scope.item[ field ] = new Date( $scope.item[ field ] );
 
-      $scope.item.__dateFields = $scope.item.__dateFields || [];
-      $scope.item.__dateFields.push(field);
-    }
+        $scope.item.__dateFields = $scope.item.__dateFields || [];
+        $scope.item.__dateFields.push( field );
+    };
 
     /**
      * Delete the current item
