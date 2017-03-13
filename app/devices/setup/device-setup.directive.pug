@@ -15,7 +15,7 @@ div
     div(ng-show='vm.gps && vm.gps.timestamp')
         div
             b {{'gps:setup:device'|translate}}
-            span  ({{ vm.gps.timestamp | localize }})  
+            span  ({{ vm.gps.timestamp | localize }})
         div
             .lat
                 label latitude
@@ -28,7 +28,7 @@ div
     div(ng-show='vm.network && vm.network.timestamp')
         div
             b {{'network:setup:device'|translate}}
-            span  ({{ vm.network.timestamp | localize }}) 
+            span  ({{ vm.network.timestamp | localize }})
         div
             .lat
                 label latitude
@@ -41,7 +41,7 @@ div
     div(ng-show='vm.lbs && vm.lbs.timestamp')
         div
             b {{'lbs:setup:device'|translate}}
-            span  ({{ vm.lbs.timestamp | localize }}) 
+            span  ({{ vm.lbs.timestamp | localize }})
         div
             .lat
                 label latitude
@@ -57,10 +57,33 @@ div
         .iconBar
             canvas#canvas(width='36', height='36', ng-click='vm.procSelectIcon = !vm.procSelectIcon;')
             color-picker(ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
-        button.pull-right.lightButton(ng-click='vm.updateDevice()')
-            span(ng-if='!vm.loadingUpdate')
-                | {{'update:general'|translate}}
-            span(ng-if='vm.loadingUpdate')
-                | {{'loading'|translate}}
     icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
     canvas#canvasHistory(ng-show='false', width='60', height='60')
+
+    .muted.right.itemInfo( ng-if='vm.device.updatedAt || device.updatedBy' )
+        | {{ 'lastUpdate:itemInfo' | translate }}
+        span(ng-if='vm.device.updatedAt')
+            | &nbsp;{{ vm.device.updatedAt | localize }}
+        span(ng-if='vm.device.updatedBy')
+            | &nbsp;{{'by:iteminfo'|translate}}
+            | &nbsp;{{ vm.device.updatedBy.firstName }}
+            | &nbsp;{{ vm.device.updatedBy.lastName }}
+    .muted.right.itemInfo( ng-if='!vm.device.updatedAt && !vm.device.updatedBy' )
+        span(ng-if='vm.device.createdAt || vm.device.createdBy')
+            | {{ 'createdAt:itemInfo' | translate }}
+            span(ng-if='vm.device.createdAt')
+                | &nbsp;{{ vm.device.createdAt | localize }}
+            span(ng-if='vm.device.createdBy')
+                | &nbsp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ vm.device.createdBy.firstName }}
+                | &nbsp;{{ vm.device.createdBy.lastName }}
+
+    span.saved( ng-if=' __saved ' )
+        | {{ 'saved:' | translate }}
+    span.failed( ng-if=' __failed ' )
+        | {{ 'failed:save:' | translate }}
+    button.pull-right.lightButton(ng-click='vm.updateDevice()')
+        span(ng-if='!vm.loadingUpdate')
+            | {{'update:general'|translate}}
+        span(ng-if='vm.loadingUpdate')
+            | {{'update:general'|translate}}...
