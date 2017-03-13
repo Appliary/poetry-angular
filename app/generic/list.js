@@ -279,11 +279,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.isTOut = function isTOut( row ) {
         if ( !row.timeout || !row.timestamp )
             return false;
+        var timestamp = angular.copy( row.timestamp );
         if ( typeof row.timestamp == 'string' )
-            row.timestamp = Date( row.timestamp );
-        if ( row.timestamp.getTime )
-            row.timestamp = row.timestamp.getTime();
-        return ( ( row.timestamp + ( row.timeout * 60000 ) ) < Date.now() );
+            timestamp = Date( timestamp );
+        if ( timestamp.getTime )
+            timestamp = timestamp.getTime();
+        var res = ( timestamp + ( row.timeout * 60000 ) ) < Date.now();
+        console.log( timestamp, res );
+        return res;
     };
 
 } );
