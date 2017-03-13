@@ -277,15 +277,20 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     }
 
     $scope.isTOut = function isTOut( row ) {
+        // If missing, return false
         if ( !row.timeout || !row.timestamp )
             return false;
+
+        // Get the timestamp and format it
         var timestamp = angular.copy( row.timestamp );
         if ( typeof row.timestamp == 'string' )
-            timestamp = Date( timestamp );
+            timestamp = new Date( timestamp );
         if ( timestamp.getTime )
             timestamp = timestamp.getTime();
+
+        // Condition
         var res = ( timestamp + ( row.timeout * 60000 ) ) < Date.now();
-        console.log( timestamp, res );
+        console.log( row.timestamp, timestamp, res );
         return res;
     };
 
