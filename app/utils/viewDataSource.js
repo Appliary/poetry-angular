@@ -69,16 +69,24 @@ app.service('ViewDataSource', function ($q, $filter) {
     };
 
     var _addAssetToGroup = function (asset, rawData, boType) {
+        var found = false;        
         for(var i = 0, len = rawData.length; i < len; i++) {
             var _item = rawData[i];
             if (_item.boType === 'groups') {
                 if (_item._id === _getAssetGroupId(asset)) {
                     _item.children.push(_formatAsset(asset,boType));
+                    found = true;
+                    break;
                 } else if (_item.children && _item.children.length > 0) {
-                    _addAssetToGroup(asset, _item.children, boType);
+                    found = _addAssetToGroup(asset, _item.children, boType);
+                    if (found) {
+                        break;
+                    }
                 }
             }
         }
+
+        return found;
     };
 
     var _prepareGroupsData = function (data) {
@@ -112,8 +120,11 @@ app.service('ViewDataSource', function ($q, $filter) {
 
             for(var i = 0, len = assetData.length; i < len; i++) {
                 var asset = assetData[i];
-                if (asset.group) {
-                    _addAssetToGroup(asset, result, assetType);
+                if (asset.group) {                    
+                    var found = _addAssetToGroup(asset, result, assetType);
+                    if (!found) {
+                        result.push(_formatAsset(asset, assetType));    
+                    }
                 } else {
                     result.push(_formatAsset(asset, assetType));
                 }
