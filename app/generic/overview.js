@@ -75,7 +75,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     $scope.inputType = function ( name ) {
         try {
             // If there's no validation
-            if ( !$scope.__joi )
+            if ( !$scope.__joi || !$scope.__joi.computed )
                 return 'string';
 
             // Id are not localized
@@ -143,7 +143,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     $scope.inputVisible = function ( name ) {
 
         // If not alternatives or af not found
-        if ( !$scope.__joi || !$scope.__joi.af )
+        if ( !$scope.__joi || !$scope.__joi.af || !$scope.__joi.computed )
             return true;
 
         if ( name == $scope.__joi.af )
