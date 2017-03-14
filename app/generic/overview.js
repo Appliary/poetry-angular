@@ -45,7 +45,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                         } );
 
                         // Save schema related to the field value
-                        $scope.__joi.alt[ afval ] = a.schema._inner.children;
+                        $scope.__joi.alt[ afval ] = alt.schema._inner.children;
 
                     } catch ( e ) {}
 
@@ -65,7 +65,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                     }
                 };
 
-                $scope.$watch( 'item.' + __joi.af, computeAF );
+                $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
                 computeAF();
 
             }
