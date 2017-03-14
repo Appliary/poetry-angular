@@ -2,13 +2,15 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     // Get validation object
     $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
         .then( function success( response ) {
-            if ( !response.data.payload._inner || !response.data.payload._inner.children )
-                return ( $scope.__joi = response.data.payload );
+            if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
+                $scope.__joi = response.data.payload;
+            } else {
 
-            $scope.__joi = {};
-            response.data.payload._inner.children.forEach( function ( elem ) {
-                $scope.__joi[ elem.key ] = elem.schema;
-            } );
+                $scope.__joi = {};
+                response.data.payload._inner.children.forEach( function ( elem ) {
+                    $scope.__joi[ elem.key ] = elem.schema;
+                } );
+            }
 
             if ( $scope.__joi._type != 'alternatives' ) {
                 if ( !$scope.__joi.computed )
@@ -44,6 +46,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                         $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
                     }
                 };
+
                 $scope.$watch( 'item.' + __joi.af, computeAF );
                 computeAF();
 
