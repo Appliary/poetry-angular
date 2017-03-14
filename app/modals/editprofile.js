@@ -8,7 +8,7 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     };
 
     $scope.__joi = {};
-    $http.put( '/__joi/api/users/id' )
+    $http.put( '/__joi/api/users/me' )
         .then( function success( response ) {
             return ( $scope.__joi = response.data.payload );
         }, function error( err ) {} );
@@ -57,7 +57,7 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
 
         console.info( 'Try to edit profile', $scope.user );
 
-        $http.put('/api/users/' + $rootScope.user._id, $scope.user)
+        $http.put('/api/users/me', $scope.user)
         .then( function success(response) {
             console.info('User edit succes', response);
             $scope.editState.saved = true;
