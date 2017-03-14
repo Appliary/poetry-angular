@@ -32,7 +32,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                 } );
 
                 // When the af changes, change the computed to the related
-                $scope.$watch( '__joi.af', function ( n, o ) {
+                var computeAF = function computeAF( n, o ) {
                     console.info( 'ALT changed !', n, o );
                     try {
                         // Try to get the correct validation schema
@@ -43,7 +43,9 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                         // If not found, take the first one available
                         $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
                     }
-                } );
+                };
+                $scope.$watch( 'item.' + __joi.af, computeAF );
+                computeAF();
 
             }
 
@@ -120,7 +122,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
     $scope.inputVisible = function ( name ) {
 
         // If not alternatives or af not found
-        if ( !$scope.__joi.af )
+        if ( !$scope.__joi || !$scope.__joi.af )
             return true;
 
         if ( name == $scope.__joi.af )
