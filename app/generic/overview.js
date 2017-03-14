@@ -1,78 +1,81 @@
 app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
-    // Get validation object
-    $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
-        .then( function success( response ) {
-            if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
-                $scope.__joi = response.data.payload;
-            } else {
 
-                $scope.__joi = {};
-                response.data.payload._inner.children.forEach(
-                    function ( elem ) {
-                        $scope.__joi[ elem.key ] = elem.schema;
-                    }
-                );
-            }
+    $scope.$watch( 'item._id', function init() {
+        // Get validation object
+        $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
+            .then( function success( response ) {
+                if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
+                    $scope.__joi = response.data.payload;
+                } else {
 
-            if ( $scope.__joi._type != 'alternatives' ) {
-                if ( !$scope.__joi.computed )
-                    $scope.__joi.computed = $scope.__joi;
-            } else {
-                // Get the field that defines which alt
-                $scope.__joi._inner.matches[ 0 ].schema._inner.children.some( function ( a, i ) {
-                    try {
-                        if ( a.schema._valids._set.length == 1 )
-                            return ( $scope.__joi.af = a.key );
-                    } catch ( e ) {}
-                } );
+                    $scope.__joi = {};
+                    response.data.payload._inner.children.forEach(
+                        function ( elem ) {
+                            $scope.__joi[ elem.key ] = elem.schema;
+                        }
+                    );
+                }
 
-                // Get the alts
-                $scope.__joi.alt = {};
-                $scope.__joi._inner.matches.forEach( function ( alt ) {
+                if ( $scope.__joi._type != 'alternatives' ) {
+                    if ( !$scope.__joi.computed )
+                        $scope.__joi.computed = $scope.__joi;
+                } else {
+                    // Get the field that defines which alt
+                    $scope.__joi._inner.matches[ 0 ].schema._inner.children.some( function ( a, i ) {
+                        try {
+                            if ( a.schema._valids._set.length == 1 )
+                                return ( $scope.__joi.af = a.key );
+                        } catch ( e ) {}
+                    } );
 
-                    try {
+                    // Get the alts
+                    $scope.__joi.alt = {};
+                    $scope.__joi._inner.matches.forEach( function ( alt ) {
 
-                        // Find the alt field value
-                        var afval;
-                        alt.schema._inner.children.some( function ( field ) {
+                        try {
 
-                            if ( field.key != $scope.__joi.af )
-                                return false; // Nah, not this one
+                            // Find the alt field value
+                            var afval;
+                            alt.schema._inner.children.some( function ( field ) {
 
-                            afval = field.schema._valids._set[ 0 ];
-                            return true; // Stop searching
+                                if ( field.key != $scope.__joi.af )
+                                    return false; // Nah, not this one
 
-                        } );
+                                afval = field.schema._valids._set[ 0 ];
+                                return true; // Stop searching
 
-                        // Save schemas related to the field value
-                        $scope.__joi.alt[ afval ] = {};
-                        alt.schema._inner.children.forEach( function ( ch ) {
-                            $scope.__joi.alt[ afval ][ ch.key ] = ch.schema;
-                        } );
+                            } );
 
-                    } catch ( e ) {}
+                            // Save schemas related to the field value
+                            $scope.__joi.alt[ afval ] = {};
+                            alt.schema._inner.children.forEach( function ( ch ) {
+                                $scope.__joi.alt[ afval ][ ch.key ] = ch.schema;
+                            } );
 
-                } );
+                        } catch ( e ) {}
 
-                // When the af changes, change the computed to the related
-                var computeAF = function computeAF( n, o ) {
-                    console.info( 'ALT changed !', n, o );
-                    try {
-                        // Try to get the correct validation schema
-                        $scope.__joi.computed = $scope.__joi.alt[
-                            $scope.item[ $scope.__joi.af ]
-                        ];
-                    } catch ( e ) {
-                        // If not found, take the first one available
-                        $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
-                    }
-                };
+                    } );
 
-                $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
+                    // When the af changes, change the computed to the related
+                    var computeAF = function computeAF( n, o ) {
+                        console.info( 'ALT changed !', n, o );
+                        try {
+                            // Try to get the correct validation schema
+                            $scope.__joi.computed = $scope.__joi.alt[
+                                $scope.item[ $scope.__joi.af ]
+                            ];
+                        } catch ( e ) {
+                            // If not found, take the first one available
+                            $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
+                        }
+                    };
 
-            }
+                    $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
 
-        }, function error( err ) {} );
+                }
+
+            }, function error( err ) {} );
+    } );
 
     $scope.inputType = function inputType( name ) {
         try {
