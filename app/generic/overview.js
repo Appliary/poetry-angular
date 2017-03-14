@@ -7,9 +7,11 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
             } else {
 
                 $scope.__joi = {};
-                response.data.payload._inner.children.forEach( function ( elem ) {
-                    $scope.__joi[ elem.key ] = elem.schema;
-                } );
+                response.data.payload._inner.children.forEach(
+                    function ( elem ) {
+                        $scope.__joi[ elem.key ] = elem.schema;
+                    }
+                );
             }
 
             if ( $scope.__joi._type != 'alternatives' ) {
@@ -26,11 +28,27 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
 
                 // Get the alts
                 $scope.__joi.alt = {};
-                $scope.__joi._inner.matches.forEach( function ( a ) {
-                    // Add validation for each af value
+                $scope.__joi._inner.matches.forEach( function ( alt ) {
+
                     try {
-                        $scope.__joi.alt[ a.schema._inner.children[ $scope.__joi.af ]._valids._set[ 0 ] ] = a.schema._inner.children;
+
+                        // Find the alt field value
+                        var afval;
+                        alt.schema._inner.children.some( function ( field ) {
+
+                            if ( field.key != $scope.__joi.af )
+                                return false; // Nah, not this one
+
+                            afval = field.schema._valids._set[ 0 ];
+                            return true; // Stop searching
+
+                        } );
+
+                        // Save schema related to the field value
+                        $scope.__joi.alt[ afval ] = a.schema._inner.children;
+
                     } catch ( e ) {}
+
                 } );
 
                 // When the af changes, change the computed to the related
