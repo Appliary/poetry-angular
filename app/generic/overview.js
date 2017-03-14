@@ -1,6 +1,6 @@
 app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
 
-    $scope.$watch( 'item._id', function init() {
+    $scope.$watch( '$root.__module.name', function init() {
         // Get validation object
         $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
             .then( function success( response ) {
