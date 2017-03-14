@@ -28,6 +28,10 @@ form( ng-submit='' )
         select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
             option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
+        //- AF Enums
+        select( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+            option( ng-repeat=' (opt,v) in __joi.alt ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+
         //- API Enums
         select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
             option( value='SUPER' ng-if="item[field]=='SUPER' || $root.user.role == 'SUPER'" ng-disabled="$root.user.role != 'SUPER'")

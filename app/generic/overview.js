@@ -72,7 +72,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
 
         }, function error( err ) {} );
 
-    $scope.inputType = function ( name ) {
+    $scope.inputType = function inputType( name ) {
         try {
             // If there's no validation
             if ( !$scope.__joi || !$scope.__joi.computed )
@@ -88,6 +88,8 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
                 if ( $scope.item[ name ].id ) return 'readOnlyId';
                 if ( $scope.item[ name ]._id ) return 'readOnly_Id';
             }
+
+            if ( $scope.__joi.af && $scope.__joi.af == name ) return 'af';
 
             // Return the type if in the list
             if ( ~[
@@ -140,7 +142,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog ) {
 
     };
 
-    $scope.inputVisible = function ( name ) {
+    $scope.inputVisible = function inputVisible( name ) {
 
         // If not alternatives or af not found
         if ( !$scope.__joi || !$scope.__joi.af || !$scope.__joi.computed )
