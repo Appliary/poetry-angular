@@ -32,7 +32,7 @@ app.component( 'appRouter', {
                     if ( typeof module == 'string' )
                         module = {
                             name: module
-                        }
+                        };
 
                     if ( !module.name )
                         throw console.error( 'This module has no name', module );
@@ -42,7 +42,7 @@ app.component( 'appRouter', {
 
                     if ( !module.templateUrl && !module.template ) {
                         if ( $templateCache.get( module.name + '/list.pug' ) )
-                            module.templateUrl = module.name + '/list.pug'
+                            module.templateUrl = module.name + '/list.pug';
                         else
                             module.templateUrl = 'generic/list.pug';
                     }
@@ -143,7 +143,7 @@ app.component( 'appRouter', {
 
             $scope.openToolbox = function openToolbox( name ) {
 
-                if( !$scope.$root.__module.config || !$scope.$root.__module.config.toolbox || !$scope.$root.__module.config.toolbox[ name ] )
+                if ( !$scope.$root.__module.config || !$scope.$root.__module.config.toolbox || !$scope.$root.__module.config.toolbox[ name ] )
                     return console.error( 'Toolbox', name, 'not found' );
 
                 $scope.__config = $scope.$root.__module.config.toolbox[ name ];
@@ -151,9 +151,9 @@ app.component( 'appRouter', {
 
                 console.info( 'Opening toolbox:', $scope.__config );
 
-                if ($scope.__config.onListEdit) {
+                if ( $scope.__config.onListEdit ) {
                     $scope.__id = "new";
-                    $scope.tab('');                    
+                    $scope.tab( '' );
                 } else {
                     return ngDialog.open( {
                         templateUrl: $scope.__config.templateUrl || 'modals/toolbox.pug',
@@ -161,9 +161,9 @@ app.component( 'appRouter', {
                         showClose: true,
                         scope: $scope
                     } );
-                }                
+                }
 
-            }
+            };
 
         }
 
