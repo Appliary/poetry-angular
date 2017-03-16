@@ -212,8 +212,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                     } );
                 }
 
-                $scope.item.__saved = true;
-                $scope.item.__failed = false;
+
             }, function error( err ) {
                 console.error( err );
                 $scope.item.__failed = true;

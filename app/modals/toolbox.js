@@ -3,6 +3,7 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
     // Instantiate new object
     $scope.item = {};
     $scope.fields = $scope.__config.fields;
+    $scope.__validation = [];
 
     var api = $scope.__config.api || $scope.$root.__module.api,
         method = $scope.__config.method || 'post';
@@ -77,6 +78,7 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
                 };
 
                 $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
+                $scope.loaded = true;
 
             }
         }, console.error );
@@ -86,18 +88,21 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
     };
 
     $scope.save = function save() {
-        $scope.item.__failed = false;
-        $scope.item.__saved = false;
+        $scope.__validation = [];
+
         $http[ method ]( api, $scope.item )
             .then( function success( response ) {
+
                 $scope.item.__saved = true;
-                //$window.location.replace( $location.absUrl() );
+                $scope.item.__failed = false;
 
-            }, function error( response ) {
+            }, function error( err ) {
+                console.error( err );
+                $scope.item.__failed = true;
+                $scope.item.__saved = false;
 
-                console.warn( 'add failed', response );
-                $scope.item.__failed = response.data.message;
-
+                if ( err.status == 400 && err.data && err.data.validation )
+                    $scope.__validation = err.data.validation.keys;
             } );
     };
 
