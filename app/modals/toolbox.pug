@@ -1,3 +1,4 @@
 h2 {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
 
+h5.muted(ng-if='!loaded') {{'Loading:' + module.name + ':toolbox'|translate}}
 ng-include( src='"generic/form.pug"', ng-if='loaded' )
