@@ -38,7 +38,6 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
                 // Get the alts
                 $scope.__joi.alt = {};
                 $scope.__joi._inner.matches.forEach( function ( alt ) {
-
                     try {
 
                         // Find the alt field value
@@ -60,9 +59,10 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
                         } );
 
                     } catch ( e ) {}
-
-
                 } );
+
+                // Get the first alt possible value
+                $scope.item[ $scope.__joi.af ] = Object.keys( $scope.__joi.alt )[ 0 ];
 
                 // When the af changes, change the computed to the related
                 var computeAF = function computeAF( n, o ) {
@@ -77,9 +77,6 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
                         $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
                     }
                 };
-
-                // Get the first alt possible value
-                $scope.item[ afval ] = Object.keys( $scope.__joi.alt )[ 0 ];
 
                 $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
 
