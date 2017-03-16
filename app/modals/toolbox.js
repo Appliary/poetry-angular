@@ -61,6 +61,7 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
 
                     } catch ( e ) {}
 
+
                 } );
 
                 // When the af changes, change the computed to the related
@@ -77,10 +78,14 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
                     }
                 };
 
+                // Get the first alt possible value
+                $scope.item[ afval ] = Object.keys( $scope.__joi.alt )[ 0 ];
+
                 $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
-                $scope.loaded = true;
 
             }
+
+            $scope.loaded = true;
         }, console.error );
 
     $scope.cancel = function cancel() {
