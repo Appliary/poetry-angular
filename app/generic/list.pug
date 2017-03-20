@@ -1,6 +1,8 @@
 form#filters
     input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
     select.pull-right( ng-model='$parent.status' )
+        option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+        option( disabled, value='──────────' ) ──────────
         option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
         option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
         option( value='archived' )
