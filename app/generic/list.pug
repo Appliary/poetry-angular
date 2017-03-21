@@ -3,7 +3,7 @@ form#filters
     select.pull-right( ng-model='$parent.status' )
         option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
         option( disabled, value='──────────' ) ──────────
-        option( value='active' ) {{ 'active:status:' + $root.__module.name | translate }}
+        option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
         option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
         option( value='archived' )
             | {{ 'archived:status:' + $root.__module.name | translate }}
