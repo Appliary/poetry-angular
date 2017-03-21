@@ -124,15 +124,15 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
                     devices[id][0].inputType == "devices";
 
                 if(devices[id][0].inputType == "tags"){
-                    let promises = [
+                    var promises = [
                         devicesFromTags("devices", devices[id][0].device),
                         devicesFromTags("smartdevices", devices[id][0].device),
                     ];
 
                     $q.all(promises)
                     .then( function (values){
-                        let inputValues = [];
-                        let tagDevices = [].concat.apply([], values);
+                        var inputValues = [];
+                        var tagDevices = [].concat.apply([], values);
                         $scope.deviceValues[id] = tagDevices;
                         tagDevices.forEach(function (device){
                             if(device.last){
@@ -149,8 +149,8 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
                     });
                 }
                 else{
-                    let collection = devices[id][0].inputType || "devices";
-                    let api = '/api/' + collection + '/';
+                    var collection = devices[id][0].inputType || "devices";
+                    var api = '/api/' + collection + '/';
                     $http.get( api + id )
                         .then( function success( res ) {
                             var device = res.data;
@@ -173,7 +173,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
     function searchGlobal( n ) {
 
         $scope.newInput.searchResults = undefined;
-        let promises = [searchDevice(n)];
+        var promises = [searchDevice(n)];
 
         if($scope.item && $scope.item.degree == "Secondary") {
             promises.push(searchSmartdevice(n));
@@ -190,7 +190,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
 
         $http.get( '/api/devices?limit=20&search=' + encodeURIComponent( n || '' ) )
             .then( function success( res ) {
-                let devices = res.data.data || [];
+                var devices = res.data.data || [];
                 devices.forEach(function (device){
                     device.inputType = "devices";
                 });
@@ -226,7 +226,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
     function deviceTags( query, type ){
         var deferred = $q.defer();
 
-        let api = '/api/' + type + '/tags/';
+        var api = '/api/' + type + '/tags/';
 
         $http.get( api + query)
             .then( function success( response ) {
@@ -244,7 +244,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
 
         $http.get( '/api/smartdevices?limit=20&search=' + encodeURIComponent( n || '' ) )
             .then( function success( res ) {
-                let smartdevices = res.data.data || [];
+                var smartdevices = res.data.data || [];
                 smartdevices.forEach(function (smartdevice){
                     smartdevice.inputType = "smartdevices";
                 });
@@ -261,7 +261,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
         if(!$scope.item.inputs)
             $scope.item.inputs = [];
         if(input.tags){
-            let tags = [];
+            var tags = [];
             input.tags.forEach(function (tag){
                 tags.push(tag.text);
             })
@@ -291,7 +291,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
 
     function loadFromTags (){
         if($scope.tagInput.tags && $scope.tagInput.tags.length){
-            let promises = [
+            var promises = [
                 devicesFromTags("smartdevices", $scope.tagInput.tags),
                 devicesFromTags("devices", $scope.tagInput.tags)
             ];
@@ -307,7 +307,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
 
     function devicesFromTags (type, tags) {
         var deferred = $q.defer();
-        let tagsQuery = "?tags=";
+        var tagsQuery = "?tags=";
         tags.forEach(function (tag){
             if(tag.text)
                 tagsQuery += "&tags=" + tag.text;
@@ -315,7 +315,7 @@ app.controller( 'mathFormula/editor', function ( $scope, $http, $timeout, $q,ngD
                 tagsQuery += "&tags=" + tag;
         });
 
-        let api = "/api/" + type;
+        var api = "/api/" + type;
 
         $http.get( api + tagsQuery )
             .then( function success( res ) {

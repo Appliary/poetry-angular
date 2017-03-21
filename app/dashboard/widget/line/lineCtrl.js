@@ -49,7 +49,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     
         var result;
 
-        let aggregation = $scope.widget.aggregation || "";
+        var aggregation = $scope.widget.aggregation || "";
 
         DevicesData.getDeviceData(deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation).then(function(measurements){
             result = [
