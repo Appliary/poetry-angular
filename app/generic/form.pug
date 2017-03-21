@@ -78,12 +78,12 @@ form( ng-submit='' )
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
     button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' item._id ' )
         | {{ 'delete:button' | translate }}
-    div.actionBtn( ng-repeat=' button in buttons' )
-        button.lightButton( ng-click='doBtn(button)', ng-if='item._id' )
+    div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
+        button.lightButton( ng-click='doBtn(button)' )
             | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
-        span.saved( ng-if=' button.__success ' )
+        span.saved( ng-if=' button.__success == item._id' )
             | {{ 'success:' + $root.__module.name | translate }}
-        span.failed( ng-if=' button.__failed ' )
+        span.failed( ng-if=' button.__failed == item._id ' )
             | {{ 'failed:' + $root.__module.name | translate }}
 
 .panel( style='margin-top:50px', ng-if= "item.last" )
