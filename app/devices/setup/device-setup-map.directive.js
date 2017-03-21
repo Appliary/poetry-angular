@@ -1,7 +1,7 @@
-(function () {
+( function () {
     'use strict';
 
-    app.directive('setupMap', setupMap);
+    app.directive( 'setupMap', setupMap );
 
     function setupMap() {
         var directive = {
@@ -9,7 +9,7 @@
             restrict: 'E',
             templateUrl: "devices/setup/device-setup-map.directive.pug",
             controller: deviceSetupMapController,
-            scope:{
+            scope: {
                 position: "=",
                 edit: "=",
                 name: "=",
@@ -31,7 +31,11 @@
         // ***********************************************************
         //                  DECLARE VARIABLES
         var vm = this;
-        var defaultCenter = { lat: 50.850402, lng: 4.354102, zoom: 0 };
+        var defaultCenter = {
+            lat: 50.850402,
+            lng: 4.354102,
+            zoom: 0
+        };
         var defaultZoom = 0;
         var mapInitialized = false;
         vm.displayMap = false;
@@ -45,77 +49,80 @@
         activate();
         // ***********************************************************
         //                  DECLARE FUNCTIONS
-        function activate(){
+        function activate() {
             setCenter( defaultCenter, defaultZoom );
-            $scope.$watchCollection('vm.position', function (newVal, oldVal) {
-                if (newVal == oldVal) { return; }
+            $scope.$watchCollection( 'vm.position', function ( newVal, oldVal ) {
+                if ( newVal == oldVal ) {
+                    return;
+                }
                 vm.position = formatPosition( vm.position );
                 initMap( vm.position, 10 );
-            });
-            $scope.$watch('vm.toggle', function (newVal, oldVal) {
-                if (newVal == oldVal) { return; }
-                console.log('PROC');
+            } );
+            $scope.$watch( 'vm.toggle', function ( newVal, oldVal ) {
+                if ( newVal == oldVal ) {
+                    return;
+                }
+                console.log( 'PROC' );
 
                 //avoid gray area
                 leafletData.getMap( vm.name )
-                    .then(function ( map ) {
+                    .then( function ( map ) {
                         map.invalidateSize();
                         setTimeout( function () {
                             map.invalidateSize();
-                        },100 );
-                    });
+                        }, 100 );
+                    } );
 
 
                 vm.displayMap = vm.toggle;
-                if( vm.displayMap ){
+                if ( vm.displayMap ) {
                     setCenter( vm.position, 10 );
                 }
-            });
+            } );
 
 
             var mapActivated = false;
-            $scope.$watch('vm.name', function () {
-                if( mapActivated ){
-                    return
-                }
+            $scope.$watch( 'vm.name', function () {
+                if ( mapActivated ) return;
 
                 mapActivated = true;
 
                 iconsService.getIcon( 'ic_brightness_1_black_36dp.png' )
-                    .then(function ( res ) {
+                    .then( function ( res ) {
                         vm.icon = {
-                            iconUrl : "data:image/png;base64," + res.data,
-                            iconSize: [16, 16],
-                            iconAnchor: [8,32]
+                            iconUrl: "data:image/png;base64," + res.data,
+                            iconSize: [ 16, 16 ],
+                            iconAnchor: [ 8, 32 ]
                         };
                         initMapIconEvent();
-                    });
-            });
+                    } );
+            } );
         }
 
         function initMapIconEvent() {
             leafletData.getMap( vm.name )
-                .then( function(map) {
+                .then( function ( map ) {
 
-                    new L.Control.GPlaceAutocomplete({
-                        position: "topright",
-                        callback: function(location){
-                            // object of google place is given
-                            var bounds = getLeafletBounds( location );
-                            map.fitBounds(bounds);
-                        }
-                    }).addTo( map );
+                    new L.Control.GPlaceAutocomplete( {
+                            position: "topright",
+                            callback: function ( location ) {
+                                // object of google place is given
+                                var bounds = getLeafletBounds( location );
+                                map.fitBounds( bounds );
+                            }
+                        } )
+                        .addTo( map );
 
 
-                    if( vm.edit ){
-                        map.on("click", function(event){
+                    if ( vm.edit ) {
+                        map.on( "click", function ( event ) {
                             var position = event.latlng;
                             vm.position = formatPosition( position );
                             createMarker( vm.position );
                             setCenter( vm.position );
-                        });
+                        } );
                     }
-                });
+                } );
         }
 
         function getLeafletBounds( googlePlaces ) {
@@ -130,37 +137,38 @@
             gPlacesBounds.SW.lng = viewPort.b.b;
 
             //Return default bounds
-            var southWest = new L.LatLng(gPlacesBounds.SW.lat, gPlacesBounds.SW.lng);
-            var northEast = new L.LatLng(gPlacesBounds.NE.lat, gPlacesBounds.NE.lng);
-            return new L.LatLngBounds(southWest, northEast);
+            var southWest = new L.LatLng( gPlacesBounds.SW.lat, gPlacesBounds.SW.lng );
+            var northEast = new L.LatLng( gPlacesBounds.NE.lat, gPlacesBounds.NE.lng );
+            return new L.LatLngBounds( southWest, northEast );
         }
 
         function initMap( position ) {
-            if( !position || typeof position.lat != 'number' || typeof position.lng != 'number' ){
+            if ( !position || typeof position.lat != 'number' || typeof position.lng != 'number' ) {
                 resetMap();
                 return;
             }
-            mapInitialized ? setCenter(position) : setCenter(position, 10);
-            createMarker(position);
+            mapInitialized ? setCenter( position ) : setCenter( position, 10 );
+            createMarker( position );
             mapInitialized = true;
         }
 
-        function resetMap () {
+        function resetMap() {
             vm.markers = [];
             setCenter( defaultCenter, defaultZoom )
         }
 
         function setCenter( position, zoom ) {
-            if( position && typeof position.lat == 'number' && typeof position.lng == 'number' ){
-                if( !zoom ){
-                    leafletData.getMap( vm.name ).then( function(map) {
-                        vm.center = {
-                            lat: position.lat,
-                            lng: position.lng,
-                            zoom: map.getZoom()
-                        };
-                    });
-                }else{
+            if ( position && typeof position.lat == 'number' && typeof position.lng == 'number' ) {
+                if ( !zoom ) {
+                    leafletData.getMap( vm.name )
+                        .then( function ( map ) {
+                            vm.center = {
+                                lat: position.lat,
+                                lng: position.lng,
+                                zoom: map.getZoom()
+                            };
+                        } );
+                } else {
                     vm.center = {
                         lat: position.lat,
                         lng: position.lng,
@@ -170,23 +178,22 @@
             }
         }
 
-        function formatPosition (position) {
-            if( position && position.lat[position.lat.length - 1] != "." && position.lng[position.lng.length - 1] != "." ){
+        function formatPosition( position ) {
+            if ( position && position.lat[ position.lat.length - 1 ] != "." && position.lng[ position.lng.length - 1 ] != "." ) {
                 return {
-                    lat: parseFloat(position.lat),
-                    lng: parseFloat(position.lng)
+                    lat: parseFloat( position.lat ),
+                    lng: parseFloat( position.lng )
                 }
             }
             return position;
         }
 
         function createMarker( position ) {
-            vm.markers= [{
+            vm.markers = [ {
                 lat: position.lat,
                 lng: position.lng,
                 icon: vm.icon
-            }];
+            } ];
         }
     }
-})();
-
+} )();
