@@ -55,7 +55,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             $scope.total = undefined;
             $scope.data = [];
         }
-        if ( $scope.total <= $scope.data.length ) return;
+        if ( $scope.data && $scope.total <= $scope.data.length ) return;
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
