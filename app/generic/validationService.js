@@ -1,4 +1,4 @@
-app.service( 'validationService', function validationService() {
+app.service( 'validationService', function validationService( $http ) {
     return {
 
         inputType: function inputTypeFactory( $scope ) {
