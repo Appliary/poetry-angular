@@ -9,14 +9,6 @@ app.service( 'validationService', function validationService( $http ) {
                     if ( !$scope.__joi || !$scope.__joi.computed )
                         return 'string';
 
-                    // Id are not localized
-                    if ( name === '_id' )  {
-                        if ( $scope.item && $scope.item._id )
-                            return 'id';
-                        else
-                            return 'string';
-                    }
-
                     // Readonly specials
                     if ( $scope.item[ name ] ) {
                         if ( $scope.item[ name ].name ) return 'readOnlyName';
@@ -67,6 +59,10 @@ app.service( 'validationService', function validationService( $http ) {
                         return 'number';
 
                     }
+
+                    // Id are not localized
+                    if ( name === '_id' )
+                        return 'id';
 
                     // Default readonly
                     return 'readOnly';
