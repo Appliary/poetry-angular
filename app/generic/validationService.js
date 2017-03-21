@@ -130,9 +130,9 @@ app.service( 'validationService', function validationService() {
             };
         },
 
-        doAction: function doActionFactory( $scope ) {
-            return function doAction( action ) {
-                $http[ action.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + action.path )
+        doBtn: function doBtnFactory( $scope ) {
+            return function doBtn( button ) {
+                $http[ button.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + button.path )
                     .then( function success( a ) {
                         console.info( a );
                     }, function failed( e ) {
