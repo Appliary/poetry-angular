@@ -10,8 +10,12 @@ app.service( 'validationService', function validationService( $http ) {
                         return 'string';
 
                     // Id are not localized
-                    if ( name === '_id' )
-                        return 'id';
+                    if ( name === '_id' )  {
+                        if ( $scope.item && $scope.item._id )
+                            return 'id';
+                        else
+                            return 'string';
+                    }
 
                     // Readonly specials
                     if ( $scope.item[ name ] ) {
