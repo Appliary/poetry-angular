@@ -51,10 +51,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         var page = 0;
         var reqID = parseInt( ++$scope.reqID );
         if ( o == n ) return;
-        if ( n !== true ) $scope.data = [];
+        if ( n !== true ) {
+            $scope.total = undefined;
+            $scope.data = [];
+        }
+        if ( $scope.total <= $scope.data.length ) return;
         if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
-        $scope.total = undefined;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
         if ( $scope.status ) url += '&status=' + $scope.status;
         if ( $scope.search )
