@@ -743,7 +743,8 @@ app.service('ViewDataSource', function ($q, $filter) {
                 if (_this.isAssets) {
                     _changeAssetParent.call(this, obj, newParent, params);
                 } else if (_this.isGroups) {
-                    obj.data.parent = newParent.data;
+                    obj.data.parent = newParent.data;                                
+                    obj.data.group = newParent.data;
                     _updateItemGroup(obj);
                     _this.eventEmitter.emitEvent('change_parent', [obj, newParent]);
                 }
