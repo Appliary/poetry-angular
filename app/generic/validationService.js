@@ -128,6 +128,17 @@ app.service( 'validationService', function validationService() {
                 $scope.item.__dateFields = $scope.item.__dateFields || [];
                 $scope.item.__dateFields.push( field );
             };
+        },
+
+        doAction: function doActionFactory( $scope ) {
+            return function doAction( action ) {
+                $http[ action.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + action.path )
+                    .then( function success( a ) {
+                        console.info( a );
+                    }, function failed( e ) {
+                        console.error( e );
+                    } );
+            };
         }
 
     };

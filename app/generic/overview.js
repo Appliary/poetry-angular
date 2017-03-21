@@ -111,5 +111,6 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validati
     $scope.inputVisible = validationService.inputVisible( $scope );
     $scope.inputEnums = validationService.inputEnums( $scope );
     $scope.toDateObject = validationService.toDateObject( $scope );
+    $scope.doBtn = validationService.doBtn( $scope );
 
 } );

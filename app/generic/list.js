@@ -38,11 +38,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.$watch( 'item.__failed', cleanVisualReturn );
 
     $scope.$watch( '__view', function loadView() {
-        if ( typeof $scope.__view === "undefined" ) {
-            $scope.fields = [];
-        } else {
-            $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields;
-        }
+        $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields || [];
+        $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
     } );
 
     var isLoading = false;
