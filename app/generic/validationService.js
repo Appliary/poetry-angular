@@ -134,9 +134,11 @@ app.service( 'validationService', function validationService( $http ) {
             return function doBtn( button ) {
                 $http[ button.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + button.path )
                     .then( function success( a ) {
-                        console.info( a );
+                        button.__success = true;
+                        button.__failed = false;
                     }, function failed( e ) {
-                        console.error( e );
+                        button.__success = false;
+                        button.__failed = true;
                     } );
             };
         }
