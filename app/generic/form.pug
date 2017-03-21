@@ -78,6 +78,8 @@ form( ng-submit='' )
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
     button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
         | {{ 'delete:button' | translate }}
+    br
+    br
     div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
         button.lightButton( ng-click='doBtn(button)' )
             | {{ button.name + ':' + $root.__module.name + ':button' | translate }}

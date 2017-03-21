@@ -199,6 +199,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 // Update list
                 if ( res.data && res.data._id ) {
                     $scope.item = angular.copy( res.data );
+                    $scope.item.__saved = true;
                     $scope.data.some( function ( v, i ) {
 
                         // Not this one, continue the search
