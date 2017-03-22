@@ -1,0 +1,21 @@
+.filters
+    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="search" )
+    .toggles
+        span( ng-repeat=' (filterKey, filterState) in filters ', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
+            | {{ filter + ':filter:mathformula' | translate }}
+
+.results.list
+    table
+        thead: tr
+            th {{ 'kind:column:mathformula' | translate }}
+            th {{ '_id:column:mathformula' | translate }}
+            th {{ 'name:column:mathformula' | translate }}
+            th {{ 'types:column:mathformula' | translate }}
+        tbody
+            tr(ng-repeat='result in results',ng-click='input.device = result')
+                td {{ result.kind }}
+                td {{ result._id }}
+                td {{ result.name }}
+                td {{ result.types.join(', ') }}
+    span.muted(ng-if=' results && !results.length ')
+        | {{ 'nodata:results:mathformula'| translate }}

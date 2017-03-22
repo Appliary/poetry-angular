@@ -1,0 +1,9 @@
+.tab-header
+    h1.modal-title
+        | {{ 'addInput:title:mathformula' | translate }}
+    tabs
+        a( ng-class='{ active: tabview=="devices" }',
+        ngclick='tabview="device"' )
+            | {{ 'devices:mathformula' | translate }}
+.tab-body
+    ng-include(src=' "mathFormula/add/" + tabview + ".pug" ')
