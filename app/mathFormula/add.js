@@ -71,6 +71,14 @@ app.controller( 'mathFormula/add', function (
             } );
     }
 
+    // Determine watchers in scope (all filters + search query)
+    var wg = Object.keys( $scope.filters )
+        .map( function ( filter ) {
+            return 'filters.' + filter;
+        } );
+    wg.push( 'search' );
+    $scope.$watchGroup( wg, getDevices );
+
     /**
      * addResults( data, kind )
      * Add the results of devices, smartdevices and tags

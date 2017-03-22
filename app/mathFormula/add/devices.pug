@@ -9,7 +9,7 @@
         thead: tr
             th {{ 'kind:column:mathformula' | translate }}
             th {{ 'name:column:mathformula' | translate }}
-            th {{ 'types:column:mathformula' | translate }}
+            th {{ 'measurementTypes:column:mathformula' | translate }}
         tbody
             tr(ng-repeat='result in results',ng-click='$parent.input.device = result')
                 td {{ result.kind }}
