@@ -52,10 +52,10 @@ app.controller( 'mathFormula/add', function (
                     return addResults( lastRequests[ filter ].results, filter );
 
                 // Save last search
-                lastRequests[ filter ].search = $scope.search;
+                lastRequests[ filter ].search = angular.copy( $scope.search );
 
                 // Do the request to the API
-                $http.get( '/api/' + filter )
+                $http.get( '/api/' + filter + '?search=' + $scope.search )
                     .then( function success( response ) {
 
                         // Get the returned list
