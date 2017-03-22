@@ -11,6 +11,7 @@ app.controller( 'mathFormula/add', function (
     $scope.tabview = $scope.tabs[ 0 ];
 
     // Filters for device selection
+    $scope.search = '';
     $scope.filters = {
         devices: true,
         smartdevices: true,
@@ -29,34 +30,45 @@ app.controller( 'mathFormula/add', function (
         // Clean results
         $scope.results = {};
 
+        var allFiltersDisabled = Object.keys( $scope.filters )
+            .some( function ( filter ) {
+                return $scope.filters[ filter ];
+            } );
+
         // Start requests by filter
-        $scope.filters.forEach( function foreach( active, filter ) {
+        Object.keys( $scope.filters )
+            .forEach( function foreach( filter ) {
 
-            // If the filter is disabled, stop here
-            if ( !active ) return;
+                // If the filter is disabled, stop here (except all filters are disabled)
+                if ( !allFiltersDisabled && !$scope.filters[ filter ] )
+                    return;
 
-            // Be sure that the lastRequest exists for this filter
-            if ( !lastRequest[ filter ] ) lastRequest[ filter ] = {};
+                // Be sure that the lastRequest exists for this filter
+                if ( !lastRequest[ filter ] ) lastRequest[ filter ] = {};
 
-            // If the search is identical at the last time,
-            // copy last response & stop here
-            if ( lastRequest[ filter ].search == $scope.search )
-                return addResults( lastRequest[ filter ].results, filter );
+                // If the search is identical at the last time,
+                // copy last response & stop here
+                if ( lastRequest[ filter ].search == $scope.search )
+                    return addResults( lastRequest[ filter ].results, filter );
 
-            // Do the request to the API
-            $http.get( '/api/' + filter )
-                .then( function success( response ) {
+                // Save last search
+                lastRequest[ filter ].search = $scope.search;
 
-                    // Get the returned list
-                    var data = response.data;
-                    if ( data.data ) data = data.data;
+                // Do the request to the API
+                $http.get( '/api/' + filter )
+                    .then( function success( response ) {
 
-                    // Add them
-                    return addResults( data, filter );
+                        // Get the returned list
+                        var data = response.data;
+                        if ( data.data ) data = data.data;
 
-                }, console.error );
+                        // Add them
+                        lastRequest[ filter ].results = data;
+                        return addResults( data, filter );
 
-        } );
+                    }, console.error );
+
+            } );
     }
 
     /**

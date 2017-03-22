@@ -2,7 +2,7 @@
     .toggles( style="width:40%;display:inline-block" )
         span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
             | {{ filterKey + ':filter:mathformula' | translate }}
-    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="search" style="width:60%;display:inline-block" )
+    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" style="width:60%;display:inline-block" )
 
 .results.list(style="position:static")
     table

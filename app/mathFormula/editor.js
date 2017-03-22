@@ -17,8 +17,10 @@ app.controller( 'mathFormula/editor', function (
                 } )
                 .then( function success() {
 
-                } );
-        }
+                }, console.warn );
+        },
+
+        remove: function () {}
 
     };
 } );
