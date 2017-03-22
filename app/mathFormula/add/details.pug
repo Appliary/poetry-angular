@@ -8,7 +8,7 @@ form
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
-    input#device(readonly, ng-click="$parent.tabview='devices'", value="{{ $parent.input.device.name }}")
+    input#device(readonly, ng-click="$parent.tabview='devices'", value="{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:mathformula'|translate}}")
 
     label(for="type")
         | {{ 'type:' + $root.__module.name + ':field' | translate }}
@@ -18,6 +18,10 @@ form
     label(for="time")
         | {{ 'time:' + $root.__module.name + ':field' | translate }}
     input#time(readonly, value="last")
+
+    label(for="curVal")
+        | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
+    input#curVal(readonly, value="")
 
     button(ng-click=' $parent.addInput() ').pull-right.lightButton
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}
