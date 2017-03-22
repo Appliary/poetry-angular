@@ -1,10 +1,10 @@
 .filters
-    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="search" )
-    .toggles
-        span( ng-repeat=' (filterKey, filterState) in filters ', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
+    .toggles(style="width:40%" )
+        span( ng-repeat='(filterKey, filterState) in filters', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
             | {{ filter + ':filter:mathformula' | translate }}
+    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="search" style="width:60%" )
 
-.results.list
+.results.list(style="position:static")
     table
         thead: tr
             th {{ 'kind:column:mathformula' | translate }}

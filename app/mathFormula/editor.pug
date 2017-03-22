@@ -32,7 +32,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
                     | {{ inputValues[ input.varName ] }}
 
                 //- Delete btn
-                td: button.rmInput.lightButton(ng-click='inputs.remove(i)')
+                td: button.lightButton.pull-right(ng-click='inputs.remove(i)')
                     | &times;
 
             tr
