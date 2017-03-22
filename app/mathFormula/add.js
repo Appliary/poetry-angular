@@ -73,7 +73,7 @@ app.controller( 'mathFormula/add', function (
             // Populate the results
             $scope.results[ kind + ':' + item._id ] = {
                 _id: item._id,
-                name: item.name,
+                name: item.name || item._id,
                 kind: kind,
                 types: item.last ? Object.keys( item.last ) : []
             };
