@@ -6,15 +6,17 @@ form
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
-    input#device(type="text", readonly, ng-model='$parent.input.device.name', ng-click="$parent.tabview='devices'")
+    select#device(ng-click="$parent.tabview='devices'")
+        option(selected) {{ $parent.input.device.name }}
 
     label(for="type")
         | {{ 'type:' + $root.__module.name + ':field' | translate }}
-    select#type
+    select#type(ng-disabled=' !$parent.input.device ')
+        option(ng-repeat='type in $parent.input.device.types', ng-value='type') {{type}}
 
     label(for="time")
         | {{ 'time:' + $root.__module.name + ':field' | translate }}
-    input#time(type='number')
+    input#time(readonly, value="last")
 
     button(ng-click=' $parent.addInput() ').pull-right.lightButton
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}

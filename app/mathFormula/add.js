@@ -3,12 +3,11 @@ app.controller( 'mathFormula/add', function (
     $http
 ) {
 
-    // Tabs
-    $scope.tabs = [
-        'devices',
-        'details'
-    ];
-    $scope.tabview = $scope.tabs[ 0 ];
+    // Empty object
+    $scope.input = {};
+
+    // Default tab
+    $scope.tabview = 'details';
 
     // Filters for device selection
     $scope.search = '';
