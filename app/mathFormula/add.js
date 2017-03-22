@@ -62,7 +62,7 @@ app.controller( 'mathFormula/add', function (
                         var data = response.data;
                         if ( data.data ) data = data.data;
 
-                        // Add them
+                        // Add them in the scope
                         lastRequests[ filter ].results = data;
                         return addResults( data, filter );
 
@@ -95,13 +95,14 @@ app.controller( 'mathFormula/add', function (
                 _id: item._id,
                 name: item.name || item._id,
                 kind: kind,
-                types: item.last ? Object.keys( item.last ) : []
+                types: []
             };
 
             if ( item.last )
                 Object.keys( item.last )
                 .forEach( function foreach( t ) {
-                    res.types.push( t.type + t.id );
+                    if ( !~res.types.indexOf( t.type ) )
+                        res.types.push( t.type );
                 } );
 
             // Populate the results

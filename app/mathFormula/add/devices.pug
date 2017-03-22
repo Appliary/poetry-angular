@@ -15,5 +15,5 @@
                 td {{ result.kind }}
                 td {{ result.name }}
                 td {{ result.types.join(', ') }}
-    span.muted(ng-if=' $parent.results && !$parent.results.length ')
+    span.muted(ng-if=' $parent.results.length === 0 ')
         | {{ 'nodata:results:mathformula'| translate }}
