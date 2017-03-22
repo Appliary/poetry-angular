@@ -1,1 +1,18 @@
 h1 details TODO
+form
+
+    label(for="varName")
+        | {{ 'varName:' + $root.__module.name + ':field' | translate }}
+    input#varName( type="text", ng-class='{error: badName(varName)}', ng-model='$parent.input.varName')
+
+    label(for="device")
+        | {{ 'device:' + $root.__module.name + ':field' | translate }}
+    input#device(type="text", readonly, ng-model='$parent.input.device.name', ng-click="$parent.tabview='devices'")
+
+    label(for="type")
+        | {{ 'type:' + $root.__module.name + ':field' | translate }}
+    select#type
+
+    label(for="time")
+        | {{ 'time:' + $root.__module.name + ':field' | translate }}
+    input#time(type='number')

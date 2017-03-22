@@ -106,7 +106,7 @@ app.controller( 'mathFormula/add', function (
                 } );
 
             // Populate the results
-            $scope.results[ kind + ':' + item._id ] = res;
+            $scope.results[ item._id + ':' + kind ] = res;
 
         } );
 
