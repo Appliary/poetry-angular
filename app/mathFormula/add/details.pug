@@ -6,7 +6,8 @@ form
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
-    input#device(readonly, ng-click="$parent.tabview='devices'", placeholder="{{ $parent.input.device.name }}")
+    select#device(ng-click="$parent.tabview='devices'")
+        option(selected) {{ $parent.input.device.name }}
 
     label(for="type")
         | {{ 'type:' + $root.__module.name + ':field' | translate }}

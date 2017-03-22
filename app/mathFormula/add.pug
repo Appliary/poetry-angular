@@ -1,7 +1,7 @@
 .tab-header
     h1.modal-title
         | {{ 'addInput:title:mathformula' | translate }}
-    tabs(ng-if='tabview="devices"')
+    tabs(ng-if='tabview=="devices"')
         a( ng-click='$parent.tabview="details"' )
             | {{ 'backToForm:mathformula' | translate }}
 .tab-body
