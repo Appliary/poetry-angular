@@ -4,7 +4,7 @@
             | {{ filterKey + ':filter:mathformula' | translate }}
     input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" style="width:60%;display:inline-block" )
 
-.results.list(style="position:static")
+.results.list(style="position:static;max-height:50vh;overflow:auto")
     table
         thead: tr
             th {{ 'kind:column:mathformula' | translate }}

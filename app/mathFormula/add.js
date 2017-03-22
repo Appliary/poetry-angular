@@ -90,13 +90,22 @@ app.controller( 'mathFormula/add', function (
 
         data.forEach( function foreach( item ) {
 
-            // Populate the results
-            $scope.results[ kind + ':' + item._id ] = {
+            // Create object
+            var res = {
                 _id: item._id,
                 name: item.name || item._id,
                 kind: kind,
                 types: item.last ? Object.keys( item.last ) : []
             };
+
+            if ( item.last )
+                Object.keys( item.last )
+                .forEach( function foreach( t ) {
+                    res.types.push( t.type + t.id );
+                } );
+
+            // Populate the results
+            $scope.results[ kind + ':' + item._id ] = res;
 
         } );
 

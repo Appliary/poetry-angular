@@ -3,7 +3,7 @@
         | {{ 'addInput:title:mathformula' | translate }}
     tabs
         a( ng-repeat='tab in tabs', ng-class='{ active: tabview==tab }',
-        ng-click='tabview=tab' )
+        ng-click='$parent.tabview=tab' )
             | {{ tab + ':mathformula' | translate }}
 .tab-body
     ng-include(src='"mathFormula/add/" + tabview + ".pug"')
