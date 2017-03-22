@@ -76,6 +76,7 @@ app.controller( 'mathFormula/add', function (
             return 'filters.' + filter;
         } );
     wg.push( 'search' );
+    console.log( wg );
     $scope.$watchGroup( wg, getDevices );
 
     /**
@@ -100,8 +101,8 @@ app.controller( 'mathFormula/add', function (
             if ( item.last )
                 Object.keys( item.last )
                 .forEach( function foreach( t ) {
-                    if ( !~res.types.indexOf( t.type ) )
-                        res.types.push( t.type );
+                    if ( !~res.types.indexOf( item.last[ t ].type ) )
+                        res.types.push( item.last[ t ].type );
                 } );
 
             // Populate the results
