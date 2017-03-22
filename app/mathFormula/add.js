@@ -112,4 +112,9 @@ app.controller( 'mathFormula/add', function (
 
     }
 
+    $scope.selectResult = function selectResult( result ) {
+        $scope.input.device = result;
+        $scope.tabview = 'details';
+    };
+
 } );
