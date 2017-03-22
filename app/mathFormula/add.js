@@ -44,15 +44,15 @@ app.controller( 'mathFormula/add', function (
                     return;
 
                 // Be sure that the lastRequest exists for this filter
-                if ( !lastRequest[ filter ] ) lastRequest[ filter ] = {};
+                if ( !lastRequests[ filter ] ) lastRequests[ filter ] = {};
 
                 // If the search is identical at the last time,
                 // copy last response & stop here
-                if ( lastRequest[ filter ].search == $scope.search )
-                    return addResults( lastRequest[ filter ].results, filter );
+                if ( lastRequests[ filter ].search == $scope.search )
+                    return addResults( lastRequests[ filter ].results, filter );
 
                 // Save last search
-                lastRequest[ filter ].search = $scope.search;
+                lastRequests[ filter ].search = $scope.search;
 
                 // Do the request to the API
                 $http.get( '/api/' + filter )
@@ -63,7 +63,7 @@ app.controller( 'mathFormula/add', function (
                         if ( data.data ) data = data.data;
 
                         // Add them
-                        lastRequest[ filter ].results = data;
+                        lastRequests[ filter ].results = data;
                         return addResults( data, filter );
 
                     }, console.error );
