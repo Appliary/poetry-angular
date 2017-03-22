@@ -16,29 +16,29 @@ div.mathFormula(ng-controller='mathFormula/editor')
 
                 //- Device name / Tags
                 td(ng-if='!input.device.join')
-                    | {{ input.device }}
-                td(ng-if='input.device.join')
-                    | {{ input.device.join(', ') }}
+                    | {{ input.device.name }}
+
+                //- Value type
+                td {{ input.type }}&nbsp;
+                    em {{ input.id }}
 
                 //- Time dimension
                 td(ng-if='input.time') {{ input.time }}
                 td(ng-if='!input.time')
                     | {{ 'last:time:formula' | translate }}
 
-                //- Value type
-                td {{ input.type }}&nbsp;
-                    em {{ input.id }}
-
                 //- Example value
                 td.muted
                     | {{ inputValues[ input.varName ] }}
 
                 //- Delete btn
-                td: button.rmInput.lightButton( ng-click=' rmInput(i) ') &times;
+                td: button.rmInput.lightButton(ng-click='inputs.remove(i)')
+                    | &times;
 
             tr
-                td( colspan="2" ) &nbsp;
-                td: button.addInput.lightButton(ng-click='addInput()')
+                td( colspan="4" ) &nbsp;
+                td( colspan="2" )
+                    button.lightButton.pull-right(ng-click='inputs.add()')
                         | {{ 'addInput:button:mathformula' | translate }}
 
     br
