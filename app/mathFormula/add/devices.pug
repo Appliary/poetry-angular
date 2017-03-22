@@ -1,6 +1,6 @@
 .filters
-    .toggles(style="width:40%" )
-        span( ng-repeat='(filterKey, filterState) in filters', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
+    .toggles( style="width:40%;display:inline-block" )
+        span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
             | {{ filter + ':filter:mathformula' | translate }}
     input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="search" style="width:60%" )
 
@@ -11,9 +11,9 @@
             th {{ 'name:column:mathformula' | translate }}
             th {{ 'types:column:mathformula' | translate }}
         tbody
-            tr(ng-repeat='result in results',ng-click='input.device = result')
+            tr(ng-repeat='result in results',ng-click='$parent.input.device = result')
                 td {{ result.kind }}
                 td {{ result.name }}
                 td {{ result.types.join(', ') }}
-    span.muted(ng-if=' results && !results.length ')
+    span.muted(ng-if=' $parent.results && !$parent.results.length ')
         | {{ 'nodata:results:mathformula'| translate }}
