@@ -40,7 +40,7 @@ app.controller( 'mathFormula/add', function (
 
                 // If the filter is disabled, stop here (except all filters are disabled)
                 if ( !allFiltersDisabled && !$scope.filters[ filter ] )
-                    return;
+                    return console.log( filter, disabled );
 
                 // Be sure that the lastRequest exists for this filter
                 if ( !lastRequests[ filter ] ) lastRequests[ filter ] = {};

@@ -1,6 +1,6 @@
 .filters
     .toggles
-        span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' $parent.filters[filterKey] = !filterState', ng-class=' {active: filterState} ' )
+        span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' $parent.filters[ filterKey ] = !filterState', ng-class=' {active: filterState} ' )
             | {{ filterKey + ':filter:mathformula' | translate }}
     input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" )
 
