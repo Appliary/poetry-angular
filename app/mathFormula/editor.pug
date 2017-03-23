@@ -15,15 +15,14 @@ div.mathFormula(ng-controller='mathFormula/editor')
                 td: b {{ input.varName }}
 
                 //- Device name / Tags
-                td
-                    | {{ input.device.name }}
-
-                //- Value type
-                td {{ input.type }}&nbsp;
+                td {{ input.kind }}
                     em {{ input.id }}
 
+                //- Value type
+                td {{ input.type }}
+
                 //- Time dimension
-                td(ng-if='input.time') {{ input.time }}
+                td(ng-if='input.time') {{ input.time }} d
                 td.muted(ng-if='!input.time')
                     | {{ 'last:time:formula' | translate }}
 

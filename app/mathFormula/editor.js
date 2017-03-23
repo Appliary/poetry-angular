@@ -22,7 +22,13 @@ app.controller( 'mathFormula/editor', function (
                 } )
                 .then( function success( input ) {
                     console.info( input );
-                    $scope.item.inputs.push( input );
+                    $scope.item.inputs.push( {
+                        varName: input.varName,
+                        kind: input.device.kind,
+                        id: input.device._id,
+                        type: input.type,
+                        time: input.time
+                    } );
                 }, function () {} );
 
         },

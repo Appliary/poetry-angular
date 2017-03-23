@@ -11,7 +11,7 @@ form
     input#device.fakeSelect(value="{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="$parent.tabview='devices'")
 
     label(for="type")
-        | {{ 'type:' + $root.__module.name + ':field' | translate }}
+        | {{ 'measurement:' + $root.__module.name + ':field' | translate }}
     select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type')
         option(ng-repeat='type in $parent.input.device.types', ng-value='type') {{type}}
 
