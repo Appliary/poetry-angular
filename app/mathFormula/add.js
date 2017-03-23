@@ -27,7 +27,7 @@ app.controller( 'mathFormula/add', function (
     function getDevices() {
 
         // Clean results
-        $scope.results = {};
+        $scope.results = [];
 
         var allFiltersDisabled = Object.keys( $scope.filters )
             .some( function ( filter ) {
@@ -105,7 +105,7 @@ app.controller( 'mathFormula/add', function (
                 } );
 
             // Populate the results
-            $scope.results[ item._id + ':' + kind ] = res;
+            $scope.results.push( res );
 
         } );
 
