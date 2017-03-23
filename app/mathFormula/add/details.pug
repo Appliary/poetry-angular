@@ -12,7 +12,7 @@ form
 
     label(for="type")
         | {{ 'type:' + $root.__module.name + ':field' | translate }}
-    select#type(ng-disabled=' !$parent.input.device ')
+    select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type')
         option(ng-repeat='type in $parent.input.device.types', ng-value='type') {{type}}
 
     label(for="time")
