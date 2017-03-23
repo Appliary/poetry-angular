@@ -23,6 +23,5 @@ form
         | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
     input#curVal(readonly, value="")
 
-    button(ng-click=' confirm( $parent.input ) ', ng-disabled="badName( $parent.input.varName || !$parent.input.device || !$parent.input.type )").pull-right.lightButton
-        | {{!$parent.input.device}}
+    button(ng-click=' confirm( $parent.input ) ', ng-disabled="badName($parent.input.varName) || !$parent.input.device || !$parent.input.type").pull-right.lightButton
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}
