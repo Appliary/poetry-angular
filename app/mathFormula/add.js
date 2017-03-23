@@ -29,7 +29,7 @@ app.controller( 'mathFormula/add', function (
         // Clean results
         $scope.results = [];
 
-        var allFiltersDisabled = Object.keys( $scope.filters )
+        var allFiltersDisabled = !Object.keys( $scope.filters )
             .some( function ( filter ) {
                 return $scope.filters[ filter ];
             } );
