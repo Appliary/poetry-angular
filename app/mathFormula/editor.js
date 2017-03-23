@@ -42,6 +42,8 @@ app.controller( 'mathFormula/editor', function (
 
     };
 
+    $scope.inputValues = {};
+
     function testFormula( n ) {
         if ( !n )
             return ( $scope.currentOutput = '' );

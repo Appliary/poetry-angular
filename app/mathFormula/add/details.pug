@@ -18,12 +18,12 @@ form
         option(ng-repeat='type in $parent.input.device.types', ng-value='type') {{type}}
 
     label(for="time")
-        | {{ 'time:' + $root.__module.name + ':field' | translate }}
+        | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
     input#time(readonly, value="last")
 
     label(for="curVal")
         | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
     input#curVal(readonly, value="")
 
-    button(ng-click=' confirm( $parent.input ) ').pull-right.lightButton
+    button(ng-click=' confirm( $parent.input ) ', ng-disabled="badName( $parent.input.varName || !$parent.input.device || !$parent.input.type )").pull-right.lightButton
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}
