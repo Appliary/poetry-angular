@@ -117,4 +117,71 @@ app.controller( 'mathFormula/add', function (
         $scope.tabview = 'details';
     };
 
+    $scope.badName = function badName( varName ) {
+
+        if ( !varName ) return true;
+
+        if ( ~[
+                'pi',
+                'e',
+                'sin',
+                'cos',
+                'min',
+                'max',
+                'avg',
+                'sqrt',
+                'log',
+                'exp',
+                'tau',
+                'phi',
+                'PI',
+                'E',
+                'SQRT2',
+                'null',
+                'undefined',
+                'NaN',
+                'LN2',
+                'LN10',
+                'LOG2E',
+                'LOG10E',
+                'Infinity',
+                'i',
+                'uninitialized',
+                'version',
+                'add',
+                'cub',
+                'divide',
+                'ceil',
+                'hypot',
+                'floor',
+                'exp',
+                'fix',
+                'mod',
+                'round',
+                'sign',
+                'sqrt',
+                'square',
+                'substract',
+                'pow',
+                'norm',
+                'xgcd',
+                'unit',
+                'to',
+                'in',
+                'not'
+            ].indexOf( varName ) )
+            return true;
+
+        if ( !varName.match( /^[a-z_][a-z0-9_]*$/i ) )
+            return true;
+
+        if ( !$scope.inputs )
+            return false;
+
+        return $scope.inputs.some( function ( i ) {
+            return ( varName == i.varName );
+        } );
+
+    };
+
 } );

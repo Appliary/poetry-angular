@@ -13,11 +13,15 @@ app.controller( 'mathFormula/editor', function (
         add: function add() {
             ngDialog.openConfirm( {
                     templateUrl: 'mathFormula/add.pug',
-                    controller: 'mathFormula/add'
+                    controller: 'mathFormula/add',
+                    scope: {
+                        inputs: $scope.item.inputs
+                    }
                 } )
-                .then( function success() {
-
-                }, console.warn );
+                .then( function success( input ) {
+                    console.info( input );
+                    $scope.item.inputs.push( input );
+                }, function () {} );
         },
 
         remove: function () {}
