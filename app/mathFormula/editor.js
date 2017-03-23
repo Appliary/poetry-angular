@@ -41,4 +41,22 @@ app.controller( 'mathFormula/editor', function (
         }
 
     };
+
+    function testFormula( n ) {
+        if ( !n )
+            return ( $scope.currentOutput = '' );
+
+        var out;
+        try {
+            out = math.eval( $scope.item.formula, $scope.inputValues );
+            $scope.currentOutputErr = false;
+        } catch ( err ) {
+            out = err;
+            $scope.currentOutputErr = true;
+        }
+
+        $scope.currentOutput = out;
+
+    }
+    $scope.$watch( 'item.formula', testFormula );
 } );

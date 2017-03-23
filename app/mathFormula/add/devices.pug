@@ -1,8 +1,8 @@
 .filters
-    .toggles( style="width:40%;display:inline-block" )
-        span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' filterState = !filterState', ng-class=' {active: filterState} ' )
+    .toggles
+        span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' $parent.filters[filterKey] = !filterState', ng-class=' {active: filterState} ' )
             | {{ filterKey + ':filter:mathformula' | translate }}
-    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" style="width:60%;display:inline-block" )
+    input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" )
 
 .results.list(style="position:static;max-height:50vh;overflow:auto")
     table
