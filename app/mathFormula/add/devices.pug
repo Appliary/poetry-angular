@@ -11,7 +11,7 @@
             th {{ 'name:column:mathformula' | translate }}
             th {{ 'measurementTypes:column:mathformula' | translate }}
         tbody
-            tr(ng-repeat='result in results',ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
+            tr(ng-repeat='result in results order by name',ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
                 td {{ result.kind }}
                 td {{ result.name }}
                 td {{ result.types.join(', ') }}
