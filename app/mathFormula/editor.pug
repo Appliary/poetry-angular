@@ -3,7 +3,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
     table
         thead: tr
             th {{ 'varName:' + $root.__module.name + ':col' | translate }}
-            th {{ 'devices:' + $root.__module.name + ':col' | translate }}
+            th {{ 'device:' + $root.__module.name + ':col' | translate }}
             th {{ 'measurement:' + $root.__module.name + ':col' | translate }}
             th {{ 'timeOffset:' + $root.__module.name + ':col' | translate }}
             th {{ 'currentValue:' + $root.__module.name + ':col' | translate }}
@@ -15,7 +15,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
                 td: b {{ input.varName }}
 
                 //- Device name / Tags
-                td {{ input.kind }}
+                td {{ input.kind }}&nbsp;
                     em {{ input.id }}
 
                 //- Value type
