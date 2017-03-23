@@ -169,7 +169,16 @@ app.controller( 'mathFormula/add', function (
                 'unit',
                 'to',
                 'in',
-                'not'
+                'not',
+                'true',
+                'false',
+                'equal',
+                'g',
+                's',
+                'm',
+                'h',
+                'l',
+                'b'
             ].indexOf( varName ) )
             return true;
 
