@@ -27,7 +27,18 @@ app.controller( 'mathFormula/editor', function (
 
         },
 
-        remove: function () {}
+        remove: function ( i ) {
+
+            ngDialog.openConfirm( {
+                    templateUrl: 'modals/confirmation.pug'
+                } )
+                .then( function success() {
+
+                    $scope.item.inputs.splice( i, 1 );
+
+                }, function () {} );
+
+        }
 
     };
 } );

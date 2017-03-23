@@ -4,13 +4,13 @@ form
 
     label(for="varName")
         | {{ 'varName:' + $root.__module.name + ':field' | translate }}
-    input#varName( type="text", ng-class='{error: badName(varName)}', ng-model='$parent.input.varName')
+    input#varName( type="text", ng-class='{error: badName($parent.input.varName)}', ng-model='$parent.input.varName')
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
     span.unit( readonly, ng-click="$parent.tabview='devices'" )
         input#device(value="{{ $parent.input.device.name }}")
-        span {{'clickToSelect:mathformula'|translate}}
+        span {{'select:device:mathformula'|translate}}
 
     label(for="type")
         | {{ 'type:' + $root.__module.name + ':field' | translate }}

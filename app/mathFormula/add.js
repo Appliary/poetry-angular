@@ -71,13 +71,11 @@ app.controller( 'mathFormula/add', function (
     }
 
     // Determine watchers in scope (all filters + search query)
-    var wg = Object.keys( $scope.filters )
-        .map( function ( filter ) {
-            return 'filters.' + filter;
+    Object.keys( $scope.filters )
+        .forEach( function ( filter ) {
+            $scope.$watch( 'filters.' + filter, getDevices );
         } );
-    wg.push( 'search' );
-    console.log( wg );
-    $scope.$watchGroup( wg, getDevices );
+    $scope.$watch( 'search', getDevices );
 
     /**
      * addResults( data, kind )
