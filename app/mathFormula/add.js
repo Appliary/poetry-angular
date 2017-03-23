@@ -40,7 +40,7 @@ app.controller( 'mathFormula/add', function (
 
                 // If the filter is disabled, stop here (except all filters are disabled)
                 if ( !allFiltersDisabled && !$scope.filters[ filter ] )
-                    return console.log( filter, disabled );
+                    return console.log( filter, 'disabled' );
 
                 // Be sure that the lastRequest exists for this filter
                 if ( !lastRequests[ filter ] ) lastRequests[ filter ] = {};
@@ -86,6 +86,8 @@ app.controller( 'mathFormula/add', function (
      * @param {String} kind Filter that triggered this result
      */
     function addResults( data, kind ) {
+
+        if ( !data ) return;
 
         data.forEach( function foreach( item ) {
 
