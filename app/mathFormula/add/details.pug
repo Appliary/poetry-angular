@@ -24,4 +24,5 @@ form
     input#curVal(readonly, value="")
 
     button(ng-click=' confirm( $parent.input ) ', ng-disabled="badName( $parent.input.varName || !$parent.input.device || !$parent.input.type )").pull-right.lightButton
+        | {{!$parent.input.device}}
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}
