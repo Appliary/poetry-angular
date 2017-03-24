@@ -21,7 +21,10 @@ app.controller( 'mathFormula/editor', function (
                     scope: scope
                 } )
                 .then( function success( input ) {
-                    console.info( input );
+
+                    if ( !$scope.item.inputs )
+                        $scope.item.inputs = [];
+
                     $scope.item.inputs.push( {
                         varName: input.varName,
                         kind: input.device.kind,
@@ -29,6 +32,7 @@ app.controller( 'mathFormula/editor', function (
                         type: input.type,
                         time: input.time
                     } );
+
                 }, function () {} );
 
         },
