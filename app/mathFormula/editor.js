@@ -57,10 +57,10 @@ app.controller( 'mathFormula/editor', function (
     function getVars() {
 
         $scope.inputValues = {};
-        if ( !$scope.inputs || !$scope.inputs.length ) return;
+        if ( !$scope.item || !$scope.item.inputs || !$scope.item.inputs.length ) return;
 
         $http.post( '/api/rules/getVars', {
-                inputs: $scope.inputs
+                inputs: $scope.item.inputs
             } )
             .then( function success( d ) {
                 $scope.inputValues = d.data;
