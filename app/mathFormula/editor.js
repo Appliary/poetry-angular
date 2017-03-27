@@ -58,7 +58,7 @@ app.controller( 'mathFormula/editor', function (
 
         if ( !$scope.inputs || !$scope.inputs.length ) return;
 
-        $http.push( '/api/rules/getVars', {
+        $http.post( '/api/rules/getVars', {
                 inputs: $scope.inputs
             } )
             .then( function success( d ) {

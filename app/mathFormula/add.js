@@ -87,7 +87,7 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
-        $http.push( '/api/rules/getVars', {
+        $http.post( '/api/rules/getVars', {
                 inputs: [ {
                     id: $scope.input.device._id,
                     kind: $scope.input.device.kind,
