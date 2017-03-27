@@ -83,13 +83,13 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input ) return;
         if ( !$scope.input.varName ) return;
         if ( !$scope.input.device ) return;
-        if ( !$scope.input.device.id ) return;
+        if ( !$scope.input.device._id ) return;
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
         $http.push( '/api/rules/getVars', {
                 inputs: [ {
-                    id: $scope.input.device.id,
+                    id: $scope.input.device._id,
                     kind: $scope.input.device.kind,
                     varName: $scope.input.varName,
                     type: $scope.input.type

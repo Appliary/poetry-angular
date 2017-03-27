@@ -17,7 +17,9 @@ form
 
     label(for="time")
         | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
-    input#time(readonly, value="last")
+    span.unit
+        input#time(readonly, placeholder="{{'last:timeoffset:mathformula'|translate}}")
+        span {{ 'days:unit' | translate }}
 
     label(for="curVal")
         | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
