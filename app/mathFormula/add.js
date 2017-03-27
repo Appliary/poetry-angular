@@ -93,7 +93,7 @@ app.controller( 'mathFormula/add', function (
                     kind: $scope.input.device.kind,
                     varName: $scope.input.varName,
                     type: $scope.input.type,
-                    time: input.time
+                    time: $scope.input.time
                 } ]
             } )
             .then( function success( d ) {
