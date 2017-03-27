@@ -18,7 +18,7 @@ form
     label(for="time")
         | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
     span.unit
-        input#time(readonly, placeholder="{{'last:timeoffset:mathformula'|translate}}")
+        input#time(ng-model="$parent.input.time", placeholder="{{'last:timeoffset:mathformula'|translate}}")
         span {{ 'days:unit' | translate }}
 
     label(for="curVal")
