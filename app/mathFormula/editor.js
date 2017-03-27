@@ -66,7 +66,7 @@ app.controller( 'mathFormula/editor', function (
                 $scope.inputValues = d.data;
             }, console.error );
     }
-    $scope.$watchCollection( 'inputs', getVars );
+    $scope.$watchCollection( 'item.inputs', getVars );
 
     function testFormula( n ) {
         if ( !n )
