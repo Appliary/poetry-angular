@@ -54,6 +54,19 @@ app.controller( 'mathFormula/editor', function (
 
     $scope.inputValues = {};
 
+    function getVars() {
+
+        if ( !$scope.inputs || !$scope.inputs.length ) return;
+
+        $http.push( '/api/rules/getVars', {
+                inputs: $scope.inputs
+            } )
+            .then( function success( d ) {
+                $scope.inputValues = d.data;
+            }, console.error );
+    }
+    $scope.$watchCollection( 'inputs.type', getVars );
+
     function testFormula( n ) {
         if ( !n )
             return ( $scope.currentOutput = '' );

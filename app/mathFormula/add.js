@@ -78,6 +78,30 @@ app.controller( 'mathFormula/add', function (
     wg.push( 'search' );
     $scope.$watchGroup( wg, getDevices );
 
+    function getVar() {
+
+        if ( !$scope.input ) return;
+        if ( !$scope.input.varName ) return;
+        if ( !$scope.input.device ) return;
+        if ( !$scope.input.device.id ) return;
+        if ( !$scope.input.device.kind ) return;
+        if ( !$scope.input.type ) return;
+
+        $http.push( '/api/rules/getVars', {
+                inputs: [ {
+                    id: $scope.input.device.id,
+                    kind: $scope.input.device.kind,
+                    varName: $scope.input.varName,
+                    type: $scope.input.type
+                } ]
+            } )
+            .then( function success( d ) {
+                var vn = $scope.input.varName;
+                $scope.inputValue = d.data[ vn ];
+            }, console.error );
+    }
+    $scope.$watchGroup( [ 'input.type', 'input.device', 'input.device.id', 'input.device.kind' ], getVar );
+
     /**
      * addResults( data, kind )
      * Add the results of devices, smartdevices and tags
