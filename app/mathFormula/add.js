@@ -92,7 +92,8 @@ app.controller( 'mathFormula/add', function (
                     id: $scope.input.device._id,
                     kind: $scope.input.device.kind,
                     varName: $scope.input.varName,
-                    type: $scope.input.type
+                    type: $scope.input.type,
+                    time: input.time
                 } ]
             } )
             .then( function success( d ) {
