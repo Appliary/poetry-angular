@@ -12,9 +12,9 @@ app.controller( 'mathFormula/add', function (
     // Filters for device selection
     $scope.search = '';
     $scope.filters = {
-        devices: true,
-        smartdevices: true,
-        tags: true
+        devices: false,
+        smartdevices: false,
+        tags: false
     };
 
     // Avoid flood by stopping identical send & by iterating requests
