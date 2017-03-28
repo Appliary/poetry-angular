@@ -58,10 +58,8 @@ app.controller( 'mathFormula/editor', function (
 
         $scope.inputValues = {};
         if ( !$scope.item || !$scope.item.inputs || !$scope.item.inputs.length ) return;
-
-        $scope.item.inputs.forEach( function fe( input ) {
-            $scope.inputValues[ input.varName ] = 0;
-        } );
+        $scope.currentOutput = '';
+        $scope.currentOutputErr = false;
 
         $http.post( '/api/rules/getVars', {
                 inputs: $scope.item.inputs
