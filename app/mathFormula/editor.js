@@ -85,4 +85,5 @@ app.controller( 'mathFormula/editor', function (
 
     }
     $scope.$watch( 'item.formula', testFormula );
+    $scope.$watchCollection( 'item.inputs', testFormula );
 } );
