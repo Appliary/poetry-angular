@@ -64,6 +64,7 @@ app.controller( 'mathFormula/editor', function (
             } )
             .then( function success( d ) {
                 $scope.inputValues = d.data;
+                testFormula( true );
             }, console.error );
     }
     $scope.$watchCollection( 'item.inputs', getVars );
@@ -85,5 +86,4 @@ app.controller( 'mathFormula/editor', function (
 
     }
     $scope.$watch( 'item.formula', testFormula );
-    $scope.$watchCollection( 'item.inputs', testFormula );
 } );
