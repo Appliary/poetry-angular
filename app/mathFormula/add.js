@@ -57,6 +57,9 @@ app.controller( 'mathFormula/add', function (
                 $http.get( '/api/' + filter + '?search=' + $scope.search )
                     .then( function success( response ) {
 
+                        if ( lastRequests[ filter ].search != $scope.search )
+                            return;
+
                         // Get the returned list
                         var data = response.data;
                         if ( data.data ) data = data.data;
