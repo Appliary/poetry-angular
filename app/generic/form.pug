@@ -91,7 +91,6 @@ form( ng-submit='' )
 .panel( style='margin-top:50px', ng-if= "item.last" )
     .muted.pull-right
         span(ng-if="item.timestamp") {{ item.timestamp | localize }}
-        span(ng-if="item.lastExecution") {{ item.lastExecution | localize }}
     h4 {{ 'last:' + $root.__module.name | translate }}
     table
         tr( ng-repeat=" element in item.last " )

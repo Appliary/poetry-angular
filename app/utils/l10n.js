@@ -1,6 +1,12 @@
 app.filter( 'localize', function ( $filter, $rootScope ) {
 
-    function localize( input ) {
+    function localize( input, kind ) {
+
+        if ( kind == 'weekly' ) return ( new Date( input ) )
+            .getWeek();
+        if ( kind == 'monthly' ) return ( new Date( input ) )
+            .getMonth() + 1;
+        if ( kind ) return _date( input );
 
         if ( input === undefined ) return undefined;
         if ( input === null ) return $filter( 'translate' )( 'null:value' );
@@ -34,7 +40,7 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
 
         return input;
 
-    };
+    }
 
     function _date( input ) {
         var output = new Date( input );
