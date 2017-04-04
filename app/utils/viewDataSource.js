@@ -202,7 +202,9 @@ app.service( 'ViewDataSource', function ( $q, $filter ) {
         };
 
         var _prepareTreeViewObj = function ( obj ) {
+
             var result = {};
+            if ( !obj.boType ) obj.boType = "groups";
 
             try {
                 result.icon = _this.boMeta[ obj.boType ].icon;

@@ -49,7 +49,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     function getlist( n, o ) {
         var page = 0;
-        var reqID = parseInt( ++$scope.reqID );
         if ( o == n ) return;
         if ( n !== true ) {
             $scope.total = undefined;
@@ -71,6 +70,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                 url: url,
                 timestamp: Date.now()
             };
+            var reqID = parseInt( ++$scope.reqID );
             $http.get( url )
                 .then( function success( response ) {
 
