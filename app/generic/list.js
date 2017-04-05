@@ -48,6 +48,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.tags = [];
 
     function getlist( n, o ) {
+
+        // Delegate to custom controller
+        if ( $scope.$root.__module.controller != 'generic/list' ) return;
+
         var page = 0;
         if ( o == n ) return;
         if ( n !== true ) {
@@ -55,7 +59,6 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             $scope.data = [];
         }
         if ( $scope.data && $scope.total <= $scope.data.length ) return;
-        if ( $scope.$root.__module.controller != 'generic/list' ) return;
         isLoading = true;
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
         if ( $scope.status ) url += '&status=' + $scope.status;
@@ -63,7 +66,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             url += '&search=' + encodeURIComponent( $scope.search );
         if ( $scope.data && $scope.data.length ) {
             page = $scope.data.length / 100;
-            url += '&limit=100&page=' + page;
+            url += '&limit=100&page=' + Math.floor( page );
         }
         if ( lastCall.timestamp + 5000 < Date.now() || lastCall.url != url ) {
             lastCall = {

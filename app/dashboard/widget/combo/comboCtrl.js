@@ -51,14 +51,15 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
         var aggregation = $scope.widget.aggregation || "";
         DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
             .then( function ( measurements ) {
-                result = [
-                    [ 'date', measurements.name ]
-                ];
+                result = [];
                 if ( measurements.datas && measurements.datas.length > 0 ) {
                     measurements.datas.forEach( function ( measurement ) {
                         result.push( measurement );
                     } );
                 }
+
+                if ( result.length )
+                    result.unshift( [ 'date', measurements.name ] );
 
                 $scope.widget.chartObject.options.vAxis = {
                     title: $scope.widget.measurementType + ' (' + measurements.unit + ')'

@@ -12,7 +12,9 @@
           //- a(ng-click="changeRange('Month')") {{ 'Month:dashboard' | translate }}
 
   .widgetBody(widget='widget')
-    .widgetContent(google-chart='',agc-on-error="errorHandler(error)" chart='widget.chartObject', ng-init='loadData()',ng-if="widget.isChart",ng-click="goToDetails()")
+    .widgetContent(google-chart='',agc-on-error="errorHandler(error)" chart='widget.chartObject', ng-init='loadData()',ng-if="widget.isChart && widget.chartObject.data.length > 1",ng-click="goToDetails()")
+    .muted(ng-if="widget.isChart && widget.chartObject.data.length < 2")
+        | {{'noData'|translate}}
     .widgetContent(ng-if="widget.isMap",ng-init="calculateCenter()")
       openlayers(ol-center="widget.center",height="100%",width="100%")
         ol-marker(ng-repeat="point in widget.dataPoints",ol-marker-properties="point.marker")

@@ -90,13 +90,15 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
+        var type = $scope.input.type.split( '.' );
+
         $http.post( '/api/rules/getVars', {
                 inputs: [ {
                     id: $scope.input.device._id,
                     kind: $scope.input.device.kind,
                     varName: $scope.input.varName,
-                    type: $scope.input.type.slice( 0, -2 ),
-                    indice: $scope.input.type.slice( -1 ),
+                    type: type[ 0 ],
+                    indice: type[ 1 ],
                     time: $scope.input.time
                 } ]
             } )
@@ -131,8 +133,9 @@ app.controller( 'mathFormula/add', function (
             if ( item.last )
                 Object.keys( item.last )
                 .forEach( function foreach( t ) {
-                    if ( !~res.types.indexOf( item.last[ t ].type ) )
-                        res.types.push( item.last[ t ].type );
+                    var type = [ item.last[ t ].type, item.last[ t ].id ];
+                    if ( !~res.types.indexOf( type ) )
+                        res.types.push( type );
                 } );
 
             // Populate the results

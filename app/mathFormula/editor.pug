@@ -15,11 +15,12 @@ div.mathFormula(ng-controller='mathFormula/editor')
                 td: b {{ input.varName }}
 
                 //- Device name / Tags
-                td {{ input.kind }}&nbsp;
+                td {{ input.kind.slice(0,1) }}&nbsp;
                     em {{ input.id }}
 
                 //- Value type
-                td {{ input.type }}
+                td {{ input.type }}&nbsp;
+                    em(ng-if="indice !== undefined") {{ input.indice }}
 
                 //- Time dimension
                 td(ng-if='input.time')
