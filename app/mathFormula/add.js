@@ -90,8 +90,6 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
-        var type = $scope.input.type.split( '.' );
-
         $http.post( '/api/rules/getVars', {
                 inputs: [ {
                     id: $scope.input.device._id,
