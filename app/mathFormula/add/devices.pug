@@ -14,7 +14,7 @@
             tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
                 td {{ result.kind }}
                 td {{ result.name }}
-                td {{ result.types.slice(0,3).join(', ') }}
+                td {{ result.types.slice(0,3).join(', ').join(' ') }}
                     em(ng-if="result.types.length > 3")
                         | , {{'and:mathformula'|translate}}&nbsp;
                         | {{result.types.length - 3}}&nbsp;
