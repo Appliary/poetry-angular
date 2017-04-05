@@ -20,7 +20,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
 
                 //- Value type
                 td {{ input.type }}&nbsp;
-                    em(ng-if="indice !== undefined") {{ input.indice }}
+                    em(ng-if="input.indice !== undefined") {{ input.indice }}
 
                 //- Time dimension
                 td(ng-if='input.time')
