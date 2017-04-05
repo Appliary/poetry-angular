@@ -29,7 +29,8 @@ app.controller( 'mathFormula/editor', function (
                         varName: input.varName,
                         kind: input.device.kind,
                         id: input.device._id,
-                        type: input.type,
+                        type: input.type[ 0 ],
+                        indice: input.type[ 1 ],
                         time: input.time
                     } );
 
