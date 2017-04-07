@@ -43,6 +43,9 @@ app.service( 'validationService', function validationService( $http ) {
                         if ( $scope.__joi.computed[ name ]._meta[ 0 ] )
                             return 'api';
 
+                        if ( $scope.__joi.computed[ name ]._unit )
+                            return 'strUnit';
+
                         // Default string otherwise
                         return 'string';
 
@@ -53,7 +56,7 @@ app.service( 'validationService', function validationService( $http ) {
 
                         // With an unit
                         if ( $scope.__joi.computed[ name ]._unit )
-                            return 'unit';
+                            return 'numUnit';
 
                         // Default number
                         return 'number';

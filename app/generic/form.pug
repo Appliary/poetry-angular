@@ -14,12 +14,17 @@ form( ng-submit='' )
 
         //- Numbers (with or without units)
         input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-        span.unit( ng-if="inputType(field) == 'unit'" )
+        span.unit( ng-if="inputType(field) == 'numUnit'" )
             input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
             span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
         //- Strings
         input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+
+        //- StringUnits
+        span.unit( ng-if="inputType(field) == 'strUnit'" )
+            input( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+            span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
         //- Passwords
         input( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
