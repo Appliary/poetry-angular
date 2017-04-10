@@ -14,7 +14,8 @@ form
         | {{ 'measurement:' + $root.__module.name + ':field' | translate }}
     select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type')
         option(ng-repeat='type in $parent.input.device.types', ng-value='type')
-            | {{type[0]}} {{type[1]?('(' + type[1] + ')':'')}})
+            | {{ type[0] }}&nbsp;
+            em(ng-if="type[1]") ( {{ type[1]}} )
 
     label(for="time")
         | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
