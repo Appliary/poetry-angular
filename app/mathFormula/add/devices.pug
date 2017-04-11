@@ -14,12 +14,10 @@
             tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
                 td {{ result.kind }}
                 td {{ result.name }}
-                td
-                    span( ng-repeat="t in result.types.slice(0,3)" )
-                        | {{ t[0] }} ( {{t[1]}} )&nbsp;
-                    em(ng-if="result.types.length > 3")
+                td {{ result.types[0][0] }}&nbsp;
+                    em(ng-if="result.types.length > 1")
                         | {{'and:mathformula'|translate}}&nbsp;
-                        | {{result.types.length - 3}}&nbsp;
+                        | {{result.types.length - 1}}&nbsp;
                         | {{'others:mathformula'|translate}}
     span.muted(ng-if=' $parent.results.length === 0 ')
         | {{ 'nodata:results:mathformula'| translate }}
