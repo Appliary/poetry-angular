@@ -13,15 +13,16 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
     }
 
     if ( !$scope.widget.hasOwnProperty( 'chartObject' ) && !$scope.widget.hasOwnProperty( 'device' ) ) {
+        let options = $scope.widget.chartOptions || {
+            legend: {
+                position: 'bottom'
+            },
+            seriesType: 'bars'
+        };
         $scope.widget.chartObject = {
             type: "ComboChart",
             data: [],
-            options: {
-                legend: {
-                    position: 'bottom'
-                },
-                seriesType: 'bars'
-            }
+            options: options
         };
         $scope.widget.show = true;
     }
