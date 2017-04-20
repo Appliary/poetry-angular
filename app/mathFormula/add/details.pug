@@ -8,7 +8,7 @@ form
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
-    input#device.fakeSelect(value="{{ $parent.input.device.kind }} {{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="$parent.tabview='devices'", ng-if="$parent.input.device.kind != 'tags'")
+    input#device.fakeSelect(value="{{ $parent.input.device.kind }} {{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="$parent.tabview='devices'", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'")
     div(ng-if="$parent.input.device.kind == 'tags'")
         span.unit(ng-repeat="(tag, i) in $parent.input.device.id ")
             input#device(value="t {{ tag }}", readonly)
