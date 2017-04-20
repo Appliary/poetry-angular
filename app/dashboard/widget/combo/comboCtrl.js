@@ -1,4 +1,4 @@
-app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window ) {
+app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window, $filter ) {
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
     $scope.dateOptions = [ "today", "week", "month" ];
@@ -55,12 +55,31 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                 result = [];
                 if ( measurements.datas && measurements.datas.length > 0 ) {
                     measurements.datas.forEach( function ( measurement ) {
-                        result.push( measurement );
+                          result.push( measurement );
                     } );
                 }
 
                 if ( result.length )
                     result.unshift( [ 'date', measurements.name ] );
+                var changePattern = false;
+                var pattern = 'MMM yyyy';
+
+                if(aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly"){
+                  changePattern = true;
+                  if(aggregation == "weekly"){
+                    pattern = "yyyy 'W' w";
+                  }
+                  else if(aggregation == "yearly"){
+                    pattern = "yyyy";
+                  }
+                }
+                if(changePattern){
+                  $scope.widget.chartObject.options.hAxis = { format: pattern };
+                  $scope.widget.chartObject.formatters = {"date": [{
+                        columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
+                        pattern: pattern
+                  }]};
+                }
 
                 $scope.widget.chartObject.options.vAxis = {
                     title: $scope.widget.measurementType + ' (' + measurements.unit + ')'
