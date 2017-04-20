@@ -163,8 +163,14 @@ app.controller( 'mathFormula/add', function (
         $scope.tabview = 'details';
     };
 
+    $scope.tab = function tab( name ) {
+        $scope.tabview = name;
+    };
+
     $scope.rmTag = function rmTag( i ) {
         $scope.input.device.id.splice( i, 1 );
+        if ( !$scope.input.device.id.length )
+            delete $scope.input.device;
     };
 
     // Check varName validity
