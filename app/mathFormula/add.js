@@ -168,8 +168,8 @@ app.controller( 'mathFormula/add', function (
     };
 
     $scope.rmTag = function rmTag( i ) {
-        $scope.input.device.id.splice( i, 1 );
-        if ( !$scope.input.device.id.length )
+        $scope.input.device._id.splice( i, 1 );
+        if ( !$scope.input.device._id.length )
             delete $scope.input.device;
     };
 
