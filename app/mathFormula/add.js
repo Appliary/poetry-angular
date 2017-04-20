@@ -81,8 +81,13 @@ app.controller( 'mathFormula/add', function (
     wg.push( 'search' );
     $scope.$watchGroup( wg, getDevices );
 
+    /**
+     * getVar()
+     * Find the current value of the selected input
+     */
     function getVar() {
 
+        // Assure that every field is completed
         if ( !$scope.input ) return;
         if ( !$scope.input.varName ) return;
         if ( !$scope.input.device ) return;
@@ -90,6 +95,7 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
+        // Search the value
         $http.post( '/api/rules/getVars', {
                 inputs: [ {
                     id: $scope.input.device._id,
@@ -105,6 +111,7 @@ app.controller( 'mathFormula/add', function (
                 $scope.inputValue = d.data[ vn ];
             }, console.error );
     }
+    // Fire the getVar() when input changes
     $scope.$watchGroup( [ 'input.type', 'input.device', 'input.device.id', 'input.device.kind' ], getVar );
 
     /**
@@ -143,11 +150,24 @@ app.controller( 'mathFormula/add', function (
 
     }
 
+    // Select the line as input
     $scope.selectResult = function selectResult( result ) {
         $scope.input.device = result;
+        if ( result.kind == 'tags' )
+            $scope.input.device.id = [ result.id ];
         $scope.tabview = 'details';
     };
 
+    $scope.selectTag = function selectTag( result ) {
+        $scope.input.device.id.push( result );
+        $scope.tabview = 'details';
+    };
+
+    $scope.rmTag = function rmTag( i ) {
+        $scope.input.device.id.splice( i, 1 );
+    };
+
+    // Check varName validity
     $scope.badName = function badName( varName ) {
 
         if ( !varName ) return true;
