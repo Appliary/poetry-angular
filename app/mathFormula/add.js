@@ -154,12 +154,12 @@ app.controller( 'mathFormula/add', function (
     $scope.selectResult = function selectResult( result ) {
         $scope.input.device = result;
         if ( result.kind == 'tags' )
-            $scope.input.device.id = [ result.id ];
+            $scope.input.device._id = [ result._id ];
         $scope.tabview = 'details';
     };
 
     $scope.selectTag = function selectTag( result ) {
-        $scope.input.device.id.push( result );
+        $scope.input.device._id.push( result._id );
         $scope.tabview = 'details';
     };
 
