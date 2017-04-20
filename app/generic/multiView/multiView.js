@@ -138,12 +138,12 @@ app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $c
 
             $scope.actions = {
                 addTopEntity: function () {
-                    if ( !$scope.editItem ) {
-                        $scope.editItem = {
-                            boType: $scope.topTierBO,
-                            data: {}
-                        };
-                    }
+                    //if ( !$scope.editItem ) {
+                    $scope.editItem = {
+                        boType: $scope.topTierBO,
+                        data: {}
+                    };
+                    //}
                 },
                 toggleColumnPicker: function () {
 
