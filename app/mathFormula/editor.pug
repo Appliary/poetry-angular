@@ -32,7 +32,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
                 td.muted( ng-if=" !inputValues[ input.varName ].forEach " )
                     | {{ inputValues[ input.varName ] }}
                 td.muted( ng-if=" inputValues[ input.varName ].forEach ", ng-click="showVals(inputValues[ input.varName ])" )
-                    | [ {{ inputValues[ input.varName ][0] }}, ]
+                    | [ {{ inputValues[ input.varName ][0] }},… ]
 
                 //- Delete btn
                 td: button.lightButton.pull-right(ng-click='inputs.remove(i)')
