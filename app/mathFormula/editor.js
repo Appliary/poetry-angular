@@ -5,8 +5,11 @@ app.controller( 'mathFormula/editor', function (
 ) {
 
     $scope.showVals = function showVals( vals ) {
+        var scope = $scope.$new();
+        scope.vals = vals;
         ngDialog.openConfirm( {
-            template: JSON.stringify( vals )
+            templateUrl: 'mathFormula/showVals.pug',
+            scope: scope
         } );
     };
 
