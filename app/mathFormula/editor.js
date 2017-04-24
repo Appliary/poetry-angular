@@ -4,6 +4,12 @@ app.controller( 'mathFormula/editor', function (
     ngDialog
 ) {
 
+    $scope.showVals = function showVals( vals ) {
+        ngDialog.openConfirm( {
+            template: JSON.stringify( vals )
+        } );
+    };
+
     $scope.inputs = {
 
         /**
