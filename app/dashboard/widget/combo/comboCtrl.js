@@ -64,13 +64,16 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                 var changePattern = false;
                 var pattern = 'MMM yyyy';
 
-                if(aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly"){
+                if(aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly"){
                   changePattern = true;
                   if(aggregation == "weekly"){
                     pattern = "yyyy 'W' w";
                   }
                   else if(aggregation == "yearly"){
                     pattern = "yyyy";
+                  }
+                  else if(aggregation == "daily"){
+                    pattern = "M d yyyy";
                   }
                 }
                 if(changePattern){
