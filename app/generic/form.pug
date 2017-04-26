@@ -75,11 +75,11 @@ form( ng-submit='' )
                 | &nbsp;{{ item.createdBy.firstName }}
                 | &nbsp;{{ item.createdBy.lastName }}
 
-    span.saved( ng-if=' item.__saved ' )
+    span.saved( ng-if=' item.__saved ', ng-if="!disableSaveBTN" )
         | {{ 'saved:' + $root.__module.name | translate }}
-    span.failed( ng-if=' item.__failed ' )
+    span.failed( ng-if=' item.__failed ', ng-if="!disableSaveBTN" )
         | {{ 'failed:save:' + $root.__module.name | translate }}
-    button(ng-click=' save() ').pull-right.lightButton
+    button(ng-click=' save() ', ng-if="!disableSaveBTN").pull-right.lightButton
         | {{ 'save:' + $root.__module.name + ':button' | translate }}
     button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
         | {{ 'delete:button' | translate }}
