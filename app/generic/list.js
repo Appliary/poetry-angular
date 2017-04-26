@@ -282,7 +282,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.isTOut = function isTOut( row ) {
 
         var to = $scope.$root.__module.config.timeout || 'timeout',
-            ts = $scope.$root.__module.config.timestamp || 'timeout';
+            ts = $scope.$root.__module.config.timestamp || 'timestamp';
 
         // If missing, return false
         if ( !row[ to ] || !row[ ts ] )
@@ -296,7 +296,11 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             timestamp = timestamp.getTime();
 
         // Condition
-        var res = ( timestamp + ( row[ to ] * 60000 ) ) < Date.now();
+        var res;
+        if ( to == '$now' )
+            res = timestamp < Date.now();
+        else
+            res = ( timestamp + ( row[ to ] * 60000 ) ) < Date.now();
         console.log( row[ to ], timestamp, res );
         return res;
 
