@@ -280,21 +280,26 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     }
 
     $scope.isTOut = function isTOut( row ) {
+
+        var to = $scope.$root.__module.config.timeout || 'timeout',
+            ts = $scope.$root.__module.config.timestamp || 'timeout';
+
         // If missing, return false
-        if ( !row.timeout || !row.timestamp )
+        if ( !row[ to ] || !row[ ts ] )
             return false;
 
         // Get the timestamp and format it
-        var timestamp = angular.copy( row.timestamp );
-        if ( typeof row.timestamp == 'string' )
+        var timestamp = angular.copy( row[ ts ] );
+        if ( typeof row[ ts ] == 'string' )
             timestamp = new Date( timestamp );
         if ( timestamp.getTime )
             timestamp = timestamp.getTime();
 
         // Condition
-        var res = ( timestamp + ( row.timeout * 60000 ) ) < Date.now();
-        console.log( row.timestamp, timestamp, res );
+        var res = ( timestamp + ( row[ to ] * 60000 ) ) < Date.now();
+        console.log( row[ to ], timestamp, res );
         return res;
+
     };
 
 } );
