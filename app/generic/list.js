@@ -285,7 +285,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             ts = $scope.$root.__module.config.timestamp || 'timestamp';
 
         // If missing, return false
-        if ( !row[ to ] || !row[ ts ] )
+        if ( ( !row[ to ] && to != '$now' ) || !row[ ts ] )
             return false;
 
         // Get the timestamp and format it
