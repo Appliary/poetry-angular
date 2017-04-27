@@ -62,18 +62,32 @@ form( ng-submit='' )
         span(ng-if='item.updatedAt')
             | &nbsp;{{ item.updatedAt | localize }}
         span(ng-if='item.updatedBy')
-            | &nbsp;{{'by:iteminfo'|translate}}
-            | &nbsp;{{ item.updatedBy.firstName }}
-            | &nbsp;{{ item.updatedBy.lastName }}
+            span(ng-if='item.updatedBy.firstName||item.updatedBy.lastName')
+                | &nbsp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ item.updatedBy.firstName }}
+                | &nbsp;{{ item.updatedBy.lastName }}
+            span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&item.updatedBy.email')
+                | &nbsp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ item.updatedBy.email }}
+            span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&!item.updatedBy.email')
+                | &nbsp;{{'by:iteminfo'|translate}}
+                | &nbsp;{{ item.updatedBy }}
     .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
         span(ng-if='item.createdAt || item.createdBy')
             | {{ 'createdAt:itemInfo' | translate }}
             span(ng-if='item.createdAt')
                 | &nbsp;{{ item.createdAt | localize }}
             span(ng-if='item.createdBy')
-                | &nbsp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ item.createdBy.firstName }}
-                | &nbsp;{{ item.createdBy.lastName }}
+                span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.createdBy.firstName }}
+                    | &nbsp;{{ item.createdBy.lastName }}
+                span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&item.createdBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.createdBy.email }}
+                span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&!item.createdBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.createdBy }}
 
     span.saved( ng-if=' item.__saved && !disableSaveBTN ' )
         | {{ 'saved:' + $root.__module.name | translate }}
