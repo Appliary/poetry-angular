@@ -281,8 +281,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     $scope.isTOut = function isTOut( row ) {
 
-        var to = $scope.$root.__module.config.timeout || 'timeout',
-            ts = $scope.$root.__module.config.timestamp || 'timestamp';
+        var to = 'timeout';
+        if ( $scope.$root.__module.config ) {
+            if ( $scope.$root.__module.config.timeout )
+                to = $scope.$root.__module.config.timeout;
+            if ( $scope.$root.__module.config.timeout )
+                ts = $scope.$root.__module.config.timestamp;
+        }
 
         // If missing, return false
         if ( ( !row[ to ] && to != '$now' ) || !row[ ts ] )
