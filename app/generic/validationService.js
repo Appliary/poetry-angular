@@ -126,8 +126,7 @@ app.service( 'validationService', function validationService( $http ) {
 
         toDateObject: function toDateObjectFactory( $scope ) {
             return function toDateObject( field ) {
-                $scope.item[ field ] = new Date( $scope.item[ field ] );
-
+                $scope.item[ field ] = new Date( $scope.item[ field ] || undefined );
                 $scope.item.__dateFields = $scope.item.__dateFields || [];
                 $scope.item.__dateFields.push( field );
             };
