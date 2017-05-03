@@ -1,7 +1,7 @@
 .tab-header
     h1.modal-title {{ 'edit profile:modal:title' | translate }}
     tabs
-        a.modal-edit(ng-click="showEdit()", ng-class=' { active: editView }') {{'Edit:editmodal' | translate}}
+        a.modal-edit(ng-click="showEdit()", ng-class=' { active: editView }') {{'profile:editmodal' | translate}}
         a.modal-changepwd(ng-click="showChangepwd()", ng-class=' { active: pwdView }') {{'Change password:editmodal' | translate}}
 .tab-body
     .tab-content(ng-if="editView")
@@ -34,18 +34,15 @@
                 | {{ 'save:button' | translate }}
     .tab-content(ng-if="pwdView")
         form( ng-submit='changePassword()' )
-            label( for='oldPassword', class="required") {{ 'old password:field:edit' | translate }}
-            input( type='password', ng-model='password.oldPassword', name='oldPassword' )
+            label( for='oldPassword' class="required" ) {{ 'old password:field:edit' | translate }}
+            input( type='password', ng-model='password.oldPassword', name='oldPassword', required, ng-class='{error: (!password.oldPassword && password.newPassword1) }' )
 
-            label( for='newPassword1', class="required") {{ 'new Password:field:edit' | translate }}
-            input( type='password', ng-model='password.newPassword1', name='newPassword1' )
+            pass-input( password="password" )
 
-            label( for='newPassword2', class="required") {{ 'new Password:field:edit' | translate }}
-            input( type='password', ng-model='password.newPassword2', name='newPassword2' )
-
-            span.saved( ng-if=' pwdState.saved ' )
-                | {{ 'saved:' | translate }}
-            span.failed( ng-if=' pwdState.failed ' )
-                | {{ 'failed:' | translate }}
-            button(type='submit').pull-right.lightButton
-                | {{ 'Change password:button' | translate }}
+            div
+                span.saved( ng-if=' changePasswordResult === true ' )
+                    | {{ 'saved:' + $root.__module.name | translate }}
+                span.failed( ng-if=' changePasswordResult && changePasswordResult !== true ' )
+                    | {{ 'failed:save:' + $root.__module.name | translate }}
+                button.lightButton.pull-right( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
+                    | {{ 'Change password:button' | translate }}

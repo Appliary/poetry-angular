@@ -78,16 +78,22 @@ form( ng-submit='' )
             span(ng-if='item.createdAt')
                 | &nbsp;{{ item.createdAt | localize }}
             span(ng-if='item.createdBy')
+                
                 span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
-                    | &nbsp;{{'by:iteminfo'|translate}}
-                    | &nbsp;{{ item.createdBy.firstName }}
-                    | &nbsp;{{ item.createdBy.lastName }}
+                    a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
+                        | {{'by:iteminfo'|translate}}
+                        | {{ item.createdBy.firstName }}
+                        | {{ item.createdBy.lastName }}
+                    span( ng-if='!$root.user.role == "SUPER" && $root.role.teamManager' )
+                        | {{'by:iteminfo'|translate}}
+                        | {{ item.createdBy.firstName }}
+                        | {{ item.createdBy.lastName }}
                 span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&item.createdBy.email')
-                    | &nbsp;{{'by:iteminfo'|translate}}
-                    | &nbsp;{{ item.createdBy.email }}
+                    | {{'by:iteminfo'|translate}}
+                    | {{ item.createdBy.email }}
                 span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&!item.createdBy.email')
-                    | &nbsp;{{'by:iteminfo'|translate}}
-                    | &nbsp;{{ item.createdBy }}
+                    | {{'by:iteminfo'|translate}}
+                    | {{ item.createdBy }}
 
     span.saved( ng-if=' item.__saved && !disableSaveBTN ' )
         | {{ 'saved:' + $root.__module.name | translate }}

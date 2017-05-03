@@ -1,0 +1,10 @@
+label.required( for='newPassword1' ) {{ 'new Password:field:edit' | translate }}
+input( type='password', ng-model='password.newPassword1', name='newPassword1' required, ng-class='{error: password.errors.length }' )
+
+label.required( for='newPassword2' ) {{ 'confirmNewPassword:field:edit' | translate }}
+input( type='password', ng-model='password.newPassword2', name='newPassword2' required, ng-class='{error: password.errors.indexOf("same") != -1 }' )
+
+.errorList
+    .gauge: .filling( style='width:{{ password.errors.length / 6*100 }}%')
+    ul: li(ng-repeat=' errInfo in password.errors ')
+        | {{ errInfo + ':passError' | translate }}
