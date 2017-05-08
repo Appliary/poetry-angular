@@ -85,10 +85,6 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
             $scope.loaded = true;
         }, console.error );
 
-    $scope.cancel = function cancel() {
-        $window.location.replace( $location.absUrl() );
-    };
-
     $scope.save = function save() {
         $scope.__validation = [];
 
@@ -97,6 +93,8 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
 
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
+
+                $scope.closeThisDialog();
 
             }, function error( err ) {
                 console.error( err );
