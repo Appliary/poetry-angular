@@ -58,11 +58,12 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                         result.push( measurement );
                     } );
                 }
-
+                var dvd = result.length;
                 if ( result.length )
                     result.unshift( [ 'date', measurements.name ] );
                 var changePattern = false;
                 var pattern = 'MMM yyyy';
+                var showTextEvery = Math.ceil(dvd / 4) || 1;
 
                 if ( aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly" ) {
                     changePattern = true;
@@ -76,7 +77,8 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                 }
                 if ( changePattern ) {
                     $scope.widget.chartObject.options.hAxis = {
-                        format: pattern
+                        format: pattern,
+                        showTextEvery: showTextEvery
                     };
                     $scope.widget.chartObject.formatters = {
                         "date": [ {
