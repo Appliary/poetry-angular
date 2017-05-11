@@ -1,4 +1,8 @@
-app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window, $filter ) {
+app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window, $filter, googleChartApiConfig, $rootScope ) {
+    if(!googleChartApiConfig.optionalSettings.locale){
+      googleChartApiConfig.optionalSettings.locale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : undefined;
+    }
+
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
     $scope.dateOptions = [ "today", "week", "month" ];
