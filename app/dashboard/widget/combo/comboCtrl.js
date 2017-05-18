@@ -1,7 +1,13 @@
 app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window, $filter, googleChartApiConfig, $rootScope ) {
-    if(!googleChartApiConfig.optionalSettings.locale){
-      googleChartApiConfig.optionalSettings.locale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : undefined;
-    }
+  var userLocale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : 'us';
+    //if(!googleChartApiConfig.optionalSettings.locale){
+
+      googleChartApiConfig.optionalSettings.locale = userLocale;
+    //}
+
+
+
+    console.log('%cgoogleChartApiConfig.optionalSettings.locale = '+googleChartApiConfig.optionalSettings.locale,"color: #09FF00; background-color: black; font-weight: bold;");
 
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
@@ -76,7 +82,10 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                     } else if ( aggregation == "yearly" ) {
                         pattern = "yyyy";
                     } else if ( aggregation == "daily" ) {
-                        pattern = "M d yyyy";
+                        pattern = "M'/'d'/'yyyy";
+                        if(userLocale == 'fr'){
+                          pattern = "d'/'M'/'yyyy";
+                        }
                     }
                 }
                 if ( changePattern ) {
