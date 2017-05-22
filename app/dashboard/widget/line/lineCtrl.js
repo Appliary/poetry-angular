@@ -1,7 +1,10 @@
-app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
+app.controller('lineCtrl',function(widgetService, $scope, ngDialog, DevicesData, $q, $window){
+
+    widgetService.initialize();
+
     $scope.widget.isChart = true;
     $scope.widget.type = "line";
-    $scope.dateOptions = ["today", "week", "month"];
+    $scope.dateOptions = widgetService.getDateOptions();
 
     if(!$scope.widget.chartObject)
         $scope.loading = true;
@@ -30,23 +33,14 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
     // ---------- Old Functions -------------------
 
     $scope.clickToOpen = function () {
-        ngDialog.openConfirm( {
-            template: 'dashboard/modalWidget.pug',
-            className: 'ngdialog-theme-default',
-            scope:$scope
-        } )
-        .then( function (result) {
-            console.log("confirm edit result", result);
-            $scope.widget = result.newWidget;
-            $scope.widget.title = result.title;
-        } );
+        widgetService.openEditModal($scope);
     };
 
     // ---------------- New Functions ------------------
 
     $scope.getHistory = function(deviceId, startDate, endDate, measurementType){
         var deferred = $q.defer();
-    
+
         var result;
 
         var aggregation = $scope.widget.aggregation || "";
@@ -111,13 +105,13 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             else{
                 endDate = new Date();
                 switch($scope.widget.dateOption){
-                    case "week": 
+                    case "week":
                         startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()).getTime() - endDate.getDay() * 24 * 60 * 60 * 1000;
                         break;
-                    case "month": 
+                    case "month":
                         startDate = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
                         break;
-                    default: 
+                    default:
                         startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
                 }
             }
@@ -178,7 +172,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             }
             else{
                 dataRow = [elem[0]];
-                for (i = 1; i < position; i++) { 
+                for (i = 1; i < position; i++) {
                     dataRow.push(null);
                 }
                 dataRow.push(elem[1]);
@@ -207,7 +201,6 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
                 found = true;
             }
         })
-
         return result;
     }
 
@@ -215,14 +208,13 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
         var currentDevice = {
                 id: $scope.widget.deviceId
         };
-
         $scope.tempDeviceList.push(currentDevice);
     }
 
     $scope.apply = function(){
         $scope.widget.deviceList = $scope.tempDeviceList;
         $scope.widget.chartObject.data = [];
-        
+
         $scope.widget.deviceList.forEach(function(device){
             $scope.addDevice(device.id);
         });
@@ -231,13 +223,15 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
             'newWidget' : $scope.widget,
             'title' : $scope.$parent.$parent.widget.title
         });
+
+        console.log($scope.confirm);
     }
 
     // ------------------ Begining -----------------
 
     if(!$scope.widget.refreshed){
         $scope.refreshFromDevice();
-    } 
+    }
 
     // ------------- Watchers ---------------------
 
@@ -254,7 +248,7 @@ app.controller('lineCtrl',function($scope, ngDialog, DevicesData, $q, $window){
                 $scope.isChart = true;
                 $scope.widget.resize=false;
             }
-            
+
         }, 2000);
     });
 

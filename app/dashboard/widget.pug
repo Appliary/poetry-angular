@@ -1,4 +1,4 @@
-.widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",disable-save="disableSave()",enable-save ="enableSave()")
+.widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",disable-save="disableSave()",enable-save ="enableSave()", save-dashboard='saveDashboard()')
   .panel.panel-default.panel-widget(ng-mousedown="enableDraggable()", ng-if="widget.edit")
     div
       p.headerWigetTitle
@@ -12,7 +12,7 @@
           //- a(ng-click="changeRange('Month')") {{ 'Month:dashboard' | translate }}
 
   .widgetBody(widget='widget')
-    .widgetContent(google-chart='',agc-on-error="errorHandler(error)" chart='widget.chartObject', ng-init='loadData()',ng-if="widget.isChart && widget.chartObject.data.length > 1",ng-click="goToDetails()")
+    .widgetContent(google-chart='',agc-on-error="errorHandler(error)" chart='widget.chartObject', ng-init='loadData()',ng-if="widget.isChart && widget.chartObject.data.length >= 1",ng-click="goToDetails()")
     .muted(ng-if="widget.isChart && widget.chartObject.data.length < 2")
         | {{'noData'|translate}}
     .widgetContent(ng-if="widget.isMap",ng-init="calculateCenter()")

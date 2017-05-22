@@ -1,8 +1,10 @@
-app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, DevicesData, $q, $window, $filter, $rootScope, widgetService ) {
+app.controller( 'widgetCtrl', function ( widgetService, $scope, ngDialog, DevicesData, $q, $window, $filter, $rootScope, widgetService ) {
 
     widgetService.initialize();
 
-    console.log("%cComboCtrl gave up on life", 'color: red; text-decoration: underline; font-weight: bolder;');
+    console.log("%cwidgetCtrl gave up on life", 'color: red; text-decoration: underline; font-weight: bolder;');
+
+    console.log("%c"+$scope.widget.controller, 'color: red; text-decoration: underline; font-weight: bolder;');
 
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
@@ -21,14 +23,68 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
         var options = $scope.widget.chartOptions || {
             legend: {
                 position: 'bottom'
-            },
-            seriesType: 'bars'
+            }
         };
-        $scope.widget.chartObject = {
-            type: "ComboChart",
-            data: [],
-            options: options
-        };
+
+        var chartType;
+        switch($scope.widget.controller){
+          case 'LineChart':
+          case 'lineCtrl':
+          case 'Line':
+            chartType = 'LineChart';
+            options.pointSize = 4;
+            options.interpolateNulls = true;
+            break;
+          case 'GaugeChart':
+          case 'gaugeCtrl':
+          case 'Gauge':
+            chartType = 'Gauge';
+            options = {
+                width: 400,
+                height: 120,
+                redFrom: 90,
+                redTo: 100,
+                yellowFrom: 75,
+                yellowTo: 90,
+                minorTicks: 5
+            };
+            break;
+          /*case 'VideoChart':
+          case 'VideoCtrl':
+          case 'Video':
+            break;*/
+          case 'ComboChart':
+          case 'comboCtrl':
+          case 'Combo':
+          default:
+            chartType = 'ComboChart';
+            options.seriesType = 'bars';
+            break;
+        }
+
+        console.log("%c"+chartType, 'color: red; text-decoration: underline; font-weight: bolder;');
+        if(chartType == 'Gauge'){
+          $scope.widget.type = "gauge";
+          $scope.widget.chartObject = {
+              type: chartType,
+              data: [
+                ['Label', 'Value'],
+                ['Memory', 80]
+            ],
+              options: options
+          };
+          $scope.widget.show = true;
+          return;
+        }
+        else{
+          $scope.widget.chartObject = {
+              type: chartType,
+              data: [],
+              options: options
+          };
+        }
+
+
         $scope.widget.show = true;
     }
 
@@ -49,16 +105,20 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
         DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
             .then( function ( measurements ) {
                 result = [];
+
+                var maxDate = new Date(endDate);
+                var minDate = new Date(startDate);
+                minDate.setDate(minDate.getDate() -1);
+                maxDate.setDate(maxDate.getDate() +1);
+
                 if ( measurements.datas && measurements.datas.length > 0 ) {
                     measurements.datas.forEach( function ( measurement ) {
                         result.push( measurement );
                     } );
                 }
                 var dvd = result.length;
-                console.log("size", dvd);
                 if ( result.length == 0){
-                  result.push([new Date(), 0]);
-                  console.log("empty", result);
+                  //result.push([new Date(), 0]);
                 }
 
                 result.unshift( [ 'date', measurements.name ] );
@@ -72,13 +132,23 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                     changePattern = true;
                     if ( aggregation == "weekly" ) {
                         pattern = "yyyy 'W' w";
+                        minDate.setDate(minDate.getDate() -7);
+                        maxDate.setDate(maxDate.getDate() +7);
                     } else if ( aggregation == "yearly" ) {
                         pattern = "yyyy";
+                        minDate.setFullYear(minDate.getFullYear() -1);
+                        maxDate.setFullYear(maxDate.getFullYear() +1);
                     } else if ( aggregation == "daily" ) {
                         pattern = "M'/'d'/'yyyy";
                         if(userLocale == 'fr'){
                           pattern = "d'/'M'/'yyyy";
                         }
+                        minDate.setDate(minDate.getDate() -1);
+                        maxDate.setDate(maxDate.getDate() +1);
+                    }
+                    else{
+                      minDate.setMonth(minDate.getMonth() -1);
+                      maxDate.setMonth(maxDate.getMonth() +1);
                     }
                 }
                 if ( changePattern ) {
@@ -98,15 +168,12 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                     title: $scope.widget.measurementType + ' (' + measurements.unit + ')'
                 };
 
-                /*var nd = new Date();
-                nd.setFullYear(2015);
-
                 $scope.widget.chartObject.options.hAxis = {
                   viewWindow: {
-                    min: nd,
-                    max: new Date()
+                    min: minDate,
+                    max: maxDate
                   }
-                }*/
+                }
 
                 deferred.resolve( result );
             } );

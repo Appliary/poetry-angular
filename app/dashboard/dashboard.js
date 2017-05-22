@@ -213,7 +213,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                     setTimeout(function(){
                         widget.resize = true;
                     }, 500);
-                    
+
                     $scope.newSave($scope.currentDashboard);
                     // if (widget.type === "map") {
                     //     widget.resize = true;
@@ -250,7 +250,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
     // Delete Widget from current dashboard
     $scope.deleteWidget = function(widget) {
-        
+
         $scope.currentDashboard.data.splice($scope.currentDashboard.data.indexOf(widget), 1);
         $scope.newSave($scope.currentDashboard);
     };
@@ -577,7 +577,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         .then(function() {
             dashboard.data = [];
         });
-        
+
     };
     // Emit event 'resizeMsg' known by Google-Chart to resize the widget
     $scope.resizeWidgets = function() {
@@ -594,7 +594,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         });
     };
     $scope.saveDashboard = function() {
-        console.log("todo savedashboard");
+        console.log("%cSave Current dashboard", 'color: magenta; background-color: black;');
+        console.log($scope.currentDashboard);
     };
     $scope.enableDraggable = function() {
         $scope.gridsterOpts.draggable.enabled = true;
@@ -623,7 +624,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
                 $scope.newSave($scope.currentDashboard);
             });
     };
-    
+
     $scope.loadDashboardFromId = function(id) {
         if (id == -1) {
             $scope.dashboards.push({
@@ -648,7 +649,7 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
             $scope.currentDashboard = $scope.dashboards[index];
         }
     }
-    
+
     $scope.confirmDashboardDelete = function(id) {
 
         ngDialog.openConfirm({
@@ -725,8 +726,8 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
         };
 
         dashboard.data.forEach(function(data){
-            
-            
+
+
             var widget = {
                 title: data.title,
                 controller: data.controller,
@@ -757,12 +758,12 @@ app.controller('dashboard/dashboard', function($scope, $q, $state, $rootScope, n
 
             dashboardData.widgets.push(widget);
         });
-        
+
 
         DevicesData.saveDashboardToDb(dashboardData)
         .then(function(result){
             console.log("result from saveDashboard", result);
-        }); 
+        });
     }
 
     $scope.createDashboards = function(dashboardDatas){

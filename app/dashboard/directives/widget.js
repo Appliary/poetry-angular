@@ -16,7 +16,7 @@ app.directive('ngWidget', function() {
         link : function(scope,element,attrs)
         {
         scope.$watch('widget', function(item){
-            scope.saveDashboard();
+            //scope.saveDashboard();
             scope.resizeWidgets();
         }, true);
 
@@ -31,7 +31,7 @@ app.directive('ngWidget', function() {
                 scope.$apply(function (){
                     scope.$eval(attrs.ngEnter);
                 });
- 
+
                 event.preventDefault();
             }
         });

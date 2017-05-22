@@ -41,7 +41,6 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
             $scope.widget = res.newWidget;
             $scope.widget.title = res.title;
         });
-
     };
 
     // Get measurement object of selected device from its type
@@ -59,9 +58,9 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
             ];
 
             deferred.resolve(measurement);
-        });  
+        });
 
-        return deferred.promise;      
+        return deferred.promise;
     }
 
     $scope.getDevice = function(id){
@@ -78,7 +77,7 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
 
     $scope.addDevice = function(){
         if($scope.widget.deviceId && $scope.widget.measurementType){
-            
+
             $scope.selectMeasurement($scope.widget.deviceId, $scope.widget.measurementType, $scope.widget.smart)
             .then(function (){
                 $scope.widget.device = {
@@ -102,8 +101,8 @@ app.controller('gaugeCtrl', function($scope, $location, ngDialog, DevicesData, n
                 options: $scope.widget.options
             };
 
-        }      
-        
+        }
+
         if($scope.widget.deviceList && $scope.widget.deviceList.length > 0 ){
             $scope.widget.deviceId = $scope.widget.deviceList[0].id;
             $scope.addDevice();
