@@ -42,6 +42,19 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
                     //widget.resize = true;
                 }
             }, // optional callback fired when item is resized,
+<<<<<<< HEAD
+            stop: function(event, $element, widget) {
+                console.log("stop resize");
+                    setTimeout(function(){
+                        widget.resize = true;
+                    }, 500);
+
+                    $scope.newSave($scope.currentDashboard);
+                    // if (widget.type === "map") {
+                    //     widget.resize = true;
+                    // }
+                } // optional callback fired when item is finished resizing
+=======
             stop: function ( event, $element, widget ) {
                 console.log( "stop resize" );
                 setTimeout( function () {
@@ -53,6 +66,7 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
                 //     widget.resize = true;
                 // }
             } // optional callback fired when item is finished resizing
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
         },
         draggable: {
             enabled: false, // whether dragging items is supported
@@ -71,10 +85,17 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
     // $scope.currentDashboard = $scope.customItems1;
 
     // Delete Widget from current dashboard
+<<<<<<< HEAD
+    $scope.deleteWidget = function(widget) {
+
+        $scope.currentDashboard.data.splice($scope.currentDashboard.data.indexOf(widget), 1);
+        $scope.newSave($scope.currentDashboard);
+=======
     $scope.deleteWidget = function ( widget ) {
 
         $scope.currentDashboard.data.splice( $scope.currentDashboard.data.indexOf( widget ), 1 );
         $scope.newSave( $scope.currentDashboard );
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
     };
     // Add widget to the current dashboard
     // @Param type : add the widget with the good controller
@@ -391,6 +412,16 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
         }
     };
     // Clear all widget from dashboard
+<<<<<<< HEAD
+    $scope.clear = function(dashboard) {
+        ngDialog.openConfirm({
+            template: 'modals/confirmation.pug',
+            className: 'ngdialog-theme-default'
+        })
+        .then(function() {
+            dashboard.data = [];
+        });
+=======
     $scope.clear = function ( dashboard ) {
         ngDialog.openConfirm( {
                 template: 'modals/confirmation.pug',
@@ -399,6 +430,7 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
             .then( function () {
                 dashboard.data = [];
             } );
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
 
     };
     // Emit event 'resizeMsg' known by Google-Chart to resize the widget
@@ -415,8 +447,14 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
                 }
             } );
     };
+<<<<<<< HEAD
+    $scope.saveDashboard = function() {
+        console.log("%cSave Current dashboard", 'color: magenta; background-color: black;');
+        console.log($scope.currentDashboard);
+=======
     $scope.saveDashboard = function () {
         console.log( "todo savedashboard" );
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
     };
     $scope.enableDraggable = function () {
         $scope.gridsterOpts.draggable.enabled = true;
@@ -446,9 +484,15 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
             } );
     };
 
+<<<<<<< HEAD
+    $scope.loadDashboardFromId = function(id) {
+        if (id == -1) {
+            $scope.dashboards.push({
+=======
     $scope.loadDashboardFromId = function ( id ) {
         if ( id == -1 ) {
             $scope.dashboards.push( {
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
                 id: ++$scope.maxId,
                 data: [],
                 name: 'New Dashboard',
@@ -469,7 +513,13 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
         if ( index >= 0 ) {
             $scope.currentDashboard = $scope.dashboards[ index ];
         }
+<<<<<<< HEAD
+    }
+
+    $scope.confirmDashboardDelete = function(id) {
+=======
     };
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
 
     $scope.confirmDashboardDelete = function ( id ) {
 
@@ -547,7 +597,11 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
             widgets: []
         };
 
+<<<<<<< HEAD
+        dashboard.data.forEach(function(data){
+=======
         dashboard.data.forEach( function ( data ) {
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
 
 
             var widget = {
@@ -578,9 +632,21 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
             }
 
 
+<<<<<<< HEAD
+            dashboardData.widgets.push(widget);
+        });
+
+
+        DevicesData.saveDashboardToDb(dashboardData)
+        .then(function(result){
+            console.log("result from saveDashboard", result);
+        });
+    }
+=======
             dashboardData.widgets.push( widget );
         } );
 
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
 
         DevicesData.saveDashboardToDb( dashboardData )
             .then( function ( result ) {
@@ -645,4 +711,8 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
     //     console.log("dashboards", $scope.dashboards);
     // }, 200);
 
+<<<<<<< HEAD
+});
+=======
 } );
+>>>>>>> cab83c0e6d5250059efb0b65d4af12ebc60d5d46
