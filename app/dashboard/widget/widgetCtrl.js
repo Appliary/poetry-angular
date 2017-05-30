@@ -36,6 +36,8 @@ app.controller( 'widgetCtrl', function ( widgetService, $scope, ngDialog, Device
             }
         };
 
+        options.custom = options.custom || {};
+
         switch($scope.widget.controller){
           case 'LineChart':
           case 'lineCtrl':
@@ -122,10 +124,12 @@ app.controller( 'widgetCtrl', function ( widgetService, $scope, ngDialog, Device
                   delete $scope.widget.chartObject.options.series;
                 }
 
+                var custom = $scope.widget.chartObject.options.custom;
+
                 result.unshift( [ 'date', measurements.name ] );
                 var changePattern = false;
                 var pattern = 'MMM yyyy';
-                var showTextEvery = Math.ceil(dvd / 4) || 1;
+                var showTextEvery = angular.isNumber(custom.maxXLabels) ? (Math.ceil(dvd / custom.maxXLabels) || 1) : 1;
 
                 //console.log("%cAggregation= "+aggregation, 'color: #09FF00; background-color: black;');
 

@@ -24,12 +24,14 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
             },
             seriesType: 'bars'
         };
+        options.custom = options.custom || {};
         $scope.widget.chartObject = {
             type: "ComboChart",
             data: [],
             options: options
         };
         $scope.widget.show = true;
+
     }
 
     // ---------- Old Functions -------------------
@@ -61,10 +63,12 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                   console.log("empty", result);
                 }
 
+                var custom = $scope.widget.chartObject.options.custom;
+
                 result.unshift( [ 'date', measurements.name ] );
                 var changePattern = false;
                 var pattern = 'MMM yyyy';
-                var showTextEvery = Math.ceil(dvd / 4) || 1;
+                var showTextEvery = angular.isNumber(custom.maxXLabels) ? (Math.ceil(dvd / custom.maxXLabels) || 1) : 1;
 
                 console.log("%cAggregation= "+aggregation, 'color: #09FF00; background-color: black;');
 
@@ -84,7 +88,9 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                 if ( changePattern ) {
                     $scope.widget.chartObject.options.hAxis = {
                         format: pattern,
-                        showTextEvery: showTextEvery
+                        showTextEvery: showTextEvery,
+                        slantedText:true,
+                        slantedTextAngle:45
                     };
                     $scope.widget.chartObject.formatters = {
                         "date": [ {
