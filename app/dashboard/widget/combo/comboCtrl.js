@@ -42,7 +42,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
 
     // ---------------- New Functions ------------------
 
-    $scope.formatChart = function(aggregation, unit, xTot, xMax){
+    $scope.formatChart = function(aggregation, unit, xTot, xMax, ticks){
       var changePattern = false;
       var pattern = 'MMM yyyy';
 
@@ -67,7 +67,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
               format: pattern,
               showTextEvery: showTextEvery,
               slantedText:true,
-              slantedTextAngle:45
+              slantedTextAngle:50
           };
           $scope.widget.chartObject.formatters = {
               "date": [ {
@@ -80,8 +80,13 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
         $scope.widget.chartObject.options.hAxis = {
             showTextEvery: showTextEvery,
             slantedText:true,
-            slantedTextAngle:45
+            slantedTextAngle:50
         };
+      }
+
+      if(angular.isArray(ticks)){
+        console.debug("ticks");
+        $scope.widget.chartObject.options.hAxis.ticks = ticks;
       }
 
       var title = $scope.widget.measurementType;
@@ -105,6 +110,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
         if(angular.isObject(custom.data)){
           result = [];
           var keys = Object.keys(custom.data);
+          var ticks = [];
 
           // fill the array
           keys.forEach(function(k){
@@ -114,6 +120,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
             }
             catch(e){}
             result.push([new Date(k), value]);
+            ticks.push(new Date(k));
           });
 
           // sort the array
@@ -135,7 +142,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
           var dvd = result.length;
           result.unshift( [ 'date', custom.name || "" ] );
 
-          $scope.formatChart(aggregation ,custom.unit, dvd, custom.maxXLabels);
+          $scope.formatChart(aggregation ,custom.unit, dvd, custom.maxXLabels, ticks);
 
           deferred.resolve( result );
 
