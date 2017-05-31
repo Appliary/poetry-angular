@@ -1,4 +1,4 @@
-app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, DevicesData, $q, $window, $filter, $rootScope, widgetService ) {
+app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, DevicesData, $q, $window, $filter, $rootScope, widgetService, googleChartApiConfig ) {
 
     widgetService.initialize();
 
@@ -42,13 +42,106 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
 
     // ---------------- New Functions ------------------
 
+    $scope.formatChart = function(aggregation, unit, xTot, xMax){
+      var changePattern = false;
+      var pattern = 'MMM yyyy';
+
+      if ( aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly" ) {
+          changePattern = true;
+          if ( aggregation == "weekly" ) {
+              pattern = "yyyy 'W' w";
+          } else if ( aggregation == "yearly" ) {
+              pattern = "yyyy";
+          } else if ( aggregation == "daily" ) {
+              pattern = "M'/'d'/'yyyy";
+              if(googleChartApiConfig.optionalSettings.locale == 'fr'){
+                pattern = "d'/'M'/'yyyy";
+              }
+          }
+      }
+
+      var showTextEvery = angular.isNumber(xMax) ? (Math.ceil(xTot / xMax) || 1) : 1;
+
+      if ( changePattern ) {
+          $scope.widget.chartObject.options.hAxis = {
+              format: pattern,
+              showTextEvery: showTextEvery,
+              slantedText:true,
+              slantedTextAngle:45
+          };
+          $scope.widget.chartObject.formatters = {
+              "date": [ {
+                  columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
+                  pattern: pattern
+              } ]
+          };
+      }
+      else{
+        $scope.widget.chartObject.options.hAxis = {
+            showTextEvery: showTextEvery,
+            slantedText:true,
+            slantedTextAngle:45
+        };
+      }
+
+      var title = $scope.widget.measurementType;
+      if(unit){
+        title +=  ' (' + unit + ')';
+      }
+      $scope.widget.chartObject.options.vAxis = {
+          title: title
+      };
+    }
+
     $scope.getHistory = function ( deviceId, startDate, endDate, measurementType ) {
         var deferred = $q.defer();
 
         var result;
 
         var aggregation = $scope.widget.aggregation || "";
-        DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
+        var custom = $scope.widget.chartObject.options.custom;
+
+        // if data were send
+        if(angular.isObject(custom.data)){
+          result = [];
+          var keys = Object.keys(custom.data);
+
+          // fill the array
+          keys.forEach(function(k){
+            var value = 0;
+            try{
+              value = parseFloat(custom.data[k] || 0);
+            }
+            catch(e){}
+            result.push([new Date(k), value]);
+          });
+
+          // sort the array
+          result.sort(function(a, b){
+            return a[0].getTime() < b[0].getTime();
+          });
+
+          console.log("not sorted",result);
+
+          // filter date
+          /*
+          result.forEach(function(el){
+            el[0] = $filter('localize')(el[0], aggregation);
+          });
+          */
+
+          console.log("filtered",result);
+
+          var dvd = result.length;
+          result.unshift( [ 'date', custom.name || "" ] );
+
+          $scope.formatChart(aggregation ,custom.unit, dvd, custom.maxXLabels);
+
+          deferred.resolve( result );
+
+        }
+        else{
+          DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
             .then( function ( measurements ) {
                 result = [];
                 if ( measurements.datas && measurements.datas.length > 0 ) {
@@ -57,52 +150,14 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                     } );
                 }
                 var dvd = result.length;
-                console.log("size", dvd);
                 if ( result.length == 0){
-                  result.push([new Date(), 0]);
+                  //result.push([new Date(), 0]);
                   console.log("empty", result);
                 }
 
-                var custom = $scope.widget.chartObject.options.custom;
-
                 result.unshift( [ 'date', measurements.name ] );
-                var changePattern = false;
-                var pattern = 'MMM yyyy';
-                var showTextEvery = angular.isNumber(custom.maxXLabels) ? (Math.ceil(dvd / custom.maxXLabels) || 1) : 1;
 
-                console.log("%cAggregation= "+aggregation, 'color: #09FF00; background-color: black;');
-
-                if ( aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly" ) {
-                    changePattern = true;
-                    if ( aggregation == "weekly" ) {
-                        pattern = "yyyy 'W' w";
-                    } else if ( aggregation == "yearly" ) {
-                        pattern = "yyyy";
-                    } else if ( aggregation == "daily" ) {
-                        pattern = "M'/'d'/'yyyy";
-                        if(userLocale == 'fr'){
-                          pattern = "d'/'M'/'yyyy";
-                        }
-                    }
-                }
-                if ( changePattern ) {
-                    $scope.widget.chartObject.options.hAxis = {
-                        format: pattern,
-                        showTextEvery: showTextEvery,
-                        slantedText:true,
-                        slantedTextAngle:45
-                    };
-                    $scope.widget.chartObject.formatters = {
-                        "date": [ {
-                            columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
-                            pattern: pattern
-                        } ]
-                    };
-                }
-
-                $scope.widget.chartObject.options.vAxis = {
-                    title: $scope.widget.measurementType + ' (' + measurements.unit + ')'
-                };
+                $scope.formatChart(aggregation, measurements.unit, dvd, custom.maxXLabels)
 
                 /*var nd = new Date();
                 nd.setFullYear(2015);
@@ -116,6 +171,7 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
 
                 deferred.resolve( result );
             } );
+          }
 
         return deferred.promise;
     }
@@ -192,8 +248,6 @@ app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, Devices
                     } );
 
                     $scope.widget.chartObject.data = head.concat( body );
-                    console.log("%cchartObject djbhutrjh","color: red; background-color: black;");
-                    console.log("chartObject",$scope.widget.chartObject);
                     $scope.loading = false;
                 } );
         } else {

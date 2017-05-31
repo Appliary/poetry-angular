@@ -27,10 +27,10 @@ app.service( 'DevicesData', function ( $http, $q, ngNotify ) {
         var smartAggregation = ( smart && aggregation ) ? '/' + aggregation : "";
 
         if ( startDate && endDate && measurementType ) {
-            var newStart = new Date( startDate )
-                .getTime();
-            var newEnd = new Date( endDate )
-                .getTime();
+            var newStartDate = new Date( startDate );
+            var newEndDate = new Date( endDate );
+            var newStart = newStartDate.getTime();
+            var newEnd = newEndDate.getTime();
             url = apiUrl + device + '/measurements' + smartAggregation + '?before=' + newEnd + '&after=' + newStart + '&sort=asc';
         } else {
             url = apiUrl + device;
@@ -53,7 +53,9 @@ app.service( 'DevicesData', function ( $http, $q, ngNotify ) {
                                     found = true;
                                     var date = new Date( measurementData.timestamp );
                                     var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
-                                    datas.push( [ date, measurement.value ] );
+                                    if(datas){
+                                      datas.push( [ date, measurement.value ] );
+                                    }
                                 }
                             } );
                         }
