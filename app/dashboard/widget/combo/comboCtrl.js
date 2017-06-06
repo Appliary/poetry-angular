@@ -1,17 +1,12 @@
-app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $window, $filter, googleChartApiConfig, $rootScope ) {
-  var userLocale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : 'us';
-    //if(!googleChartApiConfig.optionalSettings.locale){
+app.controller( 'comboCtrl', function ( widgetService, $scope, ngDialog, DevicesData, $q, $window, $filter, $rootScope, widgetService, googleChartApiConfig ) {
 
-      googleChartApiConfig.optionalSettings.locale = userLocale;
-    //}
+    widgetService.initialize();
 
-
-
-    console.log('%cgoogleChartApiConfig.optionalSettings.locale = '+googleChartApiConfig.optionalSettings.locale,"color: #09FF00; background-color: black; font-weight: bold;");
+    console.log("%cComboCtrl gave up on life", 'color: red; text-decoration: underline; font-weight: bolder;');
 
     $scope.widget.isChart = true;
     $scope.widget.type = "combo";
-    $scope.dateOptions = [ "today", "week", "month" ];
+    $scope.dateOptions = widgetService.getDateOptions();
 
     if ( !$scope.widget.chartObject )
         $scope.loading = true;
@@ -29,30 +24,79 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
             },
             seriesType: 'bars'
         };
+        options.custom = options.custom || {};
         $scope.widget.chartObject = {
             type: "ComboChart",
             data: [],
             options: options
         };
         $scope.widget.show = true;
+
     }
 
     // ---------- Old Functions -------------------
 
     $scope.clickToOpen = function () {
-        ngDialog.openConfirm( {
-                template: 'dashboard/modalWidget.pug',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            } )
-            .then( function ( result ) {
-                console.log( "confirm edit result", result );
-                $scope.widget = result.newWidget;
-                $scope.widget.title = result.title;
-            } );
+        widgetService.openEditModal($scope);
     };
 
     // ---------------- New Functions ------------------
+
+    $scope.formatChart = function(aggregation, unit, xTot, xMax, ticks){
+      var changePattern = false;
+      var pattern = 'MMM yyyy';
+
+      if ( aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly" ) {
+          changePattern = true;
+          if ( aggregation == "weekly" ) {
+              pattern = "yyyy 'W' w";
+          } else if ( aggregation == "yearly" ) {
+              pattern = "yyyy";
+          } else if ( aggregation == "daily" ) {
+              pattern = "M'/'d'/'yyyy";
+              if(googleChartApiConfig.optionalSettings.locale == 'fr'){
+                pattern = "d'/'M'/'yyyy";
+              }
+          }
+      }
+
+      var showTextEvery = angular.isNumber(xMax) ? (Math.ceil(xTot / xMax) || 1) : 1;
+
+      if ( changePattern ) {
+          $scope.widget.chartObject.options.hAxis = {
+              format: pattern,
+              showTextEvery: showTextEvery,
+              slantedText:true,
+              slantedTextAngle:50
+          };
+          $scope.widget.chartObject.formatters = {
+              "date": [ {
+                  columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
+                  pattern: pattern
+              } ]
+          };
+      }
+      else{
+        $scope.widget.chartObject.options.hAxis = {
+            showTextEvery: showTextEvery,
+            slantedText:true,
+            slantedTextAngle:50
+        };
+      }
+
+      if(angular.isArray(ticks)){
+        console.debug("ticks");
+        $scope.widget.chartObject.options.hAxis.ticks = ticks;
+      }
+
+      var title = $scope.widget.measurementType;
+      if(unit){
+        title +=  ' (' + unit + ')';
+      }
+      $scope.widget.chartObject.options.vAxis = {
+          title: title
+      };
+    }
 
     $scope.getHistory = function ( deviceId, startDate, endDate, measurementType ) {
         var deferred = $q.defer();
@@ -60,7 +104,51 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
         var result;
 
         var aggregation = $scope.widget.aggregation || "";
-        DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
+        var custom = $scope.widget.chartObject.options.custom;
+
+        // if data were send
+        if(angular.isObject(custom.data)){
+          result = [];
+          var keys = Object.keys(custom.data);
+          var ticks = [];
+
+          // fill the array
+          keys.forEach(function(k){
+            var value = 0;
+            try{
+              value = parseFloat(custom.data[k] || 0);
+            }
+            catch(e){}
+            result.push([new Date(k), value]);
+            ticks.push(new Date(k));
+          });
+
+          // sort the array
+          result.sort(function(a, b){
+            return a[0].getTime() < b[0].getTime();
+          });
+
+          console.log("not sorted",result);
+
+          // filter date
+          /*
+          result.forEach(function(el){
+            el[0] = $filter('localize')(el[0], aggregation);
+          });
+          */
+
+          console.log("filtered",result);
+
+          var dvd = result.length;
+          result.unshift( [ 'date', custom.name || "" ] );
+
+          $scope.formatChart(aggregation ,custom.unit, dvd, custom.maxXLabels, ticks);
+
+          deferred.resolve( result );
+
+        }
+        else{
+          DevicesData.getDeviceData( deviceId, startDate, endDate, measurementType, $scope.widget.smart, aggregation )
             .then( function ( measurements ) {
                 result = [];
                 if ( measurements.datas && measurements.datas.length > 0 ) {
@@ -69,44 +157,28 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                     } );
                 }
                 var dvd = result.length;
-                if ( result.length )
-                    result.unshift( [ 'date', measurements.name ] );
-                var changePattern = false;
-                var pattern = 'MMM yyyy';
-                var showTextEvery = Math.ceil(dvd / 4) || 1;
-
-                if ( aggregation == "daily" || aggregation == "monthly" || aggregation == "weekly" || aggregation == "yearly" ) {
-                    changePattern = true;
-                    if ( aggregation == "weekly" ) {
-                        pattern = "yyyy 'W' w";
-                    } else if ( aggregation == "yearly" ) {
-                        pattern = "yyyy";
-                    } else if ( aggregation == "daily" ) {
-                        pattern = "M'/'d'/'yyyy";
-                        if(userLocale == 'fr'){
-                          pattern = "d'/'M'/'yyyy";
-                        }
-                    }
-                }
-                if ( changePattern ) {
-                    $scope.widget.chartObject.options.hAxis = {
-                        format: pattern,
-                        showTextEvery: showTextEvery
-                    };
-                    $scope.widget.chartObject.formatters = {
-                        "date": [ {
-                            columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
-                            pattern: pattern
-                        } ]
-                    };
+                if ( result.length == 0){
+                  //result.push([new Date(), 0]);
+                  console.log("empty", result);
                 }
 
-                $scope.widget.chartObject.options.vAxis = {
-                    title: $scope.widget.measurementType + ' (' + measurements.unit + ')'
-                };
+                result.unshift( [ 'date', measurements.name ] );
+
+                $scope.formatChart(aggregation, measurements.unit, dvd, custom.maxXLabels)
+
+                /*var nd = new Date();
+                nd.setFullYear(2015);
+
+                $scope.widget.chartObject.options.hAxis = {
+                  viewWindow: {
+                    min: nd,
+                    max: new Date()
+                  }
+                }*/
 
                 deferred.resolve( result );
             } );
+          }
 
         return deferred.promise;
     }
@@ -221,7 +293,6 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
                 dataRow.push( elem[ 1 ] );
                 resultData.push( dataRow );
             }
-
         } );
 
         resultData.forEach( function ( elem ) {
@@ -258,6 +329,7 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
         $scope.tempDeviceList.push( currentDevice );
     }
 
+    // used for the modalCombo
     $scope.apply = function () {
         $scope.widget.deviceList = $scope.tempDeviceList;
         $scope.widget.chartObject.data = [];
@@ -266,6 +338,7 @@ app.controller( 'comboCtrl', function ( $scope, ngDialog, DevicesData, $q, $wind
             $scope.addDevice( device.id );
         } );
 
+        // close the modal, sending a result
         $scope.confirm( {
             'newWidget': $scope.widget,
             'title': $scope.$parent.$parent.widget.title

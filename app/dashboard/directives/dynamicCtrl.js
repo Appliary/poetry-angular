@@ -14,6 +14,7 @@ app.directive('ngDynamicController', ['$compile', '$parse',function($compile) {
       terminal: true,
       priority: 100000,
       link: function(scope, elem, attrs) {
+        console.log("Dynamic Ctrl");
           elem.attr('ng-controller', scope.name);
           elem.removeAttr('ng-dynamic-controller');
           $compile(elem)(scope);

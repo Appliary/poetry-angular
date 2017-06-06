@@ -7,10 +7,10 @@ div(class="modalEditWidget")
                 //option(value='candlestick') CandleStick
                 //option(value='table') Table
                 option(value='gauge') Gauge
+                option(value='combo') Combo
                 option(value='map') Map
                 option(value='image') Image
                 option(value='video') Video
-                option(value='combo') Combo
                 option(value='pie') Pie
                 option(value='column', disabled) Column
                 option(value='adaptative',disabled) Adaptative
@@ -25,7 +25,7 @@ div(class="modalEditWidget")
 
 
 
-        
+
         ng-include(src="'dashboard/widget/image/modalImage.pug'",ng-if="widget.type=='image'")
         ng-include(src="'dashboard/widget/gauge/modalGauge.pug'",ng-if="widget.type=='gauge'")
         ng-include(src="'dashboard/widget/line/modalLine.pug'",ng-if="widget.type=='line'")

@@ -346,15 +346,11 @@ app.controller( 'dashboard/dashboard', function (
     }
 
 
-
-
     // Load dashboard @ startup
     $scope.Dashboards.load();
 
     // Catch collapse event to resize widgets then
     $scope.$root.$watch( 'collapse', $scope.Widgets.resize );
-
-
 
 
     // Set default gridster options
