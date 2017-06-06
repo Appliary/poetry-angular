@@ -1,4 +1,4 @@
 button(ng-click='toggle()')
-    icon(ng-if='$ctrl.icon', name='{{ $ctrl.icon }}')
+    em(ng-if='$ctrl.icon', icon='{{$ctrl.icon}}')
     span(ng-if='$ctrl.text') {{ $ctrl.text }}
 list(ng-class='{open: open}', ng-transclude)

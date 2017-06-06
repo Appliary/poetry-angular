@@ -1,34 +1,381 @@
-app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope, ngDialog, ngNotify, DevicesData, $http ) {
+app.controller( 'dashboard/dashboard', function (
+    $scope,
+    ngDialog,
+    $http
+) {
 
-    console.log( "dashboard controller loaded" );
-    // Default items to display when the gridster(dashbaord) is loading
-    $scope.enableSaveDb = false;
-    $scope.currentDashboard = {};
-    $scope.maxId = 0;
-    $rootScope.$watch( 'collapse', function () {
-        console.log( "watch collapse triggerd" );
-        $scope.resizeWidgets();
-    } );
+    /******** WIDGETS ********/
+    $scope.Widgets = {
 
-    // gridster options
+        /**
+         * Create a new widget
+         */
+        create: function createWidget() {
+
+            // Open widget creation modal
+            ngDialog.openConfirm( {
+                    templateUrl: 'dashboard/createWidget.pug'
+                } )
+                .then( function ( widget ) {
+                    var w = {
+                        edit: true,
+                        type: widget.type,
+                        title: widget.title
+                    };
+                    $scope.Dashboards.current.widgets.push( w );
+                    $scope.Dashboards.save();
+                    $scope.Widgets.edit( w );
+                } );
+
+        },
+
+        /**
+         * Edit widget params
+         * @param {Object} id Widget to be edited
+         */
+        edit: function editWidget( widget ) {
+
+            // Get the array index of the widget
+            var id = $scope.Dashboards.current.widgets.indexOf( widget );
+            if ( !~id ) return console.error( 'widget not found' );
+
+            var scope = $scope.$new();
+            scope.widget = $scope.Dashboards.current.widgets[ id ];
+
+            // Show edition modal
+            ngDialog.openConfirm( {
+                    templateUrl: 'dashboard/widgets/' + widget.type + '/edit.pug',
+                    scope: scope
+                } )
+                .then( function ( widget ) {
+
+                    // Update widget
+                    $scope.Dashboards.current.widgets[ id ] = widget;
+
+                    // Save Dashboard
+                    $scope.Dashboards.save();
+
+                } );
+
+        },
+
+        /**
+         * Resize widgets
+         */
+        resize: function resizeWidgets() {
+
+            // Emit an event to googleCharts to be redrawn
+            $scope.$root.$emit( 'resizeMsg', 'resizeMsg' );
+
+        },
+
+        /**
+         * Remove widget from current dashboard
+         * @param {Object} widget Widget to be removed
+         */
+        remove: function removeWidget( widget ) {
+
+            // Ask confirmation
+            ngDialog.openConfirm( {
+                    templateUrl: 'modals/confirmation.pug'
+                } )
+                .then( function confirmed() {
+
+                    // Find the index
+                    var i = $scope.Dashboards.current.widgets.indexOf( widget );
+                    if ( !~i ) return console.error( 'Widget not found' );
+
+                    // Remove
+                    $scope.Dashboards.current.widgets.splice( i, 1 );
+
+                    // Save to DB
+                    $scope.Dashboards.save();
+
+                } );
+
+        }
+
+    };
+
+
+    /******** DASHBOARDS ********/
+    $scope.Dashboards = {
+
+        /**
+         * Get or set the draggable option
+         * @param {Boolean} val Value to set
+         */
+        draggable: function draggableDashboard( val ) {
+
+            // Set the value if defined
+            if ( val !== undefined )
+                $scope.gridsterOpts.draggable.enabled = !!val;
+
+            // Get the value
+            return !!$scope.gridsterOpts.draggable.enabled;
+
+        },
+
+        /**
+         * Is the dashboard the currently shown ?
+         * @param {Object} id Dashboard or id to check
+         * @return {Boolean} True if current dashboard, otherwise false
+         */
+        isCurrent: function isCurrentDashboard( dashboard ) {
+
+            // Check if the IDs are the same
+            dashboard = getId( dashboard );
+            return ( dashboard == $scope.Dashboards.current._id );
+
+        },
+        current: {}, // Current dashboard to be shown
+
+        /**
+         * Load dashboards from API
+         */
+        load: function loadDashboards() {
+
+            // Ask API to get all dashboards of the user
+            return $http.get( '/api/myDashboards' )
+                .then( function success( res ) {
+
+                    // Catch HTTP errors
+                    if ( res.status !== 200 ) throw res;
+
+                    // Format the widgets
+                    res.data = res.data.map( dashboard => {
+                        dashboard.widgets = dashboard.widgets.map( widget => {
+                            widget.edit = true;
+                            return widget;
+                        } );
+                        return dashboard;
+                    } );
+
+                    // Load dashboards in scope
+                    $scope.Dashboards.list = res.data;
+
+                    // Select first dashboard if exists
+                    if ( $scope.Dashboards.list.length )
+                        $scope.Dashboards.select( $scope.Dashboards.list[ 0 ] );
+
+                } );
+
+        },
+        list: [], // List of all user's dashboards
+
+        /**
+         * Show selected dashboard
+         * @param {Object} id Dashboard or id to be shown
+         */
+        select: function selectDashboard( id ) {
+
+            // Empty
+            if ( !id ) return ( $scope.Dashboards.current = {} );
+
+            id = getId( id );
+
+            // Iterate through dashboards
+            var goodOne;
+            $scope.Dashboards.list.some( function getDashboard( dashboard ) {
+
+                // If the dashboard id does not match, continues iteration
+                if ( dashboard._id != id ) return false;
+
+                // If match, copy dashboard as "current"
+                $scope.Dashboards.current = dashboard;
+
+                // And stop iterating more
+                return true;
+
+            } );
+
+        },
+
+        /**
+         * New empty dashbard
+         * @param {Object} dashboard Dashboard to be shown
+         */
+        create: function createDashboard() {
+
+            // Show modal form
+            ngDialog.openConfirm( {
+                    templateUrl: 'dashboard/editDashboard.pug'
+                } )
+                .then( function applyEdit( nameValue ) {
+
+                    var id = Date.now()
+                        .toString( 36 );
+
+                    // Create new Dashboard in the list
+                    $scope.Dashboards.list.push( {
+                        _id: id,
+                        name: nameValue,
+                        widgets: []
+                    } );
+
+                    // Select it
+                    $scope.Dashboards.select( id );
+
+                    // Save to API
+                    $scope.Dashboards.save();
+                    $scope.Dashboards.load();
+
+                } );
+
+        },
+
+        /**
+         * Edit current dashboard
+         */
+        edit: function editDashboard() {
+
+            var scope = $scope.$new();
+            scope.nameValue = $scope.Dashboards.current.name;
+
+            // Show modal form
+            ngDialog.openConfirm( {
+                    templateUrl: 'dashboard/editDashboard.pug',
+                    scope: scope
+                } )
+                .then( function applyEdit( nameValue ) {
+
+                    // Copy new name and save
+                    $scope.Dashboards.current.name = nameValue;
+                    $scope.Dashboards.save();
+
+                } );
+        },
+
+        /**
+         * Remove current dashboard
+         */
+        remove: function removeDashboard() {
+
+            // Ask confirmation
+            ngDialog.openConfirm( {
+                    templateUrl: 'modals/confirmation.pug'
+                } )
+                .then( function confirmed() {
+
+                    // Call the API to delete this lil' boy
+                    return $http.delete(
+                            '/api/myDashboards/' + $scope.Dashboards.current._id
+                        )
+                        .then( function success( res ) {
+
+                            // Find index for local deletion
+                            var i = $scope.Dashboards.list.indexOf( $scope.Dashboards.current );
+
+                            // Catch inexistant dashboard
+                            if ( !~i ) return;
+
+                            // Remove
+                            $scope.Dashboards.list.splice( i, 1 );
+
+                            // Select nextOne
+                            if ( $scope.Dashboards.list[ i ] )
+                                return $scope.Dashboards.select(
+                                    $scope.Dashboards.list[ i ]
+                                );
+
+                            // Or the firstOne
+                            if ( $scope.Dashboards.list[ 0 ] )
+                                return $scope.Dashboards.select(
+                                    $scope.Dashboards.list[ 0 ]
+                                );
+
+                            // Or emptify
+                            return $scope.Dashboards.select();
+
+                        } );
+
+                } );
+
+        },
+
+        /**
+         * Clear current dashboard
+         */
+        clear: function clearDashboard() {
+
+            // Clear array, that's it babe !
+            $scope.Dashboards.current.widgets = [];
+
+        },
+
+        /**
+         * Save current dashboard
+         */
+        save: function saveDashboard() {
+
+            // Be sure there is a current Dashboard
+            if ( !$scope.Dashboards.current._id )
+                return;
+
+            // Use the API to save current dashboard
+            return $http.post( '/api/myDashboards', $scope.Dashboards.current )
+                .then( function success( res ) {
+
+                    // Catch HTTP errors
+                    if ( res.status !== 200 ) throw res;
+
+                    console.info( 'Dashboard saved' );
+
+                } );
+
+        }
+
+    };
+
+    /**
+     * Get the ID of the Dashboard, from the id itself, or the object
+     * @param {StringOrObject} item  Source to find the ID. Can be the id itself
+     * @return id
+     */
+    function getId( item ) {
+
+        if ( typeof item == 'object' ) {
+            if ( item._id )
+                item = item._id;
+            else if ( item.id )
+                item = item.id;
+        }
+
+        return item;
+
+    }
+
+
+
+
+    // Load dashboard @ startup
+    $scope.Dashboards.load();
+
+    // Catch collapse event to resize widgets then
+    $scope.$root.$watch( 'collapse', $scope.Widgets.resize );
+
+
+
+
+    // Set default gridster options
     $scope.gridsterOpts = {
         columns: 6, // the width of the grid, in columns
-        pushing: true, // whether to push other items out of the way on move or resize
-        floating: true, // whether to automatically float items up so they stack (you can temporarily disable if you are adding unsorted items with ng-repeat)
-        swapping: true, // whether or not to have items of the same size switch places instead of pushing down if they are the same size
-        width: 'auto', // can be an integer or 'auto'. 'auto' scales gridster to be the full width of its containing element
-        colWidth: 'auto', // can be an integer or 'auto'.  'auto' uses the pixel width of the element divided by 'columns'
-        rowHeight: 250, // can be an integer or 'match'.  Match uses the colWidth, giving you square widgets.
+        pushing: true, // push other out of the way on move or resize
+        floating: true, // automatically float items up so they stack
+        swapping: true, // items of the same size switch places
+        width: 'auto', // Pixels or 'auto'
+        colWidth: 'auto', // Pixels or 'auto'
+        rowHeight: 250, // Pixels or 'match' to be squares
         margins: [ 60, 20 ], // the pixel distance between each widget
         outerMargin: true, // whether margins apply to outer edges of the grid
         isMobile: false, // stacks the grid items if true
-        mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
-        mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+        mobileBreakPoint: 600, // Less than that, widgets will stacks
+        mobileModeEnabled: true, // use breakpoint
         minColumns: 1, // the minimum columns the grid must have
         minRows: 2, // the minimum height of the grid, in rows
         maxRows: 100,
-        defaultSizeX: 2, // the default width of a gridster item, if not specifed
-        defaultSizeY: 1, // the default height of a gridster item, if not specified
+        defaultSizeX: 2, // the default width of widget
+        defaultSizeY: 1, // the default height of widget
         minSizeX: 1, // minimum column width of an item
         maxSizeX: null, // maximum column width of an item
         minSizeY: 1, // minumum row height of an item
@@ -36,613 +383,21 @@ app.controller( 'dashboard/dashboard', function ( $scope, $q, $state, $rootScope
         resizable: {
             enabled: true,
             handles: [ 'e', 's', 'w', 'ne', 'se', 'sw', 'nw' ],
-            start: function ( event, $element, widget ) {}, // optional callback fired when resize is started,
-            resize: function ( event, $element, widget ) {
-                if ( widget.type === "map" ) {
-                    //widget.resize = true;
-                }
-            }, // optional callback fired when item is resized,
+            start: function ( event, $element, widget ) {},
+            resize: function ( event, $element, widget ) {},
             stop: function ( event, $element, widget ) {
-                console.log( "stop resize" );
-                setTimeout( function () {
-                    widget.resize = true;
-                }, 500 );
-
-                $scope.newSave( $scope.currentDashboard );
-                // if (widget.type === "map") {
-                //     widget.resize = true;
-                // }
-            } // optional callback fired when item is finished resizing
+                $scope.Dashboards.save();
+            }
         },
         draggable: {
             enabled: false, // whether dragging items is supported
             handle: '.widget', // optional selector for drag handle
-            start: function ( event, $element, widget ) {}, // optional callback fired when drag is started,
-            drag: function ( event, $element, widget ) {}, // optional callback fired when item is moved,
+            start: function ( event, $element, widget ) {},
+            drag: function ( event, $element, widget ) {},
             stop: function ( event, $element, widget ) {
-                $scope.newSave( $scope.currentDashboard );
-            } // optional callback fired when item is finished dragging
-        }
-    };
-
-    $scope.dashboards = [];
-    // $scope.dashboards.push($scope.customItems1);
-    // $scope.dashboards.push($scope.customItems2);
-    // $scope.currentDashboard = $scope.customItems1;
-
-    // Delete Widget from current dashboard
-    $scope.deleteWidget = function ( widget ) {
-
-        $scope.currentDashboard.data.splice( $scope.currentDashboard.data.indexOf( widget ), 1 );
-        $scope.newSave( $scope.currentDashboard );
-    };
-    // Add widget to the current dashboard
-    // @Param type : add the widget with the good controller
-    $scope.addWidget = function ( data, dashboard ) {
-        switch ( data.newWidget.type ) {
-            case 'adaptative':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 1,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "adaptative",
-                    controller: "adaptativeCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-
-                } );
-                break;
-            case 'pie':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 1,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "pie",
-                    controller: "pieCtrl",
-                    chartObject: data.newWidget.chartObject,
-                    deviceId: data.newWidget.deviceId,
-                    measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'gauge':
-                console.log( "chartObject of gauge", data.newWidget.chartObject );
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "gauge",
-                    controller: "gaugeCtrl",
-                    chartObject: data.newWidget.chartObject,
-                    deviceId: data.newWidget.deviceId,
-                    measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'BarChart':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "bar",
-                    controller: "barCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'AreaChart':
-                $scope.currentDashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "area",
-                    controller: "areaCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'BubbleChart':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "bubble",
-                    controller: "bubbleCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'ComboChart':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: "Combo",
-                    type: "combo",
-                    controller: "comboCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'GeoChart':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "geo",
-                    controller: "geoCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'line':
-                dashboard.data.push( {
-                    edit: true,
-                    sizeX: data.sizeX,
-                    sizeY: data.sizeY,
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "line",
-                    controller: "lineCtrl",
-                    chartObject: data.newWidget.chartObject,
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    dateOption: data.newWidget.dateOption,
-                    customDate: data.newWidget.customDate,
-                    measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList,
-                    refreshed: data.newWidget.refreshed,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'combo':
-                dashboard.data.push( {
-                    edit: true,
-                    sizeX: data.sizeX,
-                    sizeY: data.sizeY,
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "combo",
-                    controller: "comboCtrl",
-                    chartObject: data.newWidget.chartObject,
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    dateOption: data.newWidget.dateOption,
-                    customDate: data.newWidget.customDate,
-                    measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList,
-                    refreshed: data.newWidget.refreshed,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'candlestick':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "candlestick",
-                    controller: "candlestickCtrl",
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'table':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "table",
-                    controller: "tableCtrl",
-                    toDisplay: data.newWidget.toDisplay,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'column':
-                dashboard.data.push( {
-                    edit: true,
-                    sizeX: data.sizeX,
-                    sizeY: data.sizeY,
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "column",
-                    controller: "columnCtrl",
-                    chartObject: data.newWidget.chartObject,
-                    deviceId: data.newWidget.deviceId,
-                    startDate: data.newWidget.startDate,
-                    endDate: data.newWidget.endDate,
-                    dateOption: data.newWidget.dateOption,
-                    customDate: data.newWidget.customDate,
-                    measurementType: data.newWidget.measurementType,
-                    deviceList: data.newWidget.deviceList,
-                    refreshed: data.newWidget.refreshed,
-                    smart: data.newWidget.smart
-                } );
-                break;
-            case 'Histogram':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "histogramme",
-                    controller: "histogrammeCtrl"
-                } );
-                break;
-            case 'map':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "map",
-                    controller: "mapCtrl",
-                    dataPoints: data.newWidget.dataPoints,
-                    deviceList: data.newWidget.deviceList,
-                    center: data.newWidget.center,
-                    refreshed: data.newWidget.refreshed
-                } );
-                break;
-            case 'image':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "image",
-                    controller: "imageCtrl",
-                    url: data.newWidget.url
-                } );
-                break;
-            case 'video':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "video",
-                    controller: "videoCtrl",
-                    url: data.newWidget.url
-                } );
-                break;
-            case 'svg':
-                dashboard.data.push( {
-                    edit: true,
-                    size: {
-                        x: 2,
-                        y: 1
-                    },
-                    position: [ 0, 0 ],
-                    title: data.title,
-                    type: "svg",
-                    controller: "svgCtrl",
-                    svg: data.newWidget.svg,
-                    color: data.newWidget.color
-                } );
-                break;
-        }
-    };
-    // Clear all widget from dashboard
-    $scope.clear = function ( dashboard ) {
-        ngDialog.openConfirm( {
-                template: 'modals/confirmation.pug',
-                className: 'ngdialog-theme-default'
-            } )
-            .then( function () {
-                dashboard.data = [];
-            } );
-
-    };
-    // Emit event 'resizeMsg' known by Google-Chart to resize the widget
-    $scope.resizeWidgets = function () {
-        $rootScope.$emit( 'resizeMsg', 'resizeMsg' );
-    };
-    $scope.loadDashboard = function () {
-        DevicesData.getDashboardFromDb()
-            .then( function ( dashboardDatas ) {
-                console.log( "result from db", dashboardDatas );
-                $scope.createDashboards( dashboardDatas );
-                if ( $scope.dashboards.length ) {
-                    $scope.currentDashboard = $scope.dashboards[ 0 ];
-                }
-            } );
-    };
-    $scope.saveDashboard = function () {
-        console.log( "todo savedashboard" );
-    };
-    $scope.enableDraggable = function () {
-        $scope.gridsterOpts.draggable.enabled = true;
-    };
-    $scope.disableDraggable = function () {
-        $scope.gridsterOpts.draggable.enabled = false;
-    };
-
-
-    $scope.disableSave = function () {
-        $scope.enableSaveDb = false;
-    };
-    $scope.enableSave = function () {
-        $scope.enableSaveDb = true;
-    };
-    $scope.clickToOpen = function ( dashboard ) {
-        $scope.createWidget = true;
-        ngDialog.openConfirm( {
-                template: 'dashboard/modalWidget.pug',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            } )
-            .then( function ( res ) {
-                console.log( "res of click to open in dashboard", res );
-                $scope.addWidget( res, dashboard );
-                $scope.newSave( $scope.currentDashboard );
-            } );
-    };
-
-    $scope.loadDashboardFromId = function ( id ) {
-        if ( id == -1 ) {
-            $scope.dashboards.push( {
-                id: ++$scope.maxId,
-                data: [],
-                name: 'New Dashboard',
-            } );
-        } else {
-            $scope.currentDashboard = $scope.dashboards[ id ];
-        }
-    };
-
-    $scope.showDashboard = function ( id ) {
-        var index = -1;
-        var i = 0;
-        for ( i = 0; i < $scope.dashboards.length; i++ ) {
-            if ( $scope.dashboards[ i ].id == id ) {
-                index = i;
+                $scope.Dashboards.save();
             }
         }
-        if ( index >= 0 ) {
-            $scope.currentDashboard = $scope.dashboards[ index ];
-        }
     };
-
-    $scope.confirmDashboardDelete = function ( id ) {
-
-        ngDialog.openConfirm( {
-                template: 'modals/confirmation.pug',
-                className: 'ngdialog-theme-default'
-            } )
-            .then( function () {
-                var index = -1;
-                var i = 0;
-                for ( i = 0; i < $scope.dashboards.length; i++ ) {
-                    if ( $scope.dashboards[ i ].id == id ) {
-                        index = i;
-                    }
-                }
-                if ( index >= 0 ) {
-                    $scope.dashboards.splice( index, 1 );
-                    DevicesData.deleteDashboard( id )
-                        .then( function ( res ) {
-                            console.log( "deleteDashboard res", res );
-                        } );
-                }
-                if ( $scope.dashboards.length ) {
-                    // Deleted dashboard is current dashboard
-                    if ( $scope.currentDashboard.id == id ) {
-                        $scope.currentDashboard = $scope.dashboards[ 0 ];
-                    }
-                }
-                //Dashboards is now empty
-                else {
-                    $scope.currentDashboard = {};
-                }
-            } );
-    };
-
-    $scope.refreshData = function () {
-        angular.forEach( $scope.customItems.data, function ( widget ) {
-            widget.forceReload = true;
-        } );
-    };
-
-    $scope.newDashboard = function () {
-        $scope.maxId++;
-        var newId = ( Date.now() + Math.random() )
-            .toString( 32 );
-        var newDashboard = {
-            name: "New Dashboard",
-            data: [],
-            id: newId
-        };
-        $scope.dashboards.push( newDashboard );
-        $scope.currentDashboard = newDashboard;
-        $scope.newSave( newDashboard );
-    };
-
-    $scope.rename = function ( dashboard ) {
-        ngDialog.openConfirm( {
-                template: 'dashboard/rename.pug',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                width: '400px'
-            } )
-            .then( function ( res ) {
-                dashboard.name = res;
-                $scope.newSave( dashboard );
-            } );
-    };
-
-    $scope.newSave = function ( dashboard ) {
-        console.log( "dashboard to save", dashboard );
-
-        var dashboardData = {
-            id: dashboard.id,
-            name: dashboard.name,
-            widgets: []
-        };
-
-        dashboard.data.forEach( function ( data ) {
-
-
-            var widget = {
-                title: data.title,
-                controller: data.controller,
-                sizeX: data.sizeX,
-                sizeY: data.sizeY,
-                measurementType: data.measurementType,
-                deviceList: data.deviceList,
-                customDate: data.customDate,
-                dateOption: data.dateOption,
-                url: data.url,
-                col: data.col,
-                row: data.row,
-                smart: data.smart
-
-            };
-
-            if ( data.chartObject ) {
-                widget.options = data.chartObject.options;
-            }
-
-            if ( data.startDate && data.endDate ) {
-                var startDate = new Date( data.startDate );
-                var endDate = new Date( data.endDate );
-                widget.startDate = startDate.getTime();
-                widget.endDate = endDate.getTime();
-            }
-
-
-            dashboardData.widgets.push( widget );
-        } );
-
-
-        DevicesData.saveDashboardToDb( dashboardData )
-            .then( function ( result ) {
-                console.log( "result from saveDashboard", result );
-            } );
-    };
-
-    $scope.createDashboards = function ( dashboardDatas ) {
-        dashboardDatas.forEach( function ( dashboardData ) {
-            var dashboard = {
-                id: dashboardData._id,
-                name: dashboardData.name,
-                data: []
-            };
-
-            dashboardData.widgets.forEach( function ( widget ) {
-                widget.edit = true;
-
-                dashboard.data.push( widget );
-            } );
-
-            $scope.dashboards.push( dashboard );
-        } );
-
-
-    };
-
-    $scope.isCurrent = function ( dashboard ) {
-        var result = dashboard.id == $scope.currentDashboard.id;
-        return result;
-
-    };
-
-    $scope.saveAllDashboards = function () {
-        $scope.dashboards.forEach( function ( dashboard ) {
-            $scope.newSave( dashboard );
-        } );
-    };
-
-
-    // --------------- Running at the beginning ----------------
-
-    $scope.loadDashboard();
-
-
-    // setTimeout(function() {
-
-    //     $scope.customItems = {
-    //         name: "Dashboard demo",
-    //         data: $scope.customData,
-    //         id: 1
-    //     };
-
-    //     $scope.newItems = {
-    //         name: "New",
-    //         data: {},
-    //         id: 2
-    //     };
-    //     console.log("scope customItems", $scope.customItems);
-    //     $scope.dashboards = [$scope.customItems, $scope.newItems];
-    //     $scope.currentDashboard = $scope.customItems;
-    //     console.log("dashboards", $scope.dashboards);
-    // }, 200);
 
 } );

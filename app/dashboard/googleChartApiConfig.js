@@ -1,5 +1,6 @@
-app.value('googleChartApiConfig', {
-            version: '1.1',
-            optionalSettings: {
-            }
-        });
+app.value( 'googleChartApiConfig', {
+    version: '1.1',
+    optionalSettings: {
+        packages: [ 'charteditor' ]
+    }
+} );

@@ -1,30 +1,12 @@
-.widget(ng-dynamic-controller='widget.controller',delete="delete(widget)",widget="widget",enable-draggable="enableDraggable()",disable-save="disableSave()",enable-save ="enableSave()")
-  .panel.panel-default.panel-widget(ng-mousedown="enableDraggable()", ng-if="widget.edit")
-    div
-      p.headerWigetTitle
-        strong {{widget.title}}
-      .widgetOptions
-        dropdown(icon='dashoptions')
-          a(ng-click='clickToOpen()') {{ 'Edit:dashboard' | translate }}
-          a(ng-click='delete(widget)') {{ 'Delete:dashboard' | translate }}
-          //- a(ng-click="changeRange('Day')") {{ 'Day:dashboard' | translate }}
-          //- a(ng-click="changeRange('Week')") {{ 'Week:dashboard' | translate }}
-          //- a(ng-click="changeRange('Month')") {{ 'Month:dashboard' | translate }}
+.widget
+    .panel.panel-default.panel-widget(ng-if="widget.edit")
+        p.headerWidgetTitle: strong {{widget.title}}
+        dropdown.widgetOptions
+            a(ng-click='edit(widget)')
+                | {{ 'edit:widget:dashboard' | translate }}
+            a(ng-click='remove(widget)')
+                | {{ 'remove:widget:dashboard' | translate }}
 
-  .widgetBody(widget='widget')
-    .widgetContent(google-chart='',agc-on-error="errorHandler(error)" chart='widget.chartObject', ng-init='loadData()',ng-if="widget.isChart && widget.chartObject.data.length > 1",ng-click="goToDetails()")
-    .muted(ng-if="widget.isChart && widget.chartObject.data.length < 2")
-        | {{'noData'|translate}}
-    .widgetContent(ng-if="widget.isMap",ng-init="calculateCenter()")
-      openlayers(ol-center="widget.center",height="100%",width="100%")
-        ol-marker(ng-repeat="point in widget.dataPoints",ol-marker-properties="point.marker")
-    .widgetContent(ng-if="widget.isImage")
-      img(ng-src="{{ widget.url }}",style='height:100%;width:100%;')
-    .widgetContent(ng-if="widget.isVideo")
-      iframe(src="{{trustUrl(widget.url)}}", frameborder="0", allowfullscreen, height="100%", width="100%")
-      //- youtube-video(video-url="widget.url",player-width="'100%'",player-height="'100%'")
-    //.widgetContent(ng-if="widget.isSVG",ng-bind-html="widget.svg")
-    .widgetContent(ng-if="widget.isSVG")
-      svg-electricmeter(widget="widget")
-  label(ng-if="loading")
-      | Loading ...
+    .widgetBody(ng-include='"dashboard/widgets/"+widget.type+"/view.pug"', ng-if="widget.type")
+    .widgetBody(ng-if="!widget.type") Old widget system
+    label(ng-if="loading") {{ 'loading:widget:dashboard' | translate }}
