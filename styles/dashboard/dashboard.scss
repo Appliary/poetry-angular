@@ -22,13 +22,14 @@
         background-image: url('/themes/indexplus/rules.png');
         background-position: right;
         background-size: contain;
-        background-color: transparent !important;
         opacity: 0;
-        &:hover{
-            opacity: 1;
+        &, &:hover{
             background-color: transparent !important;
         }
     }
+}
+ng-widget:hover .widgetOptions button{
+    opacity: 1;
 }
 .headerWidgetTitle
 {
@@ -257,6 +258,7 @@ width: 20px;
   left: $gutter;
   overflow: scroll;
 }
-.modal-dialog.google-visualization-charteditor-dialog{
+.modal-dialog.google-visualization-charteditor-dialog,
+.charts-menu{
     z-index: 999999999;
 }
