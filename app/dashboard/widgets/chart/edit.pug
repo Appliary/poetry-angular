@@ -1,0 +1,91 @@
+tabs
+    a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
+        | {{ 'main:chartwidget:tab' | translate }}
+    a(ng-click="tab='timeframe'", ng-class="{active:tab=='timeframe'}")
+        | {{ 'timeframe:chartwidget:tab' | translate }}
+    a(ng-click="tab='inputs'", ng-class="{active:tab=='inputs'}")
+        | {{ 'inputs:chartwidget:tab' | translate }}
+
+div( ng-if="tab==''" )
+    label {{ 'title:widget:label' | translate }}
+    input(ng-model="widget.title")
+        
+    label {{ 'chart:widget:label' | translate }}
+    button(ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
+
+div( ng-if="tab=='timeframe'" )
+    label {{ 'step:widget:label' | translate }}
+    select(ng-model="widget.options.step")
+        option(value="all") {{ 'all:timeframe:widget' | translate }}
+        option(value="daily") {{ 'daily:timeframe:widget' | translate }}
+        option(value="weekly") {{ 'weekly:timeframe:widget' | translate }}
+        option(value="monthly") {{ 'monthly:timeframe:widget' | translate }}
+        option(value="yearly") {{ 'yearly:timeframe:widget' | translate }}
+
+    label {{ 'timeframe:widget:label' | translate }}
+    select(ng-model="widget.options.timeframe.type")
+        option(value="relative") {{ 'relative:timeframe:widget' | translate }}
+        option(value="absolute") {{ 'absolute:timeframe:widget' | translate }}
+        option(value="static") {{ 'static:timeframe:widget' | translate }}
+            
+    div( ng-if="widget.options.timeframe.type=='relative'")
+        label {{ 'count:timeframe:widget' | translate }}
+        input(ng-model="widget.options.timeframe.count")
+        
+        label {{ 'unit:timeframe:widget' | translate }}
+        select(ng-model="widget.options.timeframe.unit")
+            option(value="minutes") {{ 'minutes:timeframe:widget' | translate }}
+            option(value="hours") {{ 'hours:timeframe:widget' | translate }}
+            option(value="days") {{ 'days:timeframe:widget' | translate }}
+            option(value="weeks") {{ 'weeks:timeframe:widget' | translate }}
+            option(value="months") {{ 'months:timeframe:widget' | translate }}
+            option(value="years") {{ 'years:timeframe:widget' | translate }}
+            
+    div( ng-if="widget.options.timeframe.type=='absolute'")
+        label {{ 'unit:timeframe:widget' | translate }}
+        select(ng-model="widget.options.timeframe.frame")
+            option(value="today")
+                | {{ 'today:timeframe:widget' | translate }}
+            option(value="yesterday")
+                | {{ 'yesterday:timeframe:widget' | translate }}
+            option(value="thisWeek")
+                | {{ 'thisWeek:timeframe:widget' | translate }}
+            option(value="lastWeek")
+                | {{ 'lastWeek:timeframe:widget' | translate }}
+            option(value="thisMonth")
+                | {{ 'thisMonth:timeframe:widget' | translate }}
+            option(value="lastMonth")
+                | {{ 'lastMonth:timeframe:widget' | translate }}
+            option(value="thisYear")
+                | {{ 'thisYear:timeframe:widget' | translate }}
+            option(value="lastYear")
+                | {{ 'lastYear:timeframe:widget' | translate }}
+            
+    div( ng-if="widget.options.timeframe.type=='static'")
+        label {{ 'from:timeframe:widget' | translate }}
+        input(ng-model="widget.options.timeframe.from", type="date")
+        
+        label {{ 'to:timeframe:widget' | translate }}
+        input(ng-model="widget.options.timeframe.to", type="date")
+
+
+div( ng-if="tab=='inputs'" )
+    table
+        tr
+            th {{ 'kind:input:chart' | translate }}
+            th {{ 'id:input:chart' | translate }}
+            th {{ 'measurement:input:chart' | translate }}
+        tr(ng-repeat='input in widget.options.inputs')
+            td {{input.kind | translate}}
+            td {{input.id}}
+            td {{input.measurement}}
+        tr
+            td {{'add:input:chart'| translate}} :
+            td: input(disabled)
+            td: input(disabled)
+
+div.pull-right(class="ngdialog-buttons")
+    button.lightButton.pull-right(ng-click="closeThisDialog()")
+        | {{ 'Cancel:dashboard' | translate }}
+    button.lightButton.pull-right(ng-click="confirm(widget)")
+        | {{ 'Confirm:dashboard' | translate }}

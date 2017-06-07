@@ -14,7 +14,7 @@ app.controller( 'dashboard/dashboard', function (
 
             // Open widget creation modal
             ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/createWidget.pug'
+                    templateUrl: 'dashboard/widgets/create.pug'
                 } )
                 .then( function ( widget ) {
                     var w = {
@@ -199,7 +199,7 @@ app.controller( 'dashboard/dashboard', function (
 
             // Show modal form
             ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/editDashboard.pug'
+                    templateUrl: 'dashboard/edit.pug'
                 } )
                 .then( function applyEdit( nameValue ) {
 
@@ -234,7 +234,7 @@ app.controller( 'dashboard/dashboard', function (
 
             // Show modal form
             ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/editDashboard.pug',
+                    templateUrl: 'dashboard/edit.pug',
                     scope: scope
                 } )
                 .then( function applyEdit( nameValue ) {

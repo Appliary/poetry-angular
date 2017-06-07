@@ -1,0 +1,11 @@
+label {{ 'title:widget:label' | translate }}
+input(ng-model="widget.title")
+
+label
+    | {{ 'url:video:dashboard' | translate }}
+input(type="text", ng-model="widget.options.url")
+div.pull-right(class="ngdialog-buttons")
+    button.lightButton.pull-right(ng-click="closeThisDialog()")
+        | {{ 'Cancel:dashboard' | translate }}
+    button.lightButton.pull-right(ng-click="confirm(widget)")
+        | {{ 'Confirm:dashboard' | translate }}

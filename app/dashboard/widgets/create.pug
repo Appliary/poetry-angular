@@ -1,0 +1,18 @@
+div
+    label {{ 'title:widget:label' | translate }}
+    input(ng-model="widget.title")
+
+div
+    label {{ 'widget:widget:label' | translate }}
+    select(ng-model="widget.type", ng-init="widget.type='chart'")
+        option(value='chart') {{ 'chart:widget' | translate }}
+        option(value='table') {{ 'table:widget' | translate }}
+        option(value='svg') {{ 'svg:widget' | translate }}
+        option(value='video') {{ 'video:widget' | translate }}
+        option(value='picture') {{ 'picture:widget' | translate }}
+
+div.pull-right(class="ngdialog-buttons")
+    button.lightButton.pull-right(ng-click="closeThisDialog()")
+        | {{ 'cancel:widget:button' | translate }}
+    button.lightButton.pull-right(ng-click="confirm( widget )")
+        | {{ 'save:widget:button' | translate }}

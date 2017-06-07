@@ -1,7 +1,7 @@
 app.directive( 'ngWidget', function () {
     return {
         restrict: 'E',
-        templateUrl: 'dashboard/widget.pug',
+        templateUrl: 'dashboard/widgets/widget.pug',
         scope: {
             widget: '=',
             remove: '=',
