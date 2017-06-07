@@ -1,2 +1,4 @@
-div(google-chart, chart="chartObject", ng-if="chartObject.data.length")
-.muted(ng-if="!chartObject.data.length")
+div( ng-controller="dashboard/widgets/chart/view" )
+    div( google-chart, chart="chartObject" )
+
+    pre {{timeFrame}}
