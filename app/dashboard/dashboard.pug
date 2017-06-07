@@ -5,7 +5,7 @@ dropdown.pull-right(text="'manage:dashboards'|translate", style="position: absol
     a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
         icon(name='plus-square-o')
         | {{ 'addWidget:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.edit()')
+    a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
         icon(name='pen')
         | {{ 'editDashboard:dashboardHeader' | translate }}
     a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
