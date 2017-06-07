@@ -19,6 +19,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var fromDate = new Date(),
             toDate = new Date();
 
+        console.log("timeFrame",tf);
+
         switch ( tf.type ) {
 
             case 'static':
@@ -144,6 +146,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
       var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
       var url = apiUrl + input.id +'/measurements' + aggregation + '?before=' + before + '&after=' + after + '&sort=asc';
 
+      var mtype = (input.kind == 'smartdevice' && $scope.widget.options.step) ?
+        input.type+' (delta '+$scope.widget.options.step+')'
+        : input.type;
+
+
       var data = [];
       var result = {};
       console.log( "getdevicesdata url", url );
@@ -157,10 +164,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             var found = false;
             if ( angular.isArray(md.measurements) ) {
               md.measurements.forEach( function ( measurement ) {
-                if ( measurement.type == input.type && !found ) {
+                if ( measurement.type == mtype && !found ) {
                   found = true;
                   var date = new Date( md.timestamp );
-                  var dateToShow = date.getHours() + ' - ' + date.getDate() + '/' + date.getMonth();
                   data.push( [ date, measurement.value ] );
                 }
               } );
@@ -182,17 +188,70 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
       return dfd.promise;
     }
 
+    // to show data from multiple devices on one chart
+    function mergeData(newData){
+      if(!(angular.isArray($scope.chartObject.data)
+          && $scope.chartObject.data.length > 0
+          && angular.isArray($scope.chartObject.data[0])))
+      {
+        $scope.chartObject.data = newData;
+        return;
+      }
+
+      var position = $scope.chartObject.data[ 0 ].length;
+      newData.forEach( function ( elem ) {
+          var dataRow = getDataRow( $scope.chartObject.data, elem[ 0 ] );
+          if ( dataRow.length ) {
+              if ( dataRow.length <= position )
+                  dataRow.push( elem[ 1 ] );
+          } else {
+              dataRow = [ elem[ 0 ] ];
+              for ( i = 1; i < position; i++ ) {
+                  dataRow.push( null );
+              }
+              dataRow.push( elem[ 1 ] );
+              $scope.chartObject.data.push( dataRow );
+          }
+      } );
+
+      $scope.chartObject.data.forEach( function ( elem ) {
+          var dataRow = getDataRow( newData, elem[ 0 ] );
+          if ( dataRow.length == 0 ) {
+              elem.push( null );
+          }
+      } );
+    }
+
+    // used by merge function to look for common measurements dates to update
+    function getDataRow( data, key ) {
+        var result = [];
+        var found = false
+        data.forEach( function ( elem ) {
+            var date1 = new Date( key )
+                .getTime();
+            var date2 = new Date( elem[ 0 ] )
+                .getTime();
+            if ( ( key == 'date' && elem[ 0 ] == 'date' || date1 == date2 ) && !found ) {
+                result = elem;
+                found = true;
+            }
+        } )
+
+        return result;
+    }
+
+
     function readInputs(){
           if(angular.isArray($scope.widget.options.inputs)){
             $scope.widget.options.inputs.forEach(
               function(input){
                 getData(input, $scope.timeFrame.from, $scope.timeFrame.to).then(
                   function(res){
-                    var head = ['date', res.name || ""];
                     var chartData = res.data;
-                    chartData.unshift(head);
-                    console.log("data",chartData);
-                    $scope.chartObject.data = chartData;
+                    chartData.unshift(['date', res.name || ""]);
+
+                    mergeData(chartData);
+                    console.log("data",$scope.chartObject.data);
                   }
                 );
               }
