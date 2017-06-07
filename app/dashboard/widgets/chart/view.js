@@ -73,5 +73,15 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
     } )( $scope.widget.options.timeframe );
 
+    $scope.chartObject = {
+        data: [],
+        options: $scope.widget.options.chartOptions
+    };
+
+    $http.get( '/api/measurements' )
+        .then( function receivedData( res ) {
+            chartObject.data = res.data.data;
+        } );
+
 
 } );
