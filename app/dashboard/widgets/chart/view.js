@@ -26,6 +26,24 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                     to: tf.to
                 };
 
+            case 'absolute':
+                fromDate = fromDate.setHours( 0, 0, 0, 0 );
+                toDate = toDate.setHours( 0, 0, 0, 0 );
+                switch ( tf.unit ) {
+
+                    case 'today':
+                        toDate = toDate.setDate( toDate.getDate() + 1 );
+                        toDate = toDate.setMilliseconds( -1 );
+                        break;
+
+                    case 'yesterday':
+                        fromDate = fromDate.setDate( fromDate.getDate() - 1 );
+                        toDate = toDate.setMilliseconds( -1 );
+                        break;
+
+                }
+                break;
+
             case 'relative':
                 switch ( tf.unit ) {
 

@@ -1,3 +1,4 @@
+h3 {{ 'edit:ChartWidget' | translate }}
 tabs
     a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
         | {{ 'main:chartwidget:tab' | translate }}
@@ -6,7 +7,7 @@ tabs
     a(ng-click="tab='inputs'", ng-class="{active:tab=='inputs'}")
         | {{ 'inputs:chartwidget:tab' | translate }}
 
-div( ng-if="tab==''" )
+div( ng-if="tab==''", ng-controller="dashboard/widgets/chart/edit" )
     label {{ 'title:widget:label' | translate }}
     input(ng-model="widget.title")
         
