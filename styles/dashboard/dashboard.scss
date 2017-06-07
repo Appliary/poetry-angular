@@ -22,7 +22,10 @@
         background-image: url('/themes/indexplus/rules.png');
         background-position: right;
         background-size: contain;
-        &, &:hover{
+        background-color: transparent !important;
+        opacity: 0;
+        &:hover{
+            opacity: 1;
             background-color: transparent !important;
         }
     }
@@ -253,4 +256,7 @@ width: 20px;
   top: $gutter;
   left: $gutter;
   overflow: scroll;
+}
+.modal-dialog.google-visualization-charteditor-dialog{
+    z-index: 999999999;
 }
