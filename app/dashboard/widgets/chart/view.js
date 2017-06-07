@@ -29,7 +29,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             case 'absolute':
                 fromDate = fromDate.setHours( 0, 0, 0, 0 );
                 toDate = toDate.setHours( 0, 0, 0, 0 );
-                switch ( tf.unit ) {
+                switch ( tf.frame ) {
 
                     case 'today':
                         toDate = toDate.setDate( toDate.getDate() + 1 );
@@ -40,6 +40,21 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         fromDate = fromDate.setDate( fromDate.getDate() - 1 );
                         toDate = toDate.setMilliseconds( -1 );
                         break;
+
+                    case 'thisMonth':
+                        fromDate = fromDate.setDate( 1 );
+                        toDate = toDate.setMonth( toDate.getMonth() + 1 );
+                        toDate = toDate.getDate( 0 );
+                        break;
+
+                    case 'lastMonth':
+                        fromDate = fromDate.setMonth( fromDate.getMonth() - 1 );
+                        fromDate = fromDate.setDate( 1 );
+                        toDate = toDate.getDate( 0 );
+                        break;
+
+                    default:
+                        throw new Error( 'frame not found' );
 
                 }
                 break;

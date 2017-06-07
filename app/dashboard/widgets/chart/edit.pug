@@ -79,9 +79,9 @@ div( ng-if="tab=='inputs'" )
         tr(ng-repeat='input in widget.options.inputs')
             td {{input.kind | translate}}
             td {{input.id}}
-            td {{input.measurement}}
+            td {{input.type}}
         tr
-            td {{'add:input:chart'| translate}} :
+            td &nbsp;
             td: input(disabled)
             td: input(disabled)
 

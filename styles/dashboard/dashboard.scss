@@ -254,3 +254,6 @@ width: 20px;
   left: $gutter;
   overflow: scroll;
 }
+.modal-dialog.google-visualization-charteditor-dialog{
+    z-index: 999999999;
+}
