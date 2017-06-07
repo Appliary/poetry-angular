@@ -27,36 +27,47 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                 };
 
             case 'absolute':
-                fromDate = fromDate.setHours( 0, 0, 0, 0 );
-                toDate = toDate.setHours( 0, 0, 0, 0 );
+                fromDate.setHours( 0, 0, 0, 0 );
+                toDate.setHours( 0, 0, 0, 0 );
                 switch ( tf.frame ) {
 
                     case 'today':
-                        toDate = toDate.setDate( toDate.getDate() + 1 );
-                        toDate = toDate.setMilliseconds( -1 );
+                        toDate.setDate( toDate.getDate() + 1 );
                         break;
 
                     case 'yesterday':
-                        fromDate = fromDate.setDate( fromDate.getDate() - 1 );
-                        toDate = toDate.setMilliseconds( -1 );
+                        fromDate.setDate( fromDate.getDate() - 1 );
                         break;
 
                     case 'thisMonth':
-                        fromDate = fromDate.setDate( 1 );
-                        toDate = toDate.setMonth( toDate.getMonth() + 1 );
-                        toDate = toDate.getDate( 0 );
+                        fromDate.setDate( 1 );
+                        toDate.setMonth( toDate.getMonth() + 1 );
+                        toDate.setDate( 1 );
                         break;
 
                     case 'lastMonth':
-                        fromDate = fromDate.setMonth( fromDate.getMonth() - 1 );
-                        fromDate = fromDate.setDate( 1 );
-                        toDate = toDate.getDate( 0 );
+                        fromDate.setMonth( fromDate.getMonth() - 1 );
+                        fromDate.setDate( 1 );
+                        toDate.setDate( 1 );
+                        break;
+
+                    case 'thisYear':
+                        fromDate.setMonth( 0, 1 );
+                        toDate.setMonth( 0, 1 );
+                        toDate.setFullYear( toDate.getFullYear() + 1 );
+                        break;
+
+                    case 'lastYear':
+                        fromDate.setMonth( 0, 1 );
+                        toDate.setMonth( 0, 1 );
+                        fromDate.setFullYear( fromDate.getFullYear() - 1 );
                         break;
 
                     default:
                         throw new Error( 'frame not found' );
 
                 }
+                toDate.setMilliseconds( -1 );
                 break;
 
             case 'relative':
