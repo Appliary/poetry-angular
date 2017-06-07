@@ -3,6 +3,12 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     $http
 ) {
 
+    $scope.chartObject = {
+        data: [],
+        type: $scope.widget.options.chartType,
+        options: $scope.widget.options.chartOptions
+    };
+
     /**
      * timeFrame
      * Object containing computed from and to
@@ -73,10 +79,13 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
     } )( $scope.widget.options.timeframe );
 
-    $scope.chartObject = {
-        data: [],
-        options: $scope.widget.options.chartOptions
-    };
+
+    /***
+     * ID du device : $scope.widget.options.inputs[].id
+     * attention peut être smart device (voir options.inputs[].kind)
+     *
+     * Pour les dates : $scope.timeFrame et $scope.widget.options.step
+     ***/
 
     $http.get( '/api/measurements' )
         .then( function receivedData( res ) {
