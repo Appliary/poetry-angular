@@ -1,7 +1,9 @@
 app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     $scope,
+    $rootScope,
     $http,
-    $q
+    $q,
+    googleChartApiConfig
 ) {
 
     $scope.chartObject = {
@@ -9,6 +11,14 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         type: $scope.widget.options.chartType,
         options: $scope.widget.options.chartOptions
     };
+
+    /**
+     * set user locale and language or set default
+     */
+    var locale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : 'us';
+    var language = $rootScope.user && $rootScope.user.language ? $rootScope.user.language : 'en';
+    googleChartApiConfig.optionalSettings.locale = locale;
+    googleChartApiConfig.optionalSettings.language = language;
 
     /**
      * timeFrame
@@ -19,7 +29,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var fromDate = new Date(),
             toDate = new Date();
 
-        console.log("timeFrame",tf);
+        if(!tf){
+          return;
+        }
 
         switch ( tf.type ) {
 
@@ -249,9 +261,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                   function(res){
                     var chartData = res.data;
                     chartData.unshift(['date', res.name || ""]);
-
                     mergeData(chartData);
-                    console.log("data",$scope.chartObject.data);
                   }
                 );
               }
@@ -259,7 +269,99 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
           }
     }
 
-    readInputs();
+    // handle custom object: ({name:"...", data:[...], unit:"..."})
+    function readCustom(){
+          if(angular.isObject($scope.widget.custom)){
+            var custom = $scope.widget.custom;
+            result = [];
+            var keys = Object.keys(custom.data);
+            var ticks = [];
 
+            // fill the array
+            keys.forEach(function(k){
+              var value = 0;
+              try{
+                value = parseFloat(custom.data[k] || 0);
+              }
+              catch(e){}
+              result.push([new Date(k), value]);
+              ticks.push(new Date(k));
+            });
+
+            // sort the array
+            result.sort(function(a, b){
+              return a[0].getTime() < b[0].getTime();
+            });
+
+            var total = result.length;
+            result.unshift( [ 'date', custom.name || "" ] );
+
+            formatChart(total, custom.hAxisMaxLabels, ticks);
+
+            var title = custom.type;
+            if(custom.unit){
+              title +=  ' (' + custom.unit + ')';
+            }
+            $scope.chartObject.options.vAxis = {
+                title: title
+            };
+
+            $scope.chartObject.data = result;
+          }
+          else{
+            console.error('%c"widget.custom" has to be an object', 'font-weight:bolder');
+          }
+    }
+
+    //handle format, used by readCustom
+    function formatChart(xTot, xMax, ticks){
+      var aggregation = $scope.widget.options.step;
+      var changePattern = false;
+      var pattern = 'MMM yyyy';
+      var allPatterns = {
+        "daily": "M'/'d'/'yyyy",
+        "weekly": "yyyy 'W' w",
+        "monthly": pattern,
+        "yearly": "yyyy"
+      }
+
+      if ( Object.keys(allPatterns).indexOf(aggregation) != -1 ) {
+          changePattern = true;
+          if ( aggregation == "daily" && googleChartApiConfig.optionalSettings.locale == 'fr') {
+              pattern = "d'/'M'/'yyyy";
+          }
+      }
+
+      var showTextEvery = angular.isNumber(xMax) ? (Math.ceil(xTot / xMax) || 1) : 1;
+
+      $scope.chartObject.options.hAxis = {
+          showTextEvery: showTextEvery,
+          slantedText:true,
+          slantedTextAngle:50
+      };
+
+      if ( changePattern ) {
+          $scope.chartObject.options.hAxis.format = pattern;
+          $scope.chartObject.formatters = {
+              "date": [ {
+                  columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
+                  pattern: pattern
+              } ]
+          };
+      }
+
+      if(angular.isArray(ticks)){
+        console.debug("ticks");
+        $scope.chartObject.options.hAxis.ticks = ticks;
+      }
+    }
+
+    //if the widget use custom data and not inputs (e.g.: reportManagement)
+    if($scope.widget.custom){
+      readCustom();
+    }
+    else{
+      readInputs();
+    }
 
 } );
