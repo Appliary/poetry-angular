@@ -234,9 +234,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $http.get( $scope.$root.__module.api + '/tags/' + query )
             .then( function success( response ) {
                 deferred.resolve( response.data );
-            }, function error( response ) {
-                $location.path( '/error/' + response.status );
-            } );
+            }, function error( response ) {} );
 
         return deferred.promise;
     };
