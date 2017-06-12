@@ -26,6 +26,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     var isSingleDataChart = false;
     switch($scope.chartObject.type){
       case "Gauge":
+      case "PieChart":
         isSingleDataChart = true;
         break;
     }
@@ -281,10 +282,17 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         }
 
                         if(isSingleDataChart){
-                          return $scope.chartObject.data = [
-                            ['Label', 'Value'],
+                          if($scope.chartObject.data.length == 0){
+                            $scope.chartObject.data = [
+                              ['Label', 'Value']
+                            ];
+                          }
+                          $scope.chartObject.data.push(
                             [res.input.type+ (res.unit ? " ("+res.unit+")" : ""), chartData[0][1] || 0]
-                          ];
+                          );
+
+                          console.debug("chart data", $scope.chartObject.data);
+                          return;
                         }
 
                         if(!angular.isObject($scope.chartObject.options.vAxis)){
@@ -304,6 +312,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
+                        console.debug("chart data", $scope.chartObject.data);
                     } );
             } );
         }
