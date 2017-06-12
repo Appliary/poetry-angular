@@ -167,7 +167,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var dfd = $q.defer();
         var apiUrl = input.kind == 'smartdevice' ? '/api/smartdevices/' : '/api/devices/';
         var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
-        var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&sort=asc';
+        var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&order=asc&limit=0';
 
         var mtype = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ?
             input.type + ' (delta ' + $scope.widget.options.step + ')' :
