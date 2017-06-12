@@ -252,6 +252,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     }
 
 
+    var doSetDefaultVAxisTitle = false;
+
+
     function readInputs() {
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
             $scope.widget.options.inputs.forEach( function ( input ) {
@@ -265,15 +268,19 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         }
 
                         // update vAxis title
-                        if(!angular.isObject($scope.chartObject.options.vAxis))
+                        if(!angular.isObject($scope.chartObject.options.vAxis)){
+                          doSetDefaultVAxisTitle = true;
                           $scope.chartObject.options.vAxis = {};
+                        }
 
-                        if(!angular.isString($scope.chartObject.options.vAxis.title))
-                          $scope.chartObject.options.vAxis.title = "";
-                        else
-                          $scope.chartObject.options.vAxis.title += ", ";
+                        if(doSetDefaultVAxisTitle){
+                          if(!angular.isString($scope.chartObject.options.vAxis.title))
+                            $scope.chartObject.options.vAxis.title = "";
+                          else
+                            $scope.chartObject.options.vAxis.title += ", ";
 
-                        $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+                          $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+                        }
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
