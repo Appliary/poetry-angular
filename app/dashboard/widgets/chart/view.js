@@ -29,9 +29,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var fromDate = new Date(),
             toDate = new Date();
 
-        if(!tf){
-          return;
-        }
+        if ( !tf ) throw new Error( 'No timeframe, aborting' );
 
         switch ( tf.type ) {
 
@@ -52,6 +50,24 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
                     case 'yesterday':
                         fromDate.setDate( fromDate.getDate() - 1 );
+                        break;
+
+                    case 'thisWeek':
+                        fromDay = fromDate.getDay();
+                        if ( fromDay ) fromDay--;
+                        else fromDay = 6;
+
+                        fromDate.setDate( fromDate.getDate() - fromDay );
+                        toDate.setDate( toDate.getDate() - fromDay + 6 );
+                        break;
+
+                    case 'lastWeek':
+                        fromDay = fromDate.getDay();
+                        if ( fromDay ) fromDay--;
+                        else fromDay = 6;
+
+                        fromDate.setDate( fromDate.getDate() - fromDay - 7 );
+                        toDate.setDate( toDate.getDate() - fromDay - 1 );
                         break;
 
                     case 'thisMonth':
@@ -128,7 +144,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                 break;
 
             default:
-                throw new Error( 'Unknown timeFrame type ', tf.unit);
+                throw new Error( 'Unknown timeFrame type ', tf.unit );
         }
 
         return {
@@ -146,222 +162,196 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
      * Pour les dates : $scope.timeFrame et $scope.widget.options.step
      ***/
 
-    /*$http.get( '/api/measurements' )
-        .then( function receivedData( res ) {
-            $scope.chartObject.data = res.data.data;
-    } );*/
-
     // get measurements for one input
-    function getData(input, after, before){
-      var dfd = $q.defer();
-      var apiUrl = input.kind == 'smartdevice' ? '/api/smartdevices/' : '/api/devices/';
-      var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
-      var url = apiUrl + input.id +'/measurements' + aggregation + '?before=' + before + '&after=' + after + '&sort=asc';
+    function getData( input, after, before ) {
+        var dfd = $q.defer();
+        var apiUrl = input.kind == 'smartdevice' ? '/api/smartdevices/' : '/api/devices/';
+        var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
+        var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&sort=asc';
 
-      var mtype = (input.kind == 'smartdevice' && $scope.widget.options.step) ?
-        input.type+' (delta '+$scope.widget.options.step+')'
-        : input.type;
+        var mtype = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ?
+            input.type + ' (delta ' + $scope.widget.options.step + ')' :
+            input.type;
 
 
-      var data = [];
-      var result = {};
-      console.log( "getdevicesdata url", url );
-      $http.get( url )
-      .then( function ( response ) {
-        if (angular.isObject(response.data) && response.data.data ) {
-          result.name = response.data.parent.name;
-          result.unit = response.data.parent.unit || "";
-          var measurementData = response.data.data;
-          measurementData.forEach( function ( md ) {
-            var found = false;
-            if ( angular.isArray(md.measurements) ) {
-              md.measurements.forEach( function ( measurement ) {
-                if ( measurement.type == mtype && !found ) {
-                  found = true;
-                  var date = new Date( md.timestamp );
-                  data.push( [ date, measurement.value ] );
+        var data = [];
+        var result = {};
+        console.log( "getdevicesdata url", url );
+        $http.get( url )
+            .then( function ( response ) {
+                if ( angular.isObject( response.data ) && response.data.data ) {
+                    result.name = response.data.parent.name;
+                    result.unit = response.data.parent.unit || "";
+                    var measurementData = response.data.data;
+                    measurementData.forEach( function ( md ) {
+                        if ( angular.isArray( md.measurements ) ) {
+                            md.measurements.some( function ( measurement ) {
+                                if ( measurement.type != mtype ) return false;
+
+                                var date = new Date( md.timestamp );
+                                data.push( [ date, measurement.value ] );
+                                return true;
+                            } );
+                        }
+                    } );
+                } else {
+                    data = response.data;
                 }
-              } );
-            }
-          } );
-        }
-        else {
-          data = response.data;
-        }
-        result.data = data;
-        dfd.resolve( result );
-      },
-      function(e){
-        console.error(e);
-        dfd.reject( e );
-      }
-    );
+                result.data = data;
+                dfd.resolve( result );
+            }, dfd.reject );
 
-      return dfd.promise;
+        return dfd.promise;
     }
 
     // to show data from multiple devices on one chart
-    function mergeData(newData){
-      if(!(angular.isArray($scope.chartObject.data)
-          && $scope.chartObject.data.length > 0
-          && angular.isArray($scope.chartObject.data[0])))
-      {
-        $scope.chartObject.data = newData;
-        return;
-      }
+    function mergeData( newData ) {
+        if ( !( angular.isArray( $scope.chartObject.data ) &&
+                $scope.chartObject.data.length > 0 &&
+                angular.isArray( $scope.chartObject.data[ 0 ] ) ) ) {
+            $scope.chartObject.data = newData;
+            return;
+        }
 
-      var position = $scope.chartObject.data[ 0 ].length;
-      newData.forEach( function ( elem ) {
-          var dataRow = getDataRow( $scope.chartObject.data, elem[ 0 ] );
-          if ( dataRow.length ) {
-              if ( dataRow.length <= position )
-                  dataRow.push( elem[ 1 ] );
-          } else {
-              dataRow = [ elem[ 0 ] ];
-              for ( i = 1; i < position; i++ ) {
-                  dataRow.push( null );
-              }
-              dataRow.push( elem[ 1 ] );
-              $scope.chartObject.data.push( dataRow );
-          }
-      } );
+        var position = $scope.chartObject.data[ 0 ].length;
+        newData.forEach( function ( elem ) {
+            var dataRow = getDataRow( $scope.chartObject.data, elem[ 0 ] );
+            if ( dataRow.length ) {
+                if ( dataRow.length <= position )
+                    dataRow.push( elem[ 1 ] );
+            } else {
+                dataRow = [ elem[ 0 ] ];
+                for ( i = 1; i < position; i++ ) {
+                    dataRow.push( null );
+                }
+                dataRow.push( elem[ 1 ] );
+                $scope.chartObject.data.push( dataRow );
+            }
+        } );
 
-      $scope.chartObject.data.forEach( function ( elem ) {
-          var dataRow = getDataRow( newData, elem[ 0 ] );
-          if ( dataRow.length == 0 ) {
-              elem.push( null );
-          }
-      } );
+        $scope.chartObject.data.forEach( function ( elem ) {
+            var dataRow = getDataRow( newData, elem[ 0 ] );
+            if ( !dataRow.length ) elem.push( null );
+        } );
     }
 
     // used by merge function to look for common measurements dates to update
     function getDataRow( data, key ) {
-        var result = [];
-        var found = false
-        data.forEach( function ( elem ) {
-            var date1 = new Date( key )
-                .getTime();
-            var date2 = new Date( elem[ 0 ] )
-                .getTime();
-            if ( ( key == 'date' && elem[ 0 ] == 'date' || date1 == date2 ) && !found ) {
-                result = elem;
-                found = true;
-            }
-        } )
+        var result;
+        data.some( function ( elem ) {
+            var date1 = new Date( key ),
+                date2 = new Date( elem[ 0 ] );
+            if (
+                key == 'date' &&
+                elem[ 0 ] == 'date' ||
+                date1.getTime() == date2.getTime()
+            ) return !!( result = elem );
+        } );
 
-        return result;
+        return result || [];
     }
 
 
-    function readInputs(){
-          if(angular.isArray($scope.widget.options.inputs)){
-            $scope.widget.options.inputs.forEach(
-              function(input){
-                getData(input, $scope.timeFrame.from, $scope.timeFrame.to).then(
-                  function(res){
-                    var chartData = res.data;
-                    chartData.unshift(['date', res.name || ""]);
-                    mergeData(chartData);
-                  }
-                );
-              }
-            );
-          }
+    function readInputs() {
+        if ( angular.isArray( $scope.widget.options.inputs ) ) {
+            $scope.widget.options.inputs.forEach( function ( input ) {
+                getData( input, $scope.timeFrame.from, $scope.timeFrame.to )
+                    .then( function ( res ) {
+                        var chartData = res.data;
+                        chartData.unshift( [ 'date', res.name || "" ] );
+                        mergeData( chartData );
+                    } );
+            } );
+        }
     }
 
     // handle custom object: ({name:"...", data:[...], unit:"..."})
-    function readCustom(){
-          if(angular.isObject($scope.widget.custom)){
+    function readCustom() {
+        if ( angular.isObject( $scope.widget.custom ) ) {
             var custom = $scope.widget.custom;
             result = [];
-            var keys = Object.keys(custom.data);
+            var keys = Object.keys( custom.data );
             var ticks = [];
 
             // fill the array
-            keys.forEach(function(k){
-              var value = 0;
-              try{
-                value = parseFloat(custom.data[k] || 0);
-              }
-              catch(e){}
-              result.push([new Date(k), value]);
-              ticks.push(new Date(k));
-            });
+            keys.forEach( function ( k ) {
+                var value = 0;
+                try {
+                    value = parseFloat( custom.data[ k ] || 0 );
+                } catch ( e ) {}
+                result.push( [ new Date( k ), value ] );
+                ticks.push( new Date( k ) );
+            } );
 
             // sort the array
-            result.sort(function(a, b){
-              return a[0].getTime() < b[0].getTime();
-            });
+            result.sort( function ( a, b ) {
+                return a[ 0 ].getTime() < b[ 0 ].getTime();
+            } );
 
             var total = result.length;
             result.unshift( [ 'date', custom.name || "" ] );
 
-            formatChart(total, custom.hAxisMaxLabels, ticks);
+            formatChart( total, custom.hAxisMaxLabels, ticks );
 
             var title = custom.type;
-            if(custom.unit){
-              title +=  ' (' + custom.unit + ')';
-            }
+            if ( custom.unit )
+                title += ' (' + custom.unit + ')';
+
             $scope.chartObject.options.vAxis = {
                 title: title
             };
 
             $scope.chartObject.data = result;
-          }
-          else{
-            console.error('%c"widget.custom" has to be an object', 'font-weight:bolder');
-          }
+
+        } else throw new TypeError( 'widget.custom need to be an object' );
     }
 
     //handle format, used by readCustom
-    function formatChart(xTot, xMax, ticks){
-      var aggregation = $scope.widget.options.step;
-      var changePattern = false;
-      var pattern = 'MMM yyyy';
-      var allPatterns = {
-        "daily": "M'/'d'/'yyyy",
-        "weekly": "yyyy 'W' w",
-        "monthly": pattern,
-        "yearly": "yyyy"
-      }
+    function formatChart( xTot, xMax, ticks ) {
+        var aggregation = $scope.widget.options.step;
+        var changePattern = false;
+        var pattern = 'MMM yyyy';
+        var allPatterns = {
+            "daily": "M'/'d'/'yyyy",
+            "weekly": "yyyy 'W' w",
+            "monthly": pattern,
+            "yearly": "yyyy"
+        };
 
-      if ( Object.keys(allPatterns).indexOf(aggregation) != -1 ) {
-          changePattern = true;
-          if ( aggregation == "daily" && googleChartApiConfig.optionalSettings.locale == 'fr') {
-              pattern = "d'/'M'/'yyyy";
-          }
-      }
+        if ( Object.keys( allPatterns )
+            .indexOf( aggregation ) != -1 ) {
+            changePattern = true;
+            if ( aggregation == "daily" && googleChartApiConfig.optionalSettings.locale == 'fr' ) {
+                pattern = "d'/'M'/'yyyy";
+            }
+        }
 
-      var showTextEvery = angular.isNumber(xMax) ? (Math.ceil(xTot / xMax) || 1) : 1;
+        var showTextEvery = angular.isNumber( xMax ) ? ( Math.ceil( xTot / xMax ) || 1 ) : 1;
 
-      $scope.chartObject.options.hAxis = {
-          showTextEvery: showTextEvery,
-          slantedText:true,
-          slantedTextAngle:50
-      };
+        $scope.chartObject.options.hAxis = {
+            showTextEvery: showTextEvery,
+            slantedText: true,
+            slantedTextAngle: 50
+        };
 
-      if ( changePattern ) {
-          $scope.chartObject.options.hAxis.format = pattern;
-          $scope.chartObject.formatters = {
-              "date": [ {
-                  columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
-                  pattern: pattern
-              } ]
-          };
-      }
+        if ( changePattern ) {
+            $scope.chartObject.options.hAxis.format = pattern;
+            $scope.chartObject.formatters = {
+                "date": [ {
+                    columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
+                    pattern: pattern
+                } ]
+            };
+        }
 
-      if(angular.isArray(ticks)){
-        console.debug("ticks");
-        $scope.chartObject.options.hAxis.ticks = ticks;
-      }
+        if ( angular.isArray( ticks ) ) {
+            console.debug( "ticks" );
+            $scope.chartObject.options.hAxis.ticks = ticks;
+        }
     }
 
-    //if the widget use custom data and not inputs (e.g.: reportManagement)
-    if($scope.widget.custom){
-      readCustom();
-    }
-    else{
-      readInputs();
-    }
+    // if the widget use custom data and not inputs (e.g.: reportManagement)
+    if ( $scope.widget.custom ) readCustom();
+    else readInputs();
 
 } );

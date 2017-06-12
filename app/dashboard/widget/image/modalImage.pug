@@ -1,8 +1,0 @@
-div(ng-controller='imageCtrl')
-  .row
-    label(for='fileToUpload') Enter image URL
-    form
-        input(type="text",ng-model="image.url", ng-change="updateImage()")
-    .modalButtons
-        button.btn.btn-primary.pull-right(ng-click="confirm({'newWidget' : widget,'file' : toUpload,'title' : $parent.$parent.widget.title})")
-            | {{ 'Save:chart' | translate }}
