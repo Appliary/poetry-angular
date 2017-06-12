@@ -252,8 +252,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     }
 
 
-    var doSetDefaultVAxisTitle = false;
-
+    var doInitVAxisTitle = true;
 
     function readInputs() {
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
@@ -267,20 +266,21 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                           return;
                         }
 
-                        // update vAxis title
                         if(!angular.isObject($scope.chartObject.options.vAxis)){
-                          doSetDefaultVAxisTitle = true;
                           $scope.chartObject.options.vAxis = {};
                         }
 
-                        if(doSetDefaultVAxisTitle){
-                          if(!angular.isString($scope.chartObject.options.vAxis.title))
-                            $scope.chartObject.options.vAxis.title = "";
-                          else
-                            $scope.chartObject.options.vAxis.title += ", ";
-
-                          $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+                        // update vAxis title
+                        if(doInitVAxisTitle){
+                          doInitVAxisTitle = false;
+                          $scope.chartObject.options.vAxis.title = "";
                         }
+                        else{
+                          $scope.chartObject.options.vAxis.title += ", ";
+                        }
+
+                        $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
