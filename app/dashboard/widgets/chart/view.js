@@ -175,7 +175,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
 
         var data = [];
-        var result = {};
+        var result = {input: input};
         console.log( "getdevicesdata url", url );
         $http.get( url )
             .then( function ( response ) {
@@ -258,9 +258,23 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                 getData( input, $scope.timeFrame.from, $scope.timeFrame.to )
                     .then( function ( res ) {
                         var chartData = res.data;
+
+                        // if empty array, no show
                         if(chartData.length == 0){
                           return;
                         }
+
+                        // update vAxis title
+                        if(!angular.isObject($scope.chartObject.options.vAxis))
+                          $scope.chartObject.options.vAxis = {};
+
+                        if(!angular.isString($scope.chartObject.options.vAxis.title))
+                          $scope.chartObject.options.vAxis.title = "";
+                        else
+                          $scope.chartObject.options.vAxis.title += ", ";
+
+                        $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
                     } );
