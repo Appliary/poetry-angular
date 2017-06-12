@@ -1,3 +1,4 @@
+h3 {{ 'newWidget:widget:dashboard' | translate }}
 div
     label {{ 'title:widget:label' | translate }}
     input(ng-model="widget.title")
@@ -5,11 +6,7 @@ div
 div
     label {{ 'widget:widget:label' | translate }}
     select(ng-model="widget.type", ng-init="widget.type='chart'")
-        option(value='chart') {{ 'chart:widget' | translate }}
-        option(value='table') {{ 'table:widget' | translate }}
-        option(value='svg') {{ 'svg:widget' | translate }}
-        option(value='video') {{ 'video:widget' | translate }}
-        option(value='picture') {{ 'picture:widget' | translate }}
+        option( ng-repeat="type in widgetTypes" value="{{type}}", ng-if="allowed(type)") {{ type+':widget' | translate }}
 
 div.pull-right(class="ngdialog-buttons")
     button.lightButton.pull-right(ng-click="closeThisDialog()")

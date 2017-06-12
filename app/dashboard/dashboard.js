@@ -12,9 +12,24 @@ app.controller( 'dashboard/dashboard', function (
          */
         create: function createWidget() {
 
+            var scope = $scope.$new();
+            scope.widgetTypes = [
+                'chart',
+                'picture',
+                'video',
+            ];
+
+            scope.allowed = function allowed( type ) {
+                if ( !$scope.$root.__module.config.widgets.length )
+                    return true;
+
+                return !!~$scope.$root.__module.config.widgets.indexOf( type );
+            }
+
             // Open widget creation modal
             ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/widgets/create.pug'
+                    templateUrl: 'dashboard/widgets/create.pug',
+                    scope: scope
                 } )
                 .then( function ( widget ) {
                     var w = {
