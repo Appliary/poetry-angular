@@ -21,6 +21,16 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     googleChartApiConfig.optionalSettings.language = language;
 
     /**
+     * For some charts, only show last measurement
+     */
+    var isSingleDataChart = false;
+    switch($scope.chartObject.type){
+      case "Gauge":
+        isSingleDataChart = true;
+        break;
+    }
+
+    /**
      * timeFrame
      * Object containing computed from and to
      */
@@ -167,7 +177,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var dfd = $q.defer();
         var apiUrl = input.kind == 'smartdevice' ? '/api/smartdevices/' : '/api/devices/';
         var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
-        var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&order=asc&limit=0';
+        var limit = 0;
+        if(isSingleDataChart){
+          limit = 1;
+        }
+        var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&order=asc&limit=' + limit;
 
         var mtype = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ?
             input.type + ' (delta ' + $scope.widget.options.step + ')' :
@@ -266,6 +280,13 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                           return;
                         }
 
+                        if(isSingleDataChart){
+                          return $scope.chartObject.data = [
+                            ['Label', 'Value'],
+                            [res.input.type+ (res.unit ? " ("+res.unit+")" : ""), chartData[0][1] || 0]
+                          ];
+                        }
+
                         if(!angular.isObject($scope.chartObject.options.vAxis)){
                           $scope.chartObject.options.vAxis = {};
                         }
@@ -280,7 +301,6 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         }
 
                         $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
-
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
