@@ -229,8 +229,19 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             }
         } );
 
-        $scope.chartObject.data.forEach( function ( elem ) {
+        $scope.chartObject.data.forEach( function ( elem , i) {
             var dataRow = getDataRow( newData, elem[ 0 ] );
+
+            /**
+             * if there are no values for this item,
+             * insert at least one 0,
+             * otherwise it will show error if every value is null
+             */
+            if(newData.length == 1 && $scope.chartObject.data.length > 1 && i == 1){
+              elem.push( 0 );
+              return;
+            }
+
             if ( !dataRow.length ) elem.push( null );
         } );
     }
