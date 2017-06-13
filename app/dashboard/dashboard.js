@@ -397,6 +397,7 @@ app.controller( 'dashboard/dashboard', function (
             start: function ( event, $element, widget ) {},
             resize: function ( event, $element, widget ) {},
             stop: function ( event, $element, widget ) {
+                $scope.Widgets.resize();
                 $scope.Dashboards.save();
             }
         },
