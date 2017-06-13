@@ -9,6 +9,8 @@ app.controller( 'mathFormula/add', function (
     // Default tab
     $scope.tabview = 'details';
 
+    console.log("config", $scope.mathFormulaConfig);
+
     // Filters for device selection
     $scope.search = '';
     $scope.filters = {
@@ -19,6 +21,41 @@ app.controller( 'mathFormula/add', function (
 
     // Avoid flood by stopping identical send & by iterating requests
     var lastRequests = {};
+
+    // Pre configure form
+    preConfigure();
+
+    /**
+    *
+    * Fn to preconfigure input add form
+    */
+    function preConfigure(){
+      var conf = $scope.mathFormulaConfig;
+      if(!angular.isObject(conf))
+        return;
+
+      if(angular.isObject(conf["alternatives"])){
+        var propertyName = conf["alternatives"].property;
+        Object.keys(conf["alternatives"].values).some(function(val){
+          if($scope.item[propertyName] == val){
+            conf = conf["alternatives"].values[val];
+            return true;
+          }
+        });
+      }
+
+      if(conf.filters){
+        var cFilters = conf.filters;
+        if(angular.isArray(cFilters)){
+          $scope.filters = {};
+          cFilters.forEach(
+            function(elem){
+              $scope.filters[elem] = false;
+            }
+          );
+        }
+      }
+    }
 
     /**
      * getDevices()
