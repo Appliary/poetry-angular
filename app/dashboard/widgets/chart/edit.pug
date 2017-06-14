@@ -13,7 +13,9 @@ div(ng-controller="dashboard/widgets/chart/edit")
         input(ng-model="widget.title")
             
         label {{ 'chart:widget:label' | translate }}
-        button(ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
+        button(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
+        span.muted(ng-if="!widget.options.inputs.length")
+            | &nbsp;{{'selectInputFirst:chart'|translate}}
 
     div( ng-if="tab=='timeframe'" )
         label {{ 'step:widget:label' | translate }}
