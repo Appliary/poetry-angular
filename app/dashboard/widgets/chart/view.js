@@ -308,7 +308,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                                 [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
                             );
 
-                            console.debug( "chart data", $scope.widget.chartObject.data );
+                            //console.debug( "chart data", $scope.widget.chartObject.data );
                             return;
                         }
 
@@ -328,7 +328,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
                         chartData.unshift( [ 'date', res.input.varName || "" ] );
                         mergeData( chartData );
-                        console.debug( "chart data", $scope.widget.chartObject.data );
+                        //console.debug( "chart data", $scope.widget.chartObject.data );
                     } );
             } );
         }
@@ -414,7 +414,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         }
 
         if ( angular.isArray( ticks ) ) {
-            console.debug( "ticks" );
+            //console.debug( "ticks" );
             $scope.widget.chartObject.options.hAxis.ticks = ticks;
         }
     }
