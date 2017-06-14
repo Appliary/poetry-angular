@@ -163,18 +163,36 @@ app.controller( 'mathFormula/add', function (
             };
 
             if ( item.last )
-                Object.keys( item.last )
-                .forEach( function foreach( t ) {
-                    var type = [ item.last[ t ].type, item.last[ t ].id ];
-                    if ( !~res.types.indexOf( type ) )
-                        res.types.push( type );
-                } );
+              getItemLastTypes(item, res.types);
+
 
             // Populate the results
             $scope.results.push( res );
 
         } );
 
+    }
+
+    /**
+     * getLastTypes( item, res )
+     * Get types from item.last
+     *
+     * @param {Object} item Items
+     * @param {Array} res Result
+     */
+    function getItemLastTypes( item, res ){
+      Object.keys( item.last )
+      .forEach( function foreach( t ) {
+          var type = [ item.last[ t ].type, item.last[ t ].id ];
+          if ( !~res.types.indexOf( type ) )
+              res.types.push( type );
+
+          /**
+          * TODO: check inner types if value is object
+          *if(angular.isObject(item.last[t].value)){
+
+          }*/
+      } );
     }
 
     // Select the line as input
