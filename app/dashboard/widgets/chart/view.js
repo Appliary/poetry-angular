@@ -6,7 +6,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     googleChartApiConfig
 ) {
 
-    $scope.chartObject = {
+    $scope.widget.chartObject = {
         data: [],
         type: $scope.widget.options.chartType,
         options: $scope.widget.options.chartOptions
@@ -24,7 +24,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
      * For some charts, only show last measurement
      */
     var isSingleDataChart = false;
-    switch ( $scope.chartObject.type ) {
+    switch ( $scope.widget.chartObject.type ) {
         case "Gauge":
         case "PieChart":
             isSingleDataChart = true;
@@ -223,16 +223,16 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
     // to show data from multiple devices on one chart
     function mergeData( newData ) {
-        if ( !( angular.isArray( $scope.chartObject.data ) &&
-                $scope.chartObject.data.length > 0 &&
-                angular.isArray( $scope.chartObject.data[ 0 ] ) ) ) {
-            $scope.chartObject.data = newData;
+        if ( !( angular.isArray( $scope.widget.chartObject.data ) &&
+                $scope.widget.chartObject.data.length > 0 &&
+                angular.isArray( $scope.widget.chartObject.data[ 0 ] ) ) ) {
+            $scope.widget.chartObject.data = newData;
             return;
         }
 
-        var position = $scope.chartObject.data[ 0 ].length;
+        var position = $scope.widget.chartObject.data[ 0 ].length;
         newData.forEach( function ( elem ) {
-            var dataRow = getDataRow( $scope.chartObject.data, elem[ 0 ] );
+            var dataRow = getDataRow( $scope.widget.chartObject.data, elem[ 0 ] );
             if ( dataRow.length ) {
                 if ( dataRow.length <= position )
                     dataRow.push( elem[ 1 ] );
@@ -242,11 +242,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                     dataRow.push( null );
                 }
                 dataRow.push( elem[ 1 ] );
-                $scope.chartObject.data.push( dataRow );
+                $scope.widget.chartObject.data.push( dataRow );
             }
         } );
 
-        $scope.chartObject.data.forEach( function ( elem, i ) {
+        $scope.widget.chartObject.data.forEach( function ( elem, i ) {
             var dataRow = getDataRow( newData, elem[ 0 ] );
             if ( !dataRow.length ) elem.push( null );
         } );
@@ -282,36 +282,36 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         if ( !chartData.length ) return;
 
                         if ( isSingleDataChart ) {
-                            if ( !$scope.chartObject.data.length ) {
-                                $scope.chartObject.data = [
+                            if ( !$scope.widget.chartObject.data.length ) {
+                                $scope.widget.chartObject.data = [
                                     [ 'Label', 'Value' ]
                                 ];
                             }
-                            $scope.chartObject.data.push(
+                            $scope.widget.chartObject.data.push(
                                 [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
                             );
 
-                            console.debug( "chart data", $scope.chartObject.data );
+                            console.debug( "chart data", $scope.widget.chartObject.data );
                             return;
                         }
 
-                        if ( !angular.isObject( $scope.chartObject.options.vAxis ) ) {
-                            $scope.chartObject.options.vAxis = {};
+                        if ( !angular.isObject( $scope.widget.chartObject.options.vAxis ) ) {
+                            $scope.widget.chartObject.options.vAxis = {};
                         }
 
                         // update vAxis title
                         if ( doInitVAxisTitle ) {
                             doInitVAxisTitle = false;
-                            $scope.chartObject.options.vAxis.title = "";
+                            $scope.widget.chartObject.options.vAxis.title = "";
                         } else {
-                            $scope.chartObject.options.vAxis.title += ", ";
+                            $scope.widget.chartObject.options.vAxis.title += ", ";
                         }
 
-                        $scope.chartObject.options.vAxis.title += res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
+                        $scope.widget.chartObject.options.vAxis.title += res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
-                        console.debug( "chart data", $scope.chartObject.data );
+                        console.debug( "chart data", $scope.widget.chartObject.data );
                     } );
             } );
         }
@@ -349,11 +349,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             if ( custom.unit )
                 title += ' (' + custom.unit + ')';
 
-            $scope.chartObject.options.vAxis = {
+            $scope.widget.chartObject.options.vAxis = {
                 title: title
             };
 
-            $scope.chartObject.data = result;
+            $scope.widget.chartObject.data = result;
 
         } else throw new TypeError( 'widget.custom need to be an object' );
     }
@@ -380,15 +380,15 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
         var showTextEvery = angular.isNumber( xMax ) ? ( Math.ceil( xTot / xMax ) || 1 ) : 1;
 
-        $scope.chartObject.options.hAxis = {
+        $scope.widget.chartObject.options.hAxis = {
             showTextEvery: showTextEvery,
             slantedText: true,
             slantedTextAngle: 50
         };
 
         if ( changePattern ) {
-            $scope.chartObject.options.hAxis.format = pattern;
-            $scope.chartObject.formatters = {
+            $scope.widget.chartObject.options.hAxis.format = pattern;
+            $scope.widget.chartObject.formatters = {
                 "date": [ {
                     columnNum: 0, // column index to apply format to (the index where there are dates, see just above)
                     pattern: pattern
@@ -398,7 +398,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
         if ( angular.isArray( ticks ) ) {
             console.debug( "ticks" );
-            $scope.chartObject.options.hAxis.ticks = ticks;
+            $scope.widget.chartObject.options.hAxis.ticks = ticks;
         }
     }
 
