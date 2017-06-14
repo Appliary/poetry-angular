@@ -49,8 +49,8 @@ div.mathFormula(ng-controller='mathFormula/editor')
                         | {{ 'addInput:button:mathformula' | translate }}
 
     br
-    h4(ng-if="item.source ? (item.source == 'measurement' || item.source == 'logs') : true") {{ 'formula:' + $root.__module.name + ':title' | translate }}
-    div.formula(ng-class='{error: currentOutputErr}', ng-if="item.source ? (item.source == 'measurement' || item.source == 'logs') : true")
+    h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
+    div.formula(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
         textarea( ng-model='item.formula' )
         input( readonly, ng-value='currentOutput' )
 
