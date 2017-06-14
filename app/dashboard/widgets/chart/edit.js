@@ -25,7 +25,7 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     );
 
     $scope.selectInputId = function selectInputId() {
-        if ( $scope.newInput || !$scope.newInput.source ) return;
+        if ( !$scope.newInput || !$scope.newInput.source ) return;
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
