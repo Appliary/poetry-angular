@@ -19,13 +19,16 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         'ok',
         function saveChartEdit() {
             var cw = charteditor.getChartWrapper();
-            $scope.widget.options.chartOptions = cw.getOptions();
             $scope.widget.options.chartType = cw.getChartType();
+            $scope.widget.options.chartOptions = cw.getOptions();
+            delete $scope.widget.options.chartOptions.height;
+            delete $scope.widget.options.chartOptions.width;
         }
     );
 
+    $scope.newInput = {};
     $scope.selectInputId = function selectInputId() {
-        if ( !$scope.newInput || !$scope.newInput.source ) return;
+        if ( !$scope.newInput.source ) return;
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
