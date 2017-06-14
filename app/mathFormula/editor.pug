@@ -16,7 +16,11 @@ div.mathFormula(ng-controller='mathFormula/editor')
 
                 //- Device name / Tags
                 td {{ input.kind.slice(0,1) }}&nbsp;
-                    em {{ input.id }}
+                    em(ng-if="input.kind == 'tags'")
+                        | {{ input.id }}
+                    em(ng-if="input.kind != 'tags'")
+                        a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
+                            | {{ input.id }}
 
                 //- Value type
                 td {{ input.type }}&nbsp;
@@ -45,8 +49,8 @@ div.mathFormula(ng-controller='mathFormula/editor')
                         | {{ 'addInput:button:mathformula' | translate }}
 
     br
-    h4 {{ 'formula:' + $root.__module.name + ':title' | translate }}
-    div.formula(ng-class='{error: currentOutputErr}')
+    h4(ng-if="item.source ? (item.source == 'measurement' || item.source == 'logs') : true") {{ 'formula:' + $root.__module.name + ':title' | translate }}
+    div.formula(ng-class='{error: currentOutputErr}', ng-if="item.source ? (item.source == 'measurement' || item.source == 'logs') : true")
         textarea( ng-model='item.formula' )
         input( readonly, ng-value='currentOutput' )
 

@@ -4,6 +4,27 @@ app.controller( 'mathFormula/editor', function (
     ngDialog
 ) {
 
+    // example of config parameters
+    var defaultConfig = {
+      "filters": [
+        "devices",
+        "smartdevices",
+        "tags"
+      ]
+    };
+
+    $scope.mathFormulaConfig = defaultConfig;
+
+    try{
+      var mfConfig = $scope.$root.__module.config.mathFormula;
+      if(angular.isObject(mfConfig)){
+        $scope.mathFormulaConfig = mfConfig;
+      }
+    }
+    catch(e){
+      console.debug(e);
+    }
+
     $scope.showVals = function showVals( vals ) {
         var scope = $scope.$new();
         scope.vals = vals;
