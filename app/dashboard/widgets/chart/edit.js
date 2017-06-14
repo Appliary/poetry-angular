@@ -1,6 +1,7 @@
 app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     $scope,
     $http,
+    $timeout,
     ngDialog
 ) {
 
@@ -27,18 +28,25 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     );
 
     $scope.newInput = {};
+    $scope.filters = [];
     $scope.selectInputId = function selectInputId() {
         if ( !$scope.newInput.source ) return;
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
-                $scope.filters = {
-                    devices: false,
-                    smartdevices: false,
-                    tags: false
-                };
-                $http.get();
+              $scope.filters = [
+                  "devices",
+                  "smartdevices",
+                  "tags"
+              ];
+                //$http.get();
                 break;
+            /*case 'system':
+              $scope.filters = [
+                "agentlogs",
+                "dataloggerlogs"
+              ];
+                break;*/
         }
         ngDialog.openConfirm( {
                 templateUrl: 'mathFormula/add/devices.pug',

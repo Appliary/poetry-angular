@@ -6,6 +6,12 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     googleChartApiConfig
 ) {
 
+  /**
+   * For some charts, only show last measurement
+   */
+  var isSingleDataChart = false;
+  var definedSizeCharts = ["Table"];
+
     $scope.tgtab = {
         isTable: false
     };
@@ -33,181 +39,182 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         }
     };
 
-    /**
-     * For some charts, only show last measurement
-     */
-    var isSingleDataChart = false;
-
     init();
 
     $scope.widget.refresh = init;
 
     /**
-     * Init function
-     */
-    function init() {
-        console.log( "init" );
+    * Init function
+    */
+    function init(){
+      console.log("init");
+      if(definedSizeCharts.indexOf($scope.widget.options.chartType) == -1){
         delete $scope.widget.options.chartOptions.width;
         delete $scope.widget.options.chartOptions.height;
-        $scope.widget.chartObject = {
-            data: [],
-            type: $scope.widget.options.chartType,
-            options: $scope.widget.options.chartOptions
-        };
+      }
+      else{
+        $scope.widget.options.chartOptions.width = '100%';
+      }
 
-        /**
-         * set user locale and language or set default
-         */
-        var locale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : 'us';
-        var language = $rootScope.user && $rootScope.user.language ? $rootScope.user.language : 'en';
-        googleChartApiConfig.optionalSettings.locale = locale;
-        googleChartApiConfig.optionalSettings.language = language;
+      $scope.widget.chartObject = {
+          data: [],
+          type: $scope.widget.options.chartType,
+          options: $scope.widget.options.chartOptions
+      };
 
-        switch ( $scope.widget.chartObject.type ) {
-            case "Gauge":
-            case "PieChart":
-                isSingleDataChart = true;
-                break;
-        }
+      /**
+       * set user locale and language or set default
+       */
+      var locale = $rootScope.user && $rootScope.user.locale ? $rootScope.user.locale : 'us';
+      var language = $rootScope.user && $rootScope.user.language ? $rootScope.user.language : 'en';
+      googleChartApiConfig.optionalSettings.locale = locale;
+      googleChartApiConfig.optionalSettings.language = language;
 
-        /**
-         * timeFrame
-         * Object containing computed from and to
-         */
-        $scope.timeFrame = ( function timeFrame( tf ) {
+      switch ( $scope.widget.chartObject.type ) {
+          case "Gauge":
+          case "PieChart":
+              isSingleDataChart = true;
+              break;
+      }
 
-            var fromDate = new Date(),
-                toDate = new Date();
+      /**
+       * timeFrame
+       * Object containing computed from and to
+       */
+      $scope.timeFrame = ( function timeFrame( tf ) {
 
-            if ( !tf ) throw new Error( 'No timeframe, aborting' );
+          var fromDate = new Date(),
+              toDate = new Date();
 
-            switch ( tf.type ) {
+          if ( !tf ) throw new Error( 'No timeframe, aborting' );
 
-                case 'static':
-                    return {
-                        from: tf.from,
-                        to: tf.to
-                    };
+          switch ( tf.type ) {
 
-                case 'absolute':
-                    fromDate.setHours( 0, 0, 0, 0 );
-                    toDate.setHours( 0, 0, 0, 0 );
-                    switch ( tf.frame ) {
+              case 'static':
+                  return {
+                      from: tf.from,
+                      to: tf.to
+                  };
 
-                        case 'today':
-                            toDate.setDate( toDate.getDate() + 1 );
-                            break;
+              case 'absolute':
+                  fromDate.setHours( 0, 0, 0, 0 );
+                  toDate.setHours( 0, 0, 0, 0 );
+                  switch ( tf.frame ) {
 
-                        case 'yesterday':
-                            fromDate.setDate( fromDate.getDate() - 1 );
-                            break;
+                      case 'today':
+                          toDate.setDate( toDate.getDate() + 1 );
+                          break;
 
-                        case 'thisWeek':
-                            fromDay = fromDate.getDay();
-                            if ( fromDay ) fromDay--;
-                            else fromDay = 6;
+                      case 'yesterday':
+                          fromDate.setDate( fromDate.getDate() - 1 );
+                          break;
 
-                            fromDate.setDate( fromDate.getDate() - fromDay );
-                            toDate.setDate( toDate.getDate() - fromDay + 6 );
-                            break;
+                      case 'thisWeek':
+                          fromDay = fromDate.getDay();
+                          if ( fromDay ) fromDay--;
+                          else fromDay = 6;
 
-                        case 'lastWeek':
-                            fromDay = fromDate.getDay();
-                            if ( fromDay ) fromDay--;
-                            else fromDay = 6;
+                          fromDate.setDate( fromDate.getDate() - fromDay );
+                          toDate.setDate( toDate.getDate() - fromDay + 6 );
+                          break;
 
-                            fromDate.setDate( fromDate.getDate() - fromDay - 7 );
-                            toDate.setDate( toDate.getDate() - fromDay - 1 );
-                            break;
+                      case 'lastWeek':
+                          fromDay = fromDate.getDay();
+                          if ( fromDay ) fromDay--;
+                          else fromDay = 6;
 
-                        case 'thisMonth':
-                            fromDate.setDate( 1 );
-                            toDate.setMonth( toDate.getMonth() + 1 );
-                            toDate.setDate( 1 );
-                            break;
+                          fromDate.setDate( fromDate.getDate() - fromDay - 7 );
+                          toDate.setDate( toDate.getDate() - fromDay - 1 );
+                          break;
 
-                        case 'lastMonth':
-                            fromDate.setMonth( fromDate.getMonth() - 1 );
-                            fromDate.setDate( 1 );
-                            toDate.setDate( 1 );
-                            break;
+                      case 'thisMonth':
+                          fromDate.setDate( 1 );
+                          toDate.setMonth( toDate.getMonth() + 1 );
+                          toDate.setDate( 1 );
+                          break;
 
-                        case 'thisYear':
-                            fromDate.setMonth( 0, 1 );
-                            toDate.setMonth( 0, 1 );
-                            toDate.setFullYear( toDate.getFullYear() + 1 );
-                            break;
+                      case 'lastMonth':
+                          fromDate.setMonth( fromDate.getMonth() - 1 );
+                          fromDate.setDate( 1 );
+                          toDate.setDate( 1 );
+                          break;
 
-                        case 'lastYear':
-                            fromDate.setMonth( 0, 1 );
-                            toDate.setMonth( 0, 1 );
-                            fromDate.setFullYear( fromDate.getFullYear() - 1 );
-                            break;
+                      case 'thisYear':
+                          fromDate.setMonth( 0, 1 );
+                          toDate.setMonth( 0, 1 );
+                          toDate.setFullYear( toDate.getFullYear() + 1 );
+                          break;
 
-                        default:
-                            throw new Error( 'frame not found' );
+                      case 'lastYear':
+                          fromDate.setMonth( 0, 1 );
+                          toDate.setMonth( 0, 1 );
+                          fromDate.setFullYear( fromDate.getFullYear() - 1 );
+                          break;
 
-                    }
-                    toDate.setMilliseconds( -1 );
-                    break;
+                      default:
+                          throw new Error( 'frame not found' );
 
-                case 'relative':
-                    switch ( tf.unit ) {
+                  }
+                  toDate.setMilliseconds( -1 );
+                  break;
 
-                        case 'years':
-                            fromDate.setFullYear(
-                                fromDate.getFullYear() - tf.count
-                            );
-                            break;
+              case 'relative':
+                  switch ( tf.unit ) {
 
-                        case 'months':
-                            fromDate.setMonth(
-                                fromDate.getMonth() - tf.count
-                            );
-                            break;
+                      case 'years':
+                          fromDate.setFullYear(
+                              fromDate.getFullYear() - tf.count
+                          );
+                          break;
 
-
-                        case 'weeks':
-                            tf.count *= 7;
-                            /* jshint -W086 */ // FALLTROUGH IS NORMAL
-
-                        case 'days':
-                            /* jshint +W086 */ // END FALLTROUGH IS NORMAL
-                            fromDate.setDate(
-                                fromDate.getDate() - tf.count
-                            );
-                            break;
-
-                        case 'hours':
-                            fromDate.setHours(
-                                fromDate.getHours() - tf.count
-                            );
-                            break;
-
-                        case 'minutes':
-                            fromDate.setMinutes(
-                                fromDate.getMinutes() - tf.count
-                            );
-                            break;
-
-                    }
-                    break;
-
-                default:
-                    throw new Error( 'Unknown timeFrame type ', tf.unit );
-            }
-
-            return {
-                from: fromDate,
-                to: toDate
-            };
-
-        } )( $scope.widget.options.timeframe );
+                      case 'months':
+                          fromDate.setMonth(
+                              fromDate.getMonth() - tf.count
+                          );
+                          break;
 
 
-        // if the widget use custom data and not inputs (e.g.: reportManagement)
-        if ( $scope.widget.custom ) readCustom();
-        else readInputs();
+                      case 'weeks':
+                          tf.count *= 7;
+                          /* jshint -W086 */ // FALLTROUGH IS NORMAL
+
+                      case 'days':
+                          /* jshint +W086 */ // END FALLTROUGH IS NORMAL
+                          fromDate.setDate(
+                              fromDate.getDate() - tf.count
+                          );
+                          break;
+
+                      case 'hours':
+                          fromDate.setHours(
+                              fromDate.getHours() - tf.count
+                          );
+                          break;
+
+                      case 'minutes':
+                          fromDate.setMinutes(
+                              fromDate.getMinutes() - tf.count
+                          );
+                          break;
+
+                  }
+                  break;
+
+              default:
+                  throw new Error( 'Unknown timeFrame type ', tf.unit );
+          }
+
+          return {
+              from: fromDate,
+              to: toDate
+          };
+
+      } )( $scope.widget.options.timeframe );
+
+
+      // if the widget use custom data and not inputs (e.g.: reportManagement)
+      if ( $scope.widget.custom ) readCustom();
+      else readInputs();
     }
 
 
