@@ -1,5 +1,6 @@
 app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
-    $scope
+    $scope,
+    ngDialog
 ) {
 
     $scope.chartEditor = function chartEditor() {
@@ -26,6 +27,16 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         var charteditor = new google.visualization.ChartEditor();
         charteditor.openDialog( w );
 
+    };
+
+    $scope.filters = [ 'devices', 'smartdevices' ];
+    $scope.selectInputId = function selectInputId() {
+        ngDialog.openConfirm( {
+                templateUrl: 'mathFormula/add/devices.pug'
+            } )
+            .then( function selected( input ) {
+
+            } );
     };
 
 } );

@@ -20,3 +20,14 @@ select {
         cursor: default;
     }
 }
+
+.fakeSelect {
+    background-repeat: no-repeat !important;
+    background-position: right !important;
+    background-color: $input_bg !important;
+    &[disabled] {
+        background: $input_bg_disabled !important;
+        color: $input_same;
+        cursor: default;
+    }
+}
