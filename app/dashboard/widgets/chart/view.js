@@ -12,6 +12,33 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
   var isSingleDataChart = false;
   var definedSizeCharts = ["Table"];
 
+    $scope.tgtab = {
+        isTable: false
+    };
+
+    $scope.toggleTable = function toggleTable() {
+        console.log( 'tgtab' );
+        if ( $scope.tgtab.isTable ) {
+            $scope.tgtab.isTable = false;
+            init();
+        } else {
+            $scope.tgtab.chartOptions = angular.copy(
+                $scope.widget.options.chartOptions
+            );
+            $scope.tgtab.chartType = angular.copy(
+                $scope.widget.options.chartType
+            );
+            $scope.widget.options.chartType = 'Table';
+            $scope.widget.options.chartOptions = {
+                width: '100%'
+            };
+            $scope.tgtab.isTable = true;
+            init();
+            $scope.widget.options.chartOptions = $scope.tgtab.chartOptions;
+            $scope.widget.options.chartType = $scope.tgtab.chartType;
+        }
+    };
+
     init();
 
     $scope.widget.refresh = init;
@@ -295,7 +322,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     var doInitVAxisTitle = true;
 
     function readInputs() {
-      console.log("readInputs");
+        console.log( "readInputs" );
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
             $scope.widget.options.inputs.forEach( function ( input ) {
                 getData( input, $scope.timeFrame.from, $scope.timeFrame.to )

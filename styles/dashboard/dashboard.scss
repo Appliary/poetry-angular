@@ -66,7 +66,7 @@ ng-widget:hover .widgetOptions button{
     position:relative;
     width:100%;
     height: 100%;
-    overflow:hidden;
+    // overflow:hidden;
 }
 .widget{
     position:relative;
@@ -128,9 +128,6 @@ ng-widget:hover .widgetOptions button{
 }
 .relative {
     position: relative;
-}
-.google-visualization-table{
-  top:-5px;
 }
 .google-visualization-table-table th{
     text-align:center;

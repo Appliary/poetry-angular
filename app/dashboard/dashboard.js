@@ -24,7 +24,7 @@ app.controller( 'dashboard/dashboard', function (
                     return true;
 
                 return !!~$scope.$root.__module.config.widgets.indexOf( type );
-            }
+            };
 
             // Open widget creation modal
             ngDialog.openConfirm( {
@@ -69,6 +69,10 @@ app.controller( 'dashboard/dashboard', function (
 
                     // Save Dashboard
                     $scope.Dashboards.save();
+
+                    // Update view if needed
+                    if ( typeof widget.refresh == 'function' )
+                        widget.refresh();
 
                 } );
 
