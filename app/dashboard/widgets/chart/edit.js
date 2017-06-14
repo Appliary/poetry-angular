@@ -1,5 +1,7 @@
 app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
-    $scope
+    $scope,
+    $http,
+    ngDialog
 ) {
 
     $scope.chartEditor = function chartEditor() {
@@ -26,6 +28,28 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         var charteditor = new google.visualization.ChartEditor();
         charteditor.openDialog( w );
 
+    };
+
+    $scope.selectInputId = function selectInputId() {
+        if ( $scope.newInput || !$scope.newInput.source ) return;
+        $scope.search = '';
+        switch ( $scope.newInput.source ) {
+            case 'measurement':
+                $scope.filters = {
+                    devices: false,
+                    smartdevices: false,
+                    tags: false
+                };
+                $http.get();
+                break;
+        }
+        ngDialog.openConfirm( {
+                templateUrl: 'mathFormula/add/devices.pug',
+                scope: $scope
+            } )
+            .then( function selected( input ) {
+
+            } );
     };
 
 } );

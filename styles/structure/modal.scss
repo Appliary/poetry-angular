@@ -15,12 +15,13 @@
         left: 50%;
         margin-left: -230px;
         background: $modal_bg;
-        width: 460px;
+        width: 95%;
+        max-width: 600px;
         border: $modal_border solid 1px;
         border-radius: 4px;
         box-shadow: 0 0 100px $modal_mask;
         padding: $gutter;
-        max-height: 50%;
+        max-height: 60%;
         overflow-y: auto;
         .ngdialog-close:before {
             position: absolute;

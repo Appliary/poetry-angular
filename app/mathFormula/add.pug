@@ -1,5 +1,5 @@
 .tab-header
-    h1.modal-title
+    h3.modal-title(ng-if='tabview=="details"')
         | {{ 'addInput:title:mathformula' | translate }}
     tabs(ng-if='tabview!="details"')
         a( ng-click='$parent.tabview="details"' )
