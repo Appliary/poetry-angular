@@ -10,19 +10,45 @@ app.controller( 'mathFormula/editor', function (
         "devices",
         "smartdevices",
         "tags"
-      ]
+      ],
+      "formulaInput": true
     };
 
     $scope.mathFormulaConfig = defaultConfig;
 
+    $scope.formulaInput = true;
+
     try{
       var mfConfig = $scope.$root.__module.config.mathFormula;
       if(angular.isObject(mfConfig)){
-        $scope.mathFormulaConfig = mfConfig;
+        if(angular.isObject(mfConfig["alternatives"])){
+          var propertyName = mfConfig["alternatives"].property;
+          $scope.$watch("item."+propertyName, function(propertyValue){
+            if(angular.isObject(mfConfig["alternatives"].values[propertyValue])){
+              $scope.mathFormulaConfig = mfConfig["alternatives"].values[propertyValue];
+              preConfigure();
+            }
+            console.debug("item."+propertyName, propertyValue);
+          });
+        }
+        else{
+          $scope.mathFormulaConfig = mfConfig;
+          preConfigure();
+        }
       }
     }
     catch(e){
       console.debug(e);
+    }
+
+    function preConfigure(){
+      var mfConfig = $scope.mathFormulaConfig;
+      if(!angular.isObject(mfConfig))
+        return;
+
+      if(mfConfig.hasOwnProperty('formulaInput')){
+        $scope.formulaInput = mfConfig.formulaInput;
+      }
     }
 
     $scope.showVals = function showVals( vals ) {

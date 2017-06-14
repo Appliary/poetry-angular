@@ -34,16 +34,6 @@ app.controller( 'mathFormula/add', function (
       if(!angular.isObject(conf))
         return;
 
-      if(angular.isObject(conf["alternatives"])){
-        var propertyName = conf["alternatives"].property;
-        Object.keys(conf["alternatives"].values).some(function(val){
-          if($scope.item[propertyName] == val){
-            conf = conf["alternatives"].values[val];
-            return true;
-          }
-        });
-      }
-
       if(conf.filters){
         var cFilters = conf.filters;
         if(angular.isArray(cFilters)){
