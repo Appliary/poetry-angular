@@ -11,7 +11,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
     div( ng-if="tab==''")
         label {{ 'title:widget:label' | translate }}
         input(ng-model="widget.title")
-            
+
         label {{ 'chart:widget:label' | translate }}
         button(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
         span.muted(ng-if="!widget.options.inputs.length")
@@ -31,11 +31,11 @@ div(ng-controller="dashboard/widgets/chart/edit")
             option(value="relative") {{ 'relative:timeframe:widget' | translate }}
             option(value="absolute") {{ 'absolute:timeframe:widget' | translate }}
             option(value="static") {{ 'static:timeframe:widget' | translate }}
-                
+
         div( ng-if="widget.options.timeframe.type=='relative'")
             label {{ 'count:timeframe:widget' | translate }}
             input(ng-model="widget.options.timeframe.count")
-            
+
             label {{ 'unit:timeframe:widget' | translate }}
             select(ng-model="widget.options.timeframe.unit")
                 option(value="minutes") {{ 'minutes:timeframe:widget' | translate }}
@@ -44,7 +44,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                 option(value="weeks") {{ 'weeks:timeframe:widget' | translate }}
                 option(value="months") {{ 'months:timeframe:widget' | translate }}
                 option(value="years") {{ 'years:timeframe:widget' | translate }}
-                
+
         div( ng-if="widget.options.timeframe.type=='absolute'")
             label {{ 'unit:timeframe:widget' | translate }}
             select(ng-model="widget.options.timeframe.frame")
@@ -64,16 +64,16 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     | {{ 'thisYear:timeframe:widget' | translate }}
                 option(value="lastYear")
                     | {{ 'lastYear:timeframe:widget' | translate }}
-                
+
         div( ng-if="widget.options.timeframe.type=='static'")
             label {{ 'from:timeframe:widget' | translate }}
             input(ng-model="widget.options.timeframe.from", type="date")
-            
+
             label {{ 'to:timeframe:widget' | translate }}
             input(ng-model="widget.options.timeframe.to", type="date")
 
 
-    div( ng-if="tab=='inputs'" )
+    div( ng-if="tab=='inputs'", device-selector-container, filters="filters", hide-filter-buttons="false" )
         table
             tr
                 th {{ 'varName:input:chart' | translate }}
@@ -97,6 +97,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     option(value="stat", disabled)
                         | {{'stat:input:chart' | translate}}
                 td: input.fakeSelect(ng-disabled="!newInput.source", placeholder="{{'clickToSelect:device:mathformula'|translate}}", ng-click="selectInputId()", readonly)
+                //- device-selector(ng-disabled="!newInput.source", ng-click="selectInputId()")
                 td: select(ng-disabled="!newInput.id", ng-model="newInput.type")
                     option(ng-repeat="type in newInput.types", value="{{type}}")
                         | {{type[0]}}    {{type[1]}}

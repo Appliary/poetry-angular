@@ -1,0 +1,7 @@
+input#device.fakeSelect(value="{{ device.kind?device.kind + ' ':'' }}{{ device.name }}", placeholder="{{'clickToSelect:mathformula'|translate}}", readonly, ng-click="showSelectDevice()", ng-if="!device || device.kind != 'tags'")
+//-span(ng-if="device && device.kind && device.kind != 'tags'" ng-click="rmDevice()") &times;
+//-div(ng-if="device.kind == 'tags'", style="width:60%;display:inline")
+    span.unit(ng-repeat="(i, tag) in device._id", style="padding-left:35%")
+        input#device(value="t {{ tag }}", readonly)
+        span(ng-click="rmTag(i)") &times;
+    input#tag.fakeSelect(readonly, ng-click="tab('tag')", placeholder="{{'addTag:device:mathformula'|translate}}" )

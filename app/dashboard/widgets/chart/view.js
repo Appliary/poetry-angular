@@ -10,6 +10,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
    * For some charts, only show last measurement
    */
   var isSingleDataChart = false;
+  var definedSizeCharts = ["Table"];
 
     init();
 
@@ -20,8 +21,14 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     */
     function init(){
       console.log("init");
-      delete $scope.widget.options.chartOptions.width;
-      delete $scope.widget.options.chartOptions.height;
+      if(definedSizeCharts.indexOf($scope.widget.options.chartType) == -1){
+        delete $scope.widget.options.chartOptions.width;
+        delete $scope.widget.options.chartOptions.height;
+      }
+      else{
+        $scope.widget.options.chartOptions.width = '100%';
+      }
+
       $scope.widget.chartObject = {
           data: [],
           type: $scope.widget.options.chartType,
