@@ -29,10 +29,14 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
 
     };
 
-    $scope.filters = [ 'devices', 'smartdevices' ];
+    $scope.filters = {
+        'devices': false,
+        'smartdevices': false
+    };
     $scope.selectInputId = function selectInputId() {
         ngDialog.openConfirm( {
-                templateUrl: 'mathFormula/add/devices.pug'
+                templateUrl: 'mathFormula/add/devices.pug',
+                scope: $scope
             } )
             .then( function selected( input ) {
 
