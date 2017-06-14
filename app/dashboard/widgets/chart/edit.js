@@ -6,12 +6,12 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
 
     var charteditor = new google.visualization.ChartEditor();
     var chartWrapper = new google.visualization.ChartWrapper( {
-        dataTable: $scope.widget.chartObject.data,
         options: $scope.widget.options.chartOptions,
         chartType: $scope.widget.options.chartType
     } );
 
     $scope.chartEditor = function chartEditor() {
+        chartWrapper.setDataTable( $scope.widget.chartObject.data );
         charteditor.openDialog( chartWrapper );
     };
     google.visualization.events.addListener(
