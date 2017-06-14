@@ -24,11 +24,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
      * For some charts, only show last measurement
      */
     var isSingleDataChart = false;
-    switch($scope.chartObject.type){
-      case "Gauge":
-      case "PieChart":
-        isSingleDataChart = true;
-        break;
+    switch ( $scope.chartObject.type ) {
+        case "Gauge":
+        case "PieChart":
+            isSingleDataChart = true;
+            break;
     }
 
     /**
@@ -179,8 +179,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var apiUrl = input.kind == 'smartdevice' ? '/api/smartdevices/' : '/api/devices/';
         var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
         var limit = 0;
-        if(isSingleDataChart){
-          limit = 1;
+        if ( isSingleDataChart ) {
+            limit = 1;
         }
         var url = apiUrl + input.id + '/measurements' + aggregation + '?before=' + before + '&after=' + after + '&order=asc&limit=' + limit;
 
@@ -190,7 +190,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
 
         var data = [];
-        var result = {input: input};
+        var result = {
+            input: input
+        };
         console.log( "getdevicesdata url", url );
         $http.get( url )
             .then( function ( response ) {
@@ -244,7 +246,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             }
         } );
 
-        $scope.chartObject.data.forEach( function ( elem , i) {
+        $scope.chartObject.data.forEach( function ( elem, i ) {
             var dataRow = getDataRow( newData, elem[ 0 ] );
             if ( !dataRow.length ) elem.push( null );
         } );
@@ -277,42 +279,39 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                         var chartData = res.data;
 
                         // if empty array, no show
-                        if(chartData.length == 0){
-                          return;
+                        if ( !chartData.length ) return;
+
+                        if ( isSingleDataChart ) {
+                            if ( !$scope.chartObject.data.length ) {
+                                $scope.chartObject.data = [
+                                    [ 'Label', 'Value' ]
+                                ];
+                            }
+                            $scope.chartObject.data.push(
+                                [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
+                            );
+
+                            console.debug( "chart data", $scope.chartObject.data );
+                            return;
                         }
 
-                        if(isSingleDataChart){
-                          if($scope.chartObject.data.length == 0){
-                            $scope.chartObject.data = [
-                              ['Label', 'Value']
-                            ];
-                          }
-                          $scope.chartObject.data.push(
-                            [res.input.type+ (res.unit ? " ("+res.unit+")" : ""), chartData[0][1] || 0]
-                          );
-
-                          console.debug("chart data", $scope.chartObject.data);
-                          return;
-                        }
-
-                        if(!angular.isObject($scope.chartObject.options.vAxis)){
-                          $scope.chartObject.options.vAxis = {};
+                        if ( !angular.isObject( $scope.chartObject.options.vAxis ) ) {
+                            $scope.chartObject.options.vAxis = {};
                         }
 
                         // update vAxis title
-                        if(doInitVAxisTitle){
-                          doInitVAxisTitle = false;
-                          $scope.chartObject.options.vAxis.title = "";
-                        }
-                        else{
-                          $scope.chartObject.options.vAxis.title += ", ";
+                        if ( doInitVAxisTitle ) {
+                            doInitVAxisTitle = false;
+                            $scope.chartObject.options.vAxis.title = "";
+                        } else {
+                            $scope.chartObject.options.vAxis.title += ", ";
                         }
 
-                        $scope.chartObject.options.vAxis.title += res.input.type+ (res.unit ? " ("+res.unit+")" : "");
+                        $scope.chartObject.options.vAxis.title += res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
 
                         chartData.unshift( [ 'date', res.name || "" ] );
                         mergeData( chartData );
-                        console.debug("chart data", $scope.chartObject.data);
+                        console.debug( "chart data", $scope.chartObject.data );
                     } );
             } );
         }
