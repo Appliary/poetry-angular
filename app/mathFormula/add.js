@@ -184,8 +184,8 @@ app.controller( 'mathFormula/add', function (
       Object.keys( item.last )
       .forEach( function foreach( t ) {
           var type = [ item.last[ t ].type, item.last[ t ].id ];
-          if ( !~res.types.indexOf( type ) )
-              res.types.push( type );
+          if ( !~res.indexOf( type ) )
+              res.push( type );
 
           /**
           * TODO: check inner types if value is object
