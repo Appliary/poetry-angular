@@ -30,7 +30,11 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             );
             $scope.widget.options.chartType = 'Table';
             $scope.widget.options.chartOptions = {
-                width: '100%'
+                width: '100%',
+                height: '100%',
+                sortColumn: 0,
+                sortAscending: false,
+                frozenColumns: 1
             };
             $scope.tgtab.isTable = true;
             init();
