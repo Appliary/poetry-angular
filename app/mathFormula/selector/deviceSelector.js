@@ -16,7 +16,7 @@ app.directive( 'deviceSelectorContainer', function ( $http ) {
             $scope.showMe = false;
             $scope.showTemplate = function ( bool ) {
                 $scope.showMe = bool;
-            }
+            };
 
             console.log( "mathFormula/selector deviceSelectorContainer" );
 
