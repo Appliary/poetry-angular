@@ -3,6 +3,7 @@ app.directive('deviceSelectorContainer', function($http){
     restrict: 'A',
     scope: {
       containerTitle: '@?containerTitle',
+      availableFilters: '<?',
       allowedFilters: '=?filters',
       hideFilterButtons: '=?'
     },
@@ -16,10 +17,6 @@ app.directive('deviceSelectorContainer', function($http){
           $scope.showTemplate = function(bool){
             $scope.showMe = bool;
           }
-          this.showTemplate = $scope.showTemplate;
-          this.setSelectDeviceScope = function(seScope){
-            selectDeviceScope = seScope;
-          };
 
           console.log("mathFormula/selector deviceSelectorContainer");
 
@@ -41,41 +38,47 @@ app.directive('deviceSelectorContainer', function($http){
               tags: false
           };
 
-          // remove disallowed filters
-          if(angular.isArray($scope.disallowFilters)){
-            $scope.disallowFilters.forEach(function(key){
-              if(typeof $scope.filters[key] != "undefined"){
-                delete $scope.filters[key];
-              }
-            });
-          }
-
           // add allowed filters
           if(angular.isArray($scope.allowedFilters)){
-            $scope.filters = {};
-            $scope.allowedFilters.forEach(function(key){
-              $scope.filters[key] = false;
-            });
+            setFilters($scope.allowedFilters);
           }
 
-          $scope.$watch("allowedFilters",function(nv){
+          this.showTemplate = $scope.showTemplate;
+          this.setSelectDeviceScope = function(seScope){
+            selectDeviceScope = seScope;
+          };
+
+          this.setFiltersArray = function(nv){
             if(angular.isArray(nv)){
-              $scope.filters = {};
-              $scope.allowedFilters.forEach(function(key){
-                $scope.filters[key] = false;
-              });
+              setFilters(nv);
               getDevices();
             }
-          });
+          };
+
+          $scope.$watch("allowedFilters", this.setFiltersArray);
 
           // Avoid flood by stopping identical send & by iterating requests
           var lastRequests = {};
+
+          /**
+           * function: setFilters
+           * setter for $scope.filters
+           * @params {String[]} nv new values
+           */
+          function setFilters(nv){
+            $scope.filters = {};
+            nv.forEach(function(key){
+              $scope.filters[key] = false;
+            });
+          }
 
           /**
            * getDevices()
            * Get the devices, smartdevices and tags to select one of them
            */
           function getDevices() {
+
+            console.log("%cgetDevices","background-color: black; color: #2BFF00");
 
               // Clean results
               $scope.results = [];
@@ -125,7 +128,9 @@ app.directive('deviceSelectorContainer', function($http){
           }
 
           // Determine watchers in scope (all filters + search query)
-          var wg = Object.keys( $scope.filters )
+          var filtersToWatch = angular.isArray($scope.availableFilters)
+          ? $scope.availableFilters : Object.keys( $scope.filters );
+          var wg = filtersToWatch
               .map( function ( filter ) {
                   return 'filters.' + filter;
               } );
@@ -313,7 +318,8 @@ app.directive('deviceSelector', function($q, $timeout){
     require: ['^deviceSelectorContainer'],
     templateUrl: 'mathFormula/selector/deviceSelector.pug',
     scope: {
-      onChange: '='
+      onChange: '=',
+      filters: '=?'
     },
     link: function(scope, element, attrs, ctrls){
       //scope.tabview = scope.template;//"custom/modals/selectSmartDeviceForBuildings.pug";
@@ -322,6 +328,7 @@ app.directive('deviceSelector', function($q, $timeout){
       scope.device = {};
       deviceSelectorCtrl.setSelectDeviceScope(scope);
       scope.showSelectDevice = function(){
+        deviceSelectorCtrl.setFiltersArray(scope.filters);
         deviceSelectorCtrl.showTemplate(true);
       }
 

@@ -30,6 +30,7 @@ app.controller( 'mathFormula/add', function (
     * Fn to preconfigure input add form
     */
     function preConfigure(){
+      console.log("%cpreConfigure","background-color: black; color: #2BFF00");
       var conf = $scope.mathFormulaConfig;
       if(!angular.isObject(conf))
         return;
@@ -45,6 +46,8 @@ app.controller( 'mathFormula/add', function (
           );
         }
       }
+
+      console.log("scope",$scope);
     }
 
     /**
@@ -52,7 +55,7 @@ app.controller( 'mathFormula/add', function (
      * Get the devices, smartdevices and tags to select one of them
      */
     function getDevices() {
-
+      console.log("%cgetDevices","background-color: black; color: #2BFF00");
         // Clean results
         $scope.results = [];
 
@@ -193,7 +196,7 @@ app.controller( 'mathFormula/add', function (
           if(angular.isObject(last[t].value)){
             Object.keys( last[t].value )
               .forEach( function foreach( t ) {
-                let ndType = [t, undefined]
+                var ndType = [t, undefined]
                 if ( !~res.indexOf( ndType ) )
                     res.push( ndType );
               } );
