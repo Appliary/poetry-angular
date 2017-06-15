@@ -53,6 +53,9 @@ div.mathFormula(ng-controller='mathFormula/editor')
     div.formula(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
         textarea( ng-model='item.formula' )
         input( readonly, ng-value='currentOutput' )
+    div(ng-if="!formulaInput")
+        label(for="timeout")
+        input(ng-model="item.timeout", required, type="number")
 
 br
 span.saved( ng-if=' item.__saved ' )
