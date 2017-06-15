@@ -5,6 +5,8 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     ngDialog
 ) {
 
+    if ( !$scope.widget.options ) $scope.widget.options = {};
+
     var charteditor = new google.visualization.ChartEditor();
     var chartWrapper = new google.visualization.ChartWrapper( {
         options: $scope.widget.options.chartOptions,
@@ -12,7 +14,10 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     } );
 
     $scope.chartEditor = function chartEditor() {
+        if ( !$scope.widget.options.inputs || !$scope.widget.options.inputs.length )
+            return;
         chartWrapper.setDataTable( $scope.widget.chartObject.data );
+
         charteditor.openDialog( chartWrapper );
     };
     google.visualization.events.addListener(
@@ -34,19 +39,19 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
-              $scope.filters = [
-                  "devices",
-                  "smartdevices",
-                  "tags"
-              ];
+                $scope.filters = [
+                    "devices",
+                    "smartdevices",
+                    "tags"
+                ];
                 //$http.get();
                 break;
-            /*case 'system':
-              $scope.filters = [
-                "agentlogs",
-                "dataloggerlogs"
-              ];
-                break;*/
+                /*case 'system':
+                  $scope.filters = [
+                    "agentlogs",
+                    "dataloggerlogs"
+                  ];
+                    break;*/
         }
         ngDialog.openConfirm( {
                 templateUrl: 'mathFormula/add/devices.pug',
