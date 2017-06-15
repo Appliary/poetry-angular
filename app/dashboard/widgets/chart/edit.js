@@ -40,18 +40,17 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
-                $scope.filters = [
-                    "devices",
-                    "smartdevices",
-                    "tags"
-                ];
-                //$http.get();
+                $scope.filters = {
+                    "devices": false,
+                    "smartdevices": false,
+                    "tags": false
+                };
                 break;
                 /*case 'system':
-                  $scope.filters = [
-                    "agentlogs",
-                    "dataloggerlogs"
-                  ];
+                  $scope.filters = {
+                      "devices": false,
+                      "smartdevices": false
+                  };
                     break;*/
         }
         ngDialog.openConfirm( {
