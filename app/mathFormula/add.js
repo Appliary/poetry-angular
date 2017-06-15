@@ -163,7 +163,7 @@ app.controller( 'mathFormula/add', function (
             };
 
             if ( item.last )
-              getItemLastTypes(item, res.types);
+              getItemLastTypes(item.last, res.types);
 
 
             // Populate the results
@@ -177,21 +177,27 @@ app.controller( 'mathFormula/add', function (
      * getLastTypes( item, res )
      * Get types from item.last
      *
-     * @param {Object} item Items
+     * @param {Object} last Item.last
      * @param {Array} res Result
      */
-    function getItemLastTypes( item, res ){
-      Object.keys( item.last )
+    function getItemLastTypes( last, res ){
+      Object.keys( last )
       .forEach( function foreach( t ) {
-          var type = [ item.last[ t ].type, item.last[ t ].id ];
+          var type = [ last[ t ].type, last[ t ].id ];
           if ( !~res.indexOf( type ) )
               res.push( type );
 
           /**
-          * TODO: check inner types if value is object
-          *if(angular.isObject(item.last[t].value)){
-
-          }*/
+          * check inner attributes name if value is object
+          */
+          if(angular.isObject(last[t].value)){
+            Object.keys( last[t].value )
+              .forEach( function foreach( t ) {
+                let ndType = [t, undefined]
+                if ( !~res.indexOf( ndType ) )
+                    res.push( ndType );
+              } );
+          }
       } );
     }
 
