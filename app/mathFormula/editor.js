@@ -6,49 +6,47 @@ app.controller( 'mathFormula/editor', function (
 
     // example of config parameters
     var defaultConfig = {
-      "filters": [
-        "devices",
-        "smartdevices",
-        "tags"
-      ],
-      "formulaInput": true
+        "filters": [
+            "devices",
+            "smartdevices",
+            "tags"
+        ],
+        "formulaInput": true
     };
 
     $scope.mathFormulaConfig = defaultConfig;
 
     $scope.formulaInput = true;
 
-    try{
-      var mfConfig = $scope.$root.__module.config.mathFormula;
-      if(angular.isObject(mfConfig)){
-        if(angular.isObject(mfConfig["alternatives"])){
-          var propertyName = mfConfig["alternatives"].property;
-          $scope.$watch("item."+propertyName, function(propertyValue){
-            if(angular.isObject(mfConfig["alternatives"].values[propertyValue])){
-              $scope.mathFormulaConfig = mfConfig["alternatives"].values[propertyValue];
-              preConfigure();
+    try {
+        var mfConfig = $scope.$root.__module.config.mathFormula;
+        if ( angular.isObject( mfConfig ) ) {
+            if ( angular.isObject( mfConfig.alternatives ) ) {
+                var propertyName = mfConfig.alternatives.property;
+                $scope.$watch( "item." + propertyName, function ( propertyValue ) {
+                    if ( angular.isObject( mfConfig.alternatives.values[ propertyValue ] ) ) {
+                        $scope.mathFormulaConfig = mfConfig.alternatives.values[ propertyValue ];
+                        preConfigure();
+                    }
+                    console.debug( "item." + propertyName, propertyValue );
+                } );
+            } else {
+                $scope.mathFormulaConfig = mfConfig;
+                preConfigure();
             }
-            console.debug("item."+propertyName, propertyValue);
-          });
         }
-        else{
-          $scope.mathFormulaConfig = mfConfig;
-          preConfigure();
-        }
-      }
-    }
-    catch(e){
-      console.debug(e);
+    } catch ( e ) {
+        console.debug( e );
     }
 
-    function preConfigure(){
-      var mfConfig = $scope.mathFormulaConfig;
-      if(!angular.isObject(mfConfig))
-        return;
+    function preConfigure() {
+        var mfConfig = $scope.mathFormulaConfig;
+        if ( !angular.isObject( mfConfig ) )
+            return;
 
-      if(mfConfig.hasOwnProperty('formulaInput')){
-        $scope.formulaInput = mfConfig.formulaInput;
-      }
+        if ( mfConfig.hasOwnProperty( 'formulaInput' ) ) {
+            $scope.formulaInput = mfConfig.formulaInput;
+        }
     }
 
     $scope.showVals = function showVals( vals ) {

@@ -1,340 +1,340 @@
-app.directive('deviceSelectorContainer', function($http){
-  return {
-    restrict: 'A',
-    scope: {
-      containerTitle: '@?containerTitle',
-      allowedFilters: '=?filters',
-      hideFilterButtons: '=?'
-    },
-    transclude: true,
-    templateUrl: 'mathFormula/selector/deviceSelectorContainer.pug',
-    controller: function($element, $scope){
+app.directive( 'deviceSelectorContainer', function ( $http ) {
+    return {
+        restrict: 'A',
+        scope: {
+            containerTitle: '@?containerTitle',
+            allowedFilters: '=?filters',
+            hideFilterButtons: '=?'
+        },
+        transclude: true,
+        templateUrl: 'mathFormula/selector/deviceSelectorContainer.pug',
+        controller: function ( $element, $scope ) {
 
-          var selectDeviceScope;
+            var selectDeviceScope;
 
-          $scope.showMe = false;
-          $scope.showTemplate = function(bool){
-            $scope.showMe = bool;
-          }
-          this.showTemplate = $scope.showTemplate;
-          this.setSelectDeviceScope = function(seScope){
-            selectDeviceScope = seScope;
-          };
+            $scope.showMe = false;
+            $scope.showTemplate = function ( bool ) {
+                $scope.showMe = bool;
+            };
+            this.showTemplate = $scope.showTemplate;
+            this.setSelectDeviceScope = function ( seScope ) {
+                selectDeviceScope = seScope;
+            };
 
-          console.log("mathFormula/selector deviceSelectorContainer");
+            console.log( "mathFormula/selector deviceSelectorContainer" );
 
-          // Empty object
-          $scope.input = {};
+            // Empty object
+            $scope.input = {};
 
-          // Default tab
-          $scope.tabview = 'details';
+            // Default tab
+            $scope.tabview = 'details';
 
-          // Filters for device selection
-          $scope.query = {
-            search:''
-          };
+            // Filters for device selection
+            $scope.query = {
+                search: ''
+            };
 
-          // Default filter
-          $scope.filters = {
-              devices: false,
-              smartdevices: false,
-              tags: false
-          };
+            // Default filter
+            $scope.filters = {
+                devices: false,
+                smartdevices: false,
+                tags: false
+            };
 
-          // remove disallowed filters
-          if(angular.isArray($scope.disallowFilters)){
-            $scope.disallowFilters.forEach(function(key){
-              if(typeof $scope.filters[key] != "undefined"){
-                delete $scope.filters[key];
-              }
-            });
-          }
-
-          // add allowed filters
-          if(angular.isArray($scope.allowedFilters)){
-            $scope.filters = {};
-            $scope.allowedFilters.forEach(function(key){
-              $scope.filters[key] = false;
-            });
-          }
-
-          $scope.$watch("allowedFilters",function(nv){
-            if(angular.isArray(nv)){
-              $scope.filters = {};
-              $scope.allowedFilters.forEach(function(key){
-                $scope.filters[key] = false;
-              });
-              getDevices();
+            // remove disallowed filters
+            if ( angular.isArray( $scope.disallowFilters ) ) {
+                $scope.disallowFilters.forEach( function ( key ) {
+                    if ( typeof $scope.filters[ key ] != "undefined" ) {
+                        delete $scope.filters[ key ];
+                    }
+                } );
             }
-          });
 
-          // Avoid flood by stopping identical send & by iterating requests
-          var lastRequests = {};
+            // add allowed filters
+            if ( angular.isArray( $scope.allowedFilters ) ) {
+                $scope.filters = {};
+                $scope.allowedFilters.forEach( function ( key ) {
+                    $scope.filters[ key ] = false;
+                } );
+            }
 
-          /**
-           * getDevices()
-           * Get the devices, smartdevices and tags to select one of them
-           */
-          function getDevices() {
+            $scope.$watch( "allowedFilters", function ( nv ) {
+                if ( angular.isArray( nv ) ) {
+                    $scope.filters = {};
+                    $scope.allowedFilters.forEach( function ( key ) {
+                        $scope.filters[ key ] = false;
+                    } );
+                    getDevices();
+                }
+            } );
 
-              // Clean results
-              $scope.results = [];
+            // Avoid flood by stopping identical send & by iterating requests
+            var lastRequests = {};
 
-              var allFiltersDisabled = !Object.keys( $scope.filters )
-                  .some( function ( filter ) {
-                      return $scope.filters[ filter ];
-                  } );
+            /**
+             * getDevices()
+             * Get the devices, smartdevices and tags to select one of them
+             */
+            function getDevices() {
 
-              // Start requests by filter
-              Object.keys( $scope.filters )
-                  .forEach( function foreach( filter ) {
+                // Clean results
+                $scope.results = [];
 
-                      // If the filter is disabled, stop here (except all filters are disabled)
-                      if ( !allFiltersDisabled && !$scope.filters[ filter ] )
-                          return console.log( filter, 'disabled' );
+                var allFiltersDisabled = !Object.keys( $scope.filters )
+                    .some( function ( filter ) {
+                        return $scope.filters[ filter ];
+                    } );
 
-                      // Be sure that the lastRequest exists for this filter
-                      if ( !lastRequests[ filter ] ) lastRequests[ filter ] = {};
+                // Start requests by filter
+                Object.keys( $scope.filters )
+                    .forEach( function foreach( filter ) {
 
-                      // If the search is identical at the last time,
-                      // copy last response & stop here
-                      if ( lastRequests[ filter ].search == $scope.query.search )
-                          return addResults( lastRequests[ filter ].results, filter );
+                        // If the filter is disabled, stop here (except all filters are disabled)
+                        if ( !allFiltersDisabled && !$scope.filters[ filter ] )
+                            return console.log( filter, 'disabled' );
 
-                      // Save last search
-                      lastRequests[ filter ].search = angular.copy( $scope.query.search );
+                        // Be sure that the lastRequest exists for this filter
+                        if ( !lastRequests[ filter ] ) lastRequests[ filter ] = {};
 
-                      // Do the request to the API
-                      $http.get( '/api/' + filter + '?search=' + $scope.query.search )
-                          .then( function success( response ) {
+                        // If the search is identical at the last time,
+                        // copy last response & stop here
+                        if ( lastRequests[ filter ].search == $scope.query.search )
+                            return addResults( lastRequests[ filter ].results, filter );
 
-                              if ( lastRequests[ filter ].search != $scope.query.search )
-                                  return;
+                        // Save last search
+                        lastRequests[ filter ].search = angular.copy( $scope.query.search );
 
-                              // Get the returned list
-                              var data = response.data;
-                              if ( data.data ) data = data.data;
+                        // Do the request to the API
+                        $http.get( '/api/' + filter + '?search=' + $scope.query.search )
+                            .then( function success( response ) {
 
-                              // Add them in the scope
-                              lastRequests[ filter ].results = data;
-                              return addResults( data, filter );
+                                if ( lastRequests[ filter ].search != $scope.query.search )
+                                    return;
 
-                          }, console.error );
+                                // Get the returned list
+                                var data = response.data;
+                                if ( data.data ) data = data.data;
 
-                  } );
-          }
+                                // Add them in the scope
+                                lastRequests[ filter ].results = data;
+                                return addResults( data, filter );
 
-          // Determine watchers in scope (all filters + search query)
-          var wg = Object.keys( $scope.filters )
-              .map( function ( filter ) {
-                  return 'filters.' + filter;
-              } );
-          wg.push( 'query.search' );
-          $scope.$watchGroup( wg, getDevices );
+                            }, console.error );
 
-          /**
-           * getVar()
-           * Find the current value of the selected input
-           */
-          function getVar() {
+                    } );
+            }
 
-              // Assure that every field is completed
-              if ( !$scope.input ) return;
-              if ( !$scope.input.varName ) return;
-              if ( !$scope.input.device ) return;
-              if ( !$scope.input.device._id ) return;
-              if ( !$scope.input.device.kind ) return;
-              if ( !$scope.input.type ) return;
+            // Determine watchers in scope (all filters + search query)
+            var wg = Object.keys( $scope.filters )
+                .map( function ( filter ) {
+                    return 'filters.' + filter;
+                } );
+            wg.push( 'query.search' );
+            $scope.$watchGroup( wg, getDevices );
 
-              // Search the value
-              $http.post( '/api/rules/getVars', {
-                      inputs: [ {
-                          id: $scope.input.device._id,
-                          kind: $scope.input.device.kind,
-                          varName: $scope.input.varName,
-                          type: $scope.input.type[ 0 ],
-                          indice: $scope.input.type[ 1 ],
-                          time: $scope.input.time
-                      } ]
-                  } )
-                  .then( function success( d ) {
-                      var vn = $scope.input.varName;
-                      $scope.inputValue = d.data[ vn ];
-                  }, console.error );
-          }
-          // Fire the getVar() when input changes
-          $scope.$watchGroup( [ 'input.type', 'input.device', 'input.device.id', 'input.device.kind' ], getVar );
+            /**
+             * getVar()
+             * Find the current value of the selected input
+             */
+            function getVar() {
 
-          /**
-           * addResults( data, kind )
-           * Add the results of devices, smartdevices and tags
-           *
-           * @param {Array} data Items to add
-           * @param {String} kind Filter that triggered this result
-           */
-          function addResults( data, kind ) {
+                // Assure that every field is completed
+                if ( !$scope.input ) return;
+                if ( !$scope.input.varName ) return;
+                if ( !$scope.input.device ) return;
+                if ( !$scope.input.device._id ) return;
+                if ( !$scope.input.device.kind ) return;
+                if ( !$scope.input.type ) return;
 
-              if ( !data ) return;
+                // Search the value
+                $http.post( '/api/rules/getVars', {
+                        inputs: [ {
+                            id: $scope.input.device._id,
+                            kind: $scope.input.device.kind,
+                            varName: $scope.input.varName,
+                            type: $scope.input.type[ 0 ],
+                            indice: $scope.input.type[ 1 ],
+                            time: $scope.input.time
+                        } ]
+                    } )
+                    .then( function success( d ) {
+                        var vn = $scope.input.varName;
+                        $scope.inputValue = d.data[ vn ];
+                    }, console.error );
+            }
+            // Fire the getVar() when input changes
+            $scope.$watchGroup( [ 'input.type', 'input.device', 'input.device.id', 'input.device.kind' ], getVar );
 
-              data.forEach( function foreach( item ) {
+            /**
+             * addResults( data, kind )
+             * Add the results of devices, smartdevices and tags
+             *
+             * @param {Array} data Items to add
+             * @param {String} kind Filter that triggered this result
+             */
+            function addResults( data, kind ) {
 
-                  // Create object
-                  var res = {
-                      _id: item._id,
-                      name: item.name || item._id,
-                      kind: kind,
-                      types: []
-                  };
+                if ( !data ) return;
 
-                  if ( item.last )
-                      Object.keys( item.last )
-                      .forEach( function foreach( t ) {
-                          var type = [ item.last[ t ].type, item.last[ t ].id ];
-                          if ( !~res.types.indexOf( type ) )
-                              res.types.push( type );
-                      } );
+                data.forEach( function foreach( item ) {
 
-                  // Populate the results
-                  $scope.results.push( res );
+                    // Create object
+                    var res = {
+                        _id: item._id,
+                        name: item.name || item._id,
+                        kind: kind,
+                        types: []
+                    };
 
-              } );
+                    if ( item.last )
+                        Object.keys( item.last )
+                        .forEach( function foreach( t ) {
+                            var type = [ item.last[ t ].type, item.last[ t ].id ];
+                            if ( !~res.types.indexOf( type ) )
+                                res.types.push( type );
+                        } );
 
-          }
+                    // Populate the results
+                    $scope.results.push( res );
 
-          // Select the line as input
-          $scope.selectResult = function selectResult( result ) {
-              $scope.input.device = result;
-              if ( result.kind == 'tags' )
-                  $scope.input.device._id = [ result._id ];
-              $scope.tabview = 'details';
-              if(selectDeviceScope){
-                selectDeviceScope.selectResult($scope.input.device);
-              }
-              $scope.showTemplate(false);
-          };
+                } );
 
-          $scope.selectTag = function selectTag( result ) {
-              $scope.input.device._id.push( result._id );
-              $scope.tabview = 'details';
-          };
+            }
 
-          $scope.tab = function tab( name ) {
-              $scope.tabview = name;
-          };
+            // Select the line as input
+            $scope.selectResult = function selectResult( result ) {
+                $scope.input.device = result;
+                if ( result.kind == 'tags' )
+                    $scope.input.device._id = [ result._id ];
+                $scope.tabview = 'details';
+                if ( selectDeviceScope ) {
+                    selectDeviceScope.selectResult( $scope.input.device );
+                }
+                $scope.showTemplate( false );
+            };
 
-          $scope.rmTag = function rmTag( i ) {
-              $scope.input.device._id.splice( i, 1 );
-              if ( !$scope.input.device._id.length )
-                  delete $scope.input.device;
-          };
+            $scope.selectTag = function selectTag( result ) {
+                $scope.input.device._id.push( result._id );
+                $scope.tabview = 'details';
+            };
 
-          // Check varName validity
-          $scope.badName = function badName( varName ) {
+            $scope.tab = function tab( name ) {
+                $scope.tabview = name;
+            };
 
-              if ( !varName ) return true;
+            $scope.rmTag = function rmTag( i ) {
+                $scope.input.device._id.splice( i, 1 );
+                if ( !$scope.input.device._id.length )
+                    delete $scope.input.device;
+            };
 
-              if ( ~[
-                      'pi',
-                      'e',
-                      'sin',
-                      'cos',
-                      'min',
-                      'max',
-                      'avg',
-                      'sqrt',
-                      'log',
-                      'exp',
-                      'tau',
-                      'phi',
-                      'PI',
-                      'E',
-                      'SQRT2',
-                      'null',
-                      'undefined',
-                      'NaN',
-                      'LN2',
-                      'LN10',
-                      'LOG2E',
-                      'LOG10E',
-                      'Infinity',
-                      'i',
-                      'uninitialized',
-                      'version',
-                      'add',
-                      'cub',
-                      'divide',
-                      'ceil',
-                      'hypot',
-                      'floor',
-                      'exp',
-                      'fix',
-                      'mod',
-                      'round',
-                      'sign',
-                      'sqrt',
-                      'square',
-                      'substract',
-                      'pow',
-                      'norm',
-                      'xgcd',
-                      'unit',
-                      'to',
-                      'in',
-                      'not',
-                      'true',
-                      'false',
-                      'equal',
-                      'g',
-                      's',
-                      'm',
-                      'h',
-                      'l',
-                      'b'
-                  ].indexOf( varName ) )
-                  return true;
+            // Check varName validity
+            $scope.badName = function badName( varName ) {
 
-              if ( !varName.match( /^[a-z_][a-z0-9_]*$/i ) )
-                  return true;
+                if ( !varName ) return true;
 
-              if ( !$scope.inputs )
-                  return false;
+                if ( ~[
+                        'pi',
+                        'e',
+                        'sin',
+                        'cos',
+                        'min',
+                        'max',
+                        'avg',
+                        'sqrt',
+                        'log',
+                        'exp',
+                        'tau',
+                        'phi',
+                        'PI',
+                        'E',
+                        'SQRT2',
+                        'null',
+                        'undefined',
+                        'NaN',
+                        'LN2',
+                        'LN10',
+                        'LOG2E',
+                        'LOG10E',
+                        'Infinity',
+                        'i',
+                        'uninitialized',
+                        'version',
+                        'add',
+                        'cub',
+                        'divide',
+                        'ceil',
+                        'hypot',
+                        'floor',
+                        'exp',
+                        'fix',
+                        'mod',
+                        'round',
+                        'sign',
+                        'sqrt',
+                        'square',
+                        'substract',
+                        'pow',
+                        'norm',
+                        'xgcd',
+                        'unit',
+                        'to',
+                        'in',
+                        'not',
+                        'true',
+                        'false',
+                        'equal',
+                        'g',
+                        's',
+                        'm',
+                        'h',
+                        'l',
+                        'b'
+                    ].indexOf( varName ) )
+                    return true;
 
-              return $scope.inputs.some( function ( i ) {
-                  return ( varName == i.varName );
-              } );
+                if ( !varName.match( /^[a-z_][a-z0-9_]*$/i ) )
+                    return true;
 
-          };
-      }
+                if ( !$scope.inputs )
+                    return false;
+
+                return $scope.inputs.some( function ( i ) {
+                    return ( varName == i.varName );
+                } );
+
+            };
+        }
     };
-});
+} );
 
-app.directive('deviceSelector', function($q, $timeout){
-  return {
-    require: ['^deviceSelectorContainer'],
-    templateUrl: 'mathFormula/selector/deviceSelector.pug',
-    scope: {
-      onChange: '='
-    },
-    link: function(scope, element, attrs, ctrls){
-      //scope.tabview = scope.template;//"custom/modals/selectSmartDeviceForBuildings.pug";
-      var deviceSelectorCtrl = ctrls[0];
-      scope.tabview = "";
-      scope.device = {};
-      deviceSelectorCtrl.setSelectDeviceScope(scope);
-      scope.showSelectDevice = function(){
-        deviceSelectorCtrl.showTemplate(true);
-      }
+app.directive( 'deviceSelector', function ( $q, $timeout ) {
+    return {
+        require: [ '^deviceSelectorContainer' ],
+        templateUrl: 'mathFormula/selector/deviceSelector.pug',
+        scope: {
+            onChange: '='
+        },
+        link: function ( scope, element, attrs, ctrls ) {
+            //scope.tabview = scope.template;//"custom/modals/selectSmartDeviceForBuildings.pug";
+            var deviceSelectorCtrl = ctrls[ 0 ];
+            scope.tabview = "";
+            scope.device = {};
+            deviceSelectorCtrl.setSelectDeviceScope( scope );
+            scope.showSelectDevice = function () {
+                deviceSelectorCtrl.showTemplate( true );
+            };
 
-      scope.selectResult = function(device){
-        scope.device = device;
-        deviceSelectorCtrl.showTemplate(false);
-        scope.onChange(scope.device);
-      }
+            scope.selectResult = function ( device ) {
+                scope.device = device;
+                deviceSelectorCtrl.showTemplate( false );
+                scope.onChange( scope.device );
+            };
 
-      scope.rmDevice = function(){
-        scope.device = {};
-        scope.onChange();
-      };
-    }
-  }
-});
+            scope.rmDevice = function () {
+                scope.device = {};
+                scope.onChange();
+            };
+        }
+    };
+} );
