@@ -14,11 +14,12 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     } );
 
     $scope.chartEditor = function chartEditor() {
-        if ( !$scope.widget.options.inputs || !$scope.widget.options.inputs.length )
-            return;
-        chartWrapper.setDataTable( $scope.widget.chartObject.data );
 
+        if ( !$scope.widget.options.inputs || !$scope.widget.options.inputs.length ) return;
+
+        chartWrapper.setDataTable( $scope.widget.chartObject.data );
         charteditor.openDialog( chartWrapper );
+
     };
     google.visualization.events.addListener(
         charteditor,
