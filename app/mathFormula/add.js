@@ -125,16 +125,24 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device.kind ) return;
         if ( !$scope.input.type ) return;
 
+        var payload = [ {
+            id: $scope.input.device._id,
+            kind: $scope.input.device.kind,
+            varName: $scope.input.varName,
+            type: $scope.input.type[ 0 ],
+            indice: $scope.input.type[ 1 ],
+            time: $scope.input.time
+        } ];
+
+        console.debug("PAYLOAD",payload);
+        Object.keys($scope.input)
+         .forEach(function(elem){
+           console.log("%c"+elem+": "+JSON.stringify($scope.input[elem]),"background-color: black; color: #2BFF00");
+         });
+
         // Search the value
         $http.post( '/api/rules/getVars', {
-                inputs: [ {
-                    id: $scope.input.device._id,
-                    kind: $scope.input.device.kind,
-                    varName: $scope.input.varName,
-                    type: $scope.input.type[ 0 ],
-                    indice: $scope.input.type[ 1 ],
-                    time: $scope.input.time
-                } ]
+                inputs: payload
             } )
             .then( function success( d ) {
                 var vn = $scope.input.varName;

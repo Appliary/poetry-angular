@@ -50,6 +50,7 @@ app.directive('deviceSelectorContainer', function($http){
 
           this.setFiltersArray = function(nv){
             if(angular.isArray(nv)){
+              console.debug("filters:", nv );
               setFilters(nv);
               getDevices();
             }
@@ -192,18 +193,41 @@ app.directive('deviceSelectorContainer', function($http){
                   };
 
                   if ( item.last )
-                      Object.keys( item.last )
-                      .forEach( function foreach( t ) {
-                          var type = [ item.last[ t ].type, item.last[ t ].id ];
-                          if ( !~res.types.indexOf( type ) )
-                              res.types.push( type );
-                      } );
+                    getItemLastTypes(item.last, res.types);
 
                   // Populate the results
                   $scope.results.push( res );
 
               } );
 
+          }
+
+          /**
+           * getLastTypes( item, res )
+           * Get types from item.last
+           *
+           * @param {Object} last Item.last
+           * @param {Array} res Result
+           */
+          function getItemLastTypes( last, res ){
+            Object.keys( last )
+            .forEach( function foreach( t ) {
+                var type = [ last[ t ].type, last[ t ].id ];
+                if ( !~res.indexOf( type ) )
+                    res.push( type );
+
+                /**
+                * check inner attributes name if value is object
+                */
+                if(angular.isObject(last[t].value)){
+                  Object.keys( last[t].value )
+                    .forEach( function foreach( t ) {
+                      var ndType = [t, undefined]
+                      if ( !~res.indexOf( ndType ) )
+                          res.push( ndType );
+                    } );
+                }
+            } );
           }
 
           // Select the line as input
@@ -327,15 +351,21 @@ app.directive('deviceSelector', function($q, $timeout){
       scope.tabview = "";
       scope.device = {};
       deviceSelectorCtrl.setSelectDeviceScope(scope);
+
+      scope.$watch('filters', function(nv){
+        deviceSelectorCtrl.setFiltersArray(nv);
+      });
+
       scope.showSelectDevice = function(){
-        deviceSelectorCtrl.setFiltersArray(scope.filters);
         deviceSelectorCtrl.showTemplate(true);
       }
 
       scope.selectResult = function(device){
         scope.device = device;
         deviceSelectorCtrl.showTemplate(false);
-        scope.onChange(scope.device);
+        if(typeof scope.onChange == "function"){
+          scope.onChange(scope.device);
+        }
       }
 
       scope.rmDevice = function(){

@@ -73,7 +73,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
             input(ng-model="widget.options.timeframe.to", type="date")
 
 
-    div( ng-if="tab=='inputs'", device-selector-container, filters="filters", hide-filter-buttons="false" )
+    div( ng-if="tab=='inputs'", device-selector-container, hide-filter-buttons="false" )
         table
             tr
                 th {{ 'varName:input:chart' | translate }}
@@ -96,8 +96,8 @@ div(ng-controller="dashboard/widgets/chart/edit")
                         | {{'systemLog:input:chart' | translate}}
                     option(value="stat", disabled)
                         | {{'stat:input:chart' | translate}}
-                td: input.fakeSelect(ng-disabled="!newInput.source", placeholder="{{'clickToSelect:device:mathformula'|translate}}", ng-click="selectInputId()", readonly)
-                //- device-selector(ng-disabled="!newInput.source", ng-click="selectInputId()")
+                td: device-selector(ng-disabled="!newInput.source", ng-click="selectInputId()", filters="filters", on-change="onSelected")
+                //- input.fakeSelect(ng-disabled="!newInput.source", placeholder="{{'clickToSelect:device:mathformula'|translate}}", ng-click="selectInputId()", readonly)
                 td: select(ng-disabled="!newInput.id", ng-model="newInput.type")
                     option(ng-repeat="type in newInput.types", value="{{type}}")
                         | {{type[0]}}    {{type[1]}}

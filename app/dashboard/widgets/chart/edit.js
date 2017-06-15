@@ -40,26 +40,25 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         $scope.search = '';
         switch ( $scope.newInput.source ) {
             case 'measurement':
-                $scope.filters = {
-                    "devices": false,
-                    "smartdevices": false,
-                    "tags": false
-                };
+                $scope.filters = [
+                    "devices",
+                    "smartdevices",
+                    "tags"
+                ];
                 break;
-                /*case 'system':
-                  $scope.filters = {
-                      "devices": false,
-                      "smartdevices": false
-                  };
-                    break;*/
+                case 'system':
+                  $scope.filters = [
+                      "agents",
+                      "dataloggers"
+                  ];
+                  break;
         }
-        ngDialog.openConfirm( {
-                templateUrl: 'mathFormula/add/devices.pug',
-                scope: $scope
-            } )
-            .then( function selected( input ) {
-
-            } );
+        $scope.onSelected = function(input){
+          console.log("Device selected", input);
+          $scope.newInput.id = input._id;
+          $scope.newInput.types = input.types;
+          $scope.newInput.kind = input.kind;
+        }
     };
 
 } );
