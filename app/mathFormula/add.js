@@ -30,6 +30,7 @@ app.controller( 'mathFormula/add', function (
     * Fn to preconfigure input add form
     */
     function preConfigure(){
+      console.log("%cpreConfigure","background-color: black; color: #2BFF00");
       var conf = $scope.mathFormulaConfig;
       if(!angular.isObject(conf))
         return;
@@ -45,6 +46,8 @@ app.controller( 'mathFormula/add', function (
           );
         }
       }
+
+      console.log("scope",$scope);
     }
 
     /**
@@ -52,7 +55,7 @@ app.controller( 'mathFormula/add', function (
      * Get the devices, smartdevices and tags to select one of them
      */
     function getDevices() {
-
+      console.log("%cgetDevices","background-color: black; color: #2BFF00");
         // Clean results
         $scope.results = [];
 
@@ -163,7 +166,7 @@ app.controller( 'mathFormula/add', function (
             };
 
             if ( item.last )
-              getItemLastTypes(item, res.types);
+              getItemLastTypes(item.last, res.types);
 
 
             // Populate the results
@@ -177,21 +180,27 @@ app.controller( 'mathFormula/add', function (
      * getLastTypes( item, res )
      * Get types from item.last
      *
-     * @param {Object} item Items
+     * @param {Object} last Item.last
      * @param {Array} res Result
      */
-    function getItemLastTypes( item, res ){
-      Object.keys( item.last )
+    function getItemLastTypes( last, res ){
+      Object.keys( last )
       .forEach( function foreach( t ) {
-          var type = [ item.last[ t ].type, item.last[ t ].id ];
+          var type = [ last[ t ].type, last[ t ].id ];
           if ( !~res.indexOf( type ) )
               res.push( type );
 
           /**
-          * TODO: check inner types if value is object
-          *if(angular.isObject(item.last[t].value)){
-
-          }*/
+          * check inner attributes name if value is object
+          */
+          if(angular.isObject(last[t].value)){
+            Object.keys( last[t].value )
+              .forEach( function foreach( t ) {
+                var ndType = [t, undefined]
+                if ( !~res.indexOf( ndType ) )
+                    res.push( ndType );
+              } );
+          }
       } );
     }
 
