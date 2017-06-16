@@ -335,46 +335,6 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                 promises.push(getData( input, $scope.timeFrame.from, $scope.timeFrame.to ).then(function(res){
                   return res;
                 }));
-                return;
-                getData( input, $scope.timeFrame.from, $scope.timeFrame.to )
-                    .then( function ( res ) {
-                        var chartData = res.data;
-
-                        // if empty array, no show
-                        if ( !chartData.length ) return;
-
-                        if ( isSingleDataChart ) {
-                            if ( !$scope.widget.chartObject.data.length ) {
-                                $scope.widget.chartObject.data = [
-                                    [ 'Label', 'Value' ]
-                                ];
-                            }
-                            $scope.widget.chartObject.data.push(
-                                [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
-                            );
-
-                            //console.debug( "chart data", $scope.widget.chartObject.data );
-                            return;
-                        }
-
-                        if ( !angular.isObject( $scope.widget.chartObject.options.vAxis ) ) {
-                            $scope.widget.chartObject.options.vAxis = {};
-                        }
-
-                        // update vAxis title
-                        if ( doInitVAxisTitle ) {
-                            doInitVAxisTitle = false;
-                            $scope.widget.chartObject.options.vAxis.title = "";
-                        } else {
-                            $scope.widget.chartObject.options.vAxis.title += ", ";
-                        }
-
-                        $scope.widget.chartObject.options.vAxis.title += res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
-
-                        chartData.unshift( [ 'date', res.input.varName || "" ] );
-                        mergeData( chartData );
-                        //console.debug( "chart data", $scope.widget.chartObject.data );
-                    } );
             } );
 
             $q.all( promises )
