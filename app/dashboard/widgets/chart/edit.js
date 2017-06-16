@@ -61,5 +61,19 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         };
     };
 
+    $scope.addInput = function addInput() {
+        if ( !$scope.newInput.type )
+            return console.warn( 'No type' );
+        if ( !$scope.widget.options.inputs )
+            $scope.widget.options.inputs = [];
+        $scope.widget.options.inputs.push( {
+            varName: $scope.newInput.varName,
+            kind: $scope.newInput.kind,
+            id: $scope.newInput.id,
+            type: $scope.newInput.types[ $scope.newInput.type ][ 0 ],
+            indice: $scope.newInput.types[ $scope.newInput.type ][ 1 ]
+        } );
+        $scope.newInput = {};
+    };
 
 } );
