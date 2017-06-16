@@ -98,7 +98,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                         | {{'stat:input:chart' | translate}}
                 td: device-selector(ng-disabled="!newInput.source", ng-click="selectInputId()", filters="filters", on-change="onSelected")
                 td: select(ng-disabled="!newInput.id", ng-model="newInput.type")
-                    option(ng-repeat="type in newInput.types", value="{{type}}")
+                    option(ng-repeat="( i, type) in newInput.types", value="{{i}}")
                         | {{type[0]}}    {{type[1]}}
                 td.right: button(ng-click="addInput()")
                     | {{ 'add:input:chart' | translate }}
