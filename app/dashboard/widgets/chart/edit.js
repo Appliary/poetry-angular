@@ -46,34 +46,20 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
                     "tags"
                 ];
                 break;
-            case 'system':
-                $scope.filters = [
-                    "agents",
-                    "dataloggers"
-                ];
-                break;
+                case 'system':
+                  $scope.filters = [
+                      "agents",
+                      "dataloggers"
+                  ];
+                  break;
         }
-        $scope.onSelected = function ( input ) {
-            console.log( "Device selected", input );
-            $scope.newInput.id = input._id;
-            $scope.newInput.types = input.types;
-            $scope.newInput.kind = input.kind;
+        $scope.onSelected = function(input){
+          console.log("Device selected", input);
+          $scope.newInput.id = input._id;
+          $scope.newInput.types = input.types;
+          $scope.newInput.kind = input.kind;
         };
     };
 
-    $scope.addInput = function addInput() {
-        if ( !$scope.newInput.type )
-            return console.warn( 'No type' );
-        if ( !$scope.widget.options.inputs )
-            $scope.widget.options.inputs = [];
-        $scope.widget.options.inputs.push( {
-            varName: $scope.newInput.varName,
-            kind: $scope.newInput.kind,
-            id: $scope.newInput.id,
-            type: JSON.parse( $scope.newInput.type )[ 0 ],
-            indice: JSON.parse( $scope.newInput.type )[ 1 ]
-        } );
-        $scope.newInput = {};
-    };
 
 } );

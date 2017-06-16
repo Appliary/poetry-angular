@@ -53,6 +53,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     function init() {
         console.log( "init" );
         if ( !$scope.widget.options ) return;
+        $scope.widget.options.chartOptions = angular.isObject($scope.widget.options.chartOptions) ?
+        $scope.widget.options.chartOptions : {};
         if ( definedSizeCharts.indexOf( $scope.widget.options.chartType ) == -1 ) {
             delete $scope.widget.options.chartOptions.width;
             delete $scope.widget.options.chartOptions.height;
@@ -62,7 +64,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
         $scope.widget.chartObject = {
             data: [],
-            type: $scope.widget.options.chartType,
+            type: $scope.widget.options.chartType || "LineChart",
             options: $scope.widget.options.chartOptions
         };
 
@@ -326,6 +328,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     var doInitVAxisTitle = true;
 
     function readInputs() {
+        console.log("%cREAD INPUT","background-color: black; color: #2BFF00");
         console.log( "readInputs" );
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
             var inputs = $scope.widget.options.inputs;
