@@ -55,11 +55,14 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         if ( !$scope.widget.options ) return;
         $scope.widget.options.chartOptions = angular.isObject($scope.widget.options.chartOptions) ?
         $scope.widget.options.chartOptions : {};
-        if ( definedSizeCharts.indexOf( $scope.widget.options.chartType ) == -1 ) {
-            delete $scope.widget.options.chartOptions.width;
-            delete $scope.widget.options.chartOptions.height;
-        } else {
-            $scope.widget.options.chartOptions.width = '100%';
+
+        if(!$scope.widget.custom){
+          if ( definedSizeCharts.indexOf( $scope.widget.options.chartType ) == -1 ) {
+              delete $scope.widget.options.chartOptions.width;
+              delete $scope.widget.options.chartOptions.height;
+          } else {
+              $scope.widget.options.chartOptions.width = '100%';
+          }
         }
 
         $scope.widget.chartObject = {
@@ -91,6 +94,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
             var fromDate = new Date(),
                 toDate = new Date();
+
+            if($scope.widget.custom) return;
 
             if ( !tf ) throw new Error( 'No timeframe, aborting' );
 
@@ -329,7 +334,6 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
     function readInputs() {
         console.log("%cREAD INPUT","background-color: black; color: #2BFF00");
-        console.log( "readInputs" );
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
             var inputs = $scope.widget.options.inputs;
             var responses = {};
@@ -441,6 +445,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             changePattern = true;
             if ( aggregation == "daily" && googleChartApiConfig.optionalSettings.locale == 'fr' ) {
                 pattern = "d'/'M'/'yyyy";
+            }
+            else{
+              pattern = allPatterns[aggregation];
             }
         }
 
