@@ -70,8 +70,8 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
             varName: $scope.newInput.varName,
             kind: $scope.newInput.kind,
             id: $scope.newInput.id,
-            type: $scope.newInput.type[ 0 ],
-            indice: $scope.newInput.type[ 1 ]
+            type: JSON.parse( $scope.newInput.type )[ 0 ],
+            indice: JSON.parse( $scope.newInput.type )[ 1 ]
         } );
         $scope.newInput = {};
     };
