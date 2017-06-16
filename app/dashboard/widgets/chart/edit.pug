@@ -97,11 +97,10 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     option(value="stat", disabled)
                         | {{'stat:input:chart' | translate}}
                 td: device-selector(ng-disabled="!newInput.source", ng-click="selectInputId()", filters="filters", on-change="onSelected")
-                //- input.fakeSelect(ng-disabled="!newInput.source", placeholder="{{'clickToSelect:device:mathformula'|translate}}", ng-click="selectInputId()", readonly)
                 td: select(ng-disabled="!newInput.id", ng-model="newInput.type")
                     option(ng-repeat="type in newInput.types", value="{{type}}")
                         | {{type[0]}}    {{type[1]}}
-                td.right: button
+                td.right: button(ng-click="addInput()")
                     | {{ 'add:input:chart' | translate }}
 
     div.pull-right(class="ngdialog-buttons")
