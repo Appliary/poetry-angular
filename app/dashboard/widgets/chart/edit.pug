@@ -1,4 +1,4 @@
-div(ng-controller="dashboard/widgets/chart/edit")
+div(ng-controller="dashboard/widgets/chart/edit", ng-init="tab=''")
     h3 {{ 'editChart:ChartWidget' | translate }}
     tabs( ng-if="widget.options.chartType" )
         a(ng-click="tab='timeframe'", ng-class="{active:tab=='timeframe'}")
@@ -34,7 +34,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
 
         div( ng-if="widget.options.timeframe.type=='relative'")
             label {{ 'period:timeframe:widget' | translate }}
-            input(ng-model="widget.options.timeframe.count", style="width:33%")
+            input( type="number", ng-model="widget.options.timeframe.count", style="width:33%")
             select(ng-model="widget.options.timeframe.unit", style="width:30%;float:right")
                 option(value="minutes") {{ 'minutes:timeframe:widget' | translate }}
                 option(value="hours") {{ 'hours:timeframe:widget' | translate }}
