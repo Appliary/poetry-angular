@@ -102,9 +102,9 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     | {{ 'add:input:chart' | translate }}
                     
     div.pull-right(class="ngdialog-buttons", ng-if="!widget.options.chartType")
-        button.lightButton.pull-right(ng-click="tab='inputs'", ng-if="tab='timeframe'", ng-disabled="!widget.options.timeframe.type")
+        button.lightButton.pull-right(ng-click="$parent.tab='inputs'", ng-if="tab='timeframe'", ng-disabled="!widget.options.timeframe.type")
             | {{ 'next:chart:dashboard' | translate }}
-        button.lightButton.pull-right(ng-click="tab=''", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
+        button.lightButton.pull-right(ng-click="$parent.tab=''", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
             | {{ 'next:chart:dashboard' | translate }}
 
     div.pull-right(class="ngdialog-buttons", ng-if="widget.options.chartType")
