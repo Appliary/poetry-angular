@@ -1,14 +1,14 @@
 div(ng-controller="dashboard/widgets/chart/edit")
     h3 {{ 'editChart:ChartWidget' | translate }}
-    tabs
-        a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
-            | {{ 'main:chartwidget:tab' | translate }}
+    tabs( ng-if="widget.options.chartType" )
         a(ng-click="tab='timeframe'", ng-class="{active:tab=='timeframe'}")
             | {{ 'timeframe:chartwidget:tab' | translate }}
         a(ng-click="tab='inputs'", ng-class="{active:tab=='inputs'}")
             | {{ 'inputs:chartwidget:tab' | translate }}
+        a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
+            | {{ 'main:chartwidget:tab' | translate }}
 
-    div( ng-if="tab==''")
+    div( ng-if="tab=='' && widget.options.chartType")
         label {{ 'title:widget:label' | translate }}
         input(ng-model="widget.title")
 
@@ -17,9 +17,9 @@ div(ng-controller="dashboard/widgets/chart/edit")
         span.muted(ng-if="!widget.options.inputs.length")
             | &nbsp;{{'selectInputFirst:chart'|translate}}
 
-    div( ng-if="tab=='timeframe'" )
+    div( ng-if=" tab=='timeframe' || !widget.options.timeframe " )
         label {{ 'step:widget:label' | translate }}
-        select(ng-model="widget.options.step")
+        select(ng-model="widget.options.step", required)
             option(value="all") {{ 'all:timeframe:widget' | translate }}
             option(value="daily") {{ 'daily:timeframe:widget' | translate }}
             option(value="weekly") {{ 'weekly:timeframe:widget' | translate }}
@@ -27,16 +27,14 @@ div(ng-controller="dashboard/widgets/chart/edit")
             option(value="yearly") {{ 'yearly:timeframe:widget' | translate }}
 
         label {{ 'timeframe:widget:label' | translate }}
-        select(ng-model="widget.options.timeframe.type")
+        select(ng-model="widget.options.timeframe.type", required)
             option(value="relative") {{ 'relative:timeframe:widget' | translate }}
             option(value="absolute") {{ 'absolute:timeframe:widget' | translate }}
             option(value="static") {{ 'static:timeframe:widget' | translate }}
 
         div( ng-if="widget.options.timeframe.type=='relative'")
-            label {{ 'count:timeframe:widget' | translate }}
-            input(ng-model="widget.options.timeframe.count")
-
-            label {{ 'unit:timeframe:widget' | translate }}
+            label {{ 'period:timeframe:widget' | translate }}
+            input(ng-model="widget.options.timeframe.count", width="")
             select(ng-model="widget.options.timeframe.unit")
                 option(value="minutes") {{ 'minutes:timeframe:widget' | translate }}
                 option(value="hours") {{ 'hours:timeframe:widget' | translate }}
@@ -47,7 +45,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
 
         div( ng-if="widget.options.timeframe.type=='absolute'")
             label {{ 'unit:timeframe:widget' | translate }}
-            select(ng-model="widget.options.timeframe.frame")
+            select(ng-model="widget.options.timeframe.frame", required)
                 option(value="today")
                     | {{ 'today:timeframe:widget' | translate }}
                 option(value="yesterday")
@@ -67,10 +65,10 @@ div(ng-controller="dashboard/widgets/chart/edit")
 
         div( ng-if="widget.options.timeframe.type=='static'")
             label {{ 'from:timeframe:widget' | translate }}
-            input(ng-model="widget.options.timeframe.from", type="date")
+            input(ng-model="widget.options.timeframe.from", type="date", required)
 
             label {{ 'to:timeframe:widget' | translate }}
-            input(ng-model="widget.options.timeframe.to", type="date")
+            input(ng-model="widget.options.timeframe.to", type="date", required)
 
 
     div( ng-if="tab=='inputs'", device-selector-container, hide-filter-buttons="false" )
@@ -85,7 +83,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                 td {{input.varName}}
                 td {{input.kind | translate}}
                 td {{input.id}}
-                td {{input.type}}
+                td {{input.type}} {{input.indice}}
                 td.right: button(ng-click="widget.options.inputs.splice(i,1)") &times;
             tr
                 td: input(ng-class="{error: !newInput.varName}", ng-model="newInput.varName")
@@ -102,8 +100,14 @@ div(ng-controller="dashboard/widgets/chart/edit")
                         | {{type[0]}}    {{type[1]}}
                 td.right: button(ng-click="addInput()")
                     | {{ 'add:input:chart' | translate }}
+                    
+    div.pull-right(class="ngdialog-buttons", ng-if="!widget.options.chartType")
+        button.lightButton.pull-right(ng-click="tab='inputs'", ng-if="tab=='timeframe' && widget.options.timeframe.type")
+            | {{ 'next:chart:dashboard' | translate }}
+        button.lightButton.pull-right(ng-click="tab=''", ng-if="tab=='inputs' && widget.options.inputs.length")
+            | {{ 'next:chart:dashboard' | translate }}
 
-    div.pull-right(class="ngdialog-buttons")
+    div.pull-right(class="ngdialog-buttons", ng-if="widget.options.chartType")
         button.lightButton.pull-right(ng-click="closeThisDialog()")
             | {{ 'Cancel:dashboard' | translate }}
         button.lightButton.pull-right(ng-click="confirm(widget)")
