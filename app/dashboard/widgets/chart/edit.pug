@@ -34,8 +34,8 @@ div(ng-controller="dashboard/widgets/chart/edit")
 
         div( ng-if="widget.options.timeframe.type=='relative'")
             label {{ 'period:timeframe:widget' | translate }}
-            input(ng-model="widget.options.timeframe.count", width="")
-            select(ng-model="widget.options.timeframe.unit")
+            input(ng-model="widget.options.timeframe.count", style="width:33%")
+            select(ng-model="widget.options.timeframe.unit", style="width:30%;float:right")
                 option(value="minutes") {{ 'minutes:timeframe:widget' | translate }}
                 option(value="hours") {{ 'hours:timeframe:widget' | translate }}
                 option(value="days") {{ 'days:timeframe:widget' | translate }}
@@ -102,7 +102,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     | {{ 'add:input:chart' | translate }}
                     
     div.pull-right(class="ngdialog-buttons", ng-if="!widget.options.chartType")
-        button.lightButton.pull-right(ng-click="tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
+        button.lightButton.pull-right(ng-click="tab='inputs'", ng-if="tab!='inputs'", ng-disabled="!widget.options.timeframe.type")
             | {{ 'next:chart:dashboard' | translate }}
         button.lightButton.pull-right(ng-click="tab=''", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
             | {{ 'next:chart:dashboard' | translate }}
