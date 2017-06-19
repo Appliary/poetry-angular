@@ -329,11 +329,15 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         return result || [];
     }
 
-
-    var doInitVAxisTitle = true;
-
     function readInputs() {
         console.log("%cREAD INPUT","background-color: black; color: #2BFF00");
+
+        var doInitVAxisTitle = true;
+        if ( !angular.isObject( $scope.widget.chartObject.options.vAxis ) ) {
+            $scope.widget.chartObject.options.vAxis = {};
+        }
+        $scope.widget.chartObject.options.vAxis.title = "";
+
         if ( angular.isArray( $scope.widget.options.inputs ) ) {
             var inputs = $scope.widget.options.inputs;
             var responses = {};
@@ -364,10 +368,6 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
                           //console.debug( "chart data", $scope.widget.chartObject.data );
                           return;
-                      }
-
-                      if ( !angular.isObject( $scope.widget.chartObject.options.vAxis ) ) {
-                          $scope.widget.chartObject.options.vAxis = {};
                       }
 
                       // update vAxis title
