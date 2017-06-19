@@ -13,6 +13,9 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         chartType: $scope.widget.options.chartType
     } );
 
+    $scope.tab = ( $scope.widget.options.chartType ) ?
+        '' : 'timeframe';
+
     $scope.chartEditor = function chartEditor() {
 
         if ( !$scope.widget.options.inputs || !$scope.widget.options.inputs.length ) return;
@@ -46,18 +49,18 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
                     "tags"
                 ];
                 break;
-                case 'system':
-                  $scope.filters = [
-                      "agents",
-                      "dataloggers"
-                  ];
-                  break;
+            case 'system':
+                $scope.filters = [
+                    "agents",
+                    "dataloggers"
+                ];
+                break;
         }
-        $scope.onSelected = function(input){
-          console.log("Device selected", input);
-          $scope.newInput.id = input._id;
-          $scope.newInput.types = input.types;
-          $scope.newInput.kind = input.kind;
+        $scope.onSelected = function ( input ) {
+            console.log( "Device selected", input );
+            $scope.newInput.id = input._id;
+            $scope.newInput.types = input.types;
+            $scope.newInput.kind = input.kind;
         };
     };
 
