@@ -51,6 +51,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
      * Init function
      */
     function init() {
+        $scope.loadingChart = true;
         console.log( "init" );
         if ( !$scope.widget.options ) return;
         $scope.widget.options.chartOptions = angular.isObject($scope.widget.options.chartOptions) ?
@@ -350,7 +351,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
             $q.all( promises )
                 .then( function (values) {
-                    values.forEach(function(res){
+                    values.forEach(function(res, ix, array){
                       var chartData = res.data;
 
                       // if empty array, no show
@@ -365,7 +366,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
                           $scope.widget.chartObject.data.push(
                               [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
                           );
-
+                          $scope.loadingChart = false;
                           //console.debug( "chart data", $scope.widget.chartObject.data );
                           return;
                       }
@@ -382,6 +383,9 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
                       chartData.unshift( [ 'date', res.input.varName || "" ] );
                       mergeData( chartData );
+                      if(ix == array.length - 1){
+                        $scope.loadingChart = false;
+                      }
                     });
                 } );
         }
