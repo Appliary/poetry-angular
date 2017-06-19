@@ -17,7 +17,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
         span.muted(ng-if="!widget.options.inputs.length")
             | &nbsp;{{'selectInputFirst:chart'|translate}}
 
-    div( ng-if=" tab=='timeframe' || (!widget.options.chartType && tab=='') " )
+    div( ng-if=" tab=='timeframe' || (!widget.options.chartType && !tab) " )
         label {{ 'step:widget:label' | translate }}
         select(ng-model="widget.options.step", required)
             option(value="all") {{ 'all:timeframe:widget' | translate }}
