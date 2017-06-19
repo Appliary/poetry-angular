@@ -1,14 +1,14 @@
 div(ng-controller="dashboard/widgets/chart/edit")
     h3 {{ 'editChart:ChartWidget' | translate }}
     tabs( ng-if="widget.options.chartType" )
+        a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
+            | {{ 'main:chartwidget:tab' | translate }}
         a(ng-click="tab='timeframe'", ng-class="{active:tab=='timeframe'}")
             | {{ 'timeframe:chartwidget:tab' | translate }}
         a(ng-click="tab='inputs'", ng-class="{active:tab=='inputs'}")
             | {{ 'inputs:chartwidget:tab' | translate }}
-        a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
-            | {{ 'main:chartwidget:tab' | translate }}
 
-    div( ng-if="tab=='' && widget.options.chartType")
+    div( ng-if="tab==''")
         label {{ 'title:widget:label' | translate }}
         input(ng-model="widget.title")
 
