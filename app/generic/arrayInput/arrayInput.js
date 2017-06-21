@@ -8,7 +8,7 @@ app.directive( 'arrayInput', function arrayInput() {
         },
         controller: function arrayInputCtrl( $scope ) {
 
-            var isLoading = false;
+            var isLoading = true;
 
             $scope.tags = [];
             $scope.$watchCollection( 'tags', function watchModel() {
