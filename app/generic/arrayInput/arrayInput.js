@@ -21,7 +21,7 @@ app.directive( 'arrayInput', function arrayInput() {
 
             $scope.$watchCollection( 'array', function watchModel( n ) {
 
-                if ( !n || !n.map ) return ( $scope.array = [] );
+                if ( !n || !n.map ) return;
 
                 isLoading = true;
 
