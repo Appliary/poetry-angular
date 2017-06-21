@@ -39,10 +39,13 @@ app.directive( 'arrayInput', function arrayInput() {
                     var hash = 0;
                     for ( i = 0; i < collection.length; i++ ) {
                         chr = collection.charCodeAt( i );
-                        hash = ( ( hash << 3 ) - hash ) + chr;
+                        hash = ( ( hash << 5 ) - hash ) + chr;
                         hash |= 0;
                     }
                     hash = hash.toString( 16 );
+                    while ( hash.length < 6 ) {
+                        hash = '0' + hash;
+                    }
 
                     var color = 'rgba(';
                     color += parseInt( hash.slice( 0, 2 ), 16 ) + ',';
