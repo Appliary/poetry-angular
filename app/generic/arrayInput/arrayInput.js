@@ -2,13 +2,13 @@ app.component( 'arrayInput', {
     templateUrl: 'generic/arrayInput/arrayInput.pug',
     transclude: true,
     bindings: {
-        'model': "=",
+        'ngModel': "=",
     },
     controller: function arrayInputCtrl( $scope ) {
 
-        $scope.$watchCollection( 'model', function watchModel() {
-            if ( !$scope.model || !$scope.model.map ) $scope.model = [];
-            $scope.tags = $scope.model.map( function mapTags( model ) {
+        $scope.$watchCollection( 'ngModel', function watchModel() {
+            if ( !$scope.ngModel || !$scope.ngModel.map ) $scope.ngModel = [];
+            $scope.tags = $scope.ngModel.map( function mapTags( model ) {
                 if ( model.text ) model = model.text;
 
                 // Not a collection, send raw
