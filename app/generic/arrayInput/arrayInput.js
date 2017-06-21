@@ -8,16 +8,23 @@ app.directive( 'arrayInput', function arrayInput() {
         },
         controller: function arrayInputCtrl( $scope ) {
 
+            var isLoading = false;
+
             $scope.tags = [];
-            $scope.updateModel = function watchTags() {
+            $scope.$watchCollection( 'tags', function watchModel() {
+                if ( isLoading ) return;
                 if ( !$scope.array || !$scope.array.push ) $scope.array = [];
                 $scope.tags.forEach( function eachTag( tag ) {
                     $scope.array.push( tag.text );
                 } );
-            };
+            } );
 
             $scope.$watchCollection( 'array', function watchModel() {
+
                 if ( !$scope.array || !$scope.array.map ) $scope.array = [];
+
+                isLoading = true;
+
                 $scope.tags = $scope.array.map( function mapTags( model ) {
                     if ( model.text ) model = model.text;
 
@@ -49,6 +56,8 @@ app.directive( 'arrayInput', function arrayInput() {
                         color: color || 'transparent'
                     };
                 } );
+
+                isLoading = false;
             } );
 
         }
