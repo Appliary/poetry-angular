@@ -2,21 +2,21 @@ app.component( 'arrayInput', {
     templateUrl: 'generic/arrayInput/arrayInput.pug',
     transclude: true,
     bindings: {
-        'ngModel': "=",
+        'array': "=",
     },
     controller: function arrayInputCtrl( $scope ) {
 
         $scope.tags = [];
         $scope.$watchCollection( 'tags', function watchTags() {
-            if ( !$scope.ngModel || !$scope.ngModel.push ) $scope.ngModel = [];
+            if ( !$scope.array || !$scope.array.push ) $scope.array = [];
             $scope.tags.forEach( function eachTag( tag ) {
-                $scope.ngModel.push( tag.text );
+                $scope.array.push( tag.text );
             } );
         } );
 
-        $scope.$watchCollection( 'ngModel', function watchModel() {
-            if ( !$scope.ngModel || !$scope.ngModel.map ) $scope.ngModel = [];
-            $scope.tags = $scope.ngModel.map( function mapTags( model ) {
+        $scope.$watchCollection( 'array', function watchModel() {
+            if ( !$scope.array || !$scope.array.map ) $scope.array = [];
+            $scope.tags = $scope.array.map( function mapTags( model ) {
                 if ( model.text ) model = model.text;
 
                 // Not a collection, send raw
