@@ -50,7 +50,7 @@ form( ng-submit='' )
         //- Boolean
         input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
 
-        //- Tags
+        //- Arrays
         array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
             auto-complete(source="loadTags($query)", ng-if="loadTags")
 

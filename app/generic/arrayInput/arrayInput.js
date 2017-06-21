@@ -7,6 +7,7 @@ app.component( 'arrayInput', {
     controller: function arrayInputCtrl( $scope ) {
 
         $scope.$watchCollection( 'model', function watchModel() {
+            if ( !$scope.model || !$scope.model.map ) $scope.model = [];
             $scope.tags = $scope.model.map( function mapTags( model ) {
                 if ( model.text ) model = model.text;
 
