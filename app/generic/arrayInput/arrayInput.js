@@ -11,8 +11,8 @@ app.directive( 'arrayInput', function arrayInput() {
             var isLoading = true;
 
             $scope.tags = [];
-            $scope.$watchCollection( 'tags', function watchModel() {
-                if ( isLoading ) return;
+            $scope.$watchCollection( 'tags', function watchModel( n, o ) {
+                if ( isLoading || !o ) return;
                 if ( !$scope.array || !$scope.array.push ) $scope.array = [];
                 $scope.tags.forEach( function eachTag( tag ) {
                     $scope.array.push( tag.text );
