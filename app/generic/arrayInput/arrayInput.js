@@ -19,13 +19,13 @@ app.directive( 'arrayInput', function arrayInput() {
                 } );
             } );
 
-            $scope.$watchCollection( 'array', function watchModel() {
+            $scope.$watchCollection( 'array', function watchModel( n ) {
 
-                if ( !$scope.array || !$scope.array.map ) $scope.array = [];
+                if ( !n || !n.map ) return ( $scope.array = [] );
 
                 isLoading = true;
 
-                $scope.tags = $scope.array.map( function mapTags( model ) {
+                $scope.tags = n.map( function mapTags( model ) {
                     if ( model.text ) model = model.text;
 
                     // Not a collection, send raw
