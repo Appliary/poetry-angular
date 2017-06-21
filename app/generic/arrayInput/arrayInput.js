@@ -1,6 +1,6 @@
 app.directive( 'arrayInput', {
     templateUrl: 'generic/arrayInput/arrayInput.pug',
-    transclude: true,
+    //transclude: true,
     scope: {
         'array': "=",
     },
