@@ -1,7 +1,7 @@
 app.component( 'arrayInput', {
     templateUrl: 'generic/arrayInput/arrayInput.pug',
     transclude: true,
-    bindings: {
+    scope: {
         'array': "=",
     },
     controller: function arrayInputCtrl( $scope ) {
