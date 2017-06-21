@@ -14,9 +14,8 @@ app.directive( 'arrayInput', function arrayInput() {
             $scope.$watchCollection( 'tags', function watchModel( n, o ) {
                 if ( isLoading || !o || o == n ) return;
 
-                if ( !$scope.array || !$scope.array.push ) $scope.array = [];
-                $scope.tags.forEach( function eachTag( tag ) {
-                    $scope.array.push( tag.text );
+                $scope.array = $scope.tags.map( function mapTag( tag ) {
+                    return tag.text;
                 } );
             } );
 
