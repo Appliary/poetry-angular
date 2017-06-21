@@ -3,6 +3,7 @@ app.directive( 'arrayInput', {
     //transclude: true,
     scope: {
         'array': "=",
+        'autocomplete': '&'
     },
     controller: function arrayInputCtrl( $scope ) {
 
