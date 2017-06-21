@@ -1,4 +1,4 @@
-app.component( 'arrayInput', {
+app.directive( 'arrayInput', {
     templateUrl: 'generic/arrayInput/arrayInput.pug',
     transclude: true,
     scope: {
