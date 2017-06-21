@@ -12,7 +12,7 @@ app.directive( 'arrayInput', function arrayInput() {
 
             $scope.tags = [];
             $scope.$watchCollection( 'tags', function watchModel( n, o ) {
-                if ( isLoading || !o ) return;
+                if ( isLoading || !o || o == n ) return;
                 if ( !$scope.array || !$scope.array.push ) $scope.array = [];
                 $scope.tags.forEach( function eachTag( tag ) {
                     $scope.array.push( tag.text );
