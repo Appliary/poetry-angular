@@ -12,7 +12,8 @@ app.directive( 'arrayInput', function arrayInput() {
 
             $scope.tags = [];
             $scope.$watchCollection( 'tags', function watchTags( n, o ) {
-                if ( isLoading || !o || o == n ) return;
+                if ( isLoading || !o || o == n )
+                    if ( !n.length ) return;
 
                 $scope.array = $scope.tags.map( function mapTag( tag ) {
                     return tag.text;
@@ -21,10 +22,7 @@ app.directive( 'arrayInput', function arrayInput() {
 
             $scope.$watchCollection( 'array', function watchModel( n, o ) {
 
-                if ( !n || !n.map ) {
-                    if ( !tags.length ) return;
-                    else return ( $scope.array = [] );
-                }
+                if ( !n || !n.map ) return;
 
                 isLoading = true;
 
