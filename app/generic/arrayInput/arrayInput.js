@@ -6,6 +6,14 @@ app.component( 'arrayInput', {
     },
     controller: function arrayInputCtrl( $scope ) {
 
+        $scope.tags = [];
+        $scope.$watchCollection( 'tags', function watchTags() {
+            if ( !$scope.ngModel || !$scope.ngModel.push ) $scope.ngModel = [];
+            $scope.tags.forEach( function eachTag( tag ) {
+                $scope.ngModel.push( tag.text );
+            } );
+        } );
+
         $scope.$watchCollection( 'ngModel', function watchModel() {
             if ( !$scope.ngModel || !$scope.ngModel.map ) $scope.ngModel = [];
             $scope.tags = $scope.ngModel.map( function mapTags( model ) {
