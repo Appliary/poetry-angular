@@ -21,10 +21,19 @@ app.service( 'validationService', function validationService( $http ) {
                     // Return the type if in the list
                     if ( ~[
                             'array',
-                            'boolean',
-                            'date'
+                            'boolean'
                         ].indexOf( $scope.__joi.computed[ name ]._type ) )
                         return $scope.__joi.computed[ name ]._type;
+
+                    // Dates
+                    if($scope.__joi.computed[ name ]._type == 'date'){
+                      // Special date (only handle time)
+                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'time' ) )
+                          return 'time';
+
+                      // Default string otherwise
+                      return 'date';
+                    }
 
                     // Strings
                     if ( $scope.__joi.computed[ name ]._type == 'string' ) {
@@ -125,8 +134,16 @@ app.service( 'validationService', function validationService( $http ) {
         },
 
         toDateObject: function toDateObjectFactory( $scope ) {
-            return function toDateObject( field ) {
-                $scope.item[ field ] = new Date( $scope.item[ field ] || undefined );
+            return function toDateObject( field, type ) {
+                var dateValue = new Date( $scope.item[ field ] || undefined );
+                if(dateValue && type == 'time'){
+                  $scope.item[ field ] = new Date(0);
+                  $scope.item[ field ].setHours(dateValue.getHours());
+                  $scope.item[ field ].setMinutes(dateValue.getMinutes());
+                }
+                else{
+                  $scope.item[ field ] = dateValue;
+                }
                 $scope.item.__dateFields = $scope.item.__dateFields || [];
                 $scope.item.__dateFields.push( field );
             };
