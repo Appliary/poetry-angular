@@ -57,7 +57,7 @@ form( ng-submit='' )
         input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
         //- Time
-        input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+        input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
     .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         | {{ 'lastUpdate:itemInfo' | translate }}
