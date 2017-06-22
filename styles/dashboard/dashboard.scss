@@ -299,3 +299,19 @@ icon[name="dashoptions"]:after {
 .modal-dialog.google-visualization-charteditor-dialog {
     z-index: 999999999;
 }
+
+ng-widget .toggleTable {
+    position: relative;
+    top: -35px;
+    right: 35px;
+    float: right;
+    margin-bottom: -35px;
+    background-color: transparent;
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0;
+}
+ng-widget:hover .toggleTable{
+    opacity: 1;
+}
