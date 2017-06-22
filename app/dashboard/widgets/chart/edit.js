@@ -28,7 +28,7 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         charteditor,
         'ok',
         function saveChartEdit() {
-            $scope.apply( function () {
+            $scope.$apply( function () {
                 var cw = charteditor.getChartWrapper();
                 $scope.widget.options.chartType = cw.getChartType();
                 $scope.widget.options.chartOptions = cw.getOptions();
