@@ -311,6 +311,9 @@ ng-widget .toggleTable {
     background-repeat: no-repeat;
     background-size: contain;
     opacity: 0;
+    &:hover{
+        background-color: transparent !important;
+    }
 }
 ng-widget:hover .toggleTable{
     opacity: 1;
