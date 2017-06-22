@@ -187,11 +187,12 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
 
                         case 'weeks':
-                            tf.count *= 7;
-                            /* jshint -W086 */ // FALLTROUGH IS NORMAL
+                            fromDate.setDate(
+                              fromDate.getDate() - (tf.count * 7)
+                            );
+                            break;
 
                         case 'days':
-                            /* jshint +W086 */ // END FALLTROUGH IS NORMAL
                             fromDate.setDate(
                                 fromDate.getDate() - tf.count
                             );
