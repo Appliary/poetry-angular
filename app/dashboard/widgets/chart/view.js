@@ -360,6 +360,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             $scope.widget.chartObject.data.push(
                 [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
             );
+            if ( $scope.widget.options.onLoaded )
+                $scope.widget.options.onLoaded();
             $scope.loadingChart = false;
             //console.debug( "chart data", $scope.widget.chartObject.data );
             return;
