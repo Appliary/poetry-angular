@@ -54,16 +54,16 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         $scope.loadingChart = true;
         console.log( "init" );
         if ( !$scope.widget.options ) return;
-        $scope.widget.options.chartOptions = angular.isObject($scope.widget.options.chartOptions) ?
-        $scope.widget.options.chartOptions : {};
+        $scope.widget.options.chartOptions = angular.isObject( $scope.widget.options.chartOptions ) ?
+            $scope.widget.options.chartOptions : {};
 
-        if(!$scope.widget.custom){
-          if ( definedSizeCharts.indexOf( $scope.widget.options.chartType ) == -1 ) {
-              delete $scope.widget.options.chartOptions.width;
-              delete $scope.widget.options.chartOptions.height;
-          } else {
-              $scope.widget.options.chartOptions.width = '100%';
-          }
+        if ( !$scope.widget.custom ) {
+            if ( definedSizeCharts.indexOf( $scope.widget.options.chartType ) == -1 ) {
+                delete $scope.widget.options.chartOptions.width;
+                delete $scope.widget.options.chartOptions.height;
+            } else {
+                $scope.widget.options.chartOptions.width = '100%';
+            }
         }
 
         $scope.widget.chartObject = {
@@ -96,7 +96,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             var fromDate = new Date(),
                 toDate = new Date();
 
-            if($scope.widget.custom) return;
+            if ( $scope.widget.custom ) return;
 
             if ( !tf ) throw new Error( 'No timeframe, aborting' );
 
@@ -240,20 +240,25 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     // get measurements for one input
     function getData( input, after, before ) {
         var dfd = $q.defer();
-        var apiUrl = '/api/'+ input.kind + (input.kind.substr(input.kind.length - 1) == 's' ? '/': 's/');
+        var apiUrl = '/api/' + input.kind + ( input.kind.substr( input.kind.length - 1 ) == 's' ? '/' : 's/' );
         var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
         var limit = 0;
         var mtype = input.type;
         if ( isSingleDataChart ) {
             limit = 1;
         }
-        var url = apiUrl
-          + input.id
-          + '/measurements' + aggregation
-          + '?before=' + before
-          + '&after=' + after
-          + '&type=' + mtype
-          + '&order=asc&limit=' + limit;
+        var url = apiUrl +
+            input.id +
+            '/measurements' +
+            aggregation +
+            '?before=' +
+            before +
+            '&after=' +
+            after +
+            '&type=' +
+            mtype +
+            '&order=asc&limit=' +
+            limit;
 
 
         var data = [];
@@ -263,10 +268,10 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         console.log( "getdevicesdata url", url );
         $http.get( url )
             .then( function ( response ) {
-              if(input.kind == "tags"){
-                result.data = response.data.data;
-                return dfd.resolve( result );
-              }
+                if ( input.kind == "tags" ) {
+                    result.data = response.data.data;
+                    return dfd.resolve( result );
+                }
                 if ( angular.isObject( response.data ) && response.data.data ) {
                     result.name = response.data.parent.name;
                     result.unit = response.data.parent.unit || "";
@@ -340,50 +345,49 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
     }
 
 
-    function handleData(res){
-      var chartData = res.data;
+    function handleData( res ) {
+        var chartData = res.data;
 
-      // if empty array, no show
-      if ( !chartData.length ) return;
+        // if empty array, no show
+        if ( !chartData.length ) return;
 
-      if ( isSingleDataChart ) {
-          if ( !$scope.widget.chartObject.data.length ) {
-              $scope.widget.chartObject.data = [
-                  [ 'Label', 'Value' ]
-              ];
-          }
-          $scope.widget.chartObject.data.push(
-              [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
-          );
-          $scope.loadingChart = false;
-          //console.debug( "chart data", $scope.widget.chartObject.data );
-          return;
-      }
-
-      // update vAxis title
-      var preTitle = "";
-      if ( $scope.doInitVAxisTitle ) {
-          $scope.doInitVAxisTitle = false;
-          $scope.widget.chartObject.options.vAxis.title = "";
-      }
-      else{
-        preTitle = ", ";
-      }
-
-      if(res.input.type){
-        var possibleTitleValue = res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
-        if($scope.widget.chartObject.options.vAxis.title.indexOf(possibleTitleValue) == -1){
-          $scope.widget.chartObject.options.vAxis.title += preTitle + possibleTitleValue;
+        if ( isSingleDataChart ) {
+            if ( !$scope.widget.chartObject.data.length ) {
+                $scope.widget.chartObject.data = [
+                    [ 'Label', 'Value' ]
+                ];
+            }
+            $scope.widget.chartObject.data.push(
+                [ res.input.type + ( res.unit ? " (" + res.unit + ")" : "" ), chartData[ 0 ][ 1 ] || 0 ]
+            );
+            $scope.loadingChart = false;
+            //console.debug( "chart data", $scope.widget.chartObject.data );
+            return;
         }
-      }
 
-      chartData.unshift( [ 'date', (res.customName || res.input.varName) || "" ] );
-      //console.debug(res.input.kind,chartData);
-      mergeData( chartData );
+        // update vAxis title
+        var preTitle = "";
+        if ( $scope.doInitVAxisTitle ) {
+            $scope.doInitVAxisTitle = false;
+            $scope.widget.chartObject.options.vAxis.title = "";
+        } else {
+            preTitle = ", ";
+        }
+
+        if ( res.input.type ) {
+            var possibleTitleValue = res.input.type + ( res.unit ? " (" + res.unit + ")" : "" );
+            if ( $scope.widget.chartObject.options.vAxis.title.indexOf( possibleTitleValue ) == -1 ) {
+                $scope.widget.chartObject.options.vAxis.title += preTitle + possibleTitleValue;
+            }
+        }
+
+        chartData.unshift( [ 'date', ( res.customName || res.input.varName ) || "" ] );
+        //console.debug(res.input.kind,chartData);
+        mergeData( chartData );
     }
 
     function readInputs() {
-        console.log("%cREAD INPUT","background-color: black; color: #2BFF00");
+        console.log( "%cREAD INPUT", "background-color: black; color: #2BFF00" );
 
         $scope.doInitVAxisTitle = true;
         if ( !angular.isObject( $scope.widget.chartObject.options.vAxis ) ) {
@@ -396,43 +400,43 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             var responses = {};
             var promises = [];
             inputs.forEach( function ( input ) {
-                promises.push(getData( input, $scope.timeFrame.from, $scope.timeFrame.to ).then(function(res){
-                  return res;
-                }));
+                promises.push( getData( input, $scope.timeFrame.from, $scope.timeFrame.to )
+                    .then( function ( res ) {
+                        return res;
+                    } ) );
             } );
 
             $q.all( promises )
-                .then( function (values) {
-                    values.forEach(function(res, ix, array){
+                .then( function ( values ) {
+                    values.forEach( function ( res, ix, array ) {
 
-                      if(res.input.kind == "tags"){
-                        console.log("%cIT IS A TAG","background-color: black; color: #2BFF00");
+                        if ( res.input.kind == "tags" ) {
+                            console.log( "%cIT IS A TAG", "background-color: black; color: #2BFF00" );
 
-                        res.data.forEach(function(dtf){
-                          var formatableObj = {
-                            input: res.input,
-                            name: dtf.parent.name,
-                            unit: dtf.parent.unit || "",
-                            customName: res.input.varName + (dtf.parent.name ? "("+dtf.parent.name+")" : "")
-                          };
-                          var data = [];
-                          dtf.measurements.forEach(function(m){
-                            data.push([ new Date(m.timestamp), m.value ]);
-                          });
-                          formatableObj.data = data;
-                          handleData(formatableObj);
-                        });
-                      }
-                      else{
+                            res.data.forEach( function ( dtf ) {
+                                var formatableObj = {
+                                    input: res.input,
+                                    name: dtf.parent.name,
+                                    unit: dtf.parent.unit || "",
+                                    customName: res.input.varName + ( dtf.parent.name ? "(" + dtf.parent.name + ")" : "" )
+                                };
+                                var data = [];
+                                dtf.measurements.forEach( function ( m ) {
+                                    data.push( [ new Date( m.timestamp ), m.value ] );
+                                } );
+                                formatableObj.data = data;
+                                handleData( formatableObj );
+                            } );
+                        } else {
 
-                        handleData(res);
-                      }
+                            handleData( res );
+                        }
 
 
-                      if(ix == array.length - 1){
-                        $scope.loadingChart = false;
-                      }
-                    });
+                        if ( ix == array.length - 1 ) {
+                            $scope.loadingChart = false;
+                        }
+                    } );
                 } );
         }
     }
@@ -495,9 +499,8 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
             changePattern = true;
             if ( aggregation == "daily" && googleChartApiConfig.optionalSettings.locale == 'fr' ) {
                 pattern = "d'/'M'/'yyyy";
-            }
-            else{
-              pattern = allPatterns[aggregation];
+            } else {
+                pattern = allPatterns[ aggregation ];
             }
         }
 
