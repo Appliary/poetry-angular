@@ -54,16 +54,22 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-.error input, .error select, .error textarea{
+.error input,
+.error select,
+.error textarea {
     border-color: $danger;
 }
 
-.tags-input-overview {
-    width: 60%; 
-    display: inline-block;
-}
+tags-input .tags {
+    .tag-item {
+        background: linear-gradient(to bottom,#f0f0f0 0,#cbcbcb 47%,#a1a1a1 100%);
+        padding: 0;
 
-.tag-input {
-    width: 80%; 
-    display: inline-block;
+        .arrayInputItem {
+            padding: 0 5px;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
 }

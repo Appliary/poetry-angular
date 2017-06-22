@@ -50,9 +50,8 @@ form( ng-submit='' )
         //- Boolean
         input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
 
-        //- Tags
-        tags-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", ng-model='item[field]' )
-            auto-complete(source="loadTags($query)")
+        //- Arrays
+        array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
 
         //- Date
         input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )

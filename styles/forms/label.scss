@@ -1,4 +1,4 @@
-label+input, label+textarea, label+select {
+label+input, label+textarea, label+select, label+tags-input, label+array-input {
     width: 65%;
     max-width: 65%;
     display: inline-block;
@@ -24,10 +24,6 @@ label {
         color: $danger;
         margin-right: 3px;
     }
-}
-.tag-label {
-    display: inline-block;
-    width: 20%;
 }
 
 .itemInfo{

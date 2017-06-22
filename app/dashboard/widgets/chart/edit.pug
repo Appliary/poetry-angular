@@ -1,11 +1,11 @@
 div(ng-controller="dashboard/widgets/chart/edit")
     h3 {{ 'editChart:ChartWidget' | translate }}
     tabs( ng-if="widget.options.chartType" )
-        a(ng-click="tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
+        a(ng-click="$parent.tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
             | {{ 'main:chartwidget:tab' | translate }}
-        a(ng-click="tab='timeframe'", ng-class="{active:tab=='timeframe'}")
+        a(ng-click="$parent.tab='timeframe'", ng-class="{active:tab=='timeframe'}")
             | {{ 'timeframe:chartwidget:tab' | translate }}
-        a(ng-click="tab='inputs'", ng-class="{active:tab=='inputs'}")
+        a(ng-click="$parent.tab='inputs'", ng-class="{active:tab=='inputs'}")
             | {{ 'inputs:chartwidget:tab' | translate }}
 
     div( ng-if="tab==''")
@@ -104,7 +104,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
     div.pull-right(class="ngdialog-buttons", ng-if="!widget.options.chartType")
         button.lightButton.pull-right(ng-click="$parent.$parent.tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
             | {{ 'next:chart:dashboard' | translate }}
-        button.lightButton.pull-right(ng-click="$parent.$parent.tab=''", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
+        button.lightButton.pull-right(ng-click="preSave()", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
             | {{ 'next:chart:dashboard' | translate }}
 
     div.pull-right(class="ngdialog-buttons", ng-if="widget.options.chartType")

@@ -28,11 +28,13 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         charteditor,
         'ok',
         function saveChartEdit() {
-            var cw = charteditor.getChartWrapper();
-            $scope.widget.options.chartType = cw.getChartType();
-            $scope.widget.options.chartOptions = cw.getOptions();
-            delete $scope.widget.options.chartOptions.height;
-            delete $scope.widget.options.chartOptions.width;
+            $scope.$apply( function () {
+                var cw = charteditor.getChartWrapper();
+                $scope.widget.options.chartType = cw.getChartType();
+                $scope.widget.options.chartOptions = cw.getOptions();
+                delete $scope.widget.options.chartOptions.height;
+                delete $scope.widget.options.chartOptions.width;
+            } );
         }
     );
 
@@ -77,6 +79,14 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
             indice: $scope.newInput.types[ $scope.newInput.type ][ 1 ]
         } );
         $scope.newInput = {};
+    };
+
+    $scope.preSave = function preSave() {
+        $scope.widget.options.onLoaded = function () {
+            $scope.Widgets.edit( $scope.widget );
+        };
+        $scope.widget.options.chartType = "LineChart";
+        $scope.confirm( $scope.widget );
     };
 
 } );
