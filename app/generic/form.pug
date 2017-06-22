@@ -57,6 +57,9 @@ form( ng-submit='' )
         //- Date
         input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
+        //- Time
+        input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+
     .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
         | {{ 'lastUpdate:itemInfo' | translate }}
         span(ng-if='item.updatedAt')
@@ -78,7 +81,7 @@ form( ng-submit='' )
             span(ng-if='item.createdAt')
                 | &nbsp;{{ item.createdAt | localize }}
             span(ng-if='item.createdBy')
-                
+
                 span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
                     a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
                         | {{'by:iteminfo'|translate}}

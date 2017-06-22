@@ -189,8 +189,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         //If there are date fields and the date is not valid, delete them
         if ( angular.isArray( $scope.item.__dateFields ) ) {
             $scope.item.__dateFields.forEach( function ( field ) {
+              console.debug(field, $scope.item[ field ]);
                 if ( !$scope.item[ field ] || ( $scope.item[ field ] && isNaN( $scope.item[ field ].getTime() ) ) ) {
-                    delete $scope.item[ field ];
+                    if (!($scope.item[ field ] === null))
+                      $scope.item[ field ];
                 }
             } );
         }
