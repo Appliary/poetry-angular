@@ -83,6 +83,7 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         $scope.widget.options.onLoaded = function () {
             $scope.Widgets.edit( $scope.widget );
         };
+        $scope.widget.options.chartType = "LineChart";
         $scope.confirm( $scope.widget );
     };
 
