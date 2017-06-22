@@ -80,7 +80,9 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
     };
 
     $scope.preSave = function preSave() {
-        $scope.widget.options.onLoaded = $scope.chartEditor;
+        $scope.widget.options.onLoaded = function () {
+            $scope.Widgets.edit( $scope.widget );
+        };
         $scope.confirm( $scope.widget );
     };
 
