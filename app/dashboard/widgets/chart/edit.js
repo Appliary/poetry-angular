@@ -28,11 +28,13 @@ app.controller( 'dashboard/widgets/chart/edit', function ChartWidget(
         charteditor,
         'ok',
         function saveChartEdit() {
-            var cw = charteditor.getChartWrapper();
-            $scope.widget.options.chartType = cw.getChartType();
-            $scope.widget.options.chartOptions = cw.getOptions();
-            delete $scope.widget.options.chartOptions.height;
-            delete $scope.widget.options.chartOptions.width;
+            $scope.apply( function () {
+                var cw = charteditor.getChartWrapper();
+                $scope.widget.options.chartType = cw.getChartType();
+                $scope.widget.options.chartOptions = cw.getOptions();
+                delete $scope.widget.options.chartOptions.height;
+                delete $scope.widget.options.chartOptions.width;
+            } );
         }
     );
 
