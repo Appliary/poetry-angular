@@ -5,6 +5,7 @@ app.directive('appUserselector', function () {
         controller: function ($scope, $http, $location, ngDialog) {
 
             $scope.userName = "";
+            $scope.user = "";
 
             $scope.editprofile = function () {
                 return ngDialog.open({
@@ -18,6 +19,7 @@ app.directive('appUserselector', function () {
             $scope.$root.$watch('loaded', function () {
                 if ($scope.$root.loaded)
                     $scope.userName = $scope.$root.user.email;
+                    $scope.user = './img/avatar.jpg';
             });
         }
     }

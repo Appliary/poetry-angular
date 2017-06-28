@@ -29,6 +29,9 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__templates.js`)
         script(src=`/${app.name}/__app.js`)
         script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
+        //script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+        script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+
         
         //-
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
@@ -47,6 +50,11 @@ html(ng-app=app.name)
             //- Horizontal top bar
             .page-header.navbar.navbar-fixed-top
                 app-topnav
+                
+            .clearfix
+            
+            .page-container
+                h1 Hello
 
             //- Sidebar, populated by app config
                 app-sidebar

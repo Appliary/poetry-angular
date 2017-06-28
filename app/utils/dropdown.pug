@@ -1,4 +1,13 @@
-button(ng-click='toggle()')
-    em(ng-if='$ctrl.icon', icon='{{$ctrl.icon}}')
-    span(ng-if='$ctrl.text') {{ $ctrl.text }}
-list(ng-class='{open: open}', ng-transclude)
+//- OLD
+    button(ng-click='toggle()')
+        em(ng-if='$ctrl.icon', icon='{{$ctrl.icon}}')
+        span(ng-if='$ctrl.text') {{ $ctrl.text }}
+    list(ng-class='{open: open}', ng-transclude)
+
+//- NEW
+a.dropdown-toggle(data-toggle='dropdown', aria-haspopup="true", aria-expanded="true")
+    img.img-circle(alt='', src='./img/avatar.jpg')
+    span.username.username-hide-on-mobile  {{ $ctrl.text }}
+    i.fa.fa-angle-down
+
+list.dropdown-menu.dropdown-menu-default(ng-class='{open: open}', ng-transclude)

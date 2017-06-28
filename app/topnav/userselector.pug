@@ -1,20 +1,28 @@
-//-
+//- not working
     dropdown( icon='user', text="userName" )
-        a( ng-click="editprofile()" ) {{ 'edit profile:topbar' | translate }}
-        a( href="/logout" ) {{ 'logout:topbar' | translate }}
+        li
+            a( ng-click="editprofile()" )
+                i.icon-user
+                | {{ 'edit profile:topbar' | translate }}
+        li
+            a( href="/logout" ) 
+                i.icon-key
+                | {{ 'logout:topbar' | translate }}
         
 
 
-a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true', aria-expanded='true')
-    img.img-circle(alt='', src='./img/avatar.jpg')
+//- working
+a.dropdown-toggle(data-toggle='dropdown', aria-haspopup="true", aria-expanded="true")
+    img.img-circle(alt='', src='{{user}}')
     span.username.username-hide-on-mobile  {{userName}} 
     i.fa.fa-angle-down
-    
+
 ul.dropdown-menu.dropdown-menu-default
     li
-        a( ng-click="editprofile()" ) {{ 'edit profile:topbar' | translate }}
+        a( ng-click="editprofile()" )
             i.icon-user
-            |  My Profile
-        a( href="/logout" ) {{ 'logout:topbar' | translate }}
+            | {{ 'edit profile:topbar' | translate }}
+    li
+        a( href="/logout" ) 
             i.icon-key
-            |  Log Out
+            | {{ 'logout:topbar' | translate }}
