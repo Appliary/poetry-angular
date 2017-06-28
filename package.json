@@ -13,6 +13,7 @@
     "ascss": "^1.0.3",
     "concatenate": "0.0.1",
     "datatables": "^1.10.12",
+    "font-awesome": "^4.7.0",
     "glob": "^7.0.6",
     "h2o2": "^5.1.1",
     "jquery": "2.2.4",
@@ -27,6 +28,7 @@
     "poetry": "0.0.93",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0",
+    "simple-line-icons": "^2.4.1",
     "webshim": "^1.16.0"
   },
   "devDependencies": {},

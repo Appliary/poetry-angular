@@ -1,40 +1,22 @@
-@import 'variables';
+$simple-line-font-path : "./fonts/";
+@import 'simple-line-icons/simple-line-icons.scss';
 
-@import 'utils/logo';
-@import 'utils/media';
-@import 'utils/cursor';
-@import 'utils/floaters';
-@import 'utils/panel';
+$fa-font-path: "./fonts";
+@import 'font-awesome/font-awesome.scss';
 
-@import 'structure/body';
-@import 'structure/topnav';
-@import 'structure/sidebar';
-@import 'structure/router';
-@import 'structure/modal';
+@import 'layouts/layout/layout';
+@import 'layouts/layout/custom';
+@import 'layouts/layout/themes/darkblue.scss';
 
-@import 'forms/input';
-@import 'forms/label';
-@import 'forms/textarea';
-@import 'forms/select';
-@import 'forms/autofill';
+@import 'bootstrap';
 
-@import 'table/list';
-@import 'table/sort';
-@import 'table/report';
+@import 'global/components-main';
+@import 'global/components-rounded';
+@import 'global/components-md';
 
-@import 'texts/titles';
-@import 'texts/badge';
-@import 'texts/styles';
+@import 'global/plugins-main';
+@import 'global/plugins-md';
 
-@import 'buttons/default';
-@import 'buttons/dropdown';
-@import 'buttons/tabs';
-@import 'buttons/back';
-
-@import 'maps/maps';
-
-@import 'dashboard/dashboard.scss';
-@import 'dashboard/structure.scss';
-@import 'dashboard/_dropdowns.scss';
-
-@import 'custom/multiView';
+body{
+    opacity:1;
+}

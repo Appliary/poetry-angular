@@ -1,4 +1,45 @@
-app-logo(ng-click='$root.collapseSidebar=!$root.collapseSidebar')
-#appName {{ $root.__appName + ':application' | translate }}
-app-userselector.except-mobile
-app-appselector
+.page-header-inner
+    //- app-logo(ng-click='$root.collapseSidebar=!$root.collapseSidebar')
+    .page-logo
+        a(ng-click='$root.collapseSidebar=!$root.collapseSidebar')
+            img.logo-default(src='./img/transp.png', alt='logo')
+        .menu-toggler.sidebar-toggler
+            span
+    a.menu-toggler.responsive-toggler(href='javascript:;', data-toggle='collapse', data-target='.navbar-collapse')
+        span
+    .top-menu
+        //- #appName {{ $root.__appName + ':application' | translate }}
+        ul.nav.navbar-nav.pull-right
+            // BEGIN NOTIFICATION DROPDOWN
+            li#header_notification_bar.dropdown.dropdown-extended.dropdown-notification
+                a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true')
+                    i.icon-bell
+                    span.badge.badge-default  0
+                ul.dropdown-menu
+            // END NOTIFICATION DROPDOWN
+            
+            // BEGIN INBOX DROPDOWN
+            li#header_inbox_bar.dropdown.dropdown-extended.dropdown-inbox
+                a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true')
+                    i.icon-envelope-open
+                    span.badge.badge-default  0
+                ul.dropdown-menu
+            // END INBOX DROPDOWN
+            
+            // BEGIN TODO DROPDOWN
+            li#header_task_bar.dropdown.dropdown-extended.dropdown-tasks
+                a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true')
+                    i.icon-calendar
+                    span.badge.badge-default  0
+                ul.dropdown-menu
+            // END TODO DROPDOWN
+            
+            li.dropdown.dropdown-user.app-userselector
+            
+            li.dropdown.dropdown-quick-sidebar-toggler.app-appselector
+            
+            // li.dropdown.dropdown-quick-sidebar-toggler
+                a.dropdown-toggle(href='javascript:;')
+                    i.icon-briefcase
+                        
+    app-appselector

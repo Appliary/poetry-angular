@@ -1,3 +1,6 @@
-dropdown(ng-if='apps.length > 1', icon='application', text='"App"')
+// dropdown(ng-if='apps.length > 1', icon='application', text='"App"')
     a(ng-repeat='app in apps', ng-click='select(app)', ng-class="{active:(app==current)}", ng-if=' $root.role.permissions.APP[ app ] || $root.user.role == "SUPER" ')
         | {{ app + ':application' | translate }}
+
+a.dropdown-toggle(href='javascript:;')
+    i.icon-logout

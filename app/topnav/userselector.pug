@@ -1,3 +1,20 @@
-dropdown( icon='user', text="userName" )
-    a( ng-click="editprofile()" ) {{ 'edit profile:topbar' | translate }}
-    a( href="/logout" ) {{ 'logout:topbar' | translate }}
+//-
+    dropdown( icon='user', text="userName" )
+        a( ng-click="editprofile()" ) {{ 'edit profile:topbar' | translate }}
+        a( href="/logout" ) {{ 'logout:topbar' | translate }}
+        
+
+
+a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true', aria-expanded='true')
+    img.img-circle(alt='', src='./img/avatar.jpg')
+    span.username.username-hide-on-mobile  {{userName}} 
+    i.fa.fa-angle-down
+    
+ul.dropdown-menu.dropdown-menu-default
+    li
+        a( ng-click="editprofile()" ) {{ 'edit profile:topbar' | translate }}
+            i.icon-user
+            |  My Profile
+        a( href="/logout" ) {{ 'logout:topbar' | translate }}
+            i.icon-key
+            |  Log Out

@@ -2,7 +2,8 @@ doctype html
 html(ng-app=app.name)
     head
         meta(charset="utf-8")
-        meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+        //- meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+        meta(name='viewport', content='width=device-width, initial-scale=1')
         title=app.name
         base(href='/'+app.name+'/')
 
@@ -28,31 +29,36 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__templates.js`)
         script(src=`/${app.name}/__app.js`)
         script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
-        link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
-        link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)
+        
+        //-
+            link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
+            link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)
 
 
-    body(ng-class='{collapsed:$root.collapseSidebar}')
+    body.page-header-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')
 
-        //- NoJS warning
-        noscript
-            | This website needs JavaScript to work properly.
-            | Please activate JS or use another browser.
+        .page-wrapper
+        
+            //- NoJS warning
+            noscript
+                | This website needs JavaScript to work properly.
+                | Please activate JS or use another browser.
 
-        //- Horizontal top bar
-        app-topnav
+            //- Horizontal top bar
+            .page-header.navbar.navbar-fixed-top
+                app-topnav
 
-        //- Sidebar, populated by app config
-        app-sidebar
+            //- Sidebar, populated by app config
+                app-sidebar
 
-        div(ng-if="$root.__module.dependencies")
-            link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
-            script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
+                div(ng-if="$root.__module.dependencies")
+                    link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
+                    script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
 
-        //- Content of the page, routed using url
-        app-router(module="{{$root.__module.name}}")
+            //- Content of the page, routed using url
+                app-router(module="{{$root.__module.name}}")
 
-        //- Custom routing
-        ui-view(ng-show="!$root.__module || $root.__module.dynamic")
+            //- Custom routing
+                ui-view(ng-show="!$root.__module || $root.__module.dynamic")
 
-        script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )
+                script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )
