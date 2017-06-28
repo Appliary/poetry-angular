@@ -54,19 +54,18 @@ html(ng-app=app.name)
             .clearfix
             
             .page-container
-                h1 Hello
 
-            //- Sidebar, populated by app config
+                //- Sidebar, populated by app config
                 app-sidebar
-
-                div(ng-if="$root.__module.dependencies")
-                    link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
-                    script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
+            
+            div(ng-if="$root.__module.dependencies")
+                link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
+                script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
 
             //- Content of the page, routed using url
-                app-router(module="{{$root.__module.name}}")
+            app-router(module="{{$root.__module.name}}")
 
             //- Custom routing
-                ui-view(ng-show="!$root.__module || $root.__module.dynamic")
+            ui-view(ng-show="!$root.__module || $root.__module.dynamic")
 
-                script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )
+            script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )

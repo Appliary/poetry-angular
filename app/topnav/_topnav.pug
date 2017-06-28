@@ -5,6 +5,32 @@
             img.logo-default(src='./img/logo.png', alt='logo')
         .menu-toggler.sidebar-toggler
             span
+            
+    // BEGIN HORIZANTAL MENU    
+        .hor-menu.hidden-sm.hidden-xs
+          ul.nav.navbar-nav
+            li.classic-menu-dropdown.active
+              a(href='index.html')
+                | Dashboard
+                span.selected
+            li.mega-menu-dropdown
+              a.dropdown-toggle(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
+                | Mega
+            li.mega-menu-dropdown.mega-menu-full
+              a.dropdown-toggle(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
+                | Full Mega
+            li.classic-menu-dropdown
+              a(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
+                | Classic
+            li
+              a(href='')
+                | Link
+    
+    .app-appselector
+
+    
+    // END HORIZANTAL MENU
+
     a.menu-toggler.responsive-toggler(href='javascript:;', data-toggle='collapse', data-target='.navbar-collapse')
         span
     .top-menu
@@ -34,6 +60,7 @@
                 ul.dropdown-menu
             // END TODO DROPDOWN
             
+            //BEGIN USER DROPDOWN
             //- not working
                 li.dropdown.dropdown-user.app-dropdown( icon='user', text="userName" )
                     li
@@ -47,11 +74,10 @@
                             
             //- working
             li.dropdown.dropdown-user.app-userselector
+            //END USER DROPDOWN
             
-            li.dropdown.dropdown-quick-sidebar-toggler.app-appselector
-            
-            // li.dropdown.dropdown-quick-sidebar-toggler
-                a.dropdown-toggle(href='javascript:;')
-                    i.icon-briefcase
-                        
-    app-appselector
+            // BEGIN QUICK SIDEBAR TOGGLER
+            li.dropdown.dropdown-quick-sidebar-toggler
+              a.dropdown-toggle(href='javascript:;')
+                i.icon-logout
+            // END QUICK SIDEBAR TOGGLER

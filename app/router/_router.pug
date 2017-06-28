@@ -1,10 +1,11 @@
-header.router-header
-    h1(icon="{{$root.__module.icon}}")
-        | {{ $root.__appName + ':application:header' | translate }}
-        | &gt;
-        | {{ $root.__module.name + ':module:title' | translate }}
-    .toolbox
-        button( ng-repeat='( name, config ) in $root.__module.config.toolbox', ng-click="openToolbox( name )")
-            | {{ name + ':toolbox:' + $root.__module.name | translate }}
+//- OLD
+    header.router-header
+        h1(icon="{{$root.__module.icon}}")
+            | {{ $root.__appName + ':application:header' | translate }}
+            | &gt;
+            | {{ $root.__module.name + ':module:title' | translate }}
+        .toolbox
+            button( ng-repeat='( name, config ) in $root.__module.config.toolbox', ng-click="openToolbox( name )")
+                | {{ name + ':toolbox:' + $root.__module.name | translate }}
 
-ng-include(src='$root.__module.templateUrl')
+    ng-include(src='$root.__module.templateUrl')

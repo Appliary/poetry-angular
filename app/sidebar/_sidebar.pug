@@ -1,2 +1,19 @@
-a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ", icon="{{module.icon}}")
-    | {{ module.name + ':module:sidebar' | translate }}
+//- OLD
+    a(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ", icon="{{module.icon}}")
+        | {{ module.name + ':module:sidebar' | translate }}
+
+    
+    
+// BEGIN SIDEBAR
+.page-sidebar-wrapper
+  .page-sidebar.navbar-collapse.collapse
+    // BEGIN SIDEBAR MENU
+    ul.page-sidebar-menu(data-auto-scroll='true', data-slide-speed='200')
+      li.sidebar-toggler-wrapper.hide
+        .sidebar-toggler
+      li(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
+        a(icon="{{module.icon}}")
+            | {{ module.name + ':module:sidebar' | translate }}
+    // END SIDEBAR MENU
+// END SIDEBAR
+
