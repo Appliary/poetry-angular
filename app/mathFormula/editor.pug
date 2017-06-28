@@ -55,6 +55,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
         input( readonly, ng-value='currentOutput' )
     div(ng-if="!formulaInput")
         label(for="timeout")
+          | {{ 'timeout:mathformula:field' | translate }}
         input(ng-model="item.timeout", required, type="number")
 
 br
