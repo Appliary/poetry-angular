@@ -17,6 +17,13 @@ $fa-font-path: "./fonts";
 @import 'global/plugins-main';
 @import 'global/plugins-md';
 
+$modal_bg: white;
+$modal_mask: rgba(0,0,0,0.4);
+$modal_border: #BBB;
+$mobile_break: 599px;
+$gutter: 15px;
+@import 'modal';
+
 body{
     opacity:1;
 }

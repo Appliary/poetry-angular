@@ -1,0 +1,107 @@
+.ngdialog {
+    .ngdialog-overlay {
+        position: fixed;
+        z-index: 1000;
+        background: $modal_mask;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+    .ngdialog-content {
+        position: fixed;
+        z-index: 1001;
+        top: 25%;
+        left: 50%;
+        margin-left: -230px;
+        background: $modal_bg;
+        width: 95%;
+        max-width: 600px;
+        border: $modal_border solid 1px;
+        border-radius: 4px;
+        box-shadow: 0 0 100px $modal_mask;
+        padding: $gutter;
+        max-height: 60%;
+        overflow-y: auto;
+        .ngdialog-close:before {
+            position: absolute;
+            top: $gutter;
+            right: $gutter;
+            content: '⨉';
+        }
+        @media(max-width:$mobile_break) {
+            left: $gutter*2;
+            right: $gutter*2;
+            margin: auto;
+            width: auto;
+        }
+    }
+    h1 {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    form, pass-input {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.modal-title {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+}
+
+.charts-menu {
+    z-index: 2147483647 !important;
+}
+
+tabs {
+    display: flex;
+    justify-content: flex-end;
+}
+
+tabs>* {
+    text-decoration: none;
+    color: #c1c1c1;
+    padding: 11px;
+    font-size: 10px;
+    background-color: #dff0f2;
+    max-width: 60%;
+}
+
+tabs>*:hover {
+    text-decoration: none;
+    color: #00a8b8;
+    background: #fff;
+    opacity: 0.5;
+    padding: 11px;
+}
+
+.ngdialog .ngdialog-content .tab-header tabs>*.active {
+    border-bottom: 1px solid #00a8b8;
+}
+
+.ngdialog .ngdialog-content tabs>* {
+    background: white;
+    border-bottom: 1px solid #fff;
+}
+
+.tab-header tabs>*.active {
+    color: #21AE96;
+    background: white;
+    text-decoration: none;
+    padding: 11px;
+    border-top: 0px solid lightgray;
+    border-left: 0px solid lightgray;
+    border-right: 0px solid lightgray;
+    border-bottom: 1px solid #fff;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.ngdialog .ngdialog-content tabs>*:hover,
+.ngdialog .ngdialog-content tabs>*:focus {
+    color: #00a8b8;
+    border-bottom: 1px solid lightgray;
+}

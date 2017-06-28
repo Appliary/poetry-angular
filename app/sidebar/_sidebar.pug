@@ -13,7 +13,8 @@
         .sidebar-toggler
       li(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
         a(icon="{{module.icon}}")
-            | {{ module.name + ':module:sidebar' | translate }}
+            span.title {{ module.name + ':module:sidebar' | translate }}
+            span.selected
     // END SIDEBAR MENU
 // END SIDEBAR
 

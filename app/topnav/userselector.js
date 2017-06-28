@@ -12,14 +12,15 @@ app.directive('appUserselector', function () {
                     templateUrl: 'modals/editprofile.pug',
                     controller: 'modals/editprofile',
                     showClose: true,
-                    className: 'editprofile'
+                    className: 'ngdialog'
                 });
             }
 
             $scope.$root.$watch('loaded', function () {
-                if ($scope.$root.loaded)
+                if ($scope.$root.loaded) {
                     $scope.userName = $scope.$root.user.email;
                     $scope.user = './img/avatar.jpg';
+                }
             });
         }
     }
