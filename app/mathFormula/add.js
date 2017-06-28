@@ -47,6 +47,13 @@ app.controller( 'mathFormula/add', function (
         }
       }
 
+      if ( conf.hasOwnProperty( 'formulaInput' ) ) {
+          $scope.formulaInput = conf.formulaInput;
+      }
+      else{
+          $scope.formulaInput = true;
+      }
+
       console.log("scope",$scope);
     }
 
@@ -255,6 +262,14 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device._id.length )
             delete $scope.input.device;
     };
+
+    $scope.isInvalid = function isInvalid( varName ){
+      if($scope.formulaInput)
+        return $scope.badName(varName) || !$scope.input.device || !$scope.input.type;
+      else {
+        return $scope.badName(varName) || !$scope.input.device;
+      }
+    }
 
     // Check varName validity
     $scope.badName = function badName( varName ) {
