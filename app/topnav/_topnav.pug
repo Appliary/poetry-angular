@@ -6,26 +6,6 @@
         .menu-toggler.sidebar-toggler
             span
             
-    // BEGIN HORIZANTAL MENU    
-        .hor-menu.hidden-sm.hidden-xs
-          ul.nav.navbar-nav
-            li.classic-menu-dropdown.active
-              a(href='index.html')
-                | Dashboard
-                span.selected
-            li.mega-menu-dropdown
-              a.dropdown-toggle(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
-                | Mega
-            li.mega-menu-dropdown.mega-menu-full
-              a.dropdown-toggle(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
-                | Full Mega
-            li.classic-menu-dropdown
-              a(data-hover='dropdown', data-close-others='true', data-toggle='dropdown', href='javascript:;')
-                | Classic
-            li
-              a(href='')
-                | Link
-    
     .app-appselector
 
     
@@ -34,7 +14,6 @@
     a.menu-toggler.responsive-toggler(href='javascript:;', data-toggle='collapse', data-target='.navbar-collapse')
         span
     .top-menu
-        //- #appName {{ $root.__appName + ':application' | translate }}
         ul.nav.navbar-nav.pull-right
             // BEGIN NOTIFICATION DROPDOWN
             li#header_notification_bar.dropdown.dropdown-extended.dropdown-notification

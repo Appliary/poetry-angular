@@ -4,11 +4,11 @@ $simple-line-font-path : "./fonts/";
 $fa-font-path: "./fonts";
 @import 'font-awesome/font-awesome.scss';
 
+@import 'bootstrap';
+
 @import 'layouts/layout/layout';
 @import 'layouts/layout/custom';
 @import 'layouts/layout/themes/darkblue.scss';
-
-@import 'bootstrap';
 
 @import 'global/components-main';
 @import 'global/components-rounded';

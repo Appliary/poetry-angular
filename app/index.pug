@@ -29,7 +29,7 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__templates.js`)
         script(src=`/${app.name}/__app.js`)
         script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
-        //script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+        script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
         script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
         
         //-
@@ -50,13 +50,34 @@ html(ng-app=app.name)
             .clearfix
             .page-container
                 app-sidebar
+                .page-content-wrapper
+                    .page-content
+                        .page-bar
+                            app-router(module="{{$root.__module.name}}")
+                        h1.page-title
+                            | Blank Page 
+                            small blank page
+                        .row
+                            .col-md-12
+                                | Page content goes here
+                        // END PAGE CONTENT
+                // END CONTENT
+
+                
+            .page-footer
+              .page-footer-inner
+                | 2017 © IOT Factory
+              .page-footer-tools
+                span.go-top
+                  i.fa.fa-angle-up
+
             
             div(ng-if="$root.__module.dependencies")
                 link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
                 script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
 
             //- Content of the page, routed using url
-            app-router(module="{{$root.__module.name}}")
+                app-router(module="{{$root.__module.name}}")
 
             //- Custom routing
             ui-view(ng-show="!$root.__module || $root.__module.dynamic")
