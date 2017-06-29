@@ -32,6 +32,13 @@ html(ng-app=app.name)
         script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
         script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
         
+        script(language='javascript').
+            jQuery(document).ready(function() { 
+                   App.init(); // init metronic core componets
+                   Layout.init(); // init layout
+                   QuickSidebar.init(); // init quick sidebar
+            });
+        
         //-
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
             link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)
