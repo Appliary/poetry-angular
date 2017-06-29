@@ -7,14 +7,14 @@ app.directive('appUserselector', function () {
             $scope.userName = "";
             $scope.user = "";
 
-            $scope.editprofile = function () {
+            /*$scope.editprofile = function () {
                 return ngDialog.open({
                     templateUrl: 'modals/editprofile.pug',
                     controller: 'modals/editprofile',
                     showClose: true,
                     className: 'ngdialog'
                 });
-            }
+            }*/
 
             $scope.$root.$watch('loaded', function () {
                 if ($scope.$root.loaded) {

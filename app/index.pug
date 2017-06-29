@@ -51,7 +51,6 @@ html(ng-app=app.name)
             noscript
                 | This website needs JavaScript to work properly.
                 | Please activate JS or use another browser.
-            //- Horizontal top bar
             .page-header.navbar.navbar-fixed-top
                 app-topnav
             .clearfix
@@ -59,32 +58,15 @@ html(ng-app=app.name)
                 app-sidebar
                 .page-content-wrapper
                     .page-content
-                        .page-bar
-                            app-router(module="{{$root.__module.name}}")
-                        h1.page-title
-                            | Blank Page 
-                            small blank page
-                        .row
-                            .col-md-12
-                                | Page content goes here
-                        // END PAGE CONTENT
-                // END CONTENT
-
-                
+                        app-router(module="{{$root.__module.name}}")
             .page-footer
               .page-footer-inner
                 | 2017 © IOT Factory
-              .page-footer-tools
-                span.go-top
-                  i.fa.fa-angle-up
 
             
             div(ng-if="$root.__module.dependencies")
                 link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
                 script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
-
-            //- Content of the page, routed using url
-                app-router(module="{{$root.__module.name}}")
 
             //- Custom routing
             ui-view(ng-show="!$root.__module || $root.__module.dynamic")
