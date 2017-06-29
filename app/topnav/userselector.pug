@@ -23,6 +23,10 @@ ul.dropdown-menu.dropdown-menu-default
             i.icon-user
             | {{ 'edit profile:topbar' | translate }}
     li
+        a.my-toggler()
+            i.icon-settings
+            | {{'theme:topbar' | translate}}
+    li
         a( href="/logout" )
             i.icon-key
             | {{ 'logout:topbar' | translate }}

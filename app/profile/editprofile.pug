@@ -1,0 +1,48 @@
+.tab-header
+    h1.modal-title {{ 'edit profile:modal:title' | translate }}
+    tabs
+        a.modal-edit(ng-click="showEdit()", ng-class=' { active: editView }') {{'profile:editmodal' | translate}}
+        a.modal-changepwd(ng-click="showChangepwd()", ng-class=' { active: pwdView }') {{'Change password:editmodal' | translate}}
+.tab-body
+    .tab-content(ng-if="editView")
+        form( ng-submit='edit()' )
+            label( for='firstName', ng-class="{ required: __joi['firstName']._flags.presence == 'required' }") {{ 'firstName:field:edit' | translate }}
+            input( type='text', ng-model='user.firstName', name='firstName' )
+
+            label( for='lastName', ng-class="{ required: __joi['lastName']._flags.presence == 'required' }" ) {{ 'lastName:field:edit' | translate }}
+            input( type='text', ng-model='user.lastName', name='lastName' )
+
+            label( for='email', ng-class="{ required: __joi['email']._flags.presence == 'required' }") {{ 'email:field:edit' | translate }}
+            input( type='text', ng-model='user.email', name='email' )
+
+            label( for='language', ng-class="{ required: __joi['language']._flags.presence == 'required' }") {{ 'language:field:edit' | translate }}
+            select(type='text', ng-model='user.language', name='language' )
+                option(ng-repeat='language in languageList' ng-value="language") {{ language + ':field:edit' | translate }}
+
+            label( for='locale' ng-class="{ required: __joi['locale']._flags.presence == 'required' }" ) {{ 'locale:field:edit' | translate }}
+            select(type='text', ng-model='user.locale', name='locale' )
+                option( value='fr' )
+                    | FR ( Date: "17/09/1991" Num: "1 999,73" )
+                option( value='us' )
+                    | US ( Date: "09/17/1991" Num: "1,999.73" )
+
+            span.saved( ng-if=' editState.saved ' )
+                | {{ 'saved:' | translate }}
+            span.failed( ng-if=' editState.failed ' )
+                | {{ 'failed:' | translate }}
+            button(type='submit').pull-right.lightButton
+                | {{ 'save:button' | translate }}
+    .tab-content(ng-if="pwdView")
+        form( ng-submit='changePassword()' )
+            label( for='oldPassword' class="required" ) {{ 'old password:field:edit' | translate }}
+            input( type='password', ng-model='password.oldPassword', name='oldPassword', required, ng-class='{error: (!password.oldPassword && password.newPassword1) }' )
+
+            pass-input( password="password" )
+
+            div
+                span.saved( ng-if=' changePasswordResult === true ' )
+                    | {{ 'saved:' + $root.__module.name | translate }}
+                span.failed( ng-if=' changePasswordResult && changePasswordResult !== true ' )
+                    | {{ 'failed:save:' + $root.__module.name | translate }}
+                button.lightButton.pull-right( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
+                    | {{ 'Change password:button' | translate }}

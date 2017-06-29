@@ -13,10 +13,10 @@
 .page-bar
     ul.page-breadcrumb
         li
-            a {{ $root.__appName + ':application:header' | translate }}
+            span {{ $root.__appName + ':application:header' | translate }}
             i.fa.fa-circle
         li
-            a {{ $root.__module.name + ':module:title' | translate }}
+            span {{ $root.__module.name + ':module:title' | translate }}
 
     .page-toolbar
         .btn-group.pull-right
