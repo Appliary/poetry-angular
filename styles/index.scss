@@ -8,7 +8,12 @@ $fa-font-path: "./fonts";
 
 @import 'layouts/layout/layout';
 @import 'layouts/layout/custom';
+/*@import 'layouts/layout/themes/blue.scss';
 @import 'layouts/layout/themes/darkblue.scss';
+@import 'layouts/layout/themes/default.scss';
+@import 'layouts/layout/themes/grey.scss';
+@import 'layouts/layout/themes/light.scss';
+@import 'layouts/layout/themes/light2.scss';*/
 
 @import 'global/components-main';
 @import 'global/components-rounded';

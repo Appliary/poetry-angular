@@ -184,11 +184,15 @@ var Demo = function() {
         // handle theme colors
         var setColor = function(color) {
             var color_ = (App.isRTL() ? color + '-rtl' : color);
-            $('#style_color').attr("href", Layout.getLayoutCssPath() + 'themes/' + color_ + ".min.css");
+            console.log(color);
+            //$('#style_color').attr("href", Layout.getLayoutCssPath() + 'themes/' + color_ + ".min.css");
+            $('#style_color').attr("href", `/${app.name}/__themes/${color}.css`);
             if (color == 'light2') {
-                $('.page-logo img').attr('src', Layout.getLayoutImgPath() + 'logo-invert.png');
+                //$('.page-logo img').attr('src', Layout.getLayoutImgPath() + 'logo-invert.png');
+                $('.page-logo img').attr('src', './img/logo-invert.png');
             } else {
-                $('.page-logo img').attr('src', Layout.getLayoutImgPath() + 'logo.png');
+                //$('.page-logo img').attr('src', Layout.getLayoutImgPath() + 'logo.png');
+                $('.page-logo img').attr('src', './img/logo.png');
             }
         };
 

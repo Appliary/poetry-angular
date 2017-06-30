@@ -40,6 +40,8 @@ html(ng-app=app.name)
                    QuickSidebar.init(); // init quick sidebar
             });
         
+        link#style_color(rel='stylesheet', href=`/${app.name}/__themes/default.css`)
+
         //-
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
             link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)

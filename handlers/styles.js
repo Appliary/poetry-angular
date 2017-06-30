@@ -54,3 +54,88 @@ Poetry.route( {
     } );
 
 } );
+
+// Themes
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/default.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/default.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/blue.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/blue.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/grey.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/grey.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/darkblue.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/darkblue.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/light.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/light.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
+
+Poetry.route( {
+    method: 'GET',
+    path: '/' + config.app.name + '/__themes/light2.css'
+}, ( request, reply ) => {
+    concat( dependencies, ( err, res ) => {
+        sass.render( {
+            file: __dirname + '/../styles/layouts/layout/themes/light2.scss'
+        }, ( err, result ) => {
+            reply( res + result.css )
+                .type( 'text/css' );
+        } );
+    } );
+} );
