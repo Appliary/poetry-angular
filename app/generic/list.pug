@@ -1,3 +1,4 @@
+//- OLD
 form#filters
     input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
     select.pull-right( ng-model='$parent.status' )
@@ -11,12 +12,20 @@ form#filters
     span.loading( ng-if='total === undefined')
         | {{ 'loading:' + $root.__module.name | translate }}
 .list( ng-class='{detailed:__id}', scroll='scroll' )
-    table
+    table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column.dataTable
         thead: tr
-            th( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
+            th.sorting_disabled
+                label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                    input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
+                    span
+            th.sorting( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }' )
                 | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
         tbody
-            tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTOut(row) } ' )
+            tr.odd.gradeX( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTOut(row) } ' )
+                td
+                    label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                        input.checkboxes(type='checkbox', value='1')
+                        span
                 td( ng-repeat='column in columns')
                     span( ng-if='row[ column ] !== undefined && column === "icon"')
                         i(class="{{row[ column ]}}")
@@ -27,4 +36,57 @@ form#filters
     .noData( ng-if='total === 0' )
         | {{ 'nodata:' + $root.__module.name | translate}}
 
-ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
+//ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
+
+
+
+
+//- 
+    table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column
+        thead
+            tr
+                th
+                    label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                        input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
+                        span
+                th  Username 
+                th  Email 
+                th  Status 
+                th  Joined 
+                th  Actions 
+        tbody
+            tr.odd.gradeX
+                td
+                    label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                        input.checkboxes(type='checkbox', value='1')
+                        span
+                td  weep 
+                td
+                    a(href='mailto:userwow@gmail.com')  good@gmail.com 
+                td
+                    span.label.label-sm.label-warning  Suspended 
+                td.center  12.12.2011 
+                td
+                    .btn-group
+                        button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                            | Actions
+                            i.fa.fa-angle-down
+                        ul.dropdown-menu(role='menu')
+                            li
+                                a(href='javascript:;')
+                                    i.icon-docs
+                                    |  New Post
+                            li
+                                a(href='javascript:;')
+                                    i.icon-tag
+                                    |  New Comment
+                            li
+                                a(href='javascript:;')
+                                    i.icon-user
+                                    |  New User
+                            li.divider  
+                            li
+                                a(href='javascript:;')
+                                    i.icon-flag
+                                    |  Comments
+                                    span.badge.badge-success 4
