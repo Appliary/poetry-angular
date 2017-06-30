@@ -164,7 +164,6 @@ app.service( 'validationService', function validationService( $http ) {
 
         displayBtn: function displayBtnFactory( $scope ) {
             return function displayBtn( button ) {
-                console.debug(button);
                 if(!(angular.isObject(button.condition) && button.condition.hasOwnProperty('property')))
                   return true;
 

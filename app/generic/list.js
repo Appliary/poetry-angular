@@ -3,10 +3,23 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     var lastCall = {};
 
-    $scope.sorting = {
-        col: '_id',
-        order: 'asc'
-    };
+    //all defaults
+    $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
+
+    //default sorting
+    if(angular.isObject($scope.defaults.sorting)){
+      $scope.sorting = {
+          col: $scope.defaults.sorting.col,
+          order: $scope.defaults.sorting.order
+      };
+    }
+    else{
+      $scope.sorting = {
+          col: '_id',
+          order: 'asc'
+      };
+    }
+
     $scope.orderBy = function orderBy( col ) {
         if ( $scope.sorting.col != col )
             return ( $scope.sorting = {
@@ -40,6 +53,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.$watch( '__view', function loadView() {
         $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields || [];
         $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
+        $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
+        if(angular.isObject($scope.defaults.sorting)){
+          $scope.sorting = {
+              col: $scope.defaults.sorting.col,
+              order: $scope.defaults.sorting.order
+          };
+        }
     } );
 
     var isLoading = false;
@@ -60,21 +80,44 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         }
         if ( $scope.data && $scope.total <= $scope.data.length ) return;
         isLoading = true;
+
+        var urlConfig = {
+          url: $scope.$root.__module.api,
+          method: 'GET',
+          params: {}
+        };
+
+
+        urlConfig.params.sort = ( $scope.sorting ? $scope.sorting.col : $scope.default.sorting ? $scope.default.sorting.col : "_id" );
+        urlConfig.params.order = ( $scope.sorting ? $scope.sorting.order : $scope.default.sorting ? $scope.default.sorting.order : 'asc' );
+
+
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
-        if ( $scope.status ) url += '&status=' + $scope.status;
-        if ( $scope.search )
-            url += '&search=' + encodeURIComponent( $scope.search );
+
+        if ( $scope.status ){
+          urlConfig.params.status = $scope.status;
+          url += "&status=" + $scope.status;
+        }
+
+        if ( $scope.search ){
+            urlConfig.params.search = encodeURIComponent( $scope.search );
+            url += "&search=" + encodeURIComponent( $scope.search );
+        }
+
         if ( $scope.data && $scope.data.length ) {
             page = $scope.data.length / 100;
-            url += '&limit=100&page=' + Math.floor( page );
+            urlConfig.params.limit = 100;
+            urlConfig.params.page = Math.floor( page );
+            url += "&limit=100&page" + Math.floor( page );
         }
+
         if ( lastCall.timestamp + 5000 < Date.now() || lastCall.url != url ) {
             lastCall = {
                 url: url,
                 timestamp: Date.now()
             };
             var reqID = parseInt( ++$scope.reqID );
-            $http.get( url )
+            $http( urlConfig )
                 .then( function success( response ) {
 
                     if ( !isNaN( reqID ) && $scope.reqID != reqID )
