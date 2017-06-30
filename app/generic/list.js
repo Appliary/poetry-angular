@@ -3,22 +3,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     var lastCall = {};
 
-    //all defaults
-    $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
-
-    //default sorting
-    if(angular.isObject($scope.defaults.sorting)){
-      $scope.sorting = {
-          col: $scope.defaults.sorting.col,
-          order: $scope.defaults.sorting.order
-      };
-    }
-    else{
       $scope.sorting = {
           col: '_id',
           order: 'asc'
       };
-    }
 
     $scope.orderBy = function orderBy( col ) {
         if ( $scope.sorting.col != col )
@@ -53,13 +41,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.$watch( '__view', function loadView() {
         $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields || [];
         $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
+        //all defaults
         $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
-        if(angular.isObject($scope.defaults.sorting)){
-          $scope.sorting = {
-              col: $scope.defaults.sorting.col,
-              order: $scope.defaults.sorting.order
-          };
-        }
     } );
 
     var isLoading = false;
