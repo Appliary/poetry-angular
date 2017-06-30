@@ -108,7 +108,7 @@ form( ng-submit='' )
     br
     br
     div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
-        button.lightButton( ng-click='doBtn(button)' )
+        button.lightButton( ng-click='doBtn(button)', ng-if='displayBtn(button)' )
             | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
         span.saved( ng-if=' button.__success == item._id' )
             | {{ 'success:' + $root.__module.name | translate }}

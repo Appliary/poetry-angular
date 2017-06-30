@@ -160,6 +160,23 @@ app.service( 'validationService', function validationService( $http ) {
                         button.__failed = $scope.__id;
                     } );
             };
+        },
+
+        displayBtn: function displayBtnFactory( $scope ) {
+            return function displayBtn( button ) {
+                console.debug(button);
+                if(!(angular.isObject(button.condition) && button.condition.hasOwnProperty('property')))
+                  return true;
+
+                if(!button.condition.hasOwnProperty('boolean'))
+                  button.condition.boolean = true;
+
+                if(button.condition.boolean)
+                  return $scope.item[button.condition.property];
+                else {
+                  return !$scope.item[button.condition.property];
+                }
+            };
         }
 
     };
