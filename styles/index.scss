@@ -1,33 +1,21 @@
 $simple-line-font-path : "./fonts/";
-@import 'simple-line-icons/simple-line-icons.scss';
+@import 'metronic/simple-line-icons/simple-line-icons.scss';
 
 $fa-font-path: "./fonts";
-@import 'font-awesome/font-awesome.scss';
+@import 'metronic/font-awesome/font-awesome.scss';
 
-@import 'bootstrap';
+@import 'metronic/bootstrap';
 
-@import 'layouts/layout/layout';
-@import 'layouts/layout/custom';
-/*@import 'layouts/layout/themes/blue.scss';
-@import 'layouts/layout/themes/darkblue.scss';
-@import 'layouts/layout/themes/default.scss';
-@import 'layouts/layout/themes/grey.scss';
-@import 'layouts/layout/themes/light.scss';
-@import 'layouts/layout/themes/light2.scss';*/
+@import 'metronic/layouts/layout/layout';
+@import 'metronic/layouts/layout/custom';
 
-@import 'global/components-main';
-@import 'global/components-rounded';
-@import 'global/components-md';
+@import 'metronic/global/components-main';
+@import 'metronic/global/components-rounded';
+@import 'metronic/global/components-md';
 
-@import 'global/plugins-main';
-@import 'global/plugins-md';
+@import 'metronic/global/plugins-main';
+@import 'metronic/global/plugins-md';
 
-$modal_bg: white;
-$modal_mask: rgba(0,0,0,0.4);
-$modal_border: #BBB;
-$mobile_break: 599px;
-$gutter: 15px;
-@import 'modal';
 
 body{
     opacity:1;

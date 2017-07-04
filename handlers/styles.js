@@ -62,8 +62,13 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/default.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/default.scss'
         }, ( err, result ) => {
+            if ( err ) {
+                Poetry.log.error( 'SASS', err );
+                return reply( 'body *{display:none} body::before{display:block;position:absolute;top:0;left:0;bottom:0;right:0;background:#A45;color:white;font-family:courrier;padding:20px;content:\'' + err.message + ' at ' + err.file + ':' + err.line + '\';}' )
+                    .type( 'text/css' );
+            }
             reply( res + result.css )
                 .type( 'text/css' );
         } );
@@ -76,7 +81,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/blue.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/blue.scss'
         }, ( err, result ) => {
             reply( res + result.css )
                 .type( 'text/css' );
@@ -90,7 +95,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/grey.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/grey.scss'
         }, ( err, result ) => {
             reply( res + result.css )
                 .type( 'text/css' );
@@ -104,7 +109,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/darkblue.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/darkblue.scss'
         }, ( err, result ) => {
             reply( res + result.css )
                 .type( 'text/css' );
@@ -118,7 +123,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/light.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/light.scss'
         }, ( err, result ) => {
             reply( res + result.css )
                 .type( 'text/css' );
@@ -132,7 +137,7 @@ Poetry.route( {
 }, ( request, reply ) => {
     concat( dependencies, ( err, res ) => {
         sass.render( {
-            file: __dirname + '/../styles/layouts/layout/themes/light2.scss'
+            file: __dirname + '/../styles/metronic/layouts/layout/themes/light2.scss'
         }, ( err, result ) => {
             reply( res + result.css )
                 .type( 'text/css' );

@@ -50,8 +50,15 @@ Poetry.route({
 
 });
 
+
+
 require('./handlers/javascripts');
 require('./handlers/templates');
 require('./handlers/styles');
 require('./handlers/devProxy');
 require('./register');
+
+//global.jQuery = global.$ = require('jquery');
+require('jquery');
+//require('bootstrap');
+require('js-cookie');
