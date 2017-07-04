@@ -30,7 +30,7 @@ html(ng-app=app.name)
         script(src=`/${app.name}/__app.js`)
         script(src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAfVX5W3FZpJU8YFjMunzeQhyVWrOv5R_s&sensor=false')
         
-        script(src='//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+        //script(src='//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
         script(src='//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
         
         script(language='javascript').
@@ -41,7 +41,7 @@ html(ng-app=app.name)
                    QuickSidebar.init(); // init quick sidebar
             });
         
-        link#style_color(rel='stylesheet', href=`/${app.name}/__themes/default.css`)
+        link#style_color(rel='stylesheet', href='/assets/layouts/layout/css/themes/default.min.css')
 
         //-
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)

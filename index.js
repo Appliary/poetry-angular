@@ -45,12 +45,35 @@ Poetry.route({
             ngcache.push(request.params.file);
             return reply(angular());
         });
-
     });
-
 });
 
+Poetry.route({
+    method: 'GET',
+    path: '/assets/layouts/layout/img/{file*}',
+    config: {
+        description: config.app.name,
+        tags: ['Applications (front-end)'],
+        cors: false
+    }
+}, (request, reply) => {
+    if (~ngcache.indexOf(request.params.file))
+        return reply(angular());
 
+    fs.readFile('./assets/img/' + request.params.file, (err, file) => {
+        Poetry.log.silly(err, file);
+        if (!err)
+            return reply(file)
+                .type(mime.lookup(request.params.file));
+
+        fs.readFile('./node_modules/poetry-angular/assets/img/' + request.params.file, (err, file) => {
+            Poetry.log.silly(err, file);
+            if (!err)
+                return reply(file)
+                    .type(mime.lookup(request.params.file));
+        });
+    });
+});
 
 require('./handlers/javascripts');
 require('./handlers/templates');
