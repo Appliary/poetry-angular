@@ -3,14 +3,14 @@
 * TODO: clean up to make it understandable and maybe less restrictive when time is given
 */
 
-app.directive("listDirective", function($http, $location, $timeout, ngDialog, AlertsService){
+app.directive("listDirective", function($http, $location, $timeout, ngDialog, AlertsService, $window){
   return {
     restrict: 'EA',
     transclude: false,
     templateUrl: "alertsList/list.pug",
     scope: {
         moduleApi: '@',
-        columns: '=', //[string|object] //if object => {id,name,sortable}
+        columns: '=', //[string]
 
         urlApi: '@?',
         fields: '=?', //[string]
@@ -25,9 +25,17 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
     },
     link: function(scope, elem, attrs, ctrls){
 
+      console.debug("appName", scope.$root.__appName);
+
+      scope.genericApps = ['deviceManager'];
+      scope.isGenericApp = function (){
+        return genericApps.indexOf(scope.$root.__appName) > -1;
+      }
+
       var directivePath = $location.path();
 
       scope.actionbtn = {};
+      scope.maxDate = getDefaultMaxDateToString();
 
       if(!scope.urlApi){
         scope.urlApi = scope.moduleApi;
@@ -43,9 +51,6 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           "level",
           "category",
           "device",
-          "type",
-          "output",
-          "error",
           "message",
           "messageFR",
           "messageNL",
@@ -86,6 +91,19 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         delete scope.__id;
       }
       scope.backToList = backToList;
+
+
+      function getDefaultMaxDateToString(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10)
+          dd='0'+dd;
+        if(mm<10)
+          mm='0'+mm;
+        return yyyy + '-' + mm + '-' + dd;
+      }
 
 
       function isItem(data){
@@ -263,17 +281,17 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
           // rule
           if ( scope.rule ){
-            params.rule = scope.rule;
+            params.rule = scope.rule._id;
           }
 
           // before
           if ( scope.before ){
-            params.before = scope.before;
+            params.before = new Date( scope.before.getTime() - scope.before.getTimezoneOffset() * 60000 );
           }
 
           // after
           if ( scope.after ){
-            params.after = scope.after;
+            params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
           }
 
           callApi(params)
@@ -319,15 +337,21 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                 if ( response.data.data ) {
                     if ( page )
                         response.data.data.forEach( function loop( i ) {
-                            if ( scope.data && !~scope.data.indexOf( i ) )
+                            if ( scope.data && !~scope.data.indexOf( i ) ){
                                 scope.data.push( i );
+                                scope.resize();
+                            }
                         } );
-                    else
+                    else{
                         scope.data = response.data.data;
+                        scope.resize();
+                    }
                 } else if ( response.data instanceof Array )
                     response.data.forEach( function loop( i ) {
-                        if ( scope.data && !~scope.data.indexOf( i ) )
+                        if ( scope.data && !~scope.data.indexOf( i ) ){
                             scope.data.push( i );
+                            scope.resize();
+                        }
                     } );
 
                 scope.total = response.data.recordsFiltered;
@@ -420,6 +444,50 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       };
 
+      function getBuildings(){
+        /*$http.get( "/api/rules" )
+            .then( function success( response ) {
+                scope.allRules = response.data && response.data.data ? response.data.data : [];
+                scope.rules = angular.copy(scope.allRules);
+            }, function error( response ) {
+                console.warn( response );
+        } );*/
+        $http.get( "/api/buildings" )
+            .then( function success( response ) {
+                scope.buildings = response.data;
+            }, function error( response ) {
+                $location.path( '/error/' + response.status );
+            } );
+      }
+
+      scope.allRules = [];
+      function getRules(){
+        $http.get( "/api/rules" )
+            .then( function success( response ) {
+                scope.allRules = response.data && response.data.data ? response.data.data : [];
+                scope.rules = angular.copy(scope.allRules);
+            }, function error( response ) {
+                console.warn( response );
+        } );
+      }
+
+      function filterRules(){
+        if( !(angular.isObject(scope.rule) && canDisplayRule(scope.rule))){
+          scope.rule = undefined;
+        }
+        scope.rules = scope.allRules.filter(canDisplayRule);
+      }
+
+      function canDisplayRule(rule){
+        if(scope.level){
+          if(scope.level != rule.level) return false;
+        }
+        if(scope.category){
+          if(scope.category != rule.category) return false;
+        }
+        return true;
+      }
+
       /**
        * Scrolling handler ( infinite scroll + header mover )
        *
@@ -450,10 +518,21 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               scope.actionbtn.__failed = false;
           }, 3000 );
       }
-      scope.$watch( 'item.__saved', cleanVisualReturn );
-      scope.$watch( 'item.__failed', cleanVisualReturn );
-      scope.$watch( 'actionbtn.__success', cleanVisualReturn );
-      scope.$watch( 'actionbtn.__failed', cleanVisualReturn );
+
+
+      //scope.$watch('data', scope.resize);
+
+      scope.resize = function ( delay ) {
+              $timeout( function () {
+                  console.log( "resizing" );
+                  var globalHeight = $window.innerHeight;
+                  var tablediv = angular.element( document.querySelector( '#tablediv' ) );
+                  var offsetTop = tablediv.prop( 'offsetTop' );
+                  var margin = 80;
+                  scope.currentHeight = globalHeight - ( margin + offsetTop );
+                  console.log(scope.currentHeight);
+              }, delay || 10 );
+      };
 
       /**
       * WATCHERS
@@ -467,18 +546,39 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           getlist(true);
         }, 100);
       } );
+
+      scope.$watch( 'building', function(){
+        getlist(true);
+      } );
       scope.$watch( 'status', function(){
         getlist(true);
       } );
       scope.$watch( 'level', function(){
+        filterRules();
         getlist(true);
       } );
       scope.$watch( 'category', function(){
+        filterRules();
         getlist(true);
       } );
       scope.$watch( 'rule', function(){
         getlist(true);
       } );
+      scope.$watch('after', function(){
+        getlist(true);
+      });
+      scope.$watch('before', function(){
+        getlist(true);
+      });
+      scope.$watch( 'item.__saved', cleanVisualReturn );
+      scope.$watch( 'item.__failed', cleanVisualReturn );
+      scope.$watch( 'actionbtn.__success', cleanVisualReturn );
+      scope.$watch( 'actionbtn.__failed', cleanVisualReturn );
+
+      angular.element( $window )
+          .bind( 'resize', function () {
+              scope.resize();
+          } );
 
 
 
@@ -486,6 +586,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       /**
       * start
       */
+      if(!scope.isGenericApp()){
+        getBuildings();
+      }
+      getRules();
       getlist(true);
     }
   };
