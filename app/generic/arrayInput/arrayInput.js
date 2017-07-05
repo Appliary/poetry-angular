@@ -70,10 +70,8 @@ app.directive( 'arrayInput', function arrayInput() {
                                 color: color
                             };
 
-                            if ( obj && obj.data && obj.data.name ) {
-                                ret.text = obj.data.name;
-                                ret.raw = model;
-                            }
+                            if ( obj && obj.data && obj.data.name )
+                                ret.name = obj.data.name;
 
                             console.log( ret );
                             return cb( null, ret );
