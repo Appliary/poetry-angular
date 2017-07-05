@@ -1,0 +1,21 @@
+ng-include( src='"generic/form.pug"', ng-controller='alertsList/overview' )
+
+//- read and acknowledge
+.right.itemInfo
+
+//- message
+span.saved( ng-if=' actionbtn.__success' )
+    | {{ 'success:' + $root.__module.name | translate }}
+span.failed( ng-if=' actionbtn.__failed' )
+    | {{ 'failed:' + $root.__module.name | translate }}
+
+//- acknowledge
+button.lightButton.pull-right( ng-if="item.acknowledged" ng-click='unacknowledge(item._id)' )
+    | {{'unacknowledge:alerts:button' | translate }}
+button.lightButton.pull-right( ng-if="!item.acknowledged" ng-click='acknowledge(item._id)' )
+    | {{'acknowledge:alerts:button' | translate }}
+//- read
+button.lightButton.pull-right( ng-if="item.read" ng-click='unread(item._id)' )
+    | {{'unread:alerts:button' | translate }}
+button.lightButton.pull-right( ng-if="!item.read" ng-click='read(item._id)' )
+    | {{'read:alerts:button' | translate }}

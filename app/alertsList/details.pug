@@ -1,0 +1,9 @@
+button.back( ng-click=' $root.go( $root.__module ) ; backToList();' )
+    | {{ 'back:button:details' | translate }}
+tabs
+    a(ng-repeat=' ( name, config ) in tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }', id="tab-{{ name || 'overview' }}")
+        span( ng-if=" name ") {{ name + ':tab'| translate }}
+        span( ng-if=" !name ") {{ __id }}
+
+br
+ng-include( src="'alertsList/overview.pug' " tab="{{'overview'}}" )

@@ -1,0 +1,48 @@
+
+form#filters(ng-hide="hideFilters")
+    input( type='search', ng-model='search', placeholder='{{"search:placeholder"|translate}}' )
+    //- category
+    select.pull-right( ng-model='category' )
+        option( value='' ) {{ 'all:category' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option( value='public' ) {{ 'public:category:' | translate }}
+        option( value='technical' ) {{ 'technical:category:' | translate }}
+    //- level
+    select.pull-right( ng-model='level' )
+        option( value='' ) {{ 'all:level' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option( value='low' ) {{ 'low:level:' | translate }}
+        option( value='medium' ) {{ 'medium:level:' | translate }}
+        option( value='high' ) {{ 'high:level:' | translate }}
+        option( value='critical' ) {{ 'critical:level:' | translate }}
+    //- status
+    select.pull-right( ng-model='status' )
+        option( value='all' ) {{ 'all:status' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option( value='' ) {{ 'active:status:' | translate }}
+        option( value='new' ) {{ 'new:status:' | translate }}
+        option( value='archived' )
+            | {{ 'archived:status' | translate }}
+    span( ng-if='total' ) {{'results' | translate }} {{total}}
+    span.loading( ng-if='total === undefined')
+        | {{ 'loading:' + $root.__module.name | translate }}
+.list( ng-class='{detailed:__id}', scroll='scroll' )
+    //- table
+    //- ng-include(src="'alertsList/table.pug'")
+    table
+        thead: tr
+            th( ng-repeat='column in columns', ng-click='sort(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
+                | {{ column + ':' + 'column' | translate }}
+        tbody
+            tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
+                td( ng-repeat='column in columns')
+                    span( ng-if='row[ column ] !== undefined && column === "icon"')
+                        i(class="{{row[ column ]}}")
+                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                        | {{ row[ column ] | localize }}
+                    em( ng-if='column == "_id"')
+                        | {{ row[ column ] }}
+    .noData( ng-if='total === 0' )
+        | {{ 'nodata' | translate}}
+
+ng-include.details( ng-class='{detailed:__id}', src="'alertsList/details.pug'" )
