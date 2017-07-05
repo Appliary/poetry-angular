@@ -1,6 +1,7 @@
 [
     "jquery/dist/jquery.min.js",
     "angular/angular.js",
+    "async/dist/async.min.js",
     "jstree/dist/jstree.min.js",
     "jstree/dist/themes/default/style.min.css",
     "datatables/media/js/jquery.dataTables.min.js",
