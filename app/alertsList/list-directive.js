@@ -87,6 +87,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       });
 
       function select( id ) {
+          if(scope.hideFilters) return;
           console.debug("search item", id);
           scope.__id = id;
           retrieveItem(id);
@@ -341,6 +342,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       * function: calls api to get list
       */
       function callApi(params, mustClean){
+        console.log("%cCallApi","background-color: black; color: #2BFF00");
+        console.log("params",params);
         if(mustClean){
           cleanData();
         }

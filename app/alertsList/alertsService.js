@@ -13,8 +13,25 @@ app.factory("AlertsService", function(){
     });
   }
 
+  function getColumns(){
+    return [
+      "_id",
+      "createdAt",
+      "rule",
+      "source",
+      "level",
+      "category",
+      "device",
+      "message",
+      "acknowledgedBy",
+      "acknowledgedAt",
+      "notes"
+    ];
+  }
+
 
   return {
+    getColumns: getColumns,
     observeParams: observeParams,
     sendParams: sendParams
   };

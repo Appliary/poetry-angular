@@ -38,7 +38,7 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                 select.pull-right( ng-model='rule' )
                     option( value='' ) {{ 'allRules:alertsList' | translate }}
                     option( disabled, value='──────────' ) ──────────
-                    option(ng-repeat="rule in rules | orderBy:+rule.name", ng-value="rule") {{ rule.name }}
+                    option(ng-repeat="rule in rules | orderBy:'+name'", ng-value="rule") {{ rule.name }}
             .input-group-building
                 //- status
                 select.pull-right( ng-model='status' )

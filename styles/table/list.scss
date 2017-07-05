@@ -54,7 +54,7 @@
             //left: $sidebar_width_collapsed + $gutter;
         }
     }
-    &.report-data {
+    &.report-data.detailed {
       width: calc(100% - (530px));
       display: block !important;
     }
