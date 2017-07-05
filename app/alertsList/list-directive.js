@@ -323,12 +323,12 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           // before
           if ( scope.before ){
             params.before = new Date( scope.before.getTime() - scope.before.getTimezoneOffset() * 60000 );
+            params.before.setHours(23, 59, 59, 999);
           }
 
           // after
           if ( scope.after ){
             params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
-            params.after.setHours(23, 59, 59, 999);
           }
 
           callApi(params)
