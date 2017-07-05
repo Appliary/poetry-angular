@@ -332,7 +332,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
             res = timestamp < Date.now();
         else
             res = ( timestamp + ( row[ to ] * 60000 ) ) < Date.now();
-        console.log( row[ to ], timestamp, res );
+        //console.log( row[ to ], timestamp, res );
         return res;
 
     };

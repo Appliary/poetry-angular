@@ -64,13 +64,16 @@ app.directive( 'arrayInput', function arrayInput() {
                     $http.get( '/api/' + collection + '/' + ObjID )
                         .then( function success( obj ) {
 
-                            if ( obj && obj.data && obj.data.name )
-                                return cb( null, {
+                            if ( obj && obj.data && obj.data.name ) {
+                                var ret = {
                                     text: obj.data.name,
                                     collection: 'arrayItem-' + collection,
                                     color: color || 'transparent',
                                     raw: model
-                                } );
+                                };
+                                console.log( ret );
+                                return cb( null, ret );
+                            }
 
                             return cb( null, {
                                 text: model,
