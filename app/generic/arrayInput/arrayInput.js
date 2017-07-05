@@ -27,7 +27,7 @@ app.directive( 'arrayInput', function arrayInput() {
                 isLoading = true;
 
                 async.map( n, function mapTags( model, cb ) {
-                    if ( model.text ) model = model.text;
+                    if ( model.text ) return cb( null, model );
 
                     // Not a collection, send raw
                     if ( !~model.indexOf( ':' ) ) return cb( null, {
