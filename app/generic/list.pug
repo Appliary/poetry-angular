@@ -10,62 +10,128 @@
         span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
         span.loading( ng-if='total === undefined')
             | {{ 'loading:' + $root.__module.name | translate }}
-        
-.table-toolbar
-  .row
-    .col-md-6
-      .btn-group
-        button#sample_editable_1_new.btn.sbold.green
-          | Add New
-          i.fa.fa-plus
-    .col-md-6
-      .btn-group.pull-right
-        button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
-          | Tools
-          i.fa.fa-angle-down
-        ul.dropdown-menu.pull-right
-          li
-            a(href='javascript:;')
-              i.fa.fa-print
-              |  Print
-          li
-            a(href='javascript:;')
-              i.fa.fa-file-pdf-o
-              |  Save as PDF
-          li
-            a(href='javascript:;')
-              i.fa.fa-file-excel-o
-              |  Export to Excel
 
-#sample_1.dataTables_wrapper.no-footer
-    .row
-        .col-md-6.col-sm-6
-            #sample_1_filter.dataTables_filter
+//- Managed
+.portlet.light.bordered
+    .portlet-title
+        .caption.font-dark
+            i.icon-settings.font-dark
+            span.caption-subject.bold.uppercase  Managed Table
+        .actions
+            .btn-group.btn-group-devided(data-toggle='buttons')
+                label.btn.btn-transparent.dark.btn-outline.btn-circle.btn-sm.active
+                    input#option1.toggle(type='radio', name='options')
+                    | Actions
+                label.btn.btn-transparent.dark.btn-outline.btn-circle.btn-sm
+                    input#option2.toggle(type='radio', name='options')
+                    | Settings
+    .portlet-body
+        .table-toolbar
+          .row
+            .col-md-6
+              .btn-group
+                button#sample_editable_1_new.btn.sbold.green
+                  | Add New
+                  i.fa.fa-plus
+            .col-md-6
+              .btn-group.pull-right
+                button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
+                  | Tools
+                  i.fa.fa-angle-down
+                ul.dropdown-menu.pull-right
+                  li
+                    a(href='javascript:;')
+                      i.fa.fa-print
+                      |  Print
+                  li
+                    a(href='javascript:;')
+                      i.fa.fa-file-pdf-o
+                      |  Save as PDF
+                  li
+                    a(href='javascript:;')
+                      i.fa.fa-file-excel-o
+                      |  Export to Excel
+
+        table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column
+            thead
+                tr
+                    th
+                        label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                            input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
+                            span
+                    th(ng-repeat='column in columns')
+                        | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
+                    th  Actions 
+            tbody
+                tr.odd.gradeX(ng-repeat='row in data')
+                    td
+                        label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                            input.checkboxes(type='checkbox', value='1')
+                            span
+                    td( ng-repeat='column in columns')
+                        span( ng-if='row[ column ] !== undefined && column === "icon"')
+                            i(class="{{row[ column ]}}")
+                        span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                            | {{ row[ column ] | localize }}
+                        em( ng-if='column == "_id"')
+                            | {{ row[ column ] }}
+                    td
+                        .btn-group
+                            button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                                | Actions
+                                i.fa.fa-angle-down
+                            ul.dropdown-menu(role='menu')
+                                li
+                                    a(href='javascript:;')
+                                        i.icon-docs
+                                        |  New Post
+                                li
+                                    a(href='javascript:;')
+                                        i.icon-tag
+                                        |  New Comment
+                                li
+                                    a(href='javascript:;')
+                                        i.icon-user
+                                        |  New User
+                                li.divider  
+                                li
+                                    a(href='javascript:;')
+                                        i.icon-flag
+                                        |  Comments
+                                        span.badge.badge-success 4
+
+
+
+
+//- Scroller
+    #sample_1.dataTables_wrapper.no-footer
+        .row
+            .col-md-6.col-sm-6
+                #sample_1_filter.dataTables_filter
+                    label
+                        | Search:
+                        input.form-control.input-sm.input-small.input-inline(type='search', ng-model='$parent.search', placeholder='{{""|translate}}', aria-controls='sample_1')
+            .col-md-6.col-sm-6
                 label
-                    | Search:
-                    input.form-control.input-sm.input-small.input-inline(type='search', ng-model='$parent.search', placeholder='{{""|translate}}', aria-controls='sample_1')
-        .col-md-6.col-sm-6
-            label
-                | Show 
-                select.form-control.input-sm.input-xsmall.input-inline(ng-model='$parent.status', name='sample_1_length', aria-controls='sample_1')
-                    option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-                    option( disabled, value='──────────' ) ──────────
-                    option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-                    option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-                    option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
+                    | Show 
+                    select.form-control.input-sm.input-xsmall.input-inline(ng-model='$parent.status', name='sample_1_length', aria-controls='sample_1')
+                        option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+                        option( disabled, value='──────────' ) ──────────
+                        option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+                        option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
+                        option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
 
 
-table#sample_2.table.table-striped.table-bordered.table-hover.order-column
-  thead
-    tr
-      th ID
-      th First name
-      th Last name
-      th ZIP / Post code
-      th Country
+    table#sample_2.table.table-striped.table-bordered.table-hover.order-column
+      thead
+        tr
+          th ID
+          th First name
+          th Last name
+          th ZIP / Post code
+          th Country
 
 
-//-
     .table-scrollable
         .dataTables_scroll
             .dataTables_scrollHead
@@ -128,55 +194,3 @@ table#sample_2.table.table-striped.table-bordered.table-hover.order-column
 
 //ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
 
-
-
-
-//- 
-    table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column
-        thead
-            tr
-                th
-                    label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                        input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
-                        span
-                th  Username 
-                th  Email 
-                th  Status 
-                th  Joined 
-                th  Actions 
-        tbody
-            tr.odd.gradeX
-                td
-                    label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                        input.checkboxes(type='checkbox', value='1')
-                        span
-                td  weep 
-                td
-                    a(href='mailto:userwow@gmail.com')  good@gmail.com 
-                td
-                    span.label.label-sm.label-warning  Suspended 
-                td.center  12.12.2011 
-                td
-                    .btn-group
-                        button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                            | Actions
-                            i.fa.fa-angle-down
-                        ul.dropdown-menu(role='menu')
-                            li
-                                a(href='javascript:;')
-                                    i.icon-docs
-                                    |  New Post
-                            li
-                                a(href='javascript:;')
-                                    i.icon-tag
-                                    |  New Comment
-                            li
-                                a(href='javascript:;')
-                                    i.icon-user
-                                    |  New User
-                            li.divider  
-                            li
-                                a(href='javascript:;')
-                                    i.icon-flag
-                                    |  Comments
-                                    span.badge.badge-success 4

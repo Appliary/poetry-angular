@@ -3,8 +3,9 @@
 // Core bootstrap variables and mixins
 @import "colors";
 
-@import "../bootstrap/variables";
-@import "../bootstrap/mixins";
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+
 
 $direction: 						'ltr' !default;
 $theme-style: 						'square' !default;         

@@ -81,8 +81,6 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
 
                     isLoading = false;
 
-                    console.log(response.data.data);
-
                     if (response.data.data) {
                         if (page)
                             response.data.data.forEach(function loop(i) {

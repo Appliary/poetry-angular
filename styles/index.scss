@@ -1,22 +1,19 @@
-$simple-line-font-path : "./fonts/";
+$simple-line-font-path: "./fonts/";
 @import 'metronic/simple-line-icons/simple-line-icons.scss';
 
 $fa-font-path: "./fonts";
 @import 'metronic/font-awesome/font-awesome.scss';
 
-@import 'metronic/bootstrap';
+@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
 @import 'metronic/layouts/layout/layout';
 @import 'metronic/layouts/layout/custom';
 
 @import 'metronic/global/components-main';
-@import 'metronic/global/components-rounded';
-@import 'metronic/global/components-md';
-
 @import 'metronic/global/plugins-main';
-@import 'metronic/global/plugins-md';
 
+@import 'metronic/components.min';
 
-body{
-    opacity:1;
+body {
+    opacity: 1;
 }
