@@ -58,9 +58,9 @@ app.directive( 'arrayInput', function arrayInput() {
                     $http.get( '/api/' + collection + '/' + ObjID )
                         .then( function success( obj ) {
 
-                            if ( obj && obj.name )
+                            if ( obj && obj.data && obj.data.name )
                                 return cb( null, {
-                                    text: obj.name,
+                                    text: obj.data.name,
                                     collection: 'arrayItem-' + collection,
                                     color: color || 'transparent',
                                     raw: model
