@@ -50,9 +50,15 @@ app.directive( 'arrayInput', function arrayInput() {
                     }
 
                     var color = 'rgba(';
-                    color += parseInt( hash.slice( 0, 2 ), 16 ) + ',';
-                    color += parseInt( hash.slice( 2, 4 ), 16 ) + ',';
-                    color += parseInt( hash.slice( 4, 6 ), 16 ) + ',';
+                    var c = parseInt( hash.slice( 0, 2 ), 16 );
+                    if ( c < 0 ) c = 0 - c;
+                    color += c + ',';
+                    c = parseInt( hash.slice( 2, 4 ), 16 );
+                    if ( c < 0 ) c = 0 - c;
+                    color += c + ',';
+                    c = parseInt( hash.slice( 4, 6 ), 16 );
+                    if ( c < 0 ) c = 0 - c;
+                    color += c + ',';
                     color += '0.3)';
 
                     $http.get( '/api/' + collection + '/' + ObjID )
