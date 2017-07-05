@@ -73,7 +73,6 @@ app.directive( 'arrayInput', function arrayInput() {
                             if ( obj && obj.data && obj.data.name )
                                 ret.name = obj.data.name;
 
-                            console.log( ret );
                             return cb( null, ret );
 
                         }, function fail() {
