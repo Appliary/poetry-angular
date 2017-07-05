@@ -306,7 +306,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     $scope.isTOut = function isTOut( row ) {
 
-        var to = 'timeout';
+        var to = 'timeout',
+            ts = 'timestamp';
         if ( $scope.$root.__module.config ) {
             if ( $scope.$root.__module.config.timeout )
                 to = $scope.$root.__module.config.timeout;
