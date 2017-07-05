@@ -55,7 +55,7 @@ app.directive( 'arrayInput', function arrayInput() {
                     color += parseInt( hash.slice( 4, 6 ), 16 ) + ',';
                     color += '0.3)';
 
-                    $http.get( '/api/' + collection + '/' + ObjId )
+                    $http.get( '/api/' + collection + '/' + ObjID )
                         .then( function success( obj ) {
 
                             if ( obj && obj.name )
