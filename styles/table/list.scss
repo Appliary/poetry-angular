@@ -54,11 +54,16 @@
             //left: $sidebar_width_collapsed + $gutter;
         }
     }
+    &.report-data {
+      width: calc(100% - (530px));
+      display: block !important;
+    }
     #filters > * {
         display: inline-block;
         width: 33%;
     }
 }
+
 ng-include.details {
     overflow: hidden;
     position: fixed;

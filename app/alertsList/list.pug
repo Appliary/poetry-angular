@@ -1,7 +1,9 @@
 accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ', ng-hide="hideFilters" )
     header(ng-click=' config.$open = !config.$open; resize(700) ')
-        span() {{ "Select:report" | translate }}
-        span( ng-if='total' ) {{'results' | translate }} {{total}}
+        span()
+            | {{ "selectAlerts:alertsList" | translate }} &nbsp;
+        span( ng-if='total' )
+            | {{'results' | translate }} {{total}}
         span.loading( ng-if='total === undefined')
             | {{ 'loading:' + $root.__module.name | translate }}
         span.pull-right.report-config-open {{config.$open ? "&darr;" : "&uarr;"}}
@@ -10,7 +12,7 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
             .input-group-building(ng-hide="isGenericApp()")
                 //- buildings
                 select.form-control(ng-model="building")
-                    option(value="") {{ 'allBuildings:report' | translate }}
+                    option(value="") {{ 'allBuildings:alertsList' | translate }}
                     option(ng-repeat="building in buildings", ng-value="building") {{ building.name }}
             .input-group-dates
                 input(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
@@ -18,43 +20,39 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
             .input-group-building
                 //- category
                 select.pull-right( ng-model='category' )
-                    option( value='' ) {{ 'allCategories:category' | translate }}
+                    option( value='' ) {{ 'allCategories:alertsList' | translate }}
                     option( disabled, value='──────────' ) ──────────
-                    option( value='public' ) {{ 'public:category:' | translate }}
-                    option( value='technical' ) {{ 'technical:category:' | translate }}
+                    option( value='public' ) {{ 'public:category:alertsList' | translate }}
+                    option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
             .input-group-building
                 //- level
                 select.pull-right( ng-model='level' )
-                    option( value='' ) {{ 'allLevels:level' | translate }}
+                    option( value='' ) {{ 'allLevels:alertsList' | translate }}
                     option( disabled, value='──────────' ) ──────────
-                    option( value='low' ) {{ 'low:level:' | translate }}
-                    option( value='medium' ) {{ 'medium:level:' | translate }}
-                    option( value='high' ) {{ 'high:level:' | translate }}
-                    option( value='critical' ) {{ 'critical:level:' | translate }}
+                    option( value='low' ) {{ 'low:level:alertsList' | translate }}
+                    option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
+                    option( value='high' ) {{ 'high:level:alertsList' | translate }}
+                    option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
             .input-group-building
                 //- rules
                 select.pull-right( ng-model='rule' )
-                    option( value='' ) {{ 'allRules:rules' | translate }}
+                    option( value='' ) {{ 'allRules:alertsList' | translate }}
                     option( disabled, value='──────────' ) ──────────
-                    option(ng-repeat="rule in rules | orderBy:+name", ng-value="rule") {{ rule.name }}
+                    option(ng-repeat="rule in rules | orderBy:+rule.name", ng-value="rule") {{ rule.name }}
             .input-group-building
                 //- status
                 select.pull-right( ng-model='status' )
-                    option( value='all' ) {{ 'allStatus:status' | translate }}
+                    option( value='all' ) {{ 'allStatus:alertsList' | translate }}
                     option( disabled, value='──────────' ) ──────────
-                    option( value='' ) {{ 'active:status:' | translate }}
-                    option( value='new' ) {{ 'new:status:' | translate }}
+                    option( value='' ) {{ 'active:status:alertsList' | translate }}
+                    option( value='new' ) {{ 'new:status:alertsList' | translate }}
                     option( value='archived' )
-                        | {{ 'archived:status' | translate }}
+                        | {{ 'archived:status:alertsList' | translate }}
             //- tags input
             div()
                 .input-group-building(style="width: 100%")
                     //- searchTags
                     tags-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
-            //- info total
-            span( ng-if='total' ) {{'results' | translate }} {{total}}
-            span.loading( ng-if='total === undefined')
-                | {{ 'loading:' + $root.__module.name | translate }}
 .report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
     //- table
     //- ng-include(src="'alertsList/table.pug'")
