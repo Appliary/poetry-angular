@@ -3,10 +3,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
     var lastCall = {};
 
-      $scope.sorting = {
-          col: '_id',
-          order: 'asc'
-      };
+    $scope.sorting = {
+        col: '_id',
+        order: 'asc'
+    };
 
     $scope.orderBy = function orderBy( col ) {
         if ( $scope.sorting.col != col )
@@ -42,7 +42,7 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields || [];
         $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
         //all defaults
-        $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
+        $scope.defaults = angular.isObject( $scope.$root.__module.config.defaults ) ? $scope.$root.__module.config.defaults : {};
     } );
 
     var isLoading = false;
@@ -65,9 +65,9 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         isLoading = true;
 
         var urlConfig = {
-          url: $scope.$root.__module.api,
-          method: 'GET',
-          params: {}
+            url: $scope.$root.__module.api,
+            method: 'GET',
+            params: {}
         };
 
 
@@ -77,12 +77,12 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
 
         var url = $scope.$root.__module.api + '?sort=' + ( $scope.sorting ? $scope.sorting.col : '_id' ) + '&order=' + ( $scope.sorting ? $scope.sorting.order : 'asc' );
 
-        if ( $scope.status ){
-          urlConfig.params.status = $scope.status;
-          url += "&status=" + $scope.status;
+        if ( $scope.status ) {
+            urlConfig.params.status = $scope.status;
+            url += "&status=" + $scope.status;
         }
 
-        if ( $scope.search ){
+        if ( $scope.search ) {
             urlConfig.params.search = encodeURIComponent( $scope.search );
             url += "&search=" + encodeURIComponent( $scope.search );
         }
@@ -216,8 +216,8 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         if ( angular.isArray( $scope.item.__dateFields ) ) {
             $scope.item.__dateFields.forEach( function ( field ) {
                 if ( !$scope.item[ field ] || ( $scope.item[ field ] && isNaN( $scope.item[ field ].getTime() ) ) ) {
-                    if (!($scope.item[ field ] === null))
-                      $scope.item[ field ];
+                    if ( $scope.item[ field ] !== null )
+                        delete $scope.item[ field ];
                 }
             } );
         }

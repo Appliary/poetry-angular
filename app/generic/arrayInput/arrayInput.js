@@ -6,7 +6,7 @@ app.directive( 'arrayInput', function arrayInput() {
             'array': "=",
             'autocomplete': '&'
         },
-        controller: function arrayInputCtrl( $scope ) {
+        controller: function arrayInputCtrl( $scope, $http ) {
 
             var isLoading = true;
 
@@ -26,17 +26,18 @@ app.directive( 'arrayInput', function arrayInput() {
 
                 isLoading = true;
 
-                $scope.tags = n.map( function mapTags( model ) {
+                async.map( n, function mapTags( model, cb ) {
                     if ( model.text ) model = model.text;
 
                     // Not a collection, send raw
-                    if ( !~model.indexOf( ':' ) ) return {
+                    if ( !~model.indexOf( ':' ) ) return cb( null, {
                         text: model,
                         collection: '',
                         color: 'transparent'
-                    };
+                    } );
 
                     var collection = model.split( ':' )[ 0 ];
+                    var ObjID = model.split( ':' )[ 1 ];
                     var hash = 0;
                     for ( i = 0; i < collection.length; i++ ) {
                         chr = collection.charCodeAt( i );
@@ -54,14 +55,36 @@ app.directive( 'arrayInput', function arrayInput() {
                     color += parseInt( hash.slice( 4, 6 ), 16 ) + ',';
                     color += '0.3)';
 
-                    return {
-                        text: model,
-                        collection: 'arrayItem-' + collection,
-                        color: color || 'transparent'
-                    };
+                    $http.get( '/api/' + collection + '/' + ObjId )
+                        .then( function success( obj ) {
+
+                            if ( obj && obj.name )
+                                return cb( null, {
+                                    text: obj.name,
+                                    collection: 'arrayItem-' + collection,
+                                    color: color || 'transparent',
+                                    raw: model
+                                } );
+
+                            return cb( null, {
+                                text: model,
+                                collection: 'arrayItem-' + collection,
+                                color: color || 'transparent'
+                            } );
+                        }, function fail() {
+                            return cb( null, {
+                                text: model,
+                                collection: 'arrayItem-' + collection,
+                                color: color || 'transparent'
+                            } );
+                        } );
+
+                }, function success( err, tags ) {
+                    if ( err ) console.error( err );
+                    $scope.tags = tags;
+                    isLoading = false;
                 } );
 
-                isLoading = false;
             } );
 
         }
