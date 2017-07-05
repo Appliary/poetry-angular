@@ -12,6 +12,20 @@
             | {{ 'loading:' + $root.__module.name | translate }}
 
 //- Managed
+
+h1.page-title
+    | {{ $root.__module.name + ':module:title' | translate }} 
+    small {{ $root.__module.name + ':module:title' | translate }}
+
+.m-heading-1.border-green.m-bordered
+    h3 DataTables jQuery Plugin
+    p
+        | DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
+    p
+        | For more info please check out 
+        a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
+
+
 .portlet.light.bordered
     .portlet-title
         .caption.font-dark
