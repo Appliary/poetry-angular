@@ -24,22 +24,9 @@
                 | Actions 
                 i.fa.fa-angle-down
             ul.dropdown-menu.pull-right(role='menu')
-                li
+                li(ng-repeat='( name, config ) in $root.__module.config.toolbox', ng-click="openToolbox( name )")
                     a(href='#')
                         i.icon-bell 
-                        |  Action
-                li
-                    a(href='#')
-                        i.icon-shield
-                        |  Another action
-                li
-                    a(href='#')
-                        i.icon-user
-                        |  Something else here
-                li.divider
-                li
-                    a(href='#')
-                        i.icon-bag
-                        |  Separated link
+                        |  {{ name + ':toolbox:' + $root.__module.name | translate }}
                 
 ng-include(src='$root.__module.templateUrl')

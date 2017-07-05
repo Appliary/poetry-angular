@@ -16,21 +16,19 @@
     .portlet-title
         .caption.font-dark
             i.icon-settings.font-dark
-            span.caption-subject.bold.uppercase  Managed Table
+            span.caption-subject.bold.uppercase  {{ $root.__module.name + ':module:title' | translate }}
         .actions
             .btn-group.btn-group-devided(data-toggle='buttons')
-                label.btn.btn-transparent.dark.btn-outline.btn-circle.btn-sm.active
+                label.btn.btn-transparent.dark.btn-outline.btn-circle(ng-repeat='(name, config) in $root.__module.config.toolbox', ng-click="openToolbox(name)")
                     input#option1.toggle(type='radio', name='options')
-                    | Actions
-                label.btn.btn-transparent.dark.btn-outline.btn-circle.btn-sm
-                    input#option2.toggle(type='radio', name='options')
-                    | Settings
+                    | {{ name + ':toolbox:' + $root.__module.name | translate }}
+                
     .portlet-body
         .table-toolbar
           .row
             .col-md-6
               .btn-group
-                button#sample_editable_1_new.btn.sbold.green
+                button#sample_editable_1_new.btn.sbold.green(ng-click='openToolbox("add")')
                   | Add New 
                   i.fa.fa-plus
             .col-md-6
@@ -52,6 +50,7 @@
                       i.fa.fa-file-excel-o
                       |  Export to Excel
 
+
         table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column
             thead
                 tr
@@ -60,7 +59,7 @@
                             input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
                             span
                     th(ng-repeat='column in columns')
-                        | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
+                        |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
                     th  Actions 
             tbody
                 tr.odd.gradeX(ng-repeat='row in data')

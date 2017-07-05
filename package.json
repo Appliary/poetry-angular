@@ -8,12 +8,14 @@
   },
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-datatables": "^0.5.5",
+    "angular-datatables": "^0.5.7",
     "angular-leaflet-directive": "^0.10.0",
     "ascss": "^1.0.3",
     "bootstrap-sass": "^3.3.7",
     "concatenate": "0.0.1",
     "datatables": "^1.10.12",
+    "datatables.net": "^1.10.15",
+    "datatables.net-dt": "^1.10.15",
     "font-awesome": "^4.7.0",
     "glob": "^7.0.6",
     "h2o2": "^5.1.1",
@@ -32,7 +34,10 @@
     "simple-line-icons": "^2.4.1",
     "webshim": "^1.16.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/datatables.net": "^1.10.4",
+    "@types/jquery": "^3.2.5"
+  },
   "homepage": "https://github.com/Appliary/poetry-angular#readme",
   "license": "ISC",
   "main": "index.js",
