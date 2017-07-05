@@ -29,7 +29,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       scope.genericApps = ['deviceManager'];
       scope.isGenericApp = function (){
-        return genericApps.indexOf(scope.$root.__appName) > -1;
+        return scope.genericApps.indexOf(scope.$root.__appName) > -1;
       }
 
       var directivePath = $location.path();
