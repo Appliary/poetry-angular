@@ -328,7 +328,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           // after
           if ( scope.after ){
             params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
-            params.setHours(23, 59, 59, 999);
+            params.after.setHours(23, 59, 59, 999);
           }
 
           callApi(params)
