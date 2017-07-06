@@ -14,9 +14,6 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                 select.form-control(ng-model="building")
                     option(value="") {{ 'allBuildings:alertsList' | translate }}
                     option(ng-repeat="building in buildings", ng-value="building") {{ building.name }}
-            .input-group-dates
-                input(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
-                input(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
             .input-group-building
                 //- category
                 select.pull-right( ng-model='category' )
@@ -48,6 +45,10 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                     option( value='new' ) {{ 'new:status:alertsList' | translate }}
                     option( value='archived' )
                         | {{ 'archived:status:alertsList' | translate }}
+            //- dates
+            .input-group-dates
+                input(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                input(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
             //- tags input
             div()
                 .input-group-building(style="width: 100%")
