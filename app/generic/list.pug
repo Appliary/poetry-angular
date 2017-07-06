@@ -23,7 +23,6 @@ h1.page-title
     p
         | For more info please check out 
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
-        // a.btn.red.btn-outline.sbold(data-toggle="modal", data-target="#basic") Open modal
 
 .portlet.light.bordered
     .portlet-title
@@ -64,16 +63,16 @@ h1.page-title
                       |  Export to Excel
 
 
-        table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column
+        table#sample_1.dataTable.table.table-striped.table-bordered.table-hover.table-checkable.order-column(scroll='scroll')
             thead
                 tr
-                    th
+                    th.sorting_disabled
                         label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                             input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
                             span
-                    th(ng-repeat='column in columns')
+                    th.sorting(ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
                         |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
-                    th  Actions 
+                    th.sorting_disabled  Actions 
             tbody
                 tr.odd.gradeX(ng-repeat='row in data')
                     td
@@ -111,96 +110,6 @@ h1.page-title
                                         i.icon-flag
                                         |  Comments
                                         span.badge.badge-success 4
-
-
-//- Scroller
-    #sample_1.dataTables_wrapper.no-footer
-        .row
-            .col-md-6.col-sm-6
-                #sample_1_filter.dataTables_filter
-                    label
-                        | Search:
-                        input.form-control.input-sm.input-small.input-inline(type='search', ng-model='$parent.search', placeholder='{{""|translate}}', aria-controls='sample_1')
-            .col-md-6.col-sm-6
-                label
-                    | Show 
-                    select.form-control.input-sm.input-xsmall.input-inline(ng-model='$parent.status', name='sample_1_length', aria-controls='sample_1')
-                        option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-                        option( disabled, value='──────────' ) ──────────
-                        option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-                        option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-                        option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-
-
-    table#sample_2.table.table-striped.table-bordered.table-hover.order-column
-      thead
-        tr
-          th ID
-          th First name
-          th Last name
-          th ZIP / Post code
-          th Country
-
-
-    .table-scrollable
-        .dataTables_scroll
-            .dataTables_scrollHead
-                .dataTables_scrollHeadInner
-                    table.table.table-striped.table-bordered.table-hover.table-checkable.order-column.dataTable.no-footer(role='grid')
-                        thead: tr(role='row')
-                            th.sorting_disabled
-                                label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                    input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
-                                    span
-                            th.sorting( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }' )
-                                | {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
-                            th  Actions
-            .dataTables_scrollBody
-                table#sample_1.table.table-striped.table-bordered.table-hover.table-checkable.order-column.dataTable.no-footer(role='grid', aria-describedby='sample_1_info')
-                        thead: tr(role='row')
-            tbody
-                tr.odd.gradeX( role='row' ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTOut(row) } ' )
-                    td
-                        label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                            input.checkboxes(type='checkbox', value='1')
-                            span
-                    td.sorting_1( ng-repeat='column in columns')
-                        span( ng-if='row[ column ] !== undefined && column === "icon"')
-                            i(class="{{row[ column ]}}")
-                        span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
-                            | {{ row[ column ] | localize }}
-                        em( ng-if='column == "_id"')
-                            | {{ row[ column ] }}
-                    td
-                        .btn-group
-                            button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                | Actions
-                                i.fa.fa-angle-down
-                            ul.dropdown-menu(role='menu')
-                                li
-                                    a(href='javascript:;')
-                                        i.icon-docs
-                                        |  New Post
-                                li
-                                    a(href='javascript:;')
-                                        i.icon-tag
-                                        |  New Comment
-                                li
-                                    a(href='javascript:;')
-                                        i.icon-user
-                                        |  New User
-                                li.divider  
-                                li
-                                    a(href='javascript:;')
-                                        i.icon-flag
-                                        |  Comments
-                                        span.badge.badge-success 4
-    .row
-        .col-md-12
-            #sample_2_info.dataTables_info(ng-if="total", role='status', aria-live='polite') Showing 1 to {{total}} of {{total}} entries
-
-        // .noData( ng-if='total === 0' )
-            | {{ 'nodata:' + $root.__module.name | translate}}
 
 //ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
 
