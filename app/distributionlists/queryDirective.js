@@ -20,17 +20,20 @@ app.directive("distributionListsQueryDirective", function(AlertsService){
 
       function filterRules(){
         if( !(angular.isObject(scope.rule) && canDisplayRule(scope.rule))){
-          scope.rule = undefined;
+          if(angular.isObject(scope.item) && scope.allRules.length > 0){
+            console.log("set to empty");
+              scope.item.rule = '';
+          }
         }
         scope.rules = scope.allRules.filter(canDisplayRule);
       }
 
       function canDisplayRule(rule){
-        if(scope.level){
-          if(scope.level != rule.level) return false;
+        if(scope.item.level){
+          if(scope.item.level != rule.level) return false;
         }
-        if(scope.category){
-          if(scope.category != rule.category) return false;
+        if(scope.item.category){
+          if(scope.item.category != rule.category) return false;
         }
         return true;
       }
@@ -39,11 +42,28 @@ app.directive("distributionListsQueryDirective", function(AlertsService){
       *
       * WATCHERS
       */
-      scope.$watch( 'level', function(){
+      scope.$watch( 'item.level', function(){
         filterRules();
       } );
-      scope.$watch( 'category', function(){
+      scope.$watch( 'item.category', function(){
         filterRules();
+      } );
+      scope.$watch( 'item.rule', function(nv){
+        if(!nv){
+          scope.rule = '';
+          return;
+        }
+        if(!scope.allRules.some(function(ru){
+          if(ru._id == nv){
+            scope.rule = ru;
+            return true;
+          }
+          else{
+            return false;
+          }
+        })){
+          scope.rule = '';
+        }
       } );
     }
   };

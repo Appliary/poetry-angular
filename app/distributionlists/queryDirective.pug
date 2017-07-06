@@ -1,12 +1,12 @@
 //- category
-select.pull-right( ng-model='category' )
+select( ng-model='item.category' )
     option( value='' ) {{ 'allCategories:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
     option( value='public' ) {{ 'public:category:alertsList' | translate }}
     option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
 .input-group-building
 //- level
-select.pull-right( ng-model='level' )
+select( ng-model='item.level' )
     option( value='' ) {{ 'allLevels:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
     option( value='low' ) {{ 'low:level:alertsList' | translate }}
@@ -15,10 +15,10 @@ select.pull-right( ng-model='level' )
     option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
 .input-group-building
 //- rules
-select.pull-right( ng-model='rule' )
+select( ng-model='item.rule' )
     option( value='' ) {{ 'allRules:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
-    option(ng-repeat="rule in rules | orderBy:'+name'", ng-value="rule") {{ rule.name }}
+    option(ng-repeat="r in rules | orderBy:'+name'", value="{{r._id}}", ng-selected="r._id == item.rule") {{ r.name }}
 
 //- div( )
     div(ng-repeat="(i,r) in item.recipients")
