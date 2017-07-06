@@ -1,4 +1,4 @@
-app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, validationService ) {
+app.controller('modals/toolbox', function ($scope, $http, $window, $location, validationService) {
 
     // Instantiate new object
     $scope.item = {};
@@ -9,109 +9,111 @@ app.controller( 'modals/toolbox', function ( $scope, $http, $window, $location, 
         method = $scope.__config.method || 'post';
 
     // Get validation
-    $http[ method ]( '/__joi' + api )
-        .then( function success( response ) {
-            if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
+    $http[method]('/__joi' + api)
+        .then(function success(response) {
+            if (!response.data.payload._inner || !response.data.payload._inner.children) {
                 $scope.__joi = response.data.payload;
             } else {
 
                 $scope.__joi = {};
                 response.data.payload._inner.children.forEach(
-                    function ( elem ) {
-                        $scope.__joi[ elem.key ] = elem.schema;
+                    function (elem) {
+                        $scope.__joi[elem.key] = elem.schema;
                     }
                 );
             }
 
-            if ( $scope.__joi._type != 'alternatives' ) {
-                if ( !$scope.__joi.computed )
+            if ($scope.__joi._type != 'alternatives') {
+                if (!$scope.__joi.computed)
                     $scope.__joi.computed = $scope.__joi;
             } else {
                 // Get the field that defines which alt
-                $scope.__joi._inner.matches[ 0 ].schema._inner.children.some( function ( a, i ) {
+                $scope.__joi._inner.matches[0].schema._inner.children.some(function (a, i) {
                     try {
-                        if ( a.schema._valids._set.length == 1 )
-                            return ( $scope.__joi.af = a.key );
-                    } catch ( e ) {}
-                } );
+                        if (a.schema._valids._set.length == 1)
+                            return ($scope.__joi.af = a.key);
+                    } catch (e) { }
+                });
 
                 // Get the alts
                 $scope.__joi.alt = {};
-                $scope.__joi._inner.matches.forEach( function ( alt ) {
+                $scope.__joi._inner.matches.forEach(function (alt) {
                     try {
 
                         // Find the alt field value
                         var afval;
-                        alt.schema._inner.children.some( function ( field ) {
+                        alt.schema._inner.children.some(function (field) {
 
-                            if ( field.key != $scope.__joi.af )
+                            if (field.key != $scope.__joi.af)
                                 return false; // Nah, not this one
 
-                            afval = field.schema._valids._set[ 0 ];
+                            afval = field.schema._valids._set[0];
                             return true; // Stop searching
 
-                        } );
+                        });
 
                         // Save schemas related to the field value
-                        $scope.__joi.alt[ afval ] = {};
-                        alt.schema._inner.children.forEach( function ( ch ) {
-                            $scope.__joi.alt[ afval ][ ch.key ] = ch.schema;
-                        } );
+                        $scope.__joi.alt[afval] = {};
+                        alt.schema._inner.children.forEach(function (ch) {
+                            $scope.__joi.alt[afval][ch.key] = ch.schema;
+                        });
 
-                    } catch ( e ) {}
-                } );
+                    } catch (e) { }
+                });
 
                 // Get the first alt possible value
-                $scope.item[ $scope.__joi.af ] = Object.keys( $scope.__joi.alt )[ 0 ];
+                $scope.item[$scope.__joi.af] = Object.keys($scope.__joi.alt)[0];
 
                 // When the af changes, change the computed to the related
-                var computeAF = function computeAF( n, o ) {
-                    console.info( 'ALT changed !', n, o );
+                var computeAF = function computeAF(n, o) {
+                    console.info('ALT changed !', n, o);
                     try {
                         // Try to get the correct validation schema
                         $scope.__joi.computed = $scope.__joi.alt[
-                            $scope.item[ $scope.__joi.af ]
+                            $scope.item[$scope.__joi.af]
                         ];
-                    } catch ( e ) {
+                    } catch (e) {
                         // If not found, take the first one available
-                        $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
+                        $scope.__joi.computed = $scope.__joi.alt[Object.keys($scope.__joi.alt)[0]];
                     }
                 };
 
-                $scope.$watch( 'item.' + $scope.__joi.af, computeAF );
+                $scope.$watch('item.' + $scope.__joi.af, computeAF);
 
             }
 
             $scope.loaded = true;
-        }, console.error );
+            $('.modal')[0].style.display = "block"
+
+        }, console.error);
 
     $scope.save = function save() {
         $scope.__validation = [];
 
-        $http[ method ]( api, $scope.item )
-            .then( function success( response ) {
+        $http[method](api, $scope.item)
+            .then(function success(response) {
 
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
 
                 $scope.closeThisDialog();
 
-            }, function error( err ) {
-                console.error( err );
+            }, function error(err) {
+                console.error(err);
                 $scope.item.__failed = true;
                 $scope.item.__saved = false;
 
-                if ( err.status == 400 && err.data && err.data.validation )
+                if (err.status == 400 && err.data && err.data.validation)
                     $scope.__validation = err.data.validation.keys;
-            } );
+            });
     };
 
     /*
      * Load standard validation transformations
      */
-    $scope.inputType = validationService.inputType( $scope );
-    $scope.inputVisible = validationService.inputVisible( $scope );
-    $scope.inputEnums = validationService.inputEnums( $scope );
-    $scope.toDateObject = validationService.toDateObject( $scope );
+    $scope.inputType = validationService.inputType($scope);
+    $scope.inputVisible = validationService.inputVisible($scope);
+    $scope.inputEnums = validationService.inputEnums($scope);
+    $scope.toDateObject = validationService.toDateObject($scope);
 
-} );
+});

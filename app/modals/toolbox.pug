@@ -1,4 +1,14 @@
-h2 {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
+//- OLD
+    h2 {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
 
-h5.muted(ng-if='!loaded') {{'Loading:' + module.name + ':toolbox'|translate}}
-ng-include( src='"generic/form.pug"', ng-if='loaded' )
+    h5.muted(ng-if='!loaded') {{'Loading:' + module.name + ':toolbox'|translate}}
+    ng-include( src='"generic/form.pug"', ng-if='loaded' )
+
+.modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true')
+    h4.modal-title {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
+.modal-body
+    ng-include(src='"generic/form.pug"', ng-if='loaded')
+.modal-footer
+    button.btn.dark.btn-outline(type='button', ng-click='closeThisDialog()') Close
+    button.btn.green(type='button') Save changes

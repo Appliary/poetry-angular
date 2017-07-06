@@ -1,130 +1,134 @@
-form( ng-submit='' )
-    div( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
-        label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
-            | {{ field + ':field' | translate }}
+form.form-horizontal( ng-submit='' )
+    .form-body
+        .form-group( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
+            label.col-xs-3.control-label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
+                | {{ field + ':field' | translate }}
+            
+            .col-xs-9
 
-        //- Unknown => Read only
-        input( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
-        input( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
-        input( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
-        input( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
+                //- Unknown => Read only
+                input( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
+                input( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
+                input( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
+                input( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
 
-        //- _id
-        input( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
+                //- _id
+                input( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
 
-        //- Numbers (with or without units)
-        input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-        span.unit( ng-if="inputType(field) == 'numUnit'" )
-            input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-            span {{ __joi.computed[field]._unit + ':unit' | translate }}
+                //- Numbers (with or without units)
+                input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                span.unit( ng-if="inputType(field) == 'numUnit'" )
+                    input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                    span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
-        //- Strings
-        input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                //- Strings
+                input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
-        //- StringUnits
-        span.unit( ng-if="inputType(field) == 'strUnit'" )
-            input( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-            span {{ __joi.computed[field]._unit + ':unit' | translate }}
+                //- StringUnits
+                span.unit( ng-if="inputType(field) == 'strUnit'" )
+                    input( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
-        //- Passwords
-        input( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
+                //- Passwords
+                input( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
 
-        //- Enums
-        select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-            option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+                //- Enums
+                select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
-        //- AF Enums
-        select( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-            option( ng-repeat=' (opt,v) in __joi.alt ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+                //- AF Enums
+                select( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( ng-repeat=' (opt,v) in __joi.alt ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
-        //- API Enums
-        select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-            option( value='SUPER' ng-if="(item[field]=='SUPER' || $root.user.role == 'SUPER')&& field=='role'" ng-disabled="$root.user.role != 'SUPER'")
-                | {{ 'superUser:userGroups' | translate }}
-            option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
-                | {{ opt.show }}
+                //- API Enums
+                select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( value='SUPER' ng-if="(item[field]=='SUPER' || $root.user.role == 'SUPER')&& field=='role'" ng-disabled="$root.user.role != 'SUPER'")
+                        | {{ 'superUser:userGroups' | translate }}
+                    option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
+                        | {{ opt.show }}
 
-        //- Textareas
-        textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                //- Textareas
+                textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
-        //- Boolean
-        input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
+                //- Boolean
+                input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
 
-        //- Arrays
-        array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
+                //- Arrays
+                array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
 
-        //- Date
-        input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                //- Date
+                input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
-        //- Time
-        input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                //- Time
+                input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+    //-
+        .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
+            | {{ 'lastUpdate:itemInfo' | translate }}
+            span(ng-if='item.updatedAt')
+                | &nbsp;{{ item.updatedAt | localize }}
+            span(ng-if='item.updatedBy')
+                span(ng-if='item.updatedBy.firstName||item.updatedBy.lastName')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy.firstName }}
+                    | &nbsp;{{ item.updatedBy.lastName }}
+                span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&item.updatedBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy.email }}
+                span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&!item.updatedBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy }}
+        .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
+            span(ng-if='item.createdAt || item.createdBy')
+                | {{ 'createdAt:itemInfo' | translate }}
+                span(ng-if='item.createdAt')
+                    | &nbsp;{{ item.createdAt | localize }}
+                span(ng-if='item.createdBy')
 
-    .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
-        | {{ 'lastUpdate:itemInfo' | translate }}
-        span(ng-if='item.updatedAt')
-            | &nbsp;{{ item.updatedAt | localize }}
-        span(ng-if='item.updatedBy')
-            span(ng-if='item.updatedBy.firstName||item.updatedBy.lastName')
-                | &nbsp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ item.updatedBy.firstName }}
-                | &nbsp;{{ item.updatedBy.lastName }}
-            span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&item.updatedBy.email')
-                | &nbsp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ item.updatedBy.email }}
-            span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&!item.updatedBy.email')
-                | &nbsp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ item.updatedBy }}
-    .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
-        span(ng-if='item.createdAt || item.createdBy')
-            | {{ 'createdAt:itemInfo' | translate }}
-            span(ng-if='item.createdAt')
-                | &nbsp;{{ item.createdAt | localize }}
-            span(ng-if='item.createdBy')
-
-                span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
-                    a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
+                    span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
+                        a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
+                            | {{'by:iteminfo'|translate}}
+                            | {{ item.createdBy.firstName }}
+                            | {{ item.createdBy.lastName }}
+                        span( ng-if='!$root.user.role == "SUPER" && $root.role.teamManager' )
+                            | {{'by:iteminfo'|translate}}
+                            | {{ item.createdBy.firstName }}
+                            | {{ item.createdBy.lastName }}
+                    span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&item.createdBy.email')
                         | {{'by:iteminfo'|translate}}
-                        | {{ item.createdBy.firstName }}
-                        | {{ item.createdBy.lastName }}
-                    span( ng-if='!$root.user.role == "SUPER" && $root.role.teamManager' )
+                        | {{ item.createdBy.email }}
+                    span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&!item.createdBy.email')
                         | {{'by:iteminfo'|translate}}
-                        | {{ item.createdBy.firstName }}
-                        | {{ item.createdBy.lastName }}
-                span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&item.createdBy.email')
-                    | {{'by:iteminfo'|translate}}
-                    | {{ item.createdBy.email }}
-                span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&!item.createdBy.email')
-                    | {{'by:iteminfo'|translate}}
-                    | {{ item.createdBy }}
+                        | {{ item.createdBy }}
+    //-
+        span.saved( ng-if=' item.__saved && !disableSaveBTN ' )
+            | {{ 'saved:' + $root.__module.name | translate }}
+        span.failed( ng-if=' item.__failed && !disableSaveBTN ' )
+            | {{ 'failed:save:' + $root.__module.name | translate }}
+        button(ng-click=' save() ', ng-if="!disableSaveBTN").pull-right.lightButton
+            | {{ 'save:' + $root.__module.name + ':button' | translate }}
+        button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
+            | {{ 'delete:button' | translate }}
+        br
+        br
+        div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
+            button.lightButton( ng-click='doBtn(button)' )
+                | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
+            span.saved( ng-if=' button.__success == item._id' )
+                | {{ 'success:' + $root.__module.name | translate }}
+            span.failed( ng-if=' button.__failed == item._id ' )
+                | {{ 'failed:' + $root.__module.name | translate }}
 
-    span.saved( ng-if=' item.__saved && !disableSaveBTN ' )
-        | {{ 'saved:' + $root.__module.name | translate }}
-    span.failed( ng-if=' item.__failed && !disableSaveBTN ' )
-        | {{ 'failed:save:' + $root.__module.name | translate }}
-    button(ng-click=' save() ', ng-if="!disableSaveBTN").pull-right.lightButton
-        | {{ 'save:' + $root.__module.name + ':button' | translate }}
-    button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
-        | {{ 'delete:button' | translate }}
-    br
-    br
-    div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
-        button.lightButton( ng-click='doBtn(button)' )
-            | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
-        span.saved( ng-if=' button.__success == item._id' )
-            | {{ 'success:' + $root.__module.name | translate }}
-        span.failed( ng-if=' button.__failed == item._id ' )
-            | {{ 'failed:' + $root.__module.name | translate }}
-
-.panel( style='margin-top:50px', ng-if= "item.last" )
-    .muted.pull-right
-        span(ng-if="item.timestamp") {{ item.timestamp | localize }}
-    h4 {{ 'last:' + $root.__module.name | translate }}
-    table
-        tr( ng-repeat=" element in item.last " )
-            td
-                b {{ element.type + ':mtype' | translate }} &nbsp;
-                i {{ element.id }}
-                .muted {{ element.timestamp | localize }}
-            td.right
-                pre
-                    | {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
+//-
+    .panel( style='margin-top:50px', ng-if= "item.last" )
+        .muted.pull-right
+            span(ng-if="item.timestamp") {{ item.timestamp | localize }}
+        h4 {{ 'last:' + $root.__module.name | translate }}
+        table
+            tr( ng-repeat=" element in item.last " )
+                td
+                    b {{ element.type + ':mtype' | translate }} &nbsp;
+                    i {{ element.id }}
+                    .muted {{ element.timestamp | localize }}
+                td.right
+                    pre
+                        | {{ element.value | localize }} {{ element.unit + ':unit' | translate }}

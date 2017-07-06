@@ -16,5 +16,8 @@
     "leaflet-google-places-autocomplete/src/js/leaflet-gplaces-autocomplete.js",
     "leaflet-google-places-autocomplete/src/css/leaflet-gplaces-autocomplete.css",
     "leaflet-draw/dist/leaflet.draw.js",
-    "leaflet-draw/dist/leaflet.draw-src.css"
+    "leaflet-draw/dist/leaflet.draw-src.css",
+    "ng-dialog/js/ngDialog.js",
+    "ng-dialog/css/ngDialog.css",
+    "ng-dialog/css/ngDialog-theme-default.css"
 ]

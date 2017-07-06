@@ -12,7 +12,6 @@
             | {{ 'loading:' + $root.__module.name | translate }}
 
 //- Managed
-
 h1.page-title
     | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:title' | translate }}
@@ -24,7 +23,7 @@ h1.page-title
     p
         | For more info please check out 
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
-
+        // a.btn.red.btn-outline.sbold(data-toggle="modal", data-target="#basic") Open modal
 
 .portlet.light.bordered
     .portlet-title
@@ -112,8 +111,6 @@ h1.page-title
                                         i.icon-flag
                                         |  Comments
                                         span.badge.badge-success 4
-
-
 
 
 //- Scroller

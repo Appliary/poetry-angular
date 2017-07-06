@@ -27,7 +27,7 @@
     "leaflet-google-places-autocomplete": "0.0.5",
     "leaflet.markercluster": "^1.0.0",
     "mime-types": "^2.1.12",
-    "ng-dialog": "^0.6.4",
+    "ng-dialog": "git+https://github.com/sl0ki/ngBootstrapDialog.git",
     "poetry": "0.0.93",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0",
