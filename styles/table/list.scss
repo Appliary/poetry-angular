@@ -101,6 +101,11 @@ table {
     width: 100%;
 }
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
 body.collapsed .list{
     @media( min-width: $mobile_break ) {
         left: $gutter + $sidebar_width_collapsed;
