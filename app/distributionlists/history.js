@@ -39,6 +39,8 @@ app.controller( 'distributionlists/history', function ( $scope, $http ) {
             nextHistory();
     };
 
+    $scope.ang = angular;
+
     $scope.$watch('__id', getHistory);
 
 } );

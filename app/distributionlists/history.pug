@@ -2,6 +2,9 @@ div(ng-controller='distributionlists/history')
     accordion( ng-repeat=' log in logs | orderBy:"timestamp":true ', ng-class=' {open:log.$open} ', ng-init=' log.$open = !$index ' )
         header(ng-click=' log.$open = !log.$open ')
             span {{ log.timestamp | localize }}
+        div(ng-if="log.message")
+            b {{'message'|translate}}: &nbsp;
+            span {{log.message}}
         div.table-container
             table.content(ng-repeat=' alert in log.alerts ')
                 //- alert
@@ -41,9 +44,9 @@ div(ng-controller='distributionlists/history')
                     td
                         | {{ 'context:alerts' | translate}} &nbsp;
                     td.right
-                        pre(ng-if="alert.context && typeof alert.context === 'object'")
+                        pre(ng-if="alert.context && ang.isObject(alert.context)")
                             | {{alert.context.kind}}:{{ alert.context.id }}
-                        pre(ng-if="!(alert.context && typeof alert.context === 'object')")
+                        pre(ng-if="!alert.context || !ang.isObject(alert.context)")
                             | {{alert.device}}
                 //- message
                 tr()
@@ -51,10 +54,3 @@ div(ng-controller='distributionlists/history')
                         | {{ 'message:alerts' | translate}} &nbsp;
                     td.right
                         pre {{ alert.message }}
-
-                //- message
-                tr()
-                    td
-                        b {{ 'message:alerts' | translate}} &nbsp;
-                    td.right
-                        pre {{ log.message }}
