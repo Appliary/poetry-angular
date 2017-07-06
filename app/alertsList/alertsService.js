@@ -1,4 +1,4 @@
-app.factory("AlertsService", function(){
+app.factory("AlertsService", function($http){
 
   var paramsListeners = [];
 
@@ -29,6 +29,10 @@ app.factory("AlertsService", function(){
     ];
   }
 
+  function getRules(){
+    return $http.get( "/api/rules" );
+  }
+
   function getDefaults(){
     return {sorting: {col: 'createdAt', order: 'desc'}};
   }
@@ -37,6 +41,8 @@ app.factory("AlertsService", function(){
   return {
     getDefaults: getDefaults,
     getColumns: getColumns,
+
+    getRules: getRules,
 
     observeParams: observeParams,
     sendParams: sendParams
