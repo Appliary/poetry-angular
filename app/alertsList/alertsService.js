@@ -29,9 +29,15 @@ app.factory("AlertsService", function(){
     ];
   }
 
+  function getDefaults(){
+    return {sorting: {col: 'createdAt', order: 'desc'}};
+  }
+
 
   return {
+    getDefaults: getDefaults,
     getColumns: getColumns,
+
     observeParams: observeParams,
     sendParams: sendParams
   };
