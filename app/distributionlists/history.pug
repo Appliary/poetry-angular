@@ -1,0 +1,57 @@
+div(ng-controller='distributionlists/history')
+    accordion( ng-repeat=' log in logs | orderBy:"timestamp":true ', ng-class=' {open:log.$open} ', ng-init=' log.$open = !$index ' )
+        header(ng-click=' log.$open = !log.$open ')
+            span {{ log.timestamp | localize }}
+        div.table-container
+            table.content(ng-repeat=' alert in log.alerts ')
+                //- alert
+                tr()
+                    td.vtop
+                        | {{ 'alert:alerts' | translate}}
+                    td.right
+                        pre
+                            a(ng-href="/deviceManager/alerts/{{alert._id}}" target="_blank") {{ alert._id }}
+                //- rule
+                tr()
+                    td.vtop
+                        | {{ 'rule:alerts' | translate}} &nbsp;
+                    td.right
+                        pre
+                            a(ng-href="/deviceManager/rules/{{alert.rule.id}}" target="_blank") {{ alert.rule.name }}
+                //- Source
+                tr()
+                    td.vtop
+                        | {{ 'source:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ alert.source }}
+                //- level
+                tr()
+                    td.vtop
+                        | {{ 'level:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ alert.level }}
+                //- category
+                tr()
+                    td.vtop
+                        | {{ 'category:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ alert.category }}
+                //- device - object - context
+                tr()
+                    td
+                        | {{ 'object:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ alert.context }}
+                //- message
+                tr()
+                    td.vtop
+                        | {{ 'message:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ alert.message }}
+
+                //- message
+                tr()
+                    td
+                        b {{ 'message:alerts' | translate}} &nbsp;
+                    td.right
+                        pre {{ log.message }}
