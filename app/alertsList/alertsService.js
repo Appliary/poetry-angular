@@ -21,7 +21,7 @@ app.factory("AlertsService", function(){
       "source",
       "level",
       "category",
-      "device",
+      "context",
       "message",
       "acknowledgedBy",
       "acknowledgedAt",

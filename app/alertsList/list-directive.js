@@ -61,7 +61,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           "source",
           "level",
           "category",
-          "device",
+          "context",
           "message",
           "messageFR",
           "messageNL",

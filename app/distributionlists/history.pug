@@ -39,9 +39,12 @@ div(ng-controller='distributionlists/history')
                 //- device - object - context
                 tr()
                     td
-                        | {{ 'object:alerts' | translate}} &nbsp;
+                        | {{ 'context:alerts' | translate}} &nbsp;
                     td.right
-                        pre {{ alert.context }}
+                        pre(ng-if="alert.context && typeof alert.context === 'object'")
+                            | {{alert.context.kind}}:{{ alert.context.id }}
+                        pre(ng-if="!(alert.context && typeof alert.context === 'object')")
+                            | {{alert.device}}
                 //- message
                 tr()
                     td.vtop
