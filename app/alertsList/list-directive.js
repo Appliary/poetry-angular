@@ -86,6 +86,19 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         }
       });
 
+      // if is context: {id:..., kind:...}
+      scope.isContext = function(coord){
+        return coord
+                && angular.isObject(coord)
+                && coord.hasOwnProperty('id')
+                && coord.hasOwnProperty('kind');
+      }
+
+      // if is context: {id:..., kind:...}
+      scope.displayContext = function(coord){
+        return coord.kind + coord.id;
+      }
+
       function select( id ) {
           if(scope.hideFilters) return;
           console.debug("search item", id);

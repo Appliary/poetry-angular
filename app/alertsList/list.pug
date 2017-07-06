@@ -64,11 +64,13 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
         tbody
             tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if='row[ column ] !== undefined && column === "icon"')
+                    span( ng-if="isContext(row[ column ])" )
+                        | {{ displayContext(row[ column ]) }}
+                    span( ng-if='row[ column ] !== undefined && column === "icon" && !isContext(row[ column ])')
                         i(class="{{row[ column ]}}")
-                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon" && !isContext(row[ column ])', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
                         | {{ row[ column ] | localize }}
-                    em( ng-if='column == "_id"')
+                    em( ng-if='column == "_id" && !isContext(row[ column ])')
                         | {{ row[ column ] }}
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}
