@@ -1,28 +1,28 @@
 form.form-horizontal( ng-submit='' )
     .form-body
-        .form-group( ng-repeat=' field in fields ', ng-class="{ error: __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
+        .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
             label.col-xs-3.control-label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
                 | {{ field + ':field' | translate }}
             
             .col-xs-9
 
                 //- Unknown => Read only
-                input( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
-                input( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
-                input( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
-                input( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
 
                 //- _id
-                input( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
 
                 //- Numbers (with or without units)
-                input( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
                 span.unit( ng-if="inputType(field) == 'numUnit'" )
                     input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
                     span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
                 //- Strings
-                input( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- StringUnits
                 span.unit( ng-if="inputType(field) == 'strUnit'" )
@@ -30,10 +30,10 @@ form.form-horizontal( ng-submit='' )
                     span {{ __joi.computed[field]._unit + ':unit' | translate }}
 
                 //- Passwords
-                input( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
 
                 //- Enums
-                select( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
                     option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
                 //- AF Enums
@@ -51,16 +51,19 @@ form.form-horizontal( ng-submit='' )
                 textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- Boolean
-                input( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
+                input.form-control( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
 
                 //- Arrays
                 array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
 
                 //- Date
-                input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                input.form-control( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- Time
-                input( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                input.form-control( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+    
+                span.help-block(ng-if='item.__failed && __validation.indexOf(field) !==-1') {{ 'failed:save:' + $root.__module.name | translate }}
+    
     //-
         .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
             | {{ 'lastUpdate:itemInfo' | translate }}

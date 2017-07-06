@@ -88,7 +88,6 @@ app.controller('modals/toolbox', function ($scope, $http, $window, $location, va
         }, console.error);
 
     $scope.save = function save() {
-        $scope.__validation = [];
 
         $http[method](api, $scope.item)
             .then(function success(response) {
@@ -102,6 +101,10 @@ app.controller('modals/toolbox', function ($scope, $http, $window, $location, va
                 console.error(err);
                 $scope.item.__failed = true;
                 $scope.item.__saved = false;
+
+                $scope.message = err.data.message;
+
+                $scope.__validation = [];
 
                 if (err.status == 400 && err.data && err.data.validation)
                     $scope.__validation = err.data.validation.keys;

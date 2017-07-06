@@ -10,5 +10,8 @@
 .modal-body
     ng-include(src='"generic/form.pug"', ng-if='loaded')
 .modal-footer
+    .has-error(ng-if='__validation.length == 0')
+        span.help-block {{ message }}
+
     button.btn.dark.btn-outline(type='button', ng-click='closeThisDialog()') Close
-    button.btn.green(type='button') Save changes
+    button.btn.green(type='button', ng-click='save()', ng-if="!disableSaveBTN") Save changes
