@@ -289,34 +289,37 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             params.status = scope.status;
           }
 
-          // searchTags - tags
-          if ( scope.searchTags &&  scope.searchTags.length > 0){
-              params.tags =  scope.searchTags.map(function(t){
-                return t.text;
+          if(!scope.isGenericApp()){
+            // searchTags - tags
+            if ( scope.searchTags &&  scope.searchTags.length > 0){
+                params.tags =  scope.searchTags.map(function(t){
+                  return t.text;
+                });
+            }
+
+            // hiddenTags - allHiddenTags - tags
+            if(scope.hiddenTags &&  scope.hiddenTags.length > 0){
+              if(!angular.isArray(params.tags)){
+                params.tags = [];
+              }
+              scope.hiddenTags.forEach(function(t){
+                if(params.tags.indexOf(t) == -1){
+                  params.tags.push(t);
+                }
               });
+            }
+            else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
+              if(!angular.isArray(params.tags)){
+                params.tags = [];
+              }
+              scope.allHiddenTags.forEach(function(t){
+                if(params.tags.indexOf(t) == -1){
+                  params.tags.push(t);
+                }
+              });
+            }
           }
 
-          // hiddenTags - allHiddenTags - tags
-          if(scope.hiddenTags &&  scope.hiddenTags.length > 0){
-            if(!angular.isArray(params.tags)){
-              params.tags = [];
-            }
-            scope.hiddenTags.forEach(function(t){
-              if(params.tags.indexOf(t) == -1){
-                params.tags.push(t);
-              }
-            });
-          }
-          else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
-            if(!angular.isArray(params.tags)){
-              params.tags = [];
-            }
-            scope.allHiddenTags.forEach(function(t){
-              if(params.tags.indexOf(t) == -1){
-                params.tags.push(t);
-              }
-            });
-          }
 
           // level
           if ( scope.level ){
