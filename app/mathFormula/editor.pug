@@ -19,8 +19,7 @@ div.mathFormula(ng-controller='mathFormula/editor')
 
                 //- Device name / Tags
                 td(ng-if="formulaInput") {{ input.kind.slice(0,1) }}&nbsp;
-                    em(ng-if="input.kind == 'tags'")
-                        | {{ input.id }}
+                    array-input(array="tag", ng-if="input.kind == 'tags'", readonly)
                     em(ng-if="input.kind != 'tags'")
                         a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
                             | {{ input.id }}
