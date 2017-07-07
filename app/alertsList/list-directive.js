@@ -309,7 +309,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               });
             }
             else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
-              if(scope.$root.user.role == "*" || scope.$root.user.role == "SUPER"){
+              if(!(scope.$root.user.role == "*" || scope.$root.user.role == "SUPER")){
                 if(!angular.isArray(params.tags)){
                   params.tags = [];
                 }
