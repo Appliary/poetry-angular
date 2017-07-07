@@ -23,7 +23,6 @@ html(ng-app=app.name)
                 __appRegister = "#{app.register}";
 
         //- Load Styles, Dependencies, Core application, Templates, App & Theme
-        link(rel='stylesheet' href=`/${app.name}/__styles.css`)
         script(src=`/${app.name}/__dependencies.js`)
         script(src=`/${app.name}/__core.js`)
         script(src=`/${app.name}/__templates.js`)
@@ -40,8 +39,9 @@ html(ng-app=app.name)
                    Demo.init();
                    QuickSidebar.init(); // init quick sidebar
             });
-        
+
         link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all', rel='stylesheet', type='text/css')
+        link(rel='stylesheet' href=`/${app.name}/__styles.css`)
         link#style_color(rel='stylesheet', href='/assets/layouts/layout/css/themes/default.min.css')
 
         //-

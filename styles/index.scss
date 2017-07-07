@@ -6,6 +6,9 @@ $fa-font-path: "./fonts";
 
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
+@import 'metronic/datatables.bootstrap';
+@import 'metronic/datatables.min';
+
 @import 'metronic/layouts/layout/layout';
 @import 'metronic/layouts/layout/custom';
 
