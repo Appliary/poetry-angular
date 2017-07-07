@@ -1,32 +1,60 @@
-
-form#filters(ng-hide="hideFilters")
-    input( type='search', ng-model='search', placeholder='{{"search:placeholder"|translate}}' )
-    //- category
-    select.pull-right( ng-model='category' )
-        option( value='' ) {{ 'all:category' | translate }}
-        option( disabled, value='──────────' ) ──────────
-        option( value='public' ) {{ 'public:category:' | translate }}
-        option( value='technical' ) {{ 'technical:category:' | translate }}
-    //- level
-    select.pull-right( ng-model='level' )
-        option( value='' ) {{ 'all:level' | translate }}
-        option( disabled, value='──────────' ) ──────────
-        option( value='low' ) {{ 'low:level:' | translate }}
-        option( value='medium' ) {{ 'medium:level:' | translate }}
-        option( value='high' ) {{ 'high:level:' | translate }}
-        option( value='critical' ) {{ 'critical:level:' | translate }}
-    //- status
-    select.pull-right( ng-model='status' )
-        option( value='all' ) {{ 'all:status' | translate }}
-        option( disabled, value='──────────' ) ──────────
-        option( value='' ) {{ 'active:status:' | translate }}
-        option( value='new' ) {{ 'new:status:' | translate }}
-        option( value='archived' )
-            | {{ 'archived:status' | translate }}
-    span( ng-if='total' ) {{'results' | translate }} {{total}}
-    span.loading( ng-if='total === undefined')
-        | {{ 'loading:' + $root.__module.name | translate }}
-.list( ng-class='{detailed:__id}', scroll='scroll' )
+accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ', ng-hide="hideFilters" )
+    header(ng-click=' config.$open = !config.$open; resize(700) ')
+        span()
+            | {{ "selectAlerts:alertsList" | translate }} &nbsp;
+        span( ng-if='total' )
+            | {{'results' | translate }} {{total}}
+        span.loading( ng-if='total === undefined')
+            | {{ 'loading:' + $root.__module.name | translate }}
+        span.pull-right.report-config-open {{config.$open ? "&darr;" : "&uarr;"}}
+    div.report.content
+        span.report-options
+            .input-group-building(ng-hide="isGenericApp()")
+                //- buildings
+                select.form-control(ng-model="building")
+                    option(value="") {{ 'allBuildings:alertsList' | translate }}
+                    option(ng-repeat="building in buildings", ng-value="building") {{ building.name }}
+            .input-group-building
+                //- category
+                select.pull-right( ng-model='category' )
+                    option( value='' ) {{ 'allCategories:alertsList' | translate }}
+                    option( disabled, value='──────────' ) ──────────
+                    option( value='public' ) {{ 'public:category:alertsList' | translate }}
+                    option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
+            .input-group-building
+                //- level
+                select.pull-right( ng-model='level' )
+                    option( value='' ) {{ 'allLevels:alertsList' | translate }}
+                    option( disabled, value='──────────' ) ──────────
+                    option( value='low' ) {{ 'low:level:alertsList' | translate }}
+                    option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
+                    option( value='high' ) {{ 'high:level:alertsList' | translate }}
+                    option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
+            .input-group-building
+                //- rules
+                select.pull-right( ng-model='rule' )
+                    option( value='' ) {{ 'allRules:alertsList' | translate }}
+                    option( disabled, value='──────────' ) ──────────
+                    option(ng-repeat="rule in rules | orderBy:'+name'", ng-value="rule") {{ rule.name }}
+            .input-group-building
+                //- status
+                select.pull-right( ng-model='status' )
+                    option( value='all' ) {{ 'allStatus:alertsList' | translate }}
+                    option( disabled, value='──────────' ) ──────────
+                    option( value='' ) {{ 'active:status:alertsList' | translate }}
+                    option( value='new' ) {{ 'new:status:alertsList' | translate }}
+                    option( value='archived' )
+                        | {{ 'archived:status:alertsList' | translate }}
+            //- dates
+            .input-group-dates
+                input(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                input(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+            //- tags input
+            div()
+                .input-group-building(style="width: 100%")
+                    //- searchTags
+                    tags-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
+.report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
     //- table
     //- ng-include(src="'alertsList/table.pug'")
     table
@@ -36,11 +64,13 @@ form#filters(ng-hide="hideFilters")
         tbody
             tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if='row[ column ] !== undefined && column === "icon"')
+                    span( ng-if="isContext(row[ column ])" )
+                        | {{ displayContext(row[ column ]) }}
+                    span( ng-if='row[ column ] !== undefined && column === "icon" && !isContext(row[ column ])')
                         i(class="{{row[ column ]}}")
-                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon" && !isContext(row[ column ])', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
                         | {{ row[ column ] | localize }}
-                    em( ng-if='column == "_id"')
+                    em( ng-if='column == "_id" && !isContext(row[ column ])')
                         | {{ row[ column ] }}
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}

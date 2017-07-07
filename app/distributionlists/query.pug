@@ -1,0 +1,13 @@
+h4 {{ 'filters:dlist:title'| translate }}
+br
+form( ng-submit="save()")
+  distribution-lists-query-directive(item='item')
+
+  br
+  div
+      span.saved( ng-if=' item.__saved ' )
+          | {{ 'saved:' + $root.__module.name | translate }}
+      span.failed( ng-if=' item.__failed ' )
+          | {{ 'failed:save:' + $root.__module.name | translate }}
+      button(ng-click='save()', ng-disabled='currentOutputErr').pull-right.lightButton
+          | {{ 'save:' + $root.__module.name + ':button' | translate }}

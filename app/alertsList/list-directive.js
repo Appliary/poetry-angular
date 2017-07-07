@@ -3,14 +3,14 @@
 * TODO: clean up to make it understandable and maybe less restrictive when time is given
 */
 
-app.directive("listDirective", function($http, $location, $timeout, ngDialog, AlertsService){
+app.directive("listDirective", function($http, $location, $timeout, ngDialog, AlertsService, $window){
   return {
     restrict: 'EA',
     transclude: false,
     templateUrl: "alertsList/list.pug",
     scope: {
         moduleApi: '@',
-        columns: '=', //[string|object] //if object => {id,name,sortable}
+        columns: '=', //[string]
 
         urlApi: '@?',
         fields: '=?', //[string]
@@ -25,9 +25,28 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
     },
     link: function(scope, elem, attrs, ctrls){
 
+      console.debug("appName", scope.$root.__appName);
+
+      /**
+      * scope:
+      * - allHiddenTags : if no hidden tags chosen, search on these
+      * - hiddenTags : tags from the buiding (those should not be seen)
+      * - searchTags : ngModel tags input
+      * - genericApps : array of generic applications (where some fields and actions should be hidden)
+      *
+      */
+      scope.allHiddenTags = [];
+      scope.hiddenTags = [];
+      scope.searchTags = [];
+      scope.genericApps = ['deviceManager'];
+      scope.isGenericApp = function (){
+        return (scope.genericApps.indexOf(scope.$root.__appName) > -1);
+      }
+
       var directivePath = $location.path();
 
       scope.actionbtn = {};
+      scope.maxDate = getDefaultMaxDateToString();
 
       if(!scope.urlApi){
         scope.urlApi = scope.moduleApi;
@@ -42,10 +61,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           "source",
           "level",
           "category",
-          "device",
-          "type",
-          "output",
-          "error",
+          "context",
           "message",
           "messageFR",
           "messageNL",
@@ -70,7 +86,21 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         }
       });
 
+      // if is context: {id:..., kind:...}
+      scope.isContext = function(coord){
+        return coord
+                && angular.isObject(coord)
+                && coord.hasOwnProperty('id')
+                && coord.hasOwnProperty('kind');
+      }
+
+      // if is context: {id:..., kind:...}
+      scope.displayContext = function(coord){
+        return coord.kind +':'+ coord.id;
+      }
+
       function select( id ) {
+          if(scope.hideFilters) return;
           console.debug("search item", id);
           scope.__id = id;
           retrieveItem(id);
@@ -88,6 +118,19 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       scope.backToList = backToList;
 
 
+      function getDefaultMaxDateToString(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        if(dd<10)
+          dd='0'+dd;
+        if(mm<10)
+          mm='0'+mm;
+        return yyyy + '-' + mm + '-' + dd;
+      }
+
+
       function isItem(data){
         return angular.isObject(scope.item) && (angular.isObject(data) && data._id && data._id == scope.item._id);
       }
@@ -96,10 +139,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       function responseHandler(r){
         if(!isItem(r.data)) return;
 
-        scope.item.__saved = true;
-
         // replace in details
         scope.item = r.data;
+
+        scope.item.__saved = true;
 
         // replace in list
         if(angular.isArray(scope.data)){
@@ -207,7 +250,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         return !(lastParams.sort == params.sort
         && lastParams.order == params.order
         && lastParams.status == params.status
-        && lastParams.search == params.search
+        && lastParams.tags == params.tags
         && lastParams.page == params.page
         && lastParams.limit == params.limit
 
@@ -224,6 +267,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       * Builds params depending on filters and then calls function `callApi`
       */
       function getlist( cleanOldData ) {
+          // is not supposed to be called when not yet fully operated
+          if(!scope.displayable || scope.hideFilters) return;
 
           //var page = 0;
           //if ( o == n ) return;
@@ -244,12 +289,34 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             params.status = scope.status;
           }
 
-          // search
-          if ( scope.search ){
-              params.search = encodeURIComponent( scope.search );
+          // searchTags - tags
+          if ( scope.searchTags &&  scope.searchTags.length > 0){
+              params.tags =  scope.searchTags.map(function(t){
+                return t.text;
+              });
           }
 
-
+          // hiddenTags - allHiddenTags - tags
+          if(scope.hiddenTags &&  scope.hiddenTags.length > 0){
+            if(!angular.isArray(params.tags)){
+              params.tags = [];
+            }
+            scope.hiddenTags.forEach(function(t){
+              if(params.tags.indexOf(t) == -1){
+                params.tags.push(t);
+              }
+            });
+          }
+          else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
+            if(!angular.isArray(params.tags)){
+              params.tags = [];
+            }
+            scope.allHiddenTags.forEach(function(t){
+              if(params.tags.indexOf(t) == -1){
+                params.tags.push(t);
+              }
+            });
+          }
 
           // level
           if ( scope.level ){
@@ -263,17 +330,18 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
           // rule
           if ( scope.rule ){
-            params.rule = scope.rule;
+            params.rule = scope.rule._id;
           }
 
           // before
           if ( scope.before ){
-            params.before = scope.before;
+            params.before = new Date( scope.before.getTime() - scope.before.getTimezoneOffset() * 60000 );
+            params.before.setHours(23, 59, 59, 999);
           }
 
           // after
           if ( scope.after ){
-            params.after = scope.after;
+            params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
           }
 
           callApi(params)
@@ -287,6 +355,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       * function: calls api to get list
       */
       function callApi(params, mustClean){
+        console.log("%cCallApi","background-color: black; color: #2BFF00");
+        console.log("params",params);
         if(mustClean){
           cleanData();
         }
@@ -319,15 +389,21 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                 if ( response.data.data ) {
                     if ( page )
                         response.data.data.forEach( function loop( i ) {
-                            if ( scope.data && !~scope.data.indexOf( i ) )
+                            if ( scope.data && !~scope.data.indexOf( i ) ){
                                 scope.data.push( i );
+                                scope.resize();
+                            }
                         } );
-                    else
+                    else{
                         scope.data = response.data.data;
+                        scope.resize();
+                    }
                 } else if ( response.data instanceof Array )
                     response.data.forEach( function loop( i ) {
-                        if ( scope.data && !~scope.data.indexOf( i ) )
+                        if ( scope.data && !~scope.data.indexOf( i ) ){
                             scope.data.push( i );
+                            scope.resize();
+                        }
                     } );
 
                 scope.total = response.data.recordsFiltered;
@@ -420,6 +496,35 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       };
 
+
+      scope.allRules = [];
+      function getRules(){
+        $http.get( "/api/rules" )
+            .then( function success( response ) {
+                scope.allRules = response.data && response.data.data ? response.data.data : [];
+                scope.rules = angular.copy(scope.allRules);
+            }, function error( response ) {
+                console.warn( response );
+        } );
+      }
+
+      function filterRules(){
+        if( !(angular.isObject(scope.rule) && canDisplayRule(scope.rule))){
+          scope.rule = undefined;
+        }
+        scope.rules = scope.allRules.filter(canDisplayRule);
+      }
+
+      function canDisplayRule(rule){
+        if(scope.level){
+          if(scope.level != rule.level) return false;
+        }
+        if(scope.category){
+          if(scope.category != rule.category) return false;
+        }
+        return true;
+      }
+
       /**
        * Scrolling handler ( infinite scroll + header mover )
        *
@@ -450,35 +555,84 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               scope.actionbtn.__failed = false;
           }, 3000 );
       }
-      scope.$watch( 'item.__saved', cleanVisualReturn );
-      scope.$watch( 'item.__failed', cleanVisualReturn );
-      scope.$watch( 'actionbtn.__success', cleanVisualReturn );
-      scope.$watch( 'actionbtn.__failed', cleanVisualReturn );
+
+
+      //scope.$watch('data', scope.resize);
+
+      scope.resize = function ( delay ) {
+              $timeout( function () {
+                  console.log( "resizing" );
+                  var globalHeight = $window.innerHeight;
+                  var tablediv = angular.element( document.querySelector( '#tablediv' ) );
+                  var offsetTop = tablediv.prop( 'offsetTop' );
+                  var margin = 80;
+                  scope.currentHeight = globalHeight - ( margin + offsetTop );
+                  console.log(scope.currentHeight);
+              }, delay || 10 );
+      };
 
       /**
       * WATCHERS
       */
+      scope.$watch( 'building', function(nv){
+        console.debug("building", nv);
+        if(angular.isObject(nv) && angular.isArray(nv.tags) && nv.tags.length > 0){
+          scope.hiddenTags = nv.tags;
+        }
+        else{
+          //if(scope.hiddenTags && scope.hiddenTags > 0){
+            scope.hiddenTags = [];
+          //}
+        }
+        console.debug("hiddenTags", scope.hiddenTags);
+        getlist(true);
+      } );
+
+      /*scope.$watchCollection( 'hiddenTags', function(nv){
+        console.debug("hiddenTags", nv);
+        getlist(true);
+      } );*/
+
       var searchPromise;
-      scope.$watch( 'search', function(){
+      scope.$watchCollection( 'searchTags', function(nv){
+        console.debug("searchTags", nv);
         if(searchPromise){
           $timeout.cancel(searchPromise);
         }
         searchPromise = $timeout(function(){
           getlist(true);
-        }, 100);
+        }, 200);
       } );
+
       scope.$watch( 'status', function(){
         getlist(true);
       } );
       scope.$watch( 'level', function(){
+        filterRules();
         getlist(true);
       } );
       scope.$watch( 'category', function(){
+        filterRules();
         getlist(true);
       } );
       scope.$watch( 'rule', function(){
         getlist(true);
       } );
+      scope.$watch('after', function(){
+        getlist(true);
+      });
+      scope.$watch('before', function(){
+        getlist(true);
+      });
+      scope.$watch( 'item.__saved', cleanVisualReturn );
+      scope.$watch( 'item.__failed', cleanVisualReturn );
+      scope.$watch( 'actionbtn.__success', cleanVisualReturn );
+      scope.$watch( 'actionbtn.__failed', cleanVisualReturn );
+
+      angular.element( $window )
+          .bind( 'resize', function () {
+              scope.resize();
+          } );
 
 
 
@@ -486,7 +640,25 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       /**
       * start
       */
-      getlist(true);
+      function getBuildings(){
+        $http.get( "/api/buildings" )
+            .then( function success( response ) {
+                scope.buildings = response.data;
+                scope.buildings.forEach(function(b){
+                  if(angular.isObject(b) && angular.isArray(b.tags) && b.tags.length > 0){
+                    // concat to build `allHiddenTags`
+                    scope.allHiddenTags = scope.allHiddenTags.concat(b.tags);
+                  }
+                });
+                scope.displayable = true;
+                getlist(true);
+            }, function error( response ) {
+                $location.path( '/error/' + response.status );
+            } );
+      }
+
+      getBuildings();
+      getRules();
     }
   };
 });

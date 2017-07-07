@@ -2,13 +2,13 @@ div.mathFormula(ng-controller='mathFormula/editor')
     h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
     table
         thead: tr
-            th(ng-if="!formulaInput", colspan="2") {{ 'varName:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="!formulaInput", colspan="3") {{ 'device:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="formulaInput") {{ 'varName:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="formulaInput") {{ 'device:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="formulaInput") {{ 'measurement:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="formulaInput") {{ 'timeOffset:' + $root.__module.name + ':col' | translate }}
-            th(ng-if="formulaInput") {{ 'currentValue:' + $root.__module.name + ':col' | translate }}
+            th(ng-if="!formulaInput", colspan="2") {{ 'varName:mathFormula:col' | translate }}
+            th(ng-if="!formulaInput", colspan="3") {{ 'device:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'varName:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'device:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'measurement:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'timeOffset:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'currentValue:mathFormula:col' | translate }}
             th &nbsp;
         tbody
             tr( ng-repeat=' (i,input) in item.inputs ')
@@ -58,14 +58,17 @@ div.mathFormula(ng-controller='mathFormula/editor')
                         | {{ 'addInput:button:mathformula' | translate }}
 
     br
-    h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
+    h4(ng-if="formulaInput") {{ 'formula:mathformula:title' | translate }}
     div.formula(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
         textarea( ng-model='item.formula' )
         input( readonly, ng-value='currentOutput' )
     div(ng-if="!formulaInput")
         label(for="timeout")
           | {{ 'timeout:mathformula:field' | translate }}
-        input(ng-model="item.timeout", required, type="number")
+        span.unit
+          input(ng-model="item.timeout", required, type="number")
+          span
+            | {{'minutes'|translate}}
 
 br
 span.saved( ng-if=' item.__saved ' )

@@ -1,4 +1,4 @@
-app.factory("AlertsService", function(){
+app.factory("AlertsService", function($http){
 
   var paramsListeners = [];
 
@@ -13,8 +13,37 @@ app.factory("AlertsService", function(){
     });
   }
 
+  function getColumns(){
+    return [
+      "_id",
+      "createdAt",
+      "rule",
+      "source",
+      "level",
+      "category",
+      "context",
+      "message",
+      "acknowledgedBy",
+      "acknowledgedAt",
+      "notes"
+    ];
+  }
+
+  function getRules(){
+    return $http.get( "/api/rules" );
+  }
+
+  function getDefaults(){
+    return {sorting: {col: 'createdAt', order: 'desc'}};
+  }
+
 
   return {
+    getDefaults: getDefaults,
+    getColumns: getColumns,
+
+    getRules: getRules,
+
     observeParams: observeParams,
     sendParams: sendParams
   };
