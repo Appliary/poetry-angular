@@ -46,12 +46,13 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
     $scope.reqID = 0;
     $scope.data = [];
     $scope.tags = [];
+    $scope.page = 0;
 
     function getlist(n, o) {
         // Delegate to custom controller
         if ($scope.$root.__module.controller != 'generic/list') return;
 
-        var page = 0;
+        $scope.page = 0;
         if (o == n) return;
         if (n !== true) {
             $scope.total = undefined;
@@ -64,8 +65,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
         if ($scope.search)
             url += '&search=' + encodeURIComponent($scope.search);
         if ($scope.data && $scope.data.length) {
-            page = $scope.data.length / 100;
-            url += '&limit=100&page=' + Math.floor(page);
+            $scope.page = $scope.data.length / 100;
+            url += '&limit=100&page=' + Math.floor($scope.page);
         }
         if (lastCall.timestamp + 5000 < Date.now() || lastCall.url != url) {
             lastCall = {
@@ -82,7 +83,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
                     isLoading = false;
 
                     if (response.data.data) {
-                        if (page)
+                        if ($scope.page)
                             response.data.data.forEach(function loop(i) {
                                 if ($scope.data && !~$scope.data.indexOf(i))
                                     $scope.data.push(i);
@@ -95,7 +96,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
                                 $scope.data.push(i);
                         });
 
-                    $scope.total = response.data.recordsFiltered;
+                    $scope.filtered = response.data.recordsFiltered;
+                    $scope.total = response.data.recordsTotal;
 
                     if ($scope.$root.__module.config && $scope.$root.__module.config.columns)
                         $scope.columns = $scope.$root.__module.config.columns;
@@ -160,12 +162,26 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
      *
      * @arg {Event} event Native JS scroll event
      */
-    $scope.scroll = function scroll(event) {
-        var elem = event.target;
-        var header = elem.querySelectorAll('th');
-        for (var i = 0; i < header.length; i++)
-            header[i].style.top = elem.scrollTop + 'px';
-        if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight)
+    $scope.scroll = function scroll(event, scrollHead) {
+        console.log($scope.page);
+
+        var scrollBody = event.target;
+        var headThs = scrollHead.querySelectorAll('thead th');
+        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
+
+        for (var i = 0; i < headThs.length; i++) {
+            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+
+            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+            var thWidth = tdWidth + (tdPadding - thPadding);
+
+            headThs[i].style.minWidth = thWidth + "px";
+            headThs[i].style.maxWidth = thWidth + "px";
+            headThs[i].style.width = thWidth + "px";
+        }
+
+        if ((scrollBody.scrollTop + scrollBody.offsetHeight + 300) > scrollBody.scrollHeight)
             getlist(true);
     };
 
@@ -234,7 +250,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
         $http.get($scope.$root.__module.api + '/tags/' + query)
             .then(function success(response) {
                 deferred.resolve(response.data);
-            }, function error(response) {});
+            }, function error(response) { });
 
         return deferred.promise;
     };

@@ -40,7 +40,7 @@ h1.page-title
           .row
             .col-md-6
               .btn-group
-                button#sample_editable_1_new.btn.sbold.green(ng-click='openToolbox("add")')
+                button.btn.sbold.green(ng-click='openToolbox("add")')
                   | Add New 
                   i.fa.fa-plus
             .col-md-6
@@ -62,7 +62,7 @@ h1.page-title
                       i.fa.fa-file-excel-o
                       |  Export to Excel
 
-        .dataTables_wrapper.no-footer
+        .dataTables_wrapper.no-footer.DTS
             .row
                 .col-md-6.col-sm-6
                     label
@@ -79,54 +79,71 @@ h1.page-title
                             | {{"search:placeholder"|translate}}: 
                             input.form-control.input-sm.input-small.input-inline( type='search', ng-model='$parent.search', placeholder='' )
 
+            .table-scrollable(scroll='scroll')
+                .dataTables_scroll
+                    .dataTables_scrollHead(style='overflow: scroll;')
+                        .dataTables_scrollHeadInner
+                            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
+                                thead
+                                    tr
+                                        th.sorting_disabled
+                                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                                                input.group-checkable(type='checkbox')
+                                                span
+                                        th.sorting(ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
+                                            |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
+                                        th.sorting_disabled  Actions 
 
-            table#sample_1.dataTable.table.table-striped.table-bordered.table-hover.table-checkable.order-column(scroll='scroll')
-                thead
-                    tr
-                        th.sorting_disabled
-                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.group-checkable(type='checkbox', data-set='#sample_1 .checkboxes')
-                                span
-                        th.sorting(ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
-                            |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
-                        th.sorting_disabled  Actions 
-                tbody
-                    tr.odd.gradeX(ng-repeat='row in data')
-                        td
-                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.checkboxes(type='checkbox', value='1')
-                                span
-                        td( ng-repeat='column in columns')
-                            span( ng-if='row[ column ] !== undefined && column === "icon"')
-                                i(class="{{row[ column ]}}")
-                            span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
-                                | {{ row[ column ] | localize }}
-                            em( ng-if='column == "_id"')
-                                | {{ row[ column ] }}
-                        td
-                            .btn-group
-                                button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions 
-                                    i.fa.fa-angle-down
-                                ul.dropdown-menu(role='menu')
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-docs
-                                            |  New Post
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-tag
-                                            |  New Comment
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-user
-                                            |  New User
-                                    li.divider  
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-flag
-                                            |  Comments
-                                            span.badge.badge-success 4
+                    .dataTables_scrollBody(style='overflow: auto; height: 400px;')
+                        table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
+                            thead
+                                tr(style='height: 0px; padding:0;')
+                                    th(style='height: 0px; padding:0;')
+                                        .dataTables_sizing
+                                    th(ng-repeat='column in columns', style='height: 0px; padding:0;')
+                                        .dataTables_sizing
+                                    th(style='height: 0px; padding:0;')
+                                        .dataTables_sizing
+                            tbody
+                                tr.odd.gradeX(ng-repeat='row in data')
+                                    td
+                                        label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                                            input.checkboxes(type='checkbox', value='1')
+                                            span
+                                    td( ng-repeat='column in columns')
+                                        span( ng-if='row[ column ] !== undefined && column === "icon"')
+                                            i(class="{{row[ column ]}}")
+                                        span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon"', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                                            | {{ row[ column ] | localize }}
+                                        em( ng-if='column == "_id"')
+                                            | {{ row[ column ] }}
+                                    td
+                                        .btn-group(style='position: relative;')
+                                            button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                                                | Actions 
+                                                i.fa.fa-angle-down
+                                            ul.dropdown-menu(role='menu')
+                                                li
+                                                    a(href='javascript:;')
+                                                        i.icon-docs
+                                                        |  New Post
+                                                li
+                                                    a(href='javascript:;')
+                                                        i.icon-tag
+                                                        |  New Comment
+                                                li
+                                                    a(href='javascript:;')
+                                                        i.icon-user
+                                                        |  New User
+                                                li.divider  
+                                                li
+                                                    a(href='javascript:;')
+                                                        i.icon-flag
+                                                        |  Comments
+                                                        span.badge.badge-success 4
+                .row
+                    .col-md-5.col-sm-12
+                        .dataTables_info Showing 1 to {{ page * 100 }} of {{ filtered }} records
 
 //ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
 
