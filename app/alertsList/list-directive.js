@@ -309,14 +309,16 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               });
             }
             else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
-              if(!angular.isArray(params.tags)){
-                params.tags = [];
-              }
-              scope.allHiddenTags.forEach(function(t){
-                if(params.tags.indexOf(t) == -1){
-                  params.tags.push(t);
+              if(scope.$root.user.role == "*" || scope.$root.user.role == "SUPER"){
+                if(!angular.isArray(params.tags)){
+                  params.tags = [];
                 }
-              });
+                scope.allHiddenTags.forEach(function(t){
+                  if(params.tags.indexOf(t) == -1){
+                    params.tags.push(t);
+                  }
+                });
+              }
             }
           }
 
