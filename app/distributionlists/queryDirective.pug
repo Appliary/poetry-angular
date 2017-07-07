@@ -20,6 +20,9 @@ select( ng-model='item.rule' )
     option( disabled, value='──────────' ) ──────────
     option(ng-repeat="r in rules | orderBy:'+name'", value="{{r._id}}", ng-selected="r._id == item.rule") {{ r.name }}
 
+
+array-input.tags-input-overview( name='tags', array='item.tags' )
+
 //- div( )
     div(ng-repeat="(i,r) in item.recipients")
         label()
