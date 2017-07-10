@@ -25,6 +25,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
     },
     link: function(scope, elem, attrs, ctrls){
 
+      var isLoading = false;
+
       console.debug("appName", scope.$root.__appName);
 
       /**
@@ -267,6 +269,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       * Builds params depending on filters and then calls function `callApi`
       */
       function getlist( cleanOldData ) {
+          if(isLoading){
+            console.debug("isLoading", isLoading);
+             return;
+           }
           // is not supposed to be called when not yet fully operated
           if(!scope.displayable || scope.hideFilters) return;
 
@@ -276,7 +282,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               cleanData();
           }
           if ( scope.data && scope.total <= scope.data.length ) return;
+
           isLoading = true;
+
 
           var params = {};
 
@@ -369,12 +377,13 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
         var page = 0;
         // page & limit
-        page = scope.data && scope.data.length ? scope.data.length / 20 : 0;
-        params.limit = 20;
+        params.limit = 50;
+        page = scope.data && scope.data.length ? scope.data.length / params.limit : 0;
         params.page = Math.floor( page );
 
         if(!canCall(params)){
           console.warn("Cannot recall API with the same params");
+          isLoading = false;
           return;
         }
 
@@ -565,13 +574,13 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       scope.resize = function ( delay ) {
               $timeout( function () {
-                  console.log( "resizing" );
+                  //console.log( "resizing" );
                   var globalHeight = $window.innerHeight;
                   var tablediv = angular.element( document.querySelector( '#tablediv' ) );
                   var offsetTop = tablediv.prop( 'offsetTop' );
                   var margin = 80;
                   scope.currentHeight = globalHeight - ( margin + offsetTop );
-                  console.log(scope.currentHeight);
+                  //console.log(scope.currentHeight);
               }, delay || 10 );
       };
 
