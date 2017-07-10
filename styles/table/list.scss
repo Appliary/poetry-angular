@@ -101,6 +101,10 @@ table {
     width: 100%;
 }
 
+.mathFormula table thead th{
+  text-align: left;
+}
+
 .table-container {
   width: 100%;
   overflow-x: auto;
