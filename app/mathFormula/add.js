@@ -19,6 +19,10 @@ app.controller( 'mathFormula/add', function (
         tags: false
     };
 
+    $scope.deviceSelectorOnChange = function(d){
+      console.log("d",d);
+    }
+
     // Avoid flood by stopping identical send & by iterating requests
     var lastRequests = {};
 
@@ -38,6 +42,7 @@ app.controller( 'mathFormula/add', function (
       if(conf.filters){
         var cFilters = conf.filters;
         if(angular.isArray(cFilters)){
+          $scope.deviceSelectorFilters = cFilters;
           $scope.filters = {};
           cFilters.forEach(
             function(elem){

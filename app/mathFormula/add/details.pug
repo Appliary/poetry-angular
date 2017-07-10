@@ -1,6 +1,7 @@
 br
 br
 form
+    //-form(device-selector-container)
 
     label(for="varName")
         | {{ 'varName:' + $root.__module.name + ':field' | translate }}
@@ -8,6 +9,7 @@ form
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
+    //- device-selector(filters="deviceSelectorFilters")
     input#device.fakeSelect(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices')", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'")
     div(ng-if="$parent.input.device.kind == 'tags'", style="width:60%;display:inline")
         span.unit(ng-repeat="(i, tag) in $parent.input.device._id", style="padding-left:35%")

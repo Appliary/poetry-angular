@@ -289,13 +289,14 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             params.status = scope.status;
           }
 
+          // searchTags - tags
+          if ( scope.searchTags &&  scope.searchTags.length > 0){
+              params.tags =  scope.searchTags.map(function(t){
+                return t.text;
+              });
+          }
+
           if(!scope.isGenericApp()){
-            // searchTags - tags
-            if ( scope.searchTags &&  scope.searchTags.length > 0){
-                params.tags =  scope.searchTags.map(function(t){
-                  return t.text;
-                });
-            }
 
             // hiddenTags - allHiddenTags - tags
             if(scope.hiddenTags &&  scope.hiddenTags.length > 0){
