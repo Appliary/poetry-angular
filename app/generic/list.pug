@@ -24,7 +24,7 @@ h1.page-title
         | For more info please check out 
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
 
-.portlet.light.bordered(ng-class="__id ? 'col-md-8' : 'col-md-12'")
+.portlet.light.bordered(ng-class="__id ? 'col-lg-8 visible-lg-block' : 'col-lg-12'")
     .portlet-title
         .caption.font-dark
             i.icon-settings.font-dark
@@ -80,7 +80,7 @@ h1.page-title
                             input.form-control.input-sm.input-small.input-inline( type='search', ng-model='$parent.search', placeholder='' )
 
             .table-scrollable(scroll='scroll')
-                .dataTables_scroll
+                .dataTables_scroll(style='overflow: hidden;')
                     .dataTables_scrollHead(style='overflow: hidden;')
                         .dataTables_scrollHeadInner
                             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
@@ -145,5 +145,5 @@ h1.page-title
                 .col-md-5.col-sm-12
                     .dataTables_info Showing {{ first }} to {{ last }} of {{ filtered }} records
 
-ng-include.col-md-4(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'" )
+ng-include.col-lg-4(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
 
