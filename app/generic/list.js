@@ -116,15 +116,19 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
 
                     $scope.scrollBody = document.querySelector('.dataTables_scrollBody');
 
-                    /**
-                     * Window resize handler
-                     */
-                    angular.element($window).on('resize', function () {
+                    $scope.first = $scope.filtered == 0 ? 0 : 1;
+                    $scope.last = $scope.filtered;
+
+
+                    $timeout(function () {
                         $scope.setListHeight();
                         $scope.setColumnsWidth();
                     });
 
-                    $timeout(function () {
+                    /**
+                     * Window resize handler
+                     */
+                    angular.element($window).on('resize', function () {
                         $scope.setListHeight();
                         $scope.setColumnsWidth();
                     });
@@ -174,8 +178,6 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         );
     };
 
-    $scope.first = 1;
-    $scope.last = $scope.filtered;
 
     /**
      * Scrolling handler ( infinite scroll + header mover )
