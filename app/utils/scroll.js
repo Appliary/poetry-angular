@@ -7,6 +7,9 @@ app.directive('scroll', function () {
             var scrollHead = elem[0].querySelector('.dataTables_scrollHead');
             var scrollBody = elem[0].querySelector('.dataTables_scrollBody');
 
+            // if(scope.filtered > 10)
+            scrollBody.style.height = '400px';
+
             scrollHead.onscroll = function() {
                 scrollBody.scrollLeft = scrollHead.scrollLeft;
             }
@@ -14,7 +17,7 @@ app.directive('scroll', function () {
             scrollBody.onscroll = function (event) {
                 scrollHead.scrollLeft = scrollBody.scrollLeft;
 
-                return scope.scroll()(event, scrollHead);
+                return scope.scroll()(event);
             }
         }
     };

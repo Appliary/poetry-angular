@@ -7,6 +7,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
         col: '_id',
         order: 'asc'
     };
+
     $scope.orderBy = function orderBy(col) {
         if ($scope.sorting.col != col)
             return ($scope.sorting = {
@@ -112,6 +113,44 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
                                 });
                         });
 
+                    /**
+                     * Set list height
+                     */
+                    if ($scope.filtered > 10)
+                        $scope.listHeight = '400px';
+                    else
+                        $scope.listHeight = 'initial';
+
+                    /**
+                     * Set columns width
+                     */
+                    /*$scope.thsWidth = [];
+                    $scope.firstThWidth = '0px';
+                    $scope.lastThWidth = '0px';*/
+
+                    setTimeout(function () {
+                        var scrollHead = document.querySelector('.dataTables_scrollHead');
+                        var scrollBody = document.querySelector('.dataTables_scrollBody');
+
+                        var headThs = scrollHead.querySelectorAll('thead th');
+                        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
+
+                        for (var i = 0; i < headThs.length; i++) {
+                            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+                            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+
+                            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+                            var thWidth = tdWidth + (tdPadding - thPadding);
+
+                            headThs[i].style.minWidth = thWidth + "px";
+                            headThs[i].style.maxWidth = thWidth + "px";
+                            headThs[i].style.width = thWidth + "px";
+
+                            /*if (i == 0) $scope.firstThWidth = thWidth + 'px';
+                            else if (i == headThs.length - 1) $scope.lastThWidth = thWidth + 'px';
+                            else $scope.thsWidth.push(thWidth + 'px');*/
+                        }
+                    }, 1000);
                 }, function error(response) {
                     isLoading = false;
 
@@ -157,29 +196,16 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q)
         );
     };
 
+    $scope.first = 1;
+
     /**
      * Scrolling handler ( infinite scroll + header mover )
      *
      * @arg {Event} event Native JS scroll event
      */
-    $scope.scroll = function scroll(event, scrollHead) {
-        console.log($scope.page);
-
+    $scope.scroll = function scroll(event) {
         var scrollBody = event.target;
-        var headThs = scrollHead.querySelectorAll('thead th');
-        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
-
-        for (var i = 0; i < headThs.length; i++) {
-            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-            var thWidth = tdWidth + (tdPadding - thPadding);
-
-            headThs[i].style.minWidth = thWidth + "px";
-            headThs[i].style.maxWidth = thWidth + "px";
-            headThs[i].style.width = thWidth + "px";
-        }
+        $scope.first = parseInt(scrollBody.scrollTop / 40.8);
 
         if ((scrollBody.scrollTop + scrollBody.offsetHeight + 300) > scrollBody.scrollHeight)
             getlist(true);

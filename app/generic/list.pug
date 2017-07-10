@@ -86,15 +86,15 @@ h1.page-title
                             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
                                 thead
                                     tr
-                                        th.sorting_disabled
+                                        th.sorting_disabled(ng-style="{'width': firstThWidth}")
                                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                                 input.group-checkable(type='checkbox')
                                                 span
-                                        th.sorting(ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
+                                        th.sorting(ng-repeat='column in columns track by $index', ng-style="{width: thsWidth[$index]}", ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
                                             |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
-                                        th.sorting_disabled  Actions 
+                                        th.sorting_disabled(ng-style="{width: lastThWidth}")  Actions 
 
-                    .dataTables_scrollBody(style='overflow: auto; height: 400px;')
+                    .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
                         table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
                             thead
                                 tr(style='height: 0px; padding:0;')
@@ -105,7 +105,7 @@ h1.page-title
                                     th(style='height: 0px; padding:0;')
                                         .dataTables_sizing
                             tbody
-                                tr.odd.gradeX(ng-repeat='row in data')
+                                tr.odd.gradeX(ng-repeat='row in data', ng-click='select(row._id)')
                                     td
                                         label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                             input.checkboxes(type='checkbox', value='1')
@@ -143,7 +143,7 @@ h1.page-title
                                                         span.badge.badge-success 4
                 .row
                     .col-md-5.col-sm-12
-                        .dataTables_info Showing 1 to {{ page * 100 }} of {{ filtered }} records
+                        .dataTables_info Showing {{ first }} to {{ first + 9 }} of {{ filtered }} records
 
-//ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
+ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
 
