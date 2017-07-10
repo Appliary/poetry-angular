@@ -80,4 +80,8 @@ tags-viewer .tag-item {
     display: inline-block;
     border-radius: 3px;
     margin: 2px 5px;
+    overflow: hidden;
+    .remove-button{
+        display: none;
+    }
 }
