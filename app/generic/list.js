@@ -113,22 +113,19 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                                 });
                         });
 
-                    /**
-                     * Set list height
-                     */
-                    if ($scope.filtered > 10)
-                        $scope.listHeight = '400px';
-                    else
-                        $scope.listHeight = 'initial';
+
+                    $scope.scrollBody = document.querySelector('.dataTables_scrollBody');
 
                     /**
                      * Window resize handler
                      */
                     angular.element($window).on('resize', function () {
+                        $scope.setListHeight();
                         $scope.setColumnsWidth();
                     });
 
                     $timeout(function () {
+                        $scope.setListHeight();
                         $scope.setColumnsWidth();
                     });
 
@@ -178,6 +175,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     };
 
     $scope.first = 1;
+    $scope.last = $scope.filtered;
 
     /**
      * Scrolling handler ( infinite scroll + header mover )
@@ -185,10 +183,12 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
      * @arg {Event} event Native JS scroll event
      */
     $scope.scroll = function scroll(event) {
-        var scrollBody = event.target;
-        $scope.first = parseInt(scrollBody.scrollTop / 40.8);
+        $scope.$apply(function () {
+            $scope.first = Math.round($scope.scrollBody.scrollTop / $scope.lineHeight) + 1;
+            $scope.last = $scope.first + $scope.nbLines - 1;
+        })
 
-        if ((scrollBody.scrollTop + scrollBody.offsetHeight + 300) > scrollBody.scrollHeight)
+        if (($scope.scrollBody.scrollTop + $scope.scrollBody.offsetHeight + 300) > $scope.scrollBody.scrollHeight)
             getlist(true);
     };
 
@@ -336,27 +336,42 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
      * Set columns width
      */
     $scope.setColumnsWidth = function setColumnsWidth() {
-        var scrollHead = document.querySelector('.dataTables_scrollHead');
-        var scrollBody = document.querySelector('.dataTables_scrollBody');
+        $scope.$apply(function () {
+            var scrollHead = document.querySelector('.dataTables_scrollHead');
 
-        var headThs = scrollHead.querySelectorAll('thead th');
-        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
+            var headThs = scrollHead.querySelectorAll('thead th');
+            var bodyTds = $scope.scrollBody.querySelectorAll('tr:first-child td');
 
-        for (var i = 0; i < headThs.length; i++) {
-            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+            for (var i = 0; i < headThs.length; i++) {
+                var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+                var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-            var thWidth = tdWidth + (tdPadding - thPadding);
+                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+                var thWidth = tdWidth + (tdPadding - thPadding);
 
-            headThs[i].style.minWidth = thWidth + "px";
-            headThs[i].style.maxWidth = thWidth + "px";
-            headThs[i].style.width = thWidth + "px";
+                headThs[i].style.minWidth = thWidth + "px";
+                headThs[i].style.maxWidth = thWidth + "px";
+                headThs[i].style.width = thWidth + "px";
 
-            /*if (i == 0) $scope.firstThWidth = thWidth + 'px';
-            else if (i == headThs.length - 1) $scope.lastThWidth = thWidth + 'px';
-            else $scope.thsWidth.push(thWidth + 'px');*/
-        }
+                /*if (i == 0) $scope.firstThWidth = thWidth + 'px';
+                else if (i == headThs.length - 1) $scope.lastThWidth = thWidth + 'px';
+                else $scope.thsWidth.push(thWidth + 'px');*/
+            }
+        })
     }
 
+    /**
+    * Set list height
+    */
+    $scope.setListHeight = function setListHeight() {
+        $scope.$apply(function () {
+            $scope.lineHeight = $scope.scrollBody.scrollHeight / (100 * ($scope.page + 1));
+            $scope.nbLines = Math.floor((1 / 2) * window.innerHeight / $scope.lineHeight);
+
+            if ($scope.filtered > $scope.nbLines)
+                $scope.listHeight = $scope.lineHeight * $scope.nbLines + 'px';
+            else
+                $scope.listHeight = 'initial';
+        })
+    }
 });

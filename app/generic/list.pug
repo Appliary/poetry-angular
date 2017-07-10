@@ -81,7 +81,7 @@ h1.page-title
 
             .table-scrollable(scroll='scroll')
                 .dataTables_scroll
-                    .dataTables_scrollHead(style='overflow: scroll;')
+                    .dataTables_scrollHead(style='overflow: hidden;')
                         .dataTables_scrollHeadInner
                             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
                                 thead
@@ -95,7 +95,7 @@ h1.page-title
                                         th.sorting_disabled(ng-style="{width: lastThWidth}")  Actions 
 
                     .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
-                        table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
+                        table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
                             thead
                                 tr(style='height: 0px; padding:0;')
                                     th(style='height: 0px; padding:0;')
@@ -141,9 +141,9 @@ h1.page-title
                                                         i.icon-flag
                                                         |  Comments
                                                         span.badge.badge-success 4
-                .row
-                    .col-md-5.col-sm-12
-                        .dataTables_info Showing {{ first }} to {{ first + 9 }} of {{ filtered }} records
+            .row
+                .col-md-5.col-sm-12
+                    .dataTables_info Showing {{ first }} to {{ last }} of {{ filtered }} records
 
 ng-include.details( ng-class='{detailed:__id}', src="$root.__module.subview || 'generic/details.pug'" )
 
