@@ -1,8 +1,9 @@
 form.form-horizontal( ng-submit='' )
     .form-body
         .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
-            label.col-md-3.control-label( for='{{field}}', ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }" )
-                | {{ field + ':field' | translate }}
+            label.col-md-3.control-label( for='{{field}}')
+                | {{ field + ':field' | translate }} 
+                span(ng-class="{ required: __joi.computed[field]._flags.presence == 'required' }") *
             
             .col-md-9
 
@@ -18,16 +19,16 @@ form.form-horizontal( ng-submit='' )
                 //- Numbers (with or without units)
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
                 span.unit( ng-if="inputType(field) == 'numUnit'" )
-                    input( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-                    span {{ __joi.computed[field]._unit + ':unit' | translate }}
+                    input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                    span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
 
                 //- Strings
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- StringUnits
                 span.unit( ng-if="inputType(field) == 'strUnit'" )
-                    input( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-                    span {{ __joi.computed[field]._unit + ':unit' | translate }}
+                    input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
 
                 //- Passwords
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
