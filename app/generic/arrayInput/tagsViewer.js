@@ -6,6 +6,9 @@ app.directive( 'tagsViewer', function arrayInput() {
         },
         controller: function arrayInputCtrl( $scope, $http ) {
 
+            if ( $scope.array && !angular.isArray( $scope.array ) )
+                $scope.array = [ $scope.array ];
+
             $scope.$watchCollection( 'array', function watchModel( n, o ) {
 
                 if ( !n || !n.map ) return;
