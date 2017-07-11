@@ -27,6 +27,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       var isLoading = false;
 
+      var currentHeightPlus = 0;
+
       console.debug("appName", scope.$root.__appName);
 
       /**
@@ -359,7 +361,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           callApi(params)
       }
 
-      AlertsService.observeParams(callApi);
+      AlertsService.observeParams(function(params, mustClean){
+        currentHeightPlus = 150;
+        callApi(params, mustClean);
+      });
 
 
       /**
@@ -579,7 +584,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                   var tablediv = angular.element( document.querySelector( '#tablediv' ) );
                   var offsetTop = tablediv.prop( 'offsetTop' );
                   var margin = 80;
-                  scope.currentHeight = globalHeight - ( margin + offsetTop );
+                  scope.currentHeight = globalHeight - ( margin + offsetTop ) + currentHeightPlus;
                   //console.log(scope.currentHeight);
               }, delay || 10 );
       };
