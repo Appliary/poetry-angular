@@ -162,8 +162,8 @@ app.controller( 'dashboard/dashboard', function (
                     if ( res.status !== 200 ) throw res;
 
                     // Format the widgets
-                    res.data = res.data.map( dashboard => {
-                        dashboard.widgets = dashboard.widgets.map( widget => {
+                    res.data = res.data.map( function ( dashboard ) {
+                        dashboard.widgets = dashboard.widgets.map( function ( widget ) {
                             widget.edit = true;
                             return widget;
                         } );
