@@ -113,17 +113,13 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                                 });
                         });
 
-
                     $scope.scrollBody = document.querySelector('.dataTables_scrollBody');
 
                     $scope.first = $scope.filtered == 0 ? 0 : 1;
                     $scope.last = $scope.filtered;
 
-
-                    $timeout(function () {
-                        $scope.setListHeight();
-                        $scope.setColumnsWidth();
-                    });
+                    $scope.setListHeight();
+                    $scope.setColumnsWidth();
 
                     /**
                      * Window resize handler
@@ -297,6 +293,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         $http.get($scope.$root.__module.api + '/' + id)
             .then(function success(response) {
                 $scope.item = response.data;
+                $scope.setColumnsWidth();
             }, function error(response) {
                 $location.path('/error/' + response.status);
             });
@@ -338,7 +335,9 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
      * Set columns width
      */
     $scope.setColumnsWidth = function setColumnsWidth() {
-        $scope.$apply(function () {
+        console.log('setColumnsWidth');
+        $timeout(function () {
+            console.log('timeout');
             var scrollHead = document.querySelector('.dataTables_scrollHead');
 
             var headThs = scrollHead.querySelectorAll('thead th');
@@ -366,7 +365,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     * Set list height
     */
     $scope.setListHeight = function setListHeight() {
-        $scope.$apply(function () {
+        $timeout(function () {
             $scope.lineHeight = $scope.scrollBody.scrollHeight / (100 * ($scope.page + 1));
             $scope.nbLines = Math.floor((1 / 2) * window.innerHeight / $scope.lineHeight);
 

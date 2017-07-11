@@ -16,7 +16,7 @@ h1.page-title
     | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:title' | translate }}
 
-.m-heading-1.border-green.m-bordered
+.m-heading-1.border-green.m-bordered(ng-if='message')
     h3 DataTables jQuery Plugin
     p
         | DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
@@ -24,7 +24,7 @@ h1.page-title
         | For more info please check out 
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
 
-.portlet.light.bordered(ng-class="__id ? 'col-lg-8 visible-lg-block' : 'col-lg-12'")
+.portlet.light.bordered(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
     .portlet-title
         .caption.font-dark
             i.icon-settings.font-dark
@@ -32,7 +32,7 @@ h1.page-title
         .actions
             .btn-group.btn-group-devided(data-toggle='buttons')
                 label.btn.btn-transparent.dark.btn-outline.btn-circle(ng-repeat='(name, config) in $root.__module.config.toolbox', ng-click="openToolbox(name)")
-                    input#option1.toggle(type='radio', name='options')
+                    input.toggle(type='radio', name='options')
                     | {{ name + ':toolbox:' + $root.__module.name | translate }}
                 
     .portlet-body
@@ -67,7 +67,7 @@ h1.page-title
                 .col-md-6.col-sm-6
                     label
                         | Show 
-                        select.form-control.input-sm.input-xsmall.input-inline(ng-model='$parent.status')
+                        select.form-control.input-inline(ng-model='$parent.status')
                             option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
                             option( disabled, value='──────────' ) ──────────
                             option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
@@ -77,13 +77,13 @@ h1.page-title
                     .dataTables_filter
                         label
                             | {{"search:placeholder"|translate}}: 
-                            input.form-control.input-sm.input-small.input-inline( type='search', ng-model='$parent.search', placeholder='' )
+                            input.form-control.input-inline( type='search', ng-model='$parent.search', placeholder='' )
 
             .table-scrollable(scroll='scroll')
                 .dataTables_scroll(style='overflow: hidden;')
                     .dataTables_scrollHead(style='overflow: hidden;')
                         .dataTables_scrollHeadInner
-                            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
+                            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='padding-right: 17px;')
                                 thead
                                     tr
                                         th.sorting_disabled(ng-style="{'width': firstThWidth}")
@@ -143,7 +143,10 @@ h1.page-title
                                                         span.badge.badge-success 4
             .row
                 .col-md-5.col-sm-12
-                    .dataTables_info Showing {{ first }} to {{ last }} of {{ filtered }} records
+                    .dataTables_info(ng-if='filtered > 0')
+                        | Showing {{ first }} to {{ last }} of {{ filtered }} records
+                    .dataTables_info(ng-if='filtered <= 0')
+                        | No data found
 
-ng-include.col-lg-4(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
+ng-include.col-lg-5(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
 

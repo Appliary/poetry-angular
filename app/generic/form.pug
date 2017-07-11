@@ -18,7 +18,7 @@ form.form-horizontal( ng-submit='' )
 
                 //- Numbers (with or without units)
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-                span.unit( ng-if="inputType(field) == 'numUnit'" )
+                span( ng-if="inputType(field) == 'numUnit'" )
                     input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
                     span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
 
@@ -26,7 +26,7 @@ form.form-horizontal( ng-submit='' )
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- StringUnits
-                span.unit( ng-if="inputType(field) == 'strUnit'" )
+                span( ng-if="inputType(field) == 'strUnit'" )
                     input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
                     span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
 
@@ -38,24 +38,27 @@ form.form-horizontal( ng-submit='' )
                     option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
                 //- AF Enums
-                select( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
                     option( ng-repeat=' (opt,v) in __joi.alt ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
                 //- API Enums
-                select( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
                     option( value='SUPER' ng-if="(item[field]=='SUPER' || $root.user.role == 'SUPER')&& field=='role'" ng-disabled="$root.user.role != 'SUPER'")
                         | {{ 'superUser:userGroups' | translate }}
                     option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
                         | {{ opt.show }}
 
                 //- Textareas
-                textarea( name='{{field}}', ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                textarea.form-control( name='{{field}}', rows="3", ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
                 //- Boolean
-                input.form-control( name='{{field}}', type="checkbox", ng-if="inputType(field) == 'boolean'", ng-model='item[field]' )
+                .mt-checkbox-inline(ng-if="inputType(field) == 'boolean'")
+                    label.mt-checkbox.mt-checkbox-outline
+                        input( name='{{field}}', type="checkbox", ng-model='item[field]' )
+                        span
 
                 //- Arrays
-                array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
+                array-input.bootstrap-tagsinput( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
 
                 //- Date
                 input.form-control( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
@@ -63,10 +66,10 @@ form.form-horizontal( ng-submit='' )
                 //- Time
                 input.form-control( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
     
+                //- Error
                 span.help-block(ng-if='item.__failed && __validation.indexOf(field) !==-1') {{ 'failed:save:' + $root.__module.name | translate }}
     
-    //-
-        .muted.right.itemInfo( ng-if='item.updatedAt || item.updatedBy' )
+        p( ng-if='item.updatedAt || item.updatedBy' )
             | {{ 'lastUpdate:itemInfo' | translate }}
             span(ng-if='item.updatedAt')
                 | &nbsp;{{ item.updatedAt | localize }}
@@ -81,13 +84,37 @@ form.form-horizontal( ng-submit='' )
                 span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&!item.updatedBy.email')
                     | &nbsp;{{'by:iteminfo'|translate}}
                     | &nbsp;{{ item.updatedBy }}
-        .muted.right.itemInfo( ng-if='!item.updatedAt && !item.updatedBy' )
+        p( ng-if='!item.updatedAt && !item.updatedBy' )
             span(ng-if='item.createdAt || item.createdBy')
                 | {{ 'createdAt:itemInfo' | translate }}
                 span(ng-if='item.createdAt')
                     | &nbsp;{{ item.createdAt | localize }}
                 span(ng-if='item.createdBy')
 
+    .form-actions
+        .row
+            .btn-toolbar.pull-right
+                button.btn.green(ng-click=' save() ', ng-if="!disableSaveBTN")
+                    | {{ 'save:' + $root.__module.name + ':button' | translate }}
+                button.btn.default( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
+                    | {{ 'delete:button' | translate }}
+
+
+div( style='margin-top:50px', ng-if= "item.last" )
+    .pull-right
+        span(ng-if="item.timestamp") {{ item.timestamp | localize }}
+
+    h4 {{ 'last:' + $root.__module.name | translate }}
+    table.table
+        tr( ng-repeat=" element in item.last " )
+            td
+                b {{ element.type + ':mtype' | translate }} &nbsp;
+                i {{ element.id }}
+                div {{ element.timestamp | localize }}
+            td.text-right {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
+
+
+    //-
                     span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
                         a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
                             | {{'by:iteminfo'|translate}}
@@ -108,10 +135,7 @@ form.form-horizontal( ng-submit='' )
             | {{ 'saved:' + $root.__module.name | translate }}
         span.failed( ng-if=' item.__failed && !disableSaveBTN ' )
             | {{ 'failed:save:' + $root.__module.name | translate }}
-        button(ng-click=' save() ', ng-if="!disableSaveBTN").pull-right.lightButton
-            | {{ 'save:' + $root.__module.name + ':button' | translate }}
-        button.danger.lightButton.pull-right( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
-            | {{ 'delete:button' | translate }}
+        
         br
         br
         div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
@@ -121,18 +145,3 @@ form.form-horizontal( ng-submit='' )
                 | {{ 'success:' + $root.__module.name | translate }}
             span.failed( ng-if=' button.__failed == item._id ' )
                 | {{ 'failed:' + $root.__module.name | translate }}
-
-//-
-    .panel( style='margin-top:50px', ng-if= "item.last" )
-        .muted.pull-right
-            span(ng-if="item.timestamp") {{ item.timestamp | localize }}
-        h4 {{ 'last:' + $root.__module.name | translate }}
-        table
-            tr( ng-repeat=" element in item.last " )
-                td
-                    b {{ element.type + ':mtype' | translate }} &nbsp;
-                    i {{ element.id }}
-                    .muted {{ element.timestamp | localize }}
-                td.right
-                    pre
-                        | {{ element.value | localize }} {{ element.unit + ':unit' | translate }}

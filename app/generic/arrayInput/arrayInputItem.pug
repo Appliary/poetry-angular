@@ -1,3 +1,3 @@
-.arrayInputItem(style="background-color: {{data.color||'transparent'}}", class="{{data.collection}}")
+span.tag.label.label-info(class="{{data.collection}}")
     | {{data.text}}
-    span.remove-button(ng-click="$removeTag()") &times;
+    span(data-role="remove", ng-click="$removeTag()") &times;
