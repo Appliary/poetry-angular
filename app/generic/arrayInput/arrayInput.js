@@ -52,7 +52,7 @@ app.directive( 'arrayInput', function arrayInput() {
                     color += parseInt( hash.slice( 0, 2 ), 16 ) + ',';
                     color += parseInt( hash.slice( 2, 4 ), 16 ) + ',';
                     color += parseInt( hash.slice( 4, 6 ), 16 ) + ',';
-                    color += '0.3)';
+                    color += '0.9)';
 
                     return {
                         text: model,
