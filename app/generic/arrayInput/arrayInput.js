@@ -20,6 +20,10 @@ app.directive( 'arrayInput', function arrayInput() {
                 } );
             } );
 
+            $scope.loadTags = function(query){
+              return $http.get('/api/tags/' + query);
+            }
+
             $scope.$watchCollection( 'array', function watchModel( n, o ) {
 
                 if ( !n || !n.map ) return;
@@ -82,6 +86,8 @@ app.directive( 'arrayInput', function arrayInput() {
                                 color: color || 'transparent'
                             } );
                         } );
+
+
 
                 }, function success( err, tags ) {
                     if ( err ) console.error( err );

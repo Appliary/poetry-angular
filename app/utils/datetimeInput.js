@@ -63,3 +63,34 @@ app.directive("dateInput", function(){
     }
   };
 });
+
+app.directive("timezoneOffset", function(){
+  return {
+    restrict: 'E',
+    transclude: false,
+    require: "ngModel",
+    scope: true,
+    template: "",
+    link: function(scope, element, attrs, ngModel){
+
+        if (!ngModel) return;
+
+        var date = new Date();
+        console.debug("timezoneOffset", date.getTimezoneOffset());
+        var timezoneOffset = (date.getTimezoneOffset() * 60000);
+        console.debug("timezoneOffset full", timezoneOffset);
+        ngModel.$setViewValue(timezoneOffset);
+
+        /*ngModel.$render = function(){
+          var dateValue = new Date( ngModel.$modelValue || undefined );
+          if(dateValue){
+            var firstDate = new Date(0);
+            firstDate.setHours(dateValue.getHours());
+            firstDate.setMinutes(dateValue.getMinutes());
+            dateValue = firstDate;
+          }
+          scope.value = dateValue;
+        };*/
+    }
+  };
+});

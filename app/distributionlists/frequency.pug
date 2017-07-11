@@ -2,6 +2,9 @@ h4 {{ 'frequency:dlist:title'| translate }}
 br
 form(ng-submit="save()")
   div()
+
+    timezone-offset(ng-model='item.timezoneOffset')
+
     div( )
         label()
             | {{ 'startingAt:field' | translate }}

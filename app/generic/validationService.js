@@ -67,6 +67,10 @@ app.service( 'validationService', function validationService( $http ) {
                         if ( $scope.__joi.computed[ name ]._unit )
                             return 'numUnit';
 
+                        // Special number
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'timezoneOffset' ) )
+                            return 'timezoneOffset';
+
                         // Default number
                         return 'number';
 
