@@ -25,7 +25,8 @@ app.factory("AlertsService", function($http){
       "message",
       "acknowledgedBy",
       "acknowledgedAt",
-      "notes"
+      "notes",
+      "tags"
     ];
   }
 

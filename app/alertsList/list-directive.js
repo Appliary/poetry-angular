@@ -42,6 +42,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       scope.allHiddenTags = [];
       scope.hiddenTags = [];
       scope.searchTags = [];
+      scope.searchTags2 = [];
       scope.genericApps = ['deviceManager'];
       scope.isGenericApp = function (){
         return (scope.genericApps.indexOf(scope.$root.__appName) > -1);
@@ -101,6 +102,24 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       // if is context: {id:..., kind:...}
       scope.displayContext = function(coord){
         return coord.kind +':'+ coord.id;
+      }
+
+      function getUserLanguage(){
+        return (scope.$root.user) ? scope.$root.user.language : "";
+      }
+      var messageProp = "message";
+
+      /**
+      * Display message depending on the user language
+      */
+      scope.displayMessage = function( row ){
+        if(!(row && angular.isObject(row))){
+          return;
+        }
+        var userLn = getUserLanguage();
+        return getUserLanguage && angular.isString(userLn) && row[messageProp + userLn.toUpperCase()]
+                ? row[messageProp + userLn.toUpperCase()]
+                : row[ messageProp ];
       }
 
       function select( id ) {
@@ -621,6 +640,21 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           getlist(true);
         }, 200);
       } );
+
+      scope.addSearchTag = function(dt){
+        //console.log(dt);
+        dt = angular.isObject(dt) ? dt.text : dt;
+        if(!dt || !angular.isString(dt)){
+          return;
+        }
+        if(!(scope.searchTags.some(function(t){ return t.text == dt;}))){
+          scope.searchTags.push({text: dt});
+        }
+      }
+
+      /*scope.$watchCollection( 'searchTags2', function(nv){
+        console.debug("searchTags2", nv);
+      } );*/
 
       scope.$watch( 'status', function(){
         getlist(true);

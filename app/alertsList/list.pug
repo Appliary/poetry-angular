@@ -54,6 +54,10 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                 .input-group-building(style="width: 100%")
                     //- searchTags
                     tags-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
+            //-div()
+                .input-group-building(style="width: 100%")
+                    //- searchTags
+                    array-input.tags-input-overview( array='searchTags2' )
 .report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
     //- table
     //- ng-include(src="'alertsList/table.pug'")
@@ -62,16 +66,26 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
             th( ng-repeat='column in columns', ng-click='sort(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )
                 | {{ column + ':' + 'column' | translate }}
         tbody
-            tr( ng-repeat='row in data', ng-click='select(row._id)', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
+            tr( ng-repeat='row in data', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if="isContext(row[ column ])" )
+                    span( ng-if="isContext(row[ column ])"
+                    , ng-click='select(row._id)' )
                         | {{ displayContext(row[ column ]) }}
-                    span( ng-if='row[ column ] !== undefined && column === "icon" && !isContext(row[ column ])')
+                    span( ng-if='row[ column ] !== undefined && column === "icon" && !isContext(row[ column ])'
+                    , ng-click='select(row._id)')
                         i(class="{{row[ column ]}}")
-                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon" && !isContext(row[ column ])', title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}" )
+                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon" && column != "message" && column != "tags" && !isContext(row[ column ])'
+                    , title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}"
+                    , ng-click='select(row._id)' )
                         | {{ row[ column ] | localize }}
-                    em( ng-if='column == "_id" && !isContext(row[ column ])')
+                    span( ng-if='column === "message"'
+                    , ng-click='select(row._id)')
+                        | {{displayMessage(row)}}
+                    em( ng-if='column == "_id"'
+                    , ng-click='select(row._id)')
                         | {{ row[ column ] }}
+                    span( ng-if='column === "tags"')
+                        tags-viewer(array="row[ column ]", selected-tag="addSearchTag")
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}
 

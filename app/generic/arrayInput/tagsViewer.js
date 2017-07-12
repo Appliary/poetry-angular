@@ -3,6 +3,7 @@ app.directive( 'tagsViewer', function arrayInput() {
         templateUrl: 'generic/arrayInput/tagsViewer.pug',
         scope: {
             'array': "=",
+            'selectedTag': "=?"
         },
         controller: function arrayInputCtrl( $scope, $http ) {
 
