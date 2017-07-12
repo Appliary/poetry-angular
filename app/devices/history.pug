@@ -34,4 +34,7 @@ div(ng-controller='devices/history')
                         tr
                             td
                             td.text-right
-                                a(ng-href="measurements/{{measurement._id}}/" class="link") link
+                                a.btn.btn-outline.green(ng-href="measurements/{{measurement._id}}/")
+                                    i.fa.fa-link
+                                    |  link
+

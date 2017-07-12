@@ -94,8 +94,8 @@ $screen-sm-max:              		($screen-md-min - 1) !default;  // 991px
 $screen-md-max:              		($screen-lg-min - 1) !default;  // 1199px  
 
 //## Image  paths
-$global-img-path:           		'../img/' !default; 
-$page-img-path:           			'../img/' !default;   
+$global-img-path:           		'./img/' !default; 
+$page-img-path:           			'./img/' !default;   
 $page-media-path:           		'../media/' !default; 
 
 // Metronic grid system
