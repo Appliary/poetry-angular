@@ -59,7 +59,7 @@ form.form-horizontal( ng-submit='' )
 
                 //- Arrays
                 array-input( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
-
+                
                 //- Date
                 input.form-control( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 

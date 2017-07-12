@@ -11,6 +11,7 @@
     "angular-datatables": "^0.5.7",
     "angular-leaflet-directive": "^0.10.0",
     "ascss": "^1.0.3",
+    "async": "^1.5.2",
     "bootstrap-sass": "^3.3.7",
     "concatenate": "0.0.1",
     "datatables": "^1.10.12",

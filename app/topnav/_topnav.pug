@@ -1,5 +1,4 @@
 .page-header-inner
-    //- app-logo(ng-click='$root.collapseSidebar=!$root.collapseSidebar')
     .page-logo
         a(ng-click='$root.collapseSidebar=!$root.collapseSidebar')
             img.logo-default(src='./img/logo.png', alt='logo')
@@ -40,7 +39,7 @@
             // END TODO DROPDOWN
             
             //BEGIN USER DROPDOWN
-            //- not working
+            //- not working (with app-dropdown)
                 li.dropdown.dropdown-user.app-dropdown( icon='user', text="userName" )
                     li
                         a( ng-click="editprofile()" )
@@ -51,7 +50,7 @@
                             i.icon-key
                             | {{ 'logout:topbar' | translate }}
                             
-            //- working
+            //- working (without app-dropdown)
             li.dropdown.dropdown-user.app-userselector
             //END USER DROPDOWN
             

@@ -1,3 +1,17 @@
+tags-input .tags .tag-item {
+    background: #eff8ff;
+    color: gray;
+    font-weight: bold;
+    border: 1px solid #f1f1f1!important;
+    padding: 0!important;
+}
+
+tags-input .tags .tag-item.selected {
+    background: #fe9090!important;
+    color: #fff;
+}
+
+/*
 .bootstrapCustom .tags {
 display: block;
 width: 100%;
@@ -64,3 +78,4 @@ outline: none;
 .bootstrapCustom .remove-button {
     color: white!important;
 }
+*/

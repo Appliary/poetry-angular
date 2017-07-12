@@ -4,18 +4,23 @@
 
     
     
-// BEGIN SIDEBAR
 .page-sidebar-wrapper
     .page-sidebar.navbar-collapse.collapse
-        // BEGIN SIDEBAR MENU
-        ul.page-sidebar-menu(data-auto-scroll='true', data-slide-speed='200')
+        ul.page-sidebar-menu.page-header-fixed.hidden-sm.hidden-xs(data-auto-scroll='true', data-slide-speed='200')
             li.sidebar-toggler-wrapper
                 .sidebar-toggler.hide
             li(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
                 a(icon="{{module.icon}}")
                     i.icon-home
-                    span.title {{ module.name + ':module:sidebar' | translate }}
+                    span.title  {{ module.name + ':module:sidebar' | translate }}
                     span.selected
-        // END SIDEBAR MENU
-// END SIDEBAR
 
+        .page-sidebar-wrapper
+            ul.page-sidebar-menu.visible-sm.visible-xs.page-header-fixed(data-auto-scroll='true', data-slide-speed='200')
+                li.nav-item(ng-repeat='app in apps', ng-class="{active:(app==current)}", ng-click='select(app)', ng-if=' $root.role.permissions.APP[ app ] || $root.user.role == "SUPER" ')
+                    a.nav-link.nav-toggle {{ app + ':application' | translate }}
+                    ul.sub-menu(ng-if='app==current')
+                        li.nav-item(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
+                            a.nav-link(icon="{{module.icon}}")
+                                i.icon-home
+                                span.title  {{ module.name + ':module:sidebar' | translate }}
