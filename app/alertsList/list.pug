@@ -84,7 +84,9 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                     span( ng-if='column === "tags"')
                         tags-viewer(array="row[ column ]", selected-tag="addSearchTag")
                     span( ng-if="isContext(row[ column ])")
-                        tags-viewer(array="displayContext(row[ column ])", selected-tag="addSearchTag")
+                        | {{displayContext(row[ column ])}}
+                        //- commented bc it crashes too much
+                        //-tags-viewer(array="displayContext(row[ column ])", selected-tag="addSearchTag")
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}
 
