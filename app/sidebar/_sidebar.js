@@ -17,6 +17,10 @@ app.component('appSidebar', {
             for (var key in $stateParams) {
                 $stateParams[key] = undefined;
             }
+
+            // Close sidebar
+            $('.page-sidebar').removeClass('in');
+
             $location.path(module.path);
             minify();
         };
