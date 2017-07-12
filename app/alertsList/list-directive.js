@@ -18,7 +18,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         searchable: '<?', //bool TODO (not yet implemented)
         selectable: '<?', //bool TODO (not yet implemented)
         sortable: '<?', //bool TODO (not yet implemented)
-        hideFilters: '<?', //bool TODO
+        hideFilters: '<?', //bool
         alert: '<?', //bool
         defaults: '<?', //object
         properties: '<?' //object
@@ -643,6 +643,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       scope.addSearchTag = function(dt){
         //console.log(dt);
+        if(scope.hideFilters) return;
         dt = angular.isObject(dt) ? dt.text : dt;
         if(!dt || !angular.isString(dt)){
           return;
