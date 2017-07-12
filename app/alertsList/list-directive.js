@@ -401,7 +401,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
         var page = 0;
         // page & limit
-        params.limit = 50;
+        params.limit = 25;
         page = scope.data && scope.data.length ? scope.data.length / params.limit : 0;
         params.page = Math.floor( page );
 
