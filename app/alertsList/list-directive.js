@@ -25,6 +25,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
     },
     link: function(scope, elem, attrs, ctrls){
 
+      if ( scope.__id ) console.debug( "id equals",scope.__id );
+      console.debug(scope);
+
       var isLoading = false;
 
       var currentHeightPlus = 0;
@@ -48,7 +51,24 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         return (scope.genericApps.indexOf(scope.$root.__appName) > -1);
       }
 
-      var directivePath = $location.path();
+      var pathStart = $location.path();
+      var directivePath = pathStart;
+      var lastSlash = pathStart.lastIndexOf('/');
+      /*console.debug("lastSlash", lastSlash);
+      console.debug("directivePath", directivePath);
+      console.debug("directivePath length", directivePath.length);*/
+      var len = directivePath.length - lastSlash - 1;
+      //console.debug("len",len);
+      if(len >= 24){
+        var possibleId = directivePath.substr(lastSlash + 1, 24);
+        if(possibleId.indexOf('/') == -1){
+          //console.debug("go to "+possibleId);
+          directivePath = directivePath.substring(0,lastSlash);
+          //console.debug("new directivePath", directivePath);
+          select(possibleId);
+        }
+      }
+
 
       scope.actionbtn = {};
       scope.maxDate = getDefaultMaxDateToString();
