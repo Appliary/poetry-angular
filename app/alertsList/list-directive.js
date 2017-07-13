@@ -95,6 +95,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           "messageNL",
           "acknowledgedBy",
           "acknowledgedAt",
+          "tags",
           "status",
           "notes"
         ];
