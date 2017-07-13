@@ -71,10 +71,10 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
         tbody
             tr( ng-repeat='row in data', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
                 td( ng-repeat='column in columns')
-                    span( ng-if='row[ column ] !== undefined && column === "icon" && !isContext(row[ column ])'
+                    span( ng-if='row[ column ] !== undefined && row[ column ] !== null && column === "icon" && !isContext(row[ column ])'
                     , ng-click='select(row._id)')
                         i(class="{{row[ column ]}}")
-                    span( ng-if='row[ column ] !== undefined && column != "_id" && column != "icon" && column != "message" && column != "tags" && !isContext(row[ column ])'
+                    span( ng-if='row[ column ] !== undefined && row[ column ] !== null && column != "_id" && column != "icon" && column != "message" && column != "tags" && !isContext(row[ column ])'
                     , title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}"
                     , ng-click='select(row._id)' )
                         | {{ row[ column ] | localize }}
