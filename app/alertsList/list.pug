@@ -15,6 +15,9 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                     option(value="") {{ 'allBuildings:alertsList' | translate }}
                     option(ng-repeat="building in buildings", ng-value="building") {{ building.name }}
             .input-group-building
+                //- searchId
+                input(ng-model="searchId" , placeholder="{{ 'alertId:alertsList' | translate }}")
+            .input-group-building
                 //- category
                 select.pull-right( ng-model='category' )
                     option( value='' ) {{ 'allCategories:alertsList' | translate }}

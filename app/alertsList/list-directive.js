@@ -54,6 +54,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       var pathStart = $location.path();
       var directivePath = pathStart;
       var lastSlash = pathStart.lastIndexOf('/');
+      var hasPossibleId = false;
       /*console.debug("lastSlash", lastSlash);
       console.debug("directivePath", directivePath);
       console.debug("directivePath length", directivePath.length);*/
@@ -65,6 +66,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           //console.debug("go to "+possibleId);
           directivePath = directivePath.substring(0,lastSlash);
           //console.debug("new directivePath", directivePath);
+          hasPossibleId= true;
+          scope.searchId = possibleId;
           select(possibleId);
         }
       }
@@ -299,6 +302,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         && lastParams.tags == params.tags
         && lastParams.page == params.page
         && lastParams.limit == params.limit
+        && lastParams.id == params.id
 
         && lastParams.level == params.level
         && lastParams.category == params.category
@@ -346,6 +350,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               params.tags =  scope.searchTags.map(function(t){
                 return t.text;
               });
+          }
+
+          if ( scope.searchId ){
+            params.id = scope.searchId;
           }
 
           if(!scope.isGenericApp()){
@@ -679,6 +687,16 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       /*scope.$watchCollection( 'searchTags2', function(nv){
         console.debug("searchTags2", nv);
       } );*/
+
+      scope.$watch( 'searchId', function(){
+        if(hasPossibleId){
+          hasPossibleId = false;
+          return;
+        }
+        if(angular.isString(scope.searchId) && (scope.searchId.length == 24 || scope.searchId.length == 0)){
+          getlist(true);
+        }
+      } );
 
       scope.$watch( 'status', function(){
         getlist(true);
