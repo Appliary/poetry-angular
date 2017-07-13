@@ -121,7 +121,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       // if is context: {id:..., kind:...}
       scope.displayContext = function(coord){
-        return [coord.kind +':'+ coord.id];
+        return coord.name ? coord.name : [coord.kind +':'+ coord.id];
+      }
+      scope.displayContextTitle = function(coord){
+        return coord.kind +':'+ coord.id;
       }
 
       function getUserLanguage(){
