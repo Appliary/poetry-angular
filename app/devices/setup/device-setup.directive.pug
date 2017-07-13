@@ -1,89 +1,102 @@
-div
+form.form-horizontal
     // <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBR0v1tbeBiywdhvCVypCWlCETApBYqjLQ&sensor=false" type="text/javascript" ></script>
-    div
-        div
-            b {{'static:setup:device'|translate}}
-        div
-            .lat
-                label latitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lat:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lat')
-            img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.static.toggled = !vm.maps.static.toggled', alt='{{vm.mapIcon.name}}')
-            .lng
-                label longitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lng:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lng')
+    .form-body
+        b {{'static:setup:device'|translate}}
+        .form-group
+            label.col-md-3.control-label.text-right latitude
+            .col-md-9
+                input.form-control.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lat:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lat')
+            
+        img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.static.toggled = !vm.maps.static.toggled', alt='{{vm.mapIcon.name}}')
+
+        .form-group    
+            label.col-md-3.control-label.text-right longitude
+            .col-md-9
+                input.form-control.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lng:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lng')
+        
         setup-map(controls='vm.controls', position='vm.staticPosition.positions', edit='true', name="'static'", toggle='vm.maps.static.toggled')
-    div(ng-show='vm.gps && vm.gps.timestamp')
+        //-
+            div(ng-show='vm.gps && vm.gps.timestamp')
+                div
+                    b {{'gps:setup:device'|translate}}
+                    span  ({{ vm.gps.timestamp | localize }})
+                div
+                    .lat
+                        label latitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lat', disabled='')
+                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.gps.toggled = !vm.maps.gps.toggled', alt='{{vm.mapIcon.name}}')
+                    .lng
+                        label longitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lng', disabled='')
+                setup-map(position='vm.gps.positions', edit='false', name="'gps'", toggle='vm.maps.gps.toggled')
+
+            div(ng-show='vm.network && vm.network.timestamp')
+                div
+                    b {{'network:setup:device'|translate}}
+                    span  ({{ vm.network.timestamp | localize }})
+                div
+                    .lat
+                        label latitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lat', disabled='')
+                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.network.toggled = !vm.maps.network.toggled', alt='{{vm.mapIcon.name}}')
+                    .lng
+                        label longitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lng', disabled='')
+                setup-map(position='vm.network.positions', edit='false', name="'network'", toggle='vm.maps.network.toggled')
+            
+            div(ng-show='vm.lbs && vm.lbs.timestamp')
+                div
+                    b {{'lbs:setup:device'|translate}}
+                    span  ({{ vm.lbs.timestamp | localize }})
+                div
+                    .lat
+                        label latitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lat', disabled='')
+                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.lbs.toggled = !vm.maps.lbs.toggled', alt='{{vm.mapIcon.name}}')
+                    .lng
+                        label longitude
+                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lng', disabled='')
+                setup-map(position='vm.lbs.positions', edit='false', name="'lbs'", toggle='vm.maps.lbs.toggled')
+
+        b {{'icon:setup:device'|translate}}
         div
-            b {{'gps:setup:device'|translate}}
-            span  ({{ vm.gps.timestamp | localize }})
-        div
-            .lat
-                label latitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lat', disabled='')
-            img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.gps.toggled = !vm.maps.gps.toggled', alt='{{vm.mapIcon.name}}')
-            .lng
-                label longitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lng', disabled='')
-        setup-map(position='vm.gps.positions', edit='false', name="'gps'", toggle='vm.maps.gps.toggled')
-    div(ng-show='vm.network && vm.network.timestamp')
-        div
-            b {{'network:setup:device'|translate}}
-            span  ({{ vm.network.timestamp | localize }})
-        div
-            .lat
-                label latitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lat', disabled='')
-            img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.network.toggled = !vm.maps.network.toggled', alt='{{vm.mapIcon.name}}')
-            .lng
-                label longitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lng', disabled='')
-        setup-map(position='vm.network.positions', edit='false', name="'network'", toggle='vm.maps.network.toggled')
-    div(ng-show='vm.lbs && vm.lbs.timestamp')
-        div
-            b {{'lbs:setup:device'|translate}}
-            span  ({{ vm.lbs.timestamp | localize }})
-        div
-            .lat
-                label latitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lat', disabled='')
-            img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.lbs.toggled = !vm.maps.lbs.toggled', alt='{{vm.mapIcon.name}}')
-            .lng
-                label longitude
-                input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lng', disabled='')
-        setup-map(position='vm.lbs.positions', edit='false', name="'lbs'", toggle='vm.maps.lbs.toggled')
-    div
-        div
-            b {{'icon:setup:device'|translate}}
-        .iconBar
             canvas#canvas(width='36', height='36', ng-click='vm.procSelectIcon = !vm.procSelectIcon;')
-            color-picker(ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
-    icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
-    canvas#canvasHistory(ng-show='false', width='60', height='60')
+            color-picker(style='display: inline-table', ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
+        
+        icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
+        canvas#canvasHistory(ng-show='false', width='60', height='60')
 
-    .muted.right.itemInfo( ng-if='vm.device.updatedAt || device.updatedBy' )
-        | {{ 'lastUpdate:itemInfo' | translate }}
-        span(ng-if='vm.device.updatedAt')
-            | &nbsp;{{ vm.device.updatedAt | localize }}
-        span(ng-if='vm.device.updatedBy')
-            | &nbsp;{{'by:iteminfo'|translate}}
-            | &nbsp;{{ vm.device.updatedBy.firstName }}
-            | &nbsp;{{ vm.device.updatedBy.lastName }}
-    .muted.right.itemInfo( ng-if='!vm.device.updatedAt && !vm.device.updatedBy' )
-        span(ng-if='vm.device.createdAt || vm.device.createdBy')
-            | {{ 'createdAt:itemInfo' | translate }}
-            span(ng-if='vm.device.createdAt')
-                | &nbsp;{{ vm.device.createdAt | localize }}
-            span(ng-if='vm.device.createdBy')
+        p.text-right( ng-if='vm.device.updatedAt || device.updatedBy' )
+            | {{ 'lastUpdate:itemInfo' | translate }}
+            span(ng-if='vm.device.updatedAt')
+                | &nbsp;{{ vm.device.updatedAt | localize }}
+            span(ng-if='vm.device.updatedBy')
                 | &nbsp;{{'by:iteminfo'|translate}}
-                | &nbsp;{{ vm.device.createdBy.firstName }}
-                | &nbsp;{{ vm.device.createdBy.lastName }}
+                | &nbsp;{{ vm.device.updatedBy.firstName }}
+                | &nbsp;{{ vm.device.updatedBy.lastName }}
+        p.text-right( ng-if='!vm.device.updatedAt && !vm.device.updatedBy' )
+            span(ng-if='vm.device.createdAt || vm.device.createdBy')
+                | {{ 'createdAt:itemInfo' | translate }}
+                span(ng-if='vm.device.createdAt')
+                    | &nbsp;{{ vm.device.createdAt | localize }}
+                span(ng-if='vm.device.createdBy')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ vm.device.createdBy.firstName }}
+                    | &nbsp;{{ vm.device.createdBy.lastName }}
 
+    .form-actions
+        .row
+            .col-xs-12
+                .btn-toolbar.pull-right
+                    button.btn.green(ng-click='vm.updateDevice()')
+                        span(ng-if='!vm.loadingUpdate')
+                            | {{'update:general'|translate}}
+                        span(ng-if='vm.loadingUpdate')
+                            | {{'update:general'|translate}}...
+
+
+//-
     span.saved( ng-if=' __saved ' )
         | {{ 'saved:' | translate }}
     span.failed( ng-if=' __failed ' )
         | {{ 'failed:save:' | translate }}
-    button.pull-right.lightButton(ng-click='vm.updateDevice()')
-        span(ng-if='!vm.loadingUpdate')
-            | {{'update:general'|translate}}
-        span(ng-if='vm.loadingUpdate')
-            | {{'update:general'|translate}}...
