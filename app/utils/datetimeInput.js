@@ -9,6 +9,7 @@ app.directive("timeInput", function(){
         if (!ngModel) return;
 
         scope.onChange = function(){
+          console.log("%c[timeInput] on change: "+scope.value,"background-color: black; color: #2BFF00");
           ngModel.$setViewValue(scope.value);
         };
 
@@ -21,6 +22,7 @@ app.directive("timeInput", function(){
 			  });
 
         ngModel.$render = function(){
+          console.log("%c[timeInput] modelValue: "+ngModel.$modelValue,"background-color: black; color: #2BFF00");
           var dateValue = new Date( ngModel.$modelValue || undefined );
           if(dateValue){
             var firstDate = new Date(0);
@@ -28,6 +30,7 @@ app.directive("timeInput", function(){
             firstDate.setMinutes(dateValue.getMinutes());
             dateValue = firstDate;
           }
+          console.log("%c[timeInput] dateValue: "+dateValue,"background-color: black; color: #2BFF00");
           scope.value = dateValue;
         };
     }
