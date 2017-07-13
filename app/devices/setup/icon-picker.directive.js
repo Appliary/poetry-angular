@@ -1,7 +1,7 @@
-( function () {
+(function () {
     'use strict';
 
-    app.directive( 'iconPicker', iconPicker );
+    app.directive('iconPicker', iconPicker);
 
     function iconPicker() {
         var directive = {
@@ -20,16 +20,16 @@
         return directive;
     }
 
-    deviceSetupMapController.$inject = [ '$scope', '$sce', 'ngDialog', 'iconsService' ];
+    deviceSetupMapController.$inject = ['$scope', '$sce', 'ngDialog', 'iconsService'];
 
     /* @ngInject */
-    function deviceSetupMapController( $scope, $sce, ngDialog, iconsService ) {
+    function deviceSetupMapController($scope, $sce, ngDialog, iconsService) {
         // ***********************************************************
         //                  DECLARE VARIABLES
         var vm = this;
         // ***********************************************************
         //                  MAPPING FUNCTIONS
-        vm.click = function ( icon ) {
+        vm.click = function (icon) {
             vm.iconSelected = icon.data;
         };
         vm.openConfirmModal = openConfirmModal;
@@ -40,31 +40,32 @@
         // ***********************************************************
         //                  DECLARE FUNCTIONS
         function activate() {
-            $scope.$watch( 'vm.procEvent', function ( newValue, oldValue ) {
-                if ( newValue ) openConfirmModal();
-            } );
+            $scope.$watch('vm.procEvent', function (newValue, oldValue) {
+                if (newValue) openConfirmModal();
+            });
             iconsService.getIcons()
-                .then( function ( response ) {
+                .then(function (response) {
                     $scope.icons = response;
-                } );
-            for ( var i in $scope.icons ) {
-                var icon = $scope.icons[ i ];
-                icon = trustAsHtml( icon );
+                });
+            for (var i in $scope.icons) {
+                var icon = $scope.icons[i];
+                icon = trustAsHtml(icon);
             }
         }
 
         function openConfirmModal() {
-            ngDialog.openConfirm( {
-                    template: 'popupConfirm.pug',
-                    scope: $scope
-                } )
-                .then( function () {} )
-                .catch( function () {} );
+            ngDialog.openConfirm({
+                template: 'popupConfirm.pug',
+                scope: $scope,
+                showClose: false,
+            })
+                .then(function () { })
+                .catch(function () { });
         }
 
-        function trustAsHtml( aString ) {
-            return $sce.trustAsHtml( aString );
+        function trustAsHtml(aString) {
+            return $sce.trustAsHtml(aString);
         }
 
     }
-} )();
+})();

@@ -18,9 +18,9 @@ form.form-horizontal( ng-submit='' )
 
                 //- Numbers (with or without units)
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-                span( ng-if="inputType(field) == 'numUnit'" )
-                    input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
-                    span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
+                span.input-group( ng-if="inputType(field) == 'numUnit'" )
+                    input.form-control( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                    span.input-group-addon.bootstrap-touchspin-postfix {{ __joi.computed[field]._unit + ':unit' | translate }}
 
                 //- Strings
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )

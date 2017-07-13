@@ -83,7 +83,7 @@ app.controller('modals/toolbox', function ($scope, $http, $window, $location, va
             }
 
             $scope.loaded = true;
-            $('.modal')[0].style.display = "block"
+            $('.modal')[0].style.display = "block";
 
         }, console.error);
 

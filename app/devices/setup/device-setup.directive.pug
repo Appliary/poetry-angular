@@ -60,11 +60,11 @@ form.form-horizontal
 
         b {{'icon:setup:device'|translate}}
         div
-            canvas#canvas(width='36', height='36', ng-click='vm.procSelectIcon = !vm.procSelectIcon;')
+            canvas#canvas(width='36', height='36', ng-click='openModal()')
             color-picker(style='display: inline-table', ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
         
-        icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
-        canvas#canvasHistory(ng-show='false', width='60', height='60')
+            icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
+            canvas#canvasHistory(ng-show='false', width='60', height='60')
 
         p.text-right( ng-if='vm.device.updatedAt || device.updatedBy' )
             | {{ 'lastUpdate:itemInfo' | translate }}
