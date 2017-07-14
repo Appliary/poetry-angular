@@ -342,29 +342,35 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             var bodyTds = $scope.scrollBody.querySelectorAll('tr:first-child td');
 
             for (var i = 0; i < headThs.length; i++) {
-                var oldThWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
                 var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
                 var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
                 var newThWidth = tdWidth + (tdPadding - thPadding);
 
-                if (oldThWidth <= newThWidth) {
-                    headThs[i].style.minWidth = newThWidth + "px";
-                    headThs[i].style.maxWidth = newThWidth + "px";
-                    headThs[i].style.width = newThWidth + "px";
-                } else {
-                    newThWidth = oldThWidth + (thPadding - tdPadding);
+                headThs[i].style.minWidth = newThWidth + "px";
+                headThs[i].style.maxWidth = newThWidth + "px";
+                headThs[i].style.width = newThWidth + "px";
+            }
 
-                    bodyTds[i].style.minWidth = newThWidth + "px";
-                    bodyTds[i].style.maxWidth = newThWidth + "px";
-                    bodyTds[i].style.width = newThWidth + "px";
+            for (var i = 0; i < headThs.length; i++) {
+                var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+
+                var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+                var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+
+                var x = tdWidth - (thPadding - tdPadding);
+                x = Math.round(x * 10) / 10;
+
+                if (thWidth != x) {
+                    var newTdWidth = thWidth + (thPadding - tdPadding);
+
+                    bodyTds[i].style.minWidth = newTdWidth + "px";
+                    bodyTds[i].style.maxWidth = newTdWidth + "px";
+                    bodyTds[i].style.width = newTdWidth + "px";
                 }
-
-                /*if (i == 0) $scope.firstThWidth = thWidth + 'px';
-                else if (i == headThs.length - 1) $scope.lastThWidth = thWidth + 'px';
-                else $scope.thsWidth.push(thWidth + 'px');*/
             }
         })
     }
