@@ -20,10 +20,19 @@ app.service( 'validationService', function validationService( $http ) {
 
                     // Return the type if in the list
                     if ( ~[
-                            'array',
                             'boolean'
                         ].indexOf( $scope.__joi.computed[ name ]._type ) )
                         return $scope.__joi.computed[ name ]._type;
+
+                    // Array
+                    if($scope.__joi.computed[ name ]._type == 'array'){
+                      // Special date (only handle time)
+                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) )
+                          return 'readOnlyArray';
+
+                      // Default string otherwise
+                      return 'array';
+                    }
 
                     // Dates
                     if($scope.__joi.computed[ name ]._type == 'date'){

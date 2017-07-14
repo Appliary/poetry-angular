@@ -93,8 +93,7 @@
                     span( ng-if="isContext(row[ column ])")
                         //-| {{displayContext(row[ column ], row['lookedUpContext'])}}
                         //- tags-viewer to remove if it continues to crash so much
-                        tags-viewer(array="[row['lookedUpContext']]", ng-if="row['lookedUpContext']")
-                        tags-viewer(array="[row[ column ]])", ng-if="!row['lookedUpContext']")
+                        tags-viewer(array="[row[ column ]]")
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}
 
