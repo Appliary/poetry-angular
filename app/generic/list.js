@@ -342,15 +342,25 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             var bodyTds = $scope.scrollBody.querySelectorAll('tr:first-child td');
 
             for (var i = 0; i < headThs.length; i++) {
+                var oldThWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+
                 var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
                 var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
                 var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-                var thWidth = tdWidth + (tdPadding - thPadding);
+                var newThWidth = tdWidth + (tdPadding - thPadding);
 
-                headThs[i].style.minWidth = thWidth + "px";
-                headThs[i].style.maxWidth = thWidth + "px";
-                headThs[i].style.width = thWidth + "px";
+                if (oldThWidth <= newThWidth) {
+                    headThs[i].style.minWidth = newThWidth + "px";
+                    headThs[i].style.maxWidth = newThWidth + "px";
+                    headThs[i].style.width = newThWidth + "px";
+                } else {
+                    newThWidth = oldThWidth + (thPadding - tdPadding);
+
+                    bodyTds[i].style.minWidth = newThWidth + "px";
+                    bodyTds[i].style.maxWidth = newThWidth + "px";
+                    bodyTds[i].style.width = newThWidth + "px";
+                }
 
                 /*if (i == 0) $scope.firstThWidth = thWidth + 'px';
                 else if (i == headThs.length - 1) $scope.lastThWidth = thWidth + 'px';

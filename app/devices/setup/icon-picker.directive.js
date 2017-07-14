@@ -50,6 +50,7 @@
             for (var i in $scope.icons) {
                 var icon = $scope.icons[i];
                 icon = trustAsHtml(icon);
+
             }
         }
 

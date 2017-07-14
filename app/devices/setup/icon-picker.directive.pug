@@ -5,12 +5,14 @@ span
                 <i class="fa fa-search"></i>
             </span>
             <input type="text" class="form-control" ng-model="filterIconsName">
-            <span class="input-group-addon" ng-click="closeThisDialog();">
-                <i class="fa fa-close"></i>
+            <span class="input-group-btn">
+                <button class="btn green" ng-click="closeThisDialog();" type="button" style="line-height: 1.44">
+                    <i class="fa fa-close"></i>
+                </button>
             </span>
         </div>
         <div style="overflow-y: auto; max-height:400px;" >
-            <span ng-repeat="icon in icons   | filter: { name : filterIconsName } track by $index"  >
-                <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon ); closeThisDialog();" />
+            <span ng-repeat="icon in icons | filter: { name : filterIconsName } track by $index"  >
+                <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon ); closeThisDialog();"/>
             </span>
         </div>
