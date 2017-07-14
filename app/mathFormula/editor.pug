@@ -1,6 +1,6 @@
-div.mathFormula(ng-controller='mathFormula/editor')
+.form(ng-controller='mathFormula/editor')
     h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
-    table
+    table.table
         thead: tr
             th {{ 'varName:' + $root.__module.name + ':col' | translate }}
             th {{ 'device:' + $root.__module.name + ':col' | translate }}
@@ -39,28 +39,31 @@ div.mathFormula(ng-controller='mathFormula/editor')
                     | [ {{ inputValues[ input.varName ][0] }},… ]
 
                 //- Delete btn
-                td: button.lightButton.pull-right(ng-click='inputs.remove(i)')
-                    | &times;
-
+                td.text-right: a.btn.btn-circle.red(ng-click='inputs.remove(i)')
+                        i.fa.fa-trash
+                        
             tr
                 td( colspan="4" ) &nbsp;
-                td( colspan="2" )
-                    button.lightButton.pull-right(ng-click='inputs.add()')
-                        | {{ 'addInput:button:mathformula' | translate }}
+                td.text-right( colspan="2" )
+                    a.btn.btn-circle.green(ng-click='inputs.add()')
+                        i.fa.fa-plus
 
-    br
     h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
-    div.formula(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
-        textarea( ng-model='item.formula' )
-        input( readonly, ng-value='currentOutput' )
-    div(ng-if="!formulaInput")
+    .form-body(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
+        .form-group
+                textarea.form-control( ng-model='item.formula', rows="3" )
+        .form-group
+                input.form-control( disabled, ng-value='currentOutput' )
+    
+    //- div(ng-if="!formulaInput")
         label(for="timeout")
         input(ng-model="item.timeout", required, type="number")
 
-br
-span.saved( ng-if=' item.__saved ' )
-    | {{ 'saved:' + $root.__module.name | translate }}
-span.failed( ng-if=' item.__failed ' )
-    | {{ 'failed:save:' + $root.__module.name | translate }}
-button(ng-click='save()', ng-disabled='currentOutputErr').pull-right.lightButton
-    | {{ 'save:' + $root.__module.name + ':button' | translate }}
+    .form-actions.text-right(style='background:0 0;')
+        button.btn.green(ng-click='save()', ng-disabled='currentOutputErr')
+            | {{ 'save:' + $root.__module.name + ':button' | translate }}
+
+//- span.saved( ng-if=' item.__saved ' )
+        | {{ 'saved:' + $root.__module.name | translate }}
+    span.failed( ng-if=' item.__failed ' )
+        | {{ 'failed:save:' + $root.__module.name | translate }}
