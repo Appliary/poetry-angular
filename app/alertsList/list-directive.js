@@ -124,8 +124,11 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       }
 
       // if is context: {id:..., kind:...}
-      scope.displayContext = function(coord){
-        return coord.name ? coord.name : [coord.kind +':'+ coord.id];
+      scope.displayContext = function(coord, lookedUpContext){
+        /*if(angular.isObject(lookedUpContext) && lookedUpContext.name){
+          coord.name = lookedUpContext.name;
+        }*/
+        return [coord];//.name ? coord.name : [coord.kind +':'+ coord.id];
       }
       scope.displayContextTitle = function(coord){
         return coord.kind +':'+ coord.id;
