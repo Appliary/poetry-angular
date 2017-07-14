@@ -1,13 +1,17 @@
-accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ', ng-hide="hideFilters" )
-    header(ng-click=' config.$open = !config.$open; resize(700) ')
-        span()
-            | {{ "selectAlerts:alertsList" | translate }} &nbsp;
-        span( ng-if='total' )
-            | {{'results' | translate }} {{total}}
-        span.loading( ng-if='total === undefined')
-            | {{ 'loading:' + $root.__module.name | translate }}
-        span.pull-right.report-config-open {{config.$open ? "&darr;" : "&uarr;"}}
-    div.report.content
+.portlet.light.bordered( ng-class=' {open:config.$open} ', ng-init='config.$open = !$index', ng-hide="hideFilters" )
+    .portlet-title(ng-click='config.$open = !config.$open;')
+        .caption
+            i.icon-magnifier
+            span.caption-subject Search
+        .actions
+            a.btn.btn-circle.pull-right.report-config-open {{config.$open ? "&darr;" : "&uarr;"}}
+        //- span()
+                | {{ "selectAlerts:alertsList" | translate }} &nbsp;
+            span( ng-if='total' )
+                | {{'results' | translate }} {{total}}
+            span.loading( ng-if='total === undefined')
+                | {{ 'loading:' + $root.__module.name | translate }}
+    .portlet-body
         span.report-options
             .input-group-building(ng-hide="isGenericApp()")
                 //- buildings
@@ -61,7 +65,7 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                 .input-group-building(style="width: 100%")
                     //- searchTags
                     array-input.tags-input-overview( array='searchTags2' )
-.report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
+.report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', id="tablediv" )
     //- table
     //- ng-include(src="'alertsList/table.pug'")
     table
