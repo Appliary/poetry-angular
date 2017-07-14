@@ -55,6 +55,9 @@ form( ng-submit='' )
         //- Arrays
         array-input.tags-input-overview( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
 
+        //- readOnlyArray
+        tags-viewer.input-type(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
+
         //- Date
         input( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
