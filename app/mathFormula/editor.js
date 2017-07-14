@@ -26,9 +26,10 @@ app.controller( 'mathFormula/editor', function (
                 $scope.$watch( "item." + propertyName, function ( propertyValue ) {
                     if ( angular.isObject( mfConfig.alternatives.values[ propertyValue ] ) ) {
                         $scope.mathFormulaConfig = mfConfig.alternatives.values[ propertyValue ];
+
                         preConfigure();
                     }
-                    console.debug( "item." + propertyName, propertyValue );
+                    console.debug( "item." + propertyName,"=", propertyValue );
                 } );
             } else {
                 $scope.mathFormulaConfig = mfConfig;
@@ -46,6 +47,9 @@ app.controller( 'mathFormula/editor', function (
 
         if ( mfConfig.hasOwnProperty( 'formulaInput' ) ) {
             $scope.formulaInput = mfConfig.formulaInput;
+        }
+        else{
+            $scope.formulaInput = true;
         }
     }
 
@@ -83,8 +87,8 @@ app.controller( 'mathFormula/editor', function (
                         varName: input.varName,
                         kind: input.device.kind,
                         id: input.device._id,
-                        type: input.type[ 0 ],
-                        indice: input.type[ 1 ],
+                        type: input.type ? input.type[ 0 ] : undefined,
+                        indice: input.type ? input.type[ 1 ] : undefined,
                         time: input.time
                     } );
 

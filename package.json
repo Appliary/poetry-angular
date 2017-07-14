@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-datatables": "^0.5.7",
+    "angular-datatables": "^0.5.5",
     "angular-leaflet-directive": "^0.10.0",
     "ascss": "^1.0.3",
     "async": "^1.5.2",
@@ -29,7 +29,7 @@
     "leaflet.markercluster": "^1.0.0",
     "mime-types": "^2.1.12",
     "ng-dialog": "git+https://github.com/sl0ki/ngBootstrapDialog.git",
-    "poetry": "0.0.93",
+    "poetry": "0.0.99",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0",
     "simple-line-icons": "^2.4.1",
@@ -52,5 +52,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.1.0"
+  "version": "0.1.2"
 }

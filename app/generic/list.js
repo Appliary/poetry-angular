@@ -8,6 +8,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         order: 'asc'
     };
 
+
     $scope.orderBy = function orderBy(col) {
         if ($scope.sorting.col != col)
             return ($scope.sorting = {
@@ -41,6 +42,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     $scope.$watch('__view', function loadView() {
         $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields || [];
         $scope.buttons = $scope.$root.__module.config.tabs[$scope.__view || ''].buttons || [];
+        //all defaults
+        $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
     });
 
     var isLoading = false;
@@ -61,23 +64,43 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         }
         if ($scope.data && $scope.total <= $scope.data.length) return;
         isLoading = true;
+
+        var urlConfig = {
+            url: $scope.$root.__module.api,
+            method: 'GET',
+            params: {}
+        };
+
+        urlConfig.params.sort = ($scope.sorting ? $scope.sorting.col : $scope.default.sorting ? $scope.default.sorting.col : "_id");
+        urlConfig.params.order = ($scope.sorting ? $scope.sorting.order : $scope.default.sorting ? $scope.default.sorting.order : 'asc');
+
         var url = $scope.$root.__module.api + '?sort=' + ($scope.sorting ? $scope.sorting.col : '_id') + '&order=' + ($scope.sorting ? $scope.sorting.order : 'asc');
-        if ($scope.status) url += '&status=' + $scope.status;
-        if ($scope.search)
-            url += '&search=' + encodeURIComponent($scope.search);
-        if ($scope.data && $scope.data.length) {
-            $scope.page = $scope.data.length / 100;
-            url += '&limit=100&page=' + Math.floor($scope.page);
+
+        if ($scope.status) {
+            urlConfig.params.status = $scope.status;
+            url += "&status=" + $scope.status;
         }
+
+        if ($scope.search) {
+            urlConfig.params.search = encodeURIComponent($scope.search);
+            url += "&search=" + encodeURIComponent($scope.search);
+        }
+
+        if ($scope.data && $scope.data.length) {
+            page = $scope.data.length / 100;
+            urlConfig.params.limit = 100;
+            urlConfig.params.page = Math.floor(page);
+            url += "&limit=100&page" + Math.floor(page);
+        }
+
         if (lastCall.timestamp + 5000 < Date.now() || lastCall.url != url) {
             lastCall = {
                 url: url,
                 timestamp: Date.now()
             };
             var reqID = parseInt(++$scope.reqID);
-            $http.get(url)
+            $http(urlConfig)
                 .then(function success(response) {
-
                     if (!isNaN(reqID) && $scope.reqID != reqID)
                         return console.warn('Response dropped', $scope.reqID, reqID);
 
@@ -210,8 +233,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         if (angular.isArray($scope.item.__dateFields)) {
             $scope.item.__dateFields.forEach(function (field) {
                 if (!$scope.item[field] || ($scope.item[field] && isNaN($scope.item[field].getTime()))) {
-                    if (!($scope.item[field] === null))
-                        $scope.item[field];
+                    if ($scope.item[field] !== null)
+                        delete $scope.item[field];
                 }
             });
         }
@@ -301,7 +324,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
 
     $scope.isTOut = function isTOut(row) {
 
-        var to = 'timeout';
+        var to = 'timeout',
+            ts = 'timestamp';
         if ($scope.$root.__module.config) {
             if ($scope.$root.__module.config.timeout)
                 to = $scope.$root.__module.config.timeout;
@@ -326,9 +350,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             res = timestamp < Date.now();
         else
             res = (timestamp + (row[to] * 60000)) < Date.now();
-        console.log(row[to], timestamp, res);
+        //console.log( row[ to ], timestamp, res );
         return res;
-
     };
 
     /**

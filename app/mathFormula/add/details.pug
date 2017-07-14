@@ -1,13 +1,13 @@
 br
 br
 form
-
     label(for="varName")
         | {{ 'varName:' + $root.__module.name + ':field' | translate }}
     input#varName( type="text", ng-class='{error: badName($parent.input.varName)}', ng-model='$parent.input.varName')
 
     label(for="device")
         | {{ 'device:' + $root.__module.name + ':field' | translate }}
+    //-device-selector(filters="deviceSelectorFilters" on-change="deviceSelectorOnChange")
     input#device.fakeSelect(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices')", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'")
     div(ng-if="$parent.input.device.kind == 'tags'", style="width:60%;display:inline")
         span.unit(ng-repeat="(i, tag) in $parent.input.device._id", style="padding-left:35%")
@@ -15,21 +15,21 @@ form
             span(ng-click="rmTag(i)") &times;
         input#tag.fakeSelect(readonly, ng-click="tab('tag')", placeholder="{{'addTag:device:mathformula'|translate}}" )
 
-    label(for="type")
+    label(for="type", ng-if="formulaInput")
         | {{ 'measurement:' + $root.__module.name + ':field' | translate }}
-    select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type')
+    select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type', ng-if="formulaInput")
         option(ng-repeat='type in $parent.input.device.types', ng-value='type')
             | {{ type[0] }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ type[1] }}
 
-    label(for="time")
+    label(for="time", ng-if="formulaInput")
         | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
-    span.unit
+    span.unit(ng-if="formulaInput")
         input#time(ng-model="$parent.input.time", placeholder="{{'last:timeoffset:mathformula'|translate}}")
         span {{ 'days:unit' | translate }}
 
-    label(for="curVal")
+    label(for="curVal", ng-if="formulaInput")
         | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
-    input#curVal(readonly, value="{{inputValue}}")
+    input#curVal(readonly, value="{{inputValue}}", ng-if="formulaInput")
 
-    button(ng-click=' confirm( $parent.input ) ', ng-disabled="badName($parent.input.varName) || !$parent.input.device || !$parent.input.type").pull-right.lightButton
+    button(ng-click=' confirm( $parent.input ) ', ng-disabled="isInvalid($parent.input.varName)").pull-right.lightButton
         | {{ 'addInput:' + $root.__module.name + ':button' | translate }}

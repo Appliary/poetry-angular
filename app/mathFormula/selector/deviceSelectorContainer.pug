@@ -22,7 +22,9 @@ div
             tbody
                 tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: input.device == result}')
                     td {{ result.kind }}
-                    td {{ result.name }}
+                    td(ng-if=" result.kind != 'tags' ") {{ result.name }}
+                    td(ng-if=" result.kind == 'tags' ")
+                        tags-viewer( array="result.name" )
                     td {{ result.types[0][0] }}&nbsp;
                         em(ng-if="result.types.length > 1")
                             | {{'and:mathformula'|translate}}&nbsp;

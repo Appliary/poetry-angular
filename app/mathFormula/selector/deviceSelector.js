@@ -108,8 +108,31 @@ app.directive('deviceSelectorContainer', function($http){
                       // Save last search
                       lastRequests[ filter ].search = angular.copy( $scope.query.search );
 
-                      // Do the request to the API
-                      $http.get( '/api/' + filter + '?search=' + $scope.query.search )
+
+
+
+                      var config = {
+                        url: '/api/' + filter,
+                        method: 'GET',
+                        params: {
+                          search: $scope.query.search
+                        }
+                      };
+                      if(filter == "tags"){
+                        config.params.collections = Object.keys( $scope.filters )
+                        .map(function(col){
+                          return col;
+                        })
+                        .filter(function(el){
+                          return typeof el === 'string' && el != 'tags';
+                        });
+
+                        if(config.params.collections.length < 2){
+                          delete config.params.collections;
+                        }
+                      }
+
+                      $http( config )
                           .then( function success( response ) {
 
                               if ( lastRequests[ filter ].search != $scope.query.search )

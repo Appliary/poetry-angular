@@ -1,8 +1,11 @@
-app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validationService ) {
+app.controller( 'alertsList/overview', function ( $scope, $http, ngDialog, validationService ) {
 
-    $scope.$watch( '$root.__module.name', function init() {
+    console.log("alertsList/overview", $scope.$parent.$parent.$parent);
+    $scope.root = $scope.$parent.$parent.$parent;
+
+    $scope.$watch( 'root.moduleApi', function init() {
         // Get validation object
-        $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
+        $http.put( '/__joi/api/' + $scope.root.moduleApi + '/id' )
             .then( function success( response ) {
                 if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
                     $scope.__joi = response.data.payload;
@@ -93,7 +96,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validati
                 templateUrl: 'modals/confirmation.pug'
             } )
             .then( function confirmed() {
-                $http.delete( $scope.$root.__module.api + '/' + $scope.__id )
+                $http.delete( $scope.root.moduleApi + '/' + $scope.root.__id )
                     .then( function ( res ) {
                         $scope.data.some( function ( v, i ) {
 

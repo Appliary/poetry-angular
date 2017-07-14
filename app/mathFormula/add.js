@@ -19,6 +19,10 @@ app.controller( 'mathFormula/add', function (
         tags: false
     };
 
+    $scope.deviceSelectorOnChange = function(d){
+      console.log("d",d);
+    }
+
     // Avoid flood by stopping identical send & by iterating requests
     var lastRequests = {};
 
@@ -38,6 +42,7 @@ app.controller( 'mathFormula/add', function (
       if(conf.filters){
         var cFilters = conf.filters;
         if(angular.isArray(cFilters)){
+          $scope.deviceSelectorFilters = cFilters;
           $scope.filters = {};
           cFilters.forEach(
             function(elem){
@@ -45,6 +50,13 @@ app.controller( 'mathFormula/add', function (
             }
           );
         }
+      }
+
+      if ( conf.hasOwnProperty( 'formulaInput' ) ) {
+          $scope.formulaInput = conf.formulaInput;
+      }
+      else{
+          $scope.formulaInput = true;
       }
 
       console.log("scope",$scope);
@@ -83,8 +95,29 @@ app.controller( 'mathFormula/add', function (
                 // Save last search
                 lastRequests[ filter ].search = angular.copy( $scope.search );
 
-                // Do the request to the API
-                $http.get( '/api/' + filter + '?search=' + $scope.search )
+                var config = {
+                  url: '/api/' + filter,
+                  method: 'GET',
+                  params: {
+                    search: $scope.search
+                  }
+                };
+                console.log($scope.filters);
+                if(filter == "tags"){
+                  config.params.collections = Object.keys( $scope.filters )
+                  .map(function(col){
+                    return col;
+                  })
+                  .filter(function(el){
+                    return typeof el === 'string' && el != 'tags';
+                  });
+
+                  if(config.params.collections.length < 2){
+                    delete config.params.collections;
+                  }
+                }
+
+                $http( config )
                     .then( function success( response ) {
 
                         if ( lastRequests[ filter ].search != $scope.search )
@@ -234,6 +267,14 @@ app.controller( 'mathFormula/add', function (
         if ( !$scope.input.device._id.length )
             delete $scope.input.device;
     };
+
+    $scope.isInvalid = function isInvalid( varName ){
+      if($scope.formulaInput)
+        return $scope.badName(varName) || !$scope.input.device || !$scope.input.type;
+      else {
+        return $scope.badName(varName) || !$scope.input.device;
+      }
+    }
 
     // Check varName validity
     $scope.badName = function badName( varName ) {

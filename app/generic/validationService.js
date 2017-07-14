@@ -67,6 +67,10 @@ app.service( 'validationService', function validationService( $http ) {
                         if ( $scope.__joi.computed[ name ]._unit )
                             return 'numUnit';
 
+                        // Special number
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'timezoneOffset' ) )
+                            return 'timezoneOffset';
+
                         // Default number
                         return 'number';
 
@@ -159,6 +163,22 @@ app.service( 'validationService', function validationService( $http ) {
                         button.__success = false;
                         button.__failed = $scope.__id;
                     } );
+            };
+        },
+
+        displayBtn: function displayBtnFactory( $scope ) {
+            return function displayBtn( button ) {
+                if(!(angular.isObject(button.condition) && button.condition.hasOwnProperty('property')))
+                  return true;
+
+                if(!button.condition.hasOwnProperty('boolean'))
+                  button.condition.boolean = true;
+
+                if(button.condition.boolean)
+                  return $scope.item[button.condition.property];
+                else {
+                  return !$scope.item[button.condition.property];
+                }
             };
         }
 

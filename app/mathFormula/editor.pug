@@ -2,20 +2,28 @@
     h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
     table.table
         thead: tr
-            th {{ 'varName:' + $root.__module.name + ':col' | translate }}
-            th {{ 'device:' + $root.__module.name + ':col' | translate }}
-            th {{ 'measurement:' + $root.__module.name + ':col' | translate }}
-            th {{ 'timeOffset:' + $root.__module.name + ':col' | translate }}
-            th {{ 'currentValue:' + $root.__module.name + ':col' | translate }}
+            th(ng-if="!formulaInput", colspan="2") {{ 'varName:mathFormula:col' | translate }}
+            th(ng-if="!formulaInput", colspan="3") {{ 'device:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'varName:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'device:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'measurement:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'timeOffset:mathFormula:col' | translate }}
+            th(ng-if="formulaInput") {{ 'currentValue:mathFormula:col' | translate }}
             th &nbsp;
         tbody
             tr( ng-repeat=' (i,input) in item.inputs ')
 
                 //- Name of the variable
-                td: b {{ input.varName }}
+                td(ng-if="formulaInput"): b {{ input.varName }}
+                td(ng-if="!formulaInput", colspan="2"): b {{input.varName}}
 
                 //- Device name / Tags
-                td {{ input.kind.slice(0,1) }}&nbsp;
+                td(ng-if="formulaInput") {{ input.kind.slice(0,1) }}&nbsp;
+                    tags-viewer(array="input.id", ng-if="input.kind == 'tags'")
+                    em(ng-if="input.kind != 'tags'")
+                        a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
+                            | {{ input.id }}
+                td(ng-if="!formulaInput", colspan="3", style="text-align: center") {{ input.kind.slice(0,1) }}&nbsp;
                     em(ng-if="input.kind == 'tags'")
                         | {{ input.id }}
                     em(ng-if="input.kind != 'tags'")
@@ -23,19 +31,19 @@
                             | {{ input.id }}
 
                 //- Value type
-                td {{ input.type }}&nbsp;
+                td(ng-if="formulaInput") {{ input.type }}&nbsp;
                     em(ng-if="input.indice !== undefined") {{ input.indice }}
 
                 //- Time dimension
-                td(ng-if='input.time')
+                td(ng-if='input.time && formulaInput')
                     | {{ input.time }} {{ 'days:unit'|translate}}
-                td.muted(ng-if='!input.time')
+                td.muted(ng-if='!input.time && formulaInput')
                     | {{ 'last:time:formula' | translate }}
 
                 //- Example value
-                td.muted( ng-if=" !inputValues[ input.varName ].forEach " )
+                td.muted( ng-if=" !inputValues[ input.varName ].forEach && formulaInput" )
                     | {{ inputValues[ input.varName ] }}
-                td.muted( ng-if=" inputValues[ input.varName ].forEach ", ng-click="showVals(inputValues[ input.varName ])" )
+                td.muted( ng-if=" inputValues[ input.varName ].forEach && formulaInput", ng-click="showVals(inputValues[ input.varName ])" )
                     | [ {{ inputValues[ input.varName ][0] }},… ]
 
                 //- Delete btn
@@ -56,8 +64,13 @@
                 input.form-control( disabled, ng-value='currentOutput' )
     
     //- div(ng-if="!formulaInput")
+
         label(for="timeout")
-        input(ng-model="item.timeout", required, type="number")
+          | {{ 'timeout:mathformula:field' | translate }}
+        span.unit
+          input(ng-model="item.timeout", required, type="number")
+          span
+            | {{'minutes'|translate}}
 
     .form-actions.text-right(style='background:0 0;')
         button.btn.green(ng-click='save()', ng-disabled='currentOutputErr')
