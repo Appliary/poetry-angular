@@ -202,6 +202,7 @@
 
             var image = new Image();
             image.onload = function () {
+                clearCanvas(canvasId);
                 ctx.drawImage(image, 0, 0);
                 handleColorUpdated(vm.colorPicker.value);
             };
