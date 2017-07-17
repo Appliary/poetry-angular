@@ -10,7 +10,15 @@ form#filters
     span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
     span.loading( ng-if='total === undefined')
         | {{ 'loading:' + $root.__module.name | translate }}
-.list( ng-class='{detailed:__id}', scroll='scroll' )
+list-view(
+  ng-class='{detailed:__id}'
+  columns="columns",
+  data="data",
+  config="listViewConfig",
+  selected-fn="select",
+  sort-fn="orderBy",
+  at-bottom="loadMore()")
+//-.list( ng-class='{detailed:__id}', scroll='scroll' )
     table
         thead: tr
             th( ng-repeat='column in columns', ng-click='orderBy(column)', ng-class='{ "sort-asc": (sorting.col == column && sorting.order == "asc"), "sort-desc": (sorting.col == column && sorting.order == "desc") }' )

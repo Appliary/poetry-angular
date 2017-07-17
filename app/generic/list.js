@@ -8,13 +8,14 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
         order: 'asc'
     };
 
-    $scope.orderBy = function orderBy( col ) {
-        if ( $scope.sorting.col != col )
+    $scope.orderBy = function orderBy( col, order ) {
+        return $scope.sorting = {col: col, order: order};
+        /*if ( $scope.sorting.col != col )
             return ( $scope.sorting = {
                 col: col,
                 order: 'asc'
             } );
-        $scope.sorting.order = ( $scope.sorting.order == 'asc' ) ? 'desc' : 'asc';
+        $scope.sorting.order = ( $scope.sorting.order == 'asc' ) ? 'desc' : 'asc';*/
     };
 
     /**
@@ -49,6 +50,13 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
     $scope.reqID = 0;
     $scope.data = [];
     $scope.tags = [];
+
+    if ( $scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject($scope.$root.__module.config.listView))
+        $scope.listViewConfig = $scope.$root.__module.config.listView;
+    else {
+      $scope.listViewConfig = {};
+    }
+    $scope.listViewConfig.defaultSort = $scope.sorting;
 
     function getlist( n, o ) {
 
@@ -128,6 +136,10 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
                         $scope.columns = $scope.$root.__module.config.columns;
                     else $scope.columns = [];
 
+
+
+
+
                     if ( !$scope.columns.length )
                         $scope.data.forEach( function ( data ) {
                             Object.keys( data )
@@ -187,14 +199,18 @@ app.controller( 'generic/list', function ( $scope, $http, $location, ngDialog, $
      *
      * @arg {Event} event Native JS scroll event
      */
-    $scope.scroll = function scroll( event ) {
+    /*$scope.scroll = function scroll( event ) {
         var elem = event.target;
         var header = elem.querySelectorAll( 'th' );
         for ( var i = 0; i < header.length; i++ )
             header[ i ].style.top = elem.scrollTop + 'px';
         if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight )
             getlist( true );
-    };
+    };*/
+
+    $scope.loadMore = function(){
+      getlist(true);
+    }
 
     // Give access to the isArray function on the view
     $scope.isArray = angular.isArray;

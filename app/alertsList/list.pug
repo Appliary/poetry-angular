@@ -61,7 +61,16 @@ accordion( ng-class=' {open:config.$open} ', ng-init=' config.$open = !$index ',
                 .input-group-building(style="width: 100%")
                     //- searchTags
                     array-input.tags-input-overview( array='searchTags2' )
-.report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
+//- list-view
+list-view(
+  ng-class='{detailed:__id}'
+  columns="columns",
+  data="data",
+  config="{debug: true}",
+  selected-fn="select",
+  sort-fn="orderBy",
+  at-bottom="loadMore()")
+//-.report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', scroll='scroll', id="tablediv" )
     //- table
     //- ng-include(src="'alertsList/table.pug'")
     table

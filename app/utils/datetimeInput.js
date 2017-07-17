@@ -37,6 +37,37 @@ app.directive("timeInput", function(){
   };
 });
 
+app.directive("numberTimeInput", function(){
+  return {
+    restrict: 'E',
+    transclude: false,
+    require: "?ngModel",
+    scope: true,
+    templateUrl: "utils/numberTimeInput.pug",
+    link: function(scope, element, attrs, ngModel){
+        if (!ngModel) return;
+
+        scope.onChange = function(){
+          ngModel.$setViewValue(scope.value);
+        };
+
+        attrs.$observe('class', function(className){
+              scope.className = className;
+			  });
+
+        attrs.$observe('name', function(name){
+              scope.name = name;
+			  });
+
+        ngModel.$render = function(){
+          console.log("%c[numberTimeInput] modelValue: "+ngModel.$modelValue,"background-color: black; color: #2BFF00");
+          var value = (ngModel.$modelValue && angular.isObject(ngModel.$modelValue)) ? ngModel.$modelValue : {};
+          scope.value = value;
+        };
+    }
+  };
+});
+
 app.directive("dateInput", function(){
   return {
     restrict: 'E',

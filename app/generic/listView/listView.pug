@@ -1,0 +1,49 @@
+.generic-list-view.list(style="max-height: {{currentHeight}}px; margin-bottom: 2px;", scroll='scroll', id="tablediv" )
+    table
+        thead: tr
+            th( ng-repeat='column in columns'
+            , ng-if="column.key != measurementsColumn.key"
+            , ng-click='sort(column)'
+            , ng-class='{ "sort-asc": (sorting.key == column.key && sorting.order == "asc"), "sort-desc": (sorting.key == column.key && sorting.order == "desc") }' )
+                | {{ (column.label || column.key) + ':' + 'column' | translate }}
+            th( ng-repeat="cm in getMeasurementsCount() track by $index" )
+                | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
+        tbody
+            tr( ng-repeat='row in data', ng-class=' { active: row._id == _id, danger: isTimedOut(row) } ' )
+                td( ng-repeat='column in columns', ng-click='select(row._id)' ng-if="column.key != measurementsColumn.key")
+                    //- icon
+                    span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "icon" && !isContext(row[ column.key ])')
+                        i(class="{{row[ column.key ]}}")
+                    //- string
+                    span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ])'
+                    , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
+                        | {{ row[ column.key ] | localize }}
+                    //- translatable
+                    span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "translatable" && !isContext(row[ column.key ])')
+                        | {{displayTranslatable(row, column)}}
+                    //- _id
+                    em( ng-if='isDefined(row[column.key]) && getColumnType(column) == "_id" && !isContext(row[ column.key ])')
+                        | {{ row[ column.key ] }}
+                    //- tags
+                    span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "tags" && !isContext(row[ column.key ])')
+                        tags-viewer(array="row[ column.key ]")
+                    //- context
+                    span( ng-if="isDefined(row[column.key]) && isContext(row[ column.key ])")
+                        //- tags-viewer to remove if it continues to crash so much
+                        tags-viewer(array="[row[ column.key ]]")
+                    //- subkey
+                    span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ])')
+                        | {{displaySubkey(row, column)}}
+                    //- fallback
+                    span( ng-if="!isDefined(row[column.key]) && isDefined(column.fallback) && getColumnType(column) != 'subKey'")
+                        | {{column.fallback}}
+                //- measurements
+                td( ng-repeat='m in row[measurementsColumn.key] track by $index', ng-click='select(row._id)' ng-if="measurementsColumn.key")
+                    span(ng-if="isObject(m) && !isObject(m.value)")
+                        | {{ m.type }}: {{ m.value }} {{ m.unit }}
+                    span(ng-if="isObject(m) && isObject(m.value)")
+                        | {{ m.type }}
+                        span(ng-repeat="subM in m.value track by $index")
+                            | {{ subM | localize }}
+    .noData( ng-if='list.length === 0' )
+        | {{ 'nodata' | translate}}
