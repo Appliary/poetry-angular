@@ -1,5 +1,6 @@
 form.form-horizontal( ng-submit='' )
     .form-body
+        h4 Title
         .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
             label.col-md-3.control-label( for='{{field}}', ng-class="{ 'text-danger': __joi.computed[field]._flags.presence == 'required' }", ng-if="inputType(field) != 'timezoneOffset'")
                 | {{ field + ':field' | translate }} 
@@ -113,11 +114,11 @@ div( style='margin-top:50px', ng-if= "item.last" )
     h4 {{ 'last:' + $root.__module.name | translate }}
     table.table
         tr( ng-repeat=" element in item.last " )
-            td
-                b {{ element.type + ':mtype' | translate }} &nbsp;
+            td(style="font-size: 12px;")
+                p {{ element.type + ':mtype' | translate }} &nbsp;
                 i {{ element.id }}
                 div {{ element.timestamp | localize }}
-            td.text-right {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
+            td.text-right(style="font-size: 12px;") {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
 
 
     //-

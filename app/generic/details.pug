@@ -12,13 +12,7 @@
 
 
 //- NEW
-.portlet.box.green
-    .portlet-title
-        .caption
-            i.fa.fa-th-list
-            |  Details
-        .tools
-            a.remove(ng-click='$root.go( $root.__module )')
+.portlet.box.green(style="border-top: 1px solid #5cd1db;")
     .portlet-body
         .tabbable-line
             ul.nav.nav-tabs
@@ -28,4 +22,13 @@
                         span( ng-if="!name") {{ __id }}
 
             .tab-content
-                ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}" )
+                ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")
+
+
+//-
+    .portlet-title
+        .caption
+            i.fa.fa-th-list
+            |  Details
+        .tools
+            a.remove(ng-click='$root.go( $root.__module )')

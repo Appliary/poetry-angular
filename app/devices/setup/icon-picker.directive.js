@@ -11,7 +11,8 @@
             controller: deviceSetupMapController,
             scope: {
                 iconSelected: "=",
-                procEvent: "="
+                procEvent: "=",
+                currentIcon: "="
             },
             controllerAs: 'vm',
             bindToController: true
@@ -20,13 +21,16 @@
         return directive;
     }
 
-    deviceSetupMapController.$inject = ['$scope', '$sce', 'ngDialog', 'iconsService'];
+    deviceSetupMapController.$inject = ['$scope', '$sce', 'ngDialog', 'iconsService', '$timeout'];
 
     /* @ngInject */
-    function deviceSetupMapController($scope, $sce, ngDialog, iconsService) {
+    function deviceSetupMapController($scope, $sce, ngDialog, iconsService, $timeout) {
         // ***********************************************************
         //                  DECLARE VARIABLES
         var vm = this;
+        console.log(vm);
+        console.log($scope);
+
         // ***********************************************************
         //                  MAPPING FUNCTIONS
         vm.click = function (icon) {
@@ -50,7 +54,6 @@
             for (var i in $scope.icons) {
                 var icon = $scope.icons[i];
                 icon = trustAsHtml(icon);
-
             }
         }
 
@@ -66,6 +69,13 @@
 
         function trustAsHtml(aString) {
             return $sce.trustAsHtml(aString);
+        }
+
+        $scope.cancel = function () {
+            console.log(vm);
+            console.log($scope);
+
+            //vm.iconSelected = vm.currentIcon;
         }
 
     }

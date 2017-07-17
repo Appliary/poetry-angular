@@ -11,8 +11,8 @@
             li.sidebar-toggler-wrapper
                 .sidebar-toggler.hide
             li(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
-                a(icon="{{module.icon}}")
-                    i.icon-home
+                a
+                    i(class='{{module.icon}}')
                     span.title  {{ module.name + ':module:sidebar' | translate }}
                     span.selected
 
@@ -22,6 +22,6 @@
                     a.nav-link.nav-toggle {{ app + ':application' | translate }}
                     ul.sub-menu(ng-if='app==current')
                         li.nav-item(ng-repeat='module in $root.__modules', ng-click='go(module)', ng-if='!module.hidden && ($root.role.permissions.APP[$root.__appName][module.name] || $root.user.role === "SUPER" )', ng-class="{ active: module.name == $root.__module.name, disabled: module.disabled } ")
-                            a.nav-link(icon="{{module.icon}}")
-                                i.icon-home
+                            a.nav-link
+                                i(class='{{module.icon}}')
                                 span.title  {{ module.name + ':module:sidebar' | translate }}

@@ -12,7 +12,7 @@
             | {{ 'loading:' + $root.__module.name | translate }}
 
 //- Managed
-h1.page-title
+h1.page-title(style="margin-top:0")
     | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:title' | translate }}
 
@@ -25,46 +25,10 @@ h1.page-title
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
 
 .portlet.light.bordered(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
-    .portlet-title
-        .caption.font-dark
-            i.icon-settings.font-dark
-            span.caption-subject.bold.uppercase  {{ $root.__module.name + ':module:title' | translate }}
-        .actions
-            .btn-group.btn-group-devided(data-toggle='buttons')
-                label.btn.btn-transparent.dark.btn-outline.btn-circle(ng-repeat='(name, config) in $root.__module.config.toolbox', ng-click="openToolbox(name)")
-                    input.toggle(type='radio', name='options')
-                    | {{ name + ':toolbox:' + $root.__module.name | translate }}
-                
     .portlet-body
-        .table-toolbar
-          .row
-            .col-md-6
-              .btn-group
-                button.btn.sbold.green(ng-click='openToolbox("add")')
-                  | Add New 
-                  i.fa.fa-plus
-            .col-md-6
-              .btn-group.pull-right
-                button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
-                  | Tools 
-                  i.fa.fa-angle-down
-                ul.dropdown-menu.pull-right
-                  li
-                    a(href='javascript:;')
-                      i.fa.fa-print
-                      |  Print
-                  li
-                    a(href='javascript:;')
-                      i.fa.fa-file-pdf-o
-                      |  Save as PDF
-                  li
-                    a(href='javascript:;')
-                      i.fa.fa-file-excel-o
-                      |  Export to Excel
-
         .dataTables_wrapper.no-footer.DTS
             .row
-                .col-md-6.col-sm-6
+                .col-md-5.col-sm-5
                     label
                         | Show 
                         select.form-control.input-inline(ng-model='$parent.status')
@@ -73,11 +37,29 @@ h1.page-title
                             option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
                             option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
                             option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-                .col-md-6.col-sm-6
-                    .dataTables_filter
+                .col-md-5.col-sm-5
+                    .form-group
                         label
-                            | {{"search:placeholder"|translate}}: 
-                            input.form-control.input-inline( type='search', ng-model='$parent.search', placeholder='' )
+                            | {{"search:placeholder"|translate}} 
+                            input.form-control.input-inline( type='search', ng-model='$parent.search', placeholder='')
+                .col-md-2.col-sm-2
+                    .btn-group.pull-right
+                        button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
+                            | Tools 
+                            i.fa.fa-angle-down
+                        ul.dropdown-menu.pull-right
+                            li
+                                a(href='javascript:;')
+                                i.fa.fa-print
+                                |  Print
+                            li
+                                a(href='javascript:;')
+                                i.fa.fa-file-pdf-o
+                                |  Save as PDF
+                            li
+                                a(href='javascript:;')
+                                i.fa.fa-file-excel-o
+                                |  Export to Excel
 
             .table-scrollable(scroll='scroll')
                 .dataTables_scroll(style='overflow: hidden;')

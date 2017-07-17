@@ -1,3 +1,7 @@
+.form-group .form-control, .form-group label {
+    font-size: 12px;
+}
+
 tags-input .tags .tag-item {
     background: #eff8ff;
     color: gray;

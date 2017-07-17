@@ -20,6 +20,6 @@ span
             <div class="has-error" ng-if='__validation.length == 0'>
                 <span class="help-block">{{message}}</span>
             </div>
-            <button class="btn dark btn-outline" type="button" ng-click='closeThisDialog()'>Close</button>
+            <button class="btn dark btn-outline" type="button" ng-click='cancel(); closeThisDialog()'>Cancel</button>
             <button class="btn green" type="button" ng-click='closeThisDialog()' ng-if="!disableSaveBTN">Save changes</button>
         </div>
