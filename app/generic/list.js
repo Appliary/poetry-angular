@@ -358,6 +358,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
      * Set columns width
      */
     $scope.setColumnsWidth = function setColumnsWidth() {
+        console.log("setColumnsWidth");
         $timeout(function () {
             var scrollHead = document.querySelector('.dataTables_scrollHead');
 

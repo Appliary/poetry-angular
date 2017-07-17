@@ -5,7 +5,6 @@
     ng-include( src='"generic/form.pug"', ng-if='loaded' )
 
 .modal-header
-    button.close(type='button', data-dismiss='modal', aria-hidden='true')
     h4.modal-title {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
 .modal-body
     ng-include(src='"generic/form.pug"', ng-if='loaded')
