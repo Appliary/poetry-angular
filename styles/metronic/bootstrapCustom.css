@@ -1,5 +1,5 @@
-.form-group .form-control, .form-group label {
-    font-size: 12px;
+.form-group .form-control, .form-group label, .table td, .portlet.box {
+    font-size: 12px!important;
 }
 
 tags-input .tags .tag-item {

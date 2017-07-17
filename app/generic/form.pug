@@ -107,18 +107,18 @@ form.form-horizontal( ng-submit='' )
                         | {{ 'delete:button' | translate }}
 
 
-div( style='margin-top:50px', ng-if= "item.last" )
+div( style='margin-top: 50px;', ng-if= "item.last")
     .pull-right
         span(ng-if="item.timestamp") {{ item.timestamp | localize }}
 
     h4 {{ 'last:' + $root.__module.name | translate }}
     table.table
-        tr( ng-repeat=" element in item.last " )
-            td(style="font-size: 12px;")
-                p {{ element.type + ':mtype' | translate }} &nbsp;
+        tr( ng-repeat="element in item.last")
+            td(style="border-top: 0;")
+                span {{ element.type + ':mtype' | translate }} &nbsp;
                 i {{ element.id }}
                 div {{ element.timestamp | localize }}
-            td.text-right(style="font-size: 12px;") {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
+            td.text-right(style="border-top: 0;") {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
 
 
     //-
