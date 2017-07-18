@@ -136,6 +136,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                                 });
                         });
 
+                    this.$('.nav-tabs').tabdrop();
                     $scope.scrollBody = document.querySelector('.dataTables_scrollBody');
 
                     $scope.first = $scope.filtered == 0 ? 0 : 1;
