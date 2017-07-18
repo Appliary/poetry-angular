@@ -69,8 +69,8 @@
 
 		WinResizer.register(boundLayout);
 		this.element.on('shown.bs.tab', function (e) {
-   		boundLayout();
- 		});
+			boundLayout();
+		});
 
 		this.teardown = function () {
 			WinResizer.unregister(boundLayout);
@@ -88,9 +88,9 @@
 		layout: function () {
 			var self = this;
 			var collection = [];
-      var isUsingFlexbox = function(el){
-        return el.element.css('display').indexOf('flex') > -1;
-      };
+			var isUsingFlexbox = function (el) {
+				return el.element.css('display').indexOf('flex') > -1;
+			};
 
 			function setDropdownText(text) {
 				self.dropdown.find('a span.display-tab').html(text);
@@ -106,20 +106,25 @@
 				setDropdownText(text);
 			}
 
-      // Flexbox support
-      function handleFlexbox(){
-        if (isUsingFlexbox(self)){
-          if (self.element.find('li.tabdrop').hasClass('pull-right')){
-          	self.element.find('li.tabdrop').css({position: 'absolute', right: 0});
+			// Flexbox support
+			function handleFlexbox() {
+				if (isUsingFlexbox(self)) {
+					if (self.element.find('li.tabdrop').hasClass('pull-right')) {
+						self.element.find('li.tabdrop').css({ position: 'absolute', right: 0 });
 						self.element.css('padding-right', self.element.find('.tabdrop').outerWidth(true));
-          }
-        }  
-      }
+					}
+				}
+			}
 
 			function checkOffsetAndPush(recursion) {
 				self.element.find('> li:not(.tabdrop)')
 					.each(function () {
-						if (this.offsetTop > self.options.offsetTop) {
+						if (self.element.parent().is('.hor-menu')) {
+							if ($('.top-menu')[0].offsetTop > 0) {
+								collection.push(this);
+							}
+						}
+						else if (this.offsetTop > self.options.offsetTop) {
 							collection.push(this);
 						}
 					});
@@ -130,7 +135,7 @@
 						self.dropdown.find('ul').empty();
 					}
 					self.dropdown.find('ul').prepend(collection);
-					
+
 					if (self.dropdown.find('.active').length == 1) {
 						self.dropdown.addClass('active');
 						setDropdownText(self.dropdown.find('.active > a').html());
@@ -138,7 +143,7 @@
 						self.dropdown.removeClass('active');
 						setDropdownDefaultText(collection);
 					}
-          handleFlexbox();
+					handleFlexbox();
 					collection = [];
 					checkOffsetAndPush(true);
 				} else {
@@ -147,7 +152,7 @@
 					}
 				}
 			}
-    
+
 			self.element.append(self.dropdown.find('li'));
 			checkOffsetAndPush();
 		}

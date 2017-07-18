@@ -1,9 +1,5 @@
-// dropdown(ng-if='apps.length > 1', icon='application', text='"App"')
-    a(ng-repeat='app in apps', ng-click='select(app)', ng-class="{active:(app==current)}", ng-if=' $root.role.permissions.APP[ app ] || $root.user.role == "SUPER" ')
-        | {{ app + ':application' | translate }}
-
 .hor-menu.hidden-sm.hidden-xs
-  ul.nav.navbar-nav
+  ul.nav.navbar-nav.nav-tabs
     li.classic-menu-dropdown(ng-repeat='app in apps', ng-click='select(app)', ng-class="{active:(app==current)}", ng-if=' $root.role.permissions.APP[ app ] || $root.user.role == "SUPER" ')
       a 
         | {{ app + ':application' | translate }}
