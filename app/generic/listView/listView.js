@@ -10,7 +10,9 @@ app.directive("listView", function($timeout, $window, $q){
 
       selectedFn: "<?", //params: _id
       sortFn: "<?", //params: sort, order
-      atBottom: "&?"
+      atBottom: "&?",
+
+      minHeight: "<?"
     },
     link: function(scope, elem, attrs, ctrls){
 
@@ -269,7 +271,6 @@ app.directive("listView", function($timeout, $window, $q){
           }
       };
 
-      var currentHeightPlus = 0;
       scope.resize = function ( delay ) {
               $timeout( function () {
                   //console.log( "resizing" );
@@ -277,7 +278,7 @@ app.directive("listView", function($timeout, $window, $q){
                   var tablediv = angular.element( document.querySelector( '#tablediv' ) );
                   var offsetTop = tablediv.prop( 'offsetTop' );
                   var margin = 80;
-                  scope.currentHeight = globalHeight - ( margin + offsetTop ) + currentHeightPlus;
+                  scope.currentHeight = globalHeight - ( margin + offsetTop ) + (angular.isNumber(scope.minHeight) ? scope.minHeight : 0);
               }, delay || 10 );
       };
 
