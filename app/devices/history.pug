@@ -23,12 +23,12 @@ div(ng-controller='devices/history')
                 h4.panel-title
                     span.accordion-toggle.collapsed(ng-click='measurement.$open = !measurement.$open')
                         | {{ measurement.timestamp | localize }}
-                        i.fa.fa-link.pull-right(ng-href="measurements/{{measurement._id}}/")
+                        a.fa.fa-link.pull-right(ng-href="measurements/{{measurement._id}}/")
             .panel-collapse.collapse(ng-class=' {in:measurement.$open} ')
                 .panel-body
                     table.table(style="margin-bottom: 0;")
                         tr( ng-repeat=' data in measurement.measurements ')
-                            td(style='border-top: 0;')
+                            td(style='border-top: 0; padding-bottom:0;')
                                 span {{ data.type }} &nbsp;
                                 i {{ data.id }}
-                            td.text-right(style='border-top: 0;') {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
+                            td.text-right(style='border-top: 0; padding-bottom:0;') {{ data.value | localize }} {{ data.unit + ':unit' | translate }}

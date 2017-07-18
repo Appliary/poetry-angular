@@ -1,34 +1,13 @@
-//- OLD
-    button.back( ng-click=' $root.go( $root.__module ) ' )
-        | {{ 'back:button:details:' + $root.__module.name | translate }}
-    tabs
-        a(ng-repeat=' ( name, config ) in $root.__module.config.tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }', id="tab-{{ name || 'overview' }}")
-            span( ng-if=" name ") {{ name + ':tab:' + $root.__module.name | translate }}
-            span( ng-if=" !name ") {{ __id }}
-
-    br
-    ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}" )
-
-
-
-//- NEW
 .portlet.box.green(style="border-top: 1px solid #5cd1db;")
     .portlet-body
-        .tabbable-line
+        .tabbable-line(style="padding:0")
+            i.fa.fa-close.pull-right(ng-click='$root.go( $root.__module );' style="color: #737373; margin-top: 10px;")
             ul.nav.nav-tabs
                 li(ng-repeat='(name, config) in $root.__module.config.tabs', ng-class='{ active: name == __view }')
                     a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")
                         span( ng-if="name") {{ name + ':tab:' + $root.__module.name | translate }}
                         span( ng-if="!name") {{ __id }}
 
+
             .tab-content
                 ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")
-
-
-//-
-    .portlet-title
-        .caption
-            i.fa.fa-th-list
-            |  Details
-        .tools
-            a.remove(ng-click='$root.go( $root.__module )')

@@ -155,6 +155,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                                 });
                         });
 
+                    this.$('.nav-tabs').tabdrop();
                     $scope.scrollBody = document.querySelector('.dataTables_scrollBody');
 
                     $scope.first = $scope.filtered == 0 ? 0 : 1;
@@ -204,31 +205,6 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             '/' + name
         );
     };
-
-
-    /** bootstrap
-    $scope.scroll = function scroll(event) {
-        $scope.$apply(function () {
-            $scope.first = Math.round($scope.scrollBody.scrollTop / $scope.lineHeight) + 1;
-            $scope.last = $scope.first + $scope.nbLines - 1;
-        })
-
-        if (($scope.scrollBody.scrollTop + $scope.scrollBody.offsetHeight + 300) > $scope.scrollBody.scrollHeight)
-            getlist(true);
-    };
-    */
-
-
-    /**
-    * master
-    $scope.scroll = function scroll( event ) {
-        var elem = event.target;
-        var header = elem.querySelectorAll( 'th' );
-        for ( var i = 0; i < header.length; i++ )
-            header[ i ].style.top = elem.scrollTop + 'px';
-        if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight )
-            getlist( true );
-    };*/
 
     $scope.loadMore = function(){
       getlist(true);

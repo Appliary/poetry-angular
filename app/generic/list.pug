@@ -1,7 +1,7 @@
 //- Managed
-h1.page-title(style="margin-top:0")
+h1.page-title(style="margin:0")
     | {{ $root.__module.name + ':module:title' | translate }}
-    small {{ $root.__module.name + ':module:title' | translate }}
+    small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 .m-heading-1.border-green.m-bordered(ng-if='message')
     h3 DataTables jQuery Plugin
@@ -16,19 +16,20 @@ h1.page-title(style="margin-top:0")
         .dataTables_wrapper.no-footer.DTS
             .row
                 .col-md-5.col-sm-5
-                    label
-                        | Show
-                        select.form-control.input-inline(ng-model='$parent.status')
-                            option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-                            option( disabled, value='──────────' ) ──────────
-                            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-                            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-                            option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-                .col-md-5.col-sm-5
                     .form-group
                         label
-                            | {{"search:placeholder"|translate}}
-                            input.form-control.input-inline( type='search', ng-model='$parent.search', placeholder='')
+                            | Show
+                            select.form-control.input-inline(ng-model='$parent.status')
+                                option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+                                option( disabled, value='──────────' ) ──────────
+                                option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+                                option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
+                                option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
+                .col-md-5.col-sm-5
+                    .form-group
+                        .input-icon.right
+                            i.icon-magnifier
+                            input.form-control( type="text", ng-model="$parent.search", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
                 .col-md-2.col-sm-2
                     .btn-group.pull-right
                         button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
@@ -63,11 +64,11 @@ h1.page-title(style="margin-top:0")
                 .dataTables_scroll(style='overflow: hidden;')
                     .dataTables_scrollHead(style='overflow: hidden;')
                         .dataTables_scrollHeadInner
-                            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='padding-right: 17px;')
+                            table.table.table-striped.table-bordered.order-column.dataTable.no-footer(style='padding-right: 17px;')
                                 thead
                                     tr
                                         th.sorting_disabled
-                                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
+                                            //- label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                                 input.group-checkable(type='checkbox')
                                                 span
                                         th.sorting(ng-repeat='column in columns track by $index', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
@@ -75,7 +76,7 @@ h1.page-title(style="margin-top:0")
                                         th.sorting_disabled  Actions
 
                     .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
-                        table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
+                        table.table.table-striped.table-bordered.order-column.dataTable.no-footer(style='border-top:0;')
                             thead
                                 tr(style='height: 0px; padding:0;')
                                     th(style='height: 0px; padding:0;')
@@ -85,10 +86,11 @@ h1.page-title(style="margin-top:0")
                                     th(style='height: 0px; padding:0;')
                                         .dataTables_sizing
                             tbody
-                                tr.odd.gradeX(ng-repeat='row in data', ng-click='select(row._id)')
+                                tr.odd.gradeX(ng-repeat='row in data', ng-click='select(row._id)', ng-class='{ "success": (item._id == row._id) }')
                                     td
                                         label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                            input.checkboxes(type='checkbox', value='1')
+                                            input.checkboxes(ng-if='item._id == row._id', type='checkbox', value='1', checked)
+                                            input.checkboxes(ng-if='item._id != row._id', type='checkbox', value='1')
                                             span
                                     td( ng-repeat='column in columns')
                                         span(ng-if='row[ column ] !== undefined && row[ column ] !== null && column === "icon"')
@@ -128,4 +130,5 @@ h1.page-title(style="margin-top:0")
                     .dataTables_info(ng-if='filtered <= 0')
                         | No data found
 
-ng-include.col-lg-5(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
+
+ng-include.col-lg-5.col-xs-12(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")

@@ -120,6 +120,7 @@ app.component('appRouter', {
             $scope.__view = path[2];
             console.info('Going to', $scope.$root.__module.name, $scope.__id, $scope.__view);
 
+            if(!$scope.__id) $scope.item = undefined;
 
             try {
                 if ($scope.$root.__module.controller && $scope.$root.__module.name != lastModule) {
