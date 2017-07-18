@@ -1,22 +1,19 @@
-//- OLD
-    header.router-header
-        h1(icon="{{$root.__module.icon}}")
-            | {{ $root.__appName + ':application:header' | translate }}
-            | &gt;
-            | {{ $root.__module.name + ':module:title' | translate }}
-        .toolbox
-            button( ng-repeat='( name, config ) in $root.__module.config.toolbox', ng-click="openToolbox( name )")
-                | {{ name + ':toolbox:' + $root.__module.name | translate }}
-
-    ng-include(src='$root.__module.templateUrl')
-    
 .page-bar
     ul.page-breadcrumb
         li
-            span {{ $root.__appName + ':application:header' | translate }}
+            a(ng-href="/{{$root.__appName}}") 
+                | {{ $root.__appName + ':application:header' | translate }}
             i.fa.fa-circle
         li
-            span {{ $root.__module.name + ':module:title' | translate }}
+            a(ng-click='$root.go($root.__module)') 
+                | {{ $root.__module.name + ':module:title' | translate }}
+            i.fa.fa-circle(ng-if='__id')
+        li(ng-if='__id')
+            a(ng-click="tab('')")
+                | {{ __id }}
+            i.fa.fa-circle(ng-if='__view')
+        li(ng-if='__view')
+            a {{ __view | translate }}
 
     .page-toolbar
         .btn-group.pull-right
