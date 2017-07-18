@@ -95,7 +95,7 @@ app.directive("listView", function($timeout, $window, $q){
       // isDefined
       scope.isDefined = isDefined;
       function isDefined(v){
-        return v !== null && !angular.isUndefined(v);
+        return v !== null && !angular.isUndefined(v) && v;
       }
 
       // isObject
@@ -122,6 +122,47 @@ app.directive("listView", function($timeout, $window, $q){
         return isObject(coord) && coord.hasOwnProperty('id') && coord.hasOwnProperty('kind');
       }
 
+      // isDataType
+      scope.isDataType = isDataType;
+      function isDataType(column){
+        return column.type == 'data' || (column.type == 'subkey' && column.subtype == 'data');
+      }
+
+      // sameDataTypeValue
+      scope.sameDataTypeValue = sameDataTypeValue;
+      function sameDataTypeValue(row, col1, col2){
+        if(!(isDataType(col1) && isDataType(col2))){
+          return false;
+        }
+        return getSubkeyValue(row, col1) == getSubkeyValue(row, col2);
+      }
+
+      function getSubkeyValue(row, column){
+        var map = column.key.split(".");
+        var i = 0;
+        var value = row;
+        if(map.length == 0)
+           value = "";
+        try{
+          while(i < map.length){
+            value = value[map[i]];
+            i++;
+          }
+        }
+        catch(e){
+          value = "";
+        }
+        return value;
+      }
+
+      function findSubkeyValue (row, column){
+        return $q(function(res, rej){
+				       return res(getSubkeyValue(row, column));
+			   });
+      }
+
+
+
       // displayTranslatable
       scope.displayTranslatable = displayTranslatable;
       function displayTranslatable(row, column){
@@ -134,23 +175,7 @@ app.directive("listView", function($timeout, $window, $q){
       // displaySubkey
       scope.displaySubkey = displaySubkey;
       function displaySubkey(row, column){
-        return $q(function(res, rej){
-               var map = column.key.split(".");
-               var i = 0;
-               var value = row;
-               if(map.length == 0)
-                  value = "";
-               try{
-                 while(i < map.length){
-                   value = value[map[i]];
-                   i++;
-                 }
-               }
-               catch(e){
-                 value = "";
-               }
-				       return res(value);
-			   }).$$state.value;
+        return findSubkeyValue(row, column).$$state.value;
       }
 
       // getColumnType
@@ -238,7 +263,8 @@ app.directive("listView", function($timeout, $window, $q){
           for ( var i = 0; i < header.length; i++ )
               header[ i ].style.top = elem.scrollTop + 'px';
           if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight ){
-            scope.atBottom();
+            if(scope.atBottom)
+              scope.atBottom();
             print("atBottom");
           }
       };
