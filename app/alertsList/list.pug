@@ -61,15 +61,18 @@
             .row
                 //- searchTags
                 tags-input.col-xs-12(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
-            //-div()
-                .input-group-building(style="width: 100%")
-                    //- searchTags
-                    array-input.tags-input-overview( array='searchTags2' )
 
-    //- .report-data.list(style="max-height: {{currentHeight}}px; margin-bottom: 5px;", ng-class='{detailed:__id}', id="tablediv" )
-    //- table
-    //- ng-include(src="'alertsList/table.pug'")
-.table-scrollable(scroll='scroll')
+//- list-view
+list-view(
+  ng-class='{detailed:__id}'
+  columns="columns",
+  data="data",
+  config="{debug: true}",
+  selected-fn="select",
+  sort-fn="orderBy",
+  at-bottom="loadMore()")
+
+//-.table-scrollable(scroll='scroll')
     .dataTables_scroll(style='overflow: hidden;')
         .dataTables_scrollHead(style='overflow: hidden;')
             .dataTables_scrollHeadInner
@@ -81,7 +84,7 @@
                                 span
                         th.sorting( ng-repeat='column in columns', ng-click='sort(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting-desc": (sorting.col == column && sorting.order == "desc") }' )
                             | {{ column + ':' + 'column' | translate }}
-                        th.sorting_disabled  Actions 
+                        th.sorting_disabled  Actions
         .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
                 thead
@@ -121,7 +124,7 @@
                         td
                             .btn-group(style='position: relative;')
                                 button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions 
+                                    | Actions
                                     i.fa.fa-angle-down
                                 ul.dropdown-menu(role='menu')
                                     li
@@ -136,7 +139,7 @@
                                         a(href='javascript:;')
                                             i.icon-user
                                             |  New User
-                                    li.divider  
+                                    li.divider
                                     li
                                         a(href='javascript:;')
                                             i.icon-flag
@@ -148,7 +151,7 @@
             | Showing {{ first }} to {{ last }} of {{ filtered }} records
         .dataTables_info(ng-if='filtered <= 0')
             | No data found
-//-    
+//-
     .noData( ng-if='total === 0' )
         | {{ 'nodata' | translate}}
 

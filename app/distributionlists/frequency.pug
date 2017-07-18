@@ -30,6 +30,12 @@ form(ng-submit="save()")
             | {{ 'intervalTime:field' | translate }}
         time-input(name='intervalTime' , ng-model='item.intervalTime' )
         br
+    //-
+    div( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
+        label( for='intervalTimeNumber' )
+            | {{ 'intervalTimeNumber:field' | translate }}
+        number-time-input(name='intervalTimeNumber' , ng-model='item.intervalTimeNumber' )
+        br
 
     div( )
         label( for='endingAt' )

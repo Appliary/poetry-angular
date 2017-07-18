@@ -8,14 +8,17 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         order: 'asc'
     };
 
+    $scope.filtered = 0;
 
-    $scope.orderBy = function orderBy(col) {
-        if ($scope.sorting.col != col)
-            return ($scope.sorting = {
+    $scope.orderBy = function orderBy( col, order ) {
+        return $scope.sorting = {col: col, order: order};
+        /*if ( $scope.sorting.col != col )
+            return ( $scope.sorting = {
                 col: col,
                 order: 'asc'
-            });
-        $scope.sorting.order = ($scope.sorting.order == 'asc') ? 'desc' : 'asc';
+            } );
+        $scope.sorting.order = ( $scope.sorting.order == 'asc' ) ? 'desc' : 'asc';*/
+
     };
 
     /**
@@ -52,11 +55,20 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     $scope.tags = [];
     $scope.page = 0;
 
-    function getlist(n, o) {
+
+    if ( $scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject($scope.$root.__module.config.listView))
+        $scope.listViewConfig = $scope.$root.__module.config.listView;
+    else {
+      $scope.listViewConfig = {};
+    }
+    $scope.listViewConfig.defaultSort = $scope.sorting;
+
+    function getlist( n, o ) {
+
         // Delegate to custom controller
         if ($scope.$root.__module.controller != 'generic/list') return;
 
-        $scope.page = 0;
+        var page = 0;
         if (o == n) return;
         if (n !== true) {
             $scope.total = undefined;
@@ -86,11 +98,18 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             url += "&search=" + encodeURIComponent($scope.search);
         }
 
+        urlConfig.params.limit = 100;
+        url += "&limit=100";
+
         if ($scope.data && $scope.data.length) {
             page = $scope.data.length / 100;
-            urlConfig.params.limit = 100;
+            console.log("$scope.data.length / 100",$scope.data.length / 100);
+            console.log("Math.floor(page)", Math.floor(page));
             urlConfig.params.page = Math.floor(page);
-            url += "&limit=100&page" + Math.floor(page);
+            url += "&page=" + Math.floor(page);
+        }
+        else{
+          url += "&page=0";
         }
 
         if (lastCall.timestamp + 5000 < Date.now() || lastCall.url != url) {
@@ -107,7 +126,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                     isLoading = false;
 
                     if (response.data.data) {
-                        if ($scope.page)
+                        if (page)
                             response.data.data.forEach(function loop(i) {
                                 if ($scope.data && !~$scope.data.indexOf(i))
                                     $scope.data.push(i);
@@ -141,17 +160,6 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
 
                     $scope.first = $scope.filtered == 0 ? 0 : 1;
                     $scope.last = $scope.filtered;
-
-                    $scope.setListHeight();
-                    $scope.setColumnsWidth();
-
-                    /**
-                     * Window resize handler
-                     */
-                    angular.element($window).on('resize', function () {
-                        $scope.setListHeight();
-                        $scope.setColumnsWidth();
-                    });
 
                 }, function error(response) {
                     isLoading = false;
@@ -198,21 +206,9 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         );
     };
 
-
-    /**
-     * Scrolling handler ( infinite scroll + header mover )
-     *
-     * @arg {Event} event Native JS scroll event
-     */
-    $scope.scroll = function scroll(event) {
-        $scope.$apply(function () {
-            $scope.first = Math.round($scope.scrollBody.scrollTop / $scope.lineHeight) + 1;
-            $scope.last = $scope.first + $scope.nbLines - 1;
-        })
-
-        if (($scope.scrollBody.scrollTop + $scope.scrollBody.offsetHeight + 300) > $scope.scrollBody.scrollHeight)
-            getlist(true);
-    };
+    $scope.loadMore = function(){
+      getlist(true);
+    }
 
     // Give access to the isArray function on the view
     $scope.isArray = angular.isArray;
@@ -317,102 +313,9 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         $http.get($scope.$root.__module.api + '/' + id)
             .then(function success(response) {
                 $scope.item = response.data;
-                console.log($scope.item._id);
-                $scope.setColumnsWidth();
+                //$scope.setColumnsWidth();
             }, function error(response) {
                 $location.path('/error/' + response.status);
             });
-    }
-
-    $scope.isTOut = function isTOut(row) {
-
-        var to = 'timeout',
-            ts = 'timestamp';
-        if ($scope.$root.__module.config) {
-            if ($scope.$root.__module.config.timeout)
-                to = $scope.$root.__module.config.timeout;
-            if ($scope.$root.__module.config.timeout)
-                ts = $scope.$root.__module.config.timestamp;
-        }
-
-        // If missing, return false
-        if ((!row[to] && to != '$now') || !row[ts])
-            return false;
-
-        // Get the timestamp and format it
-        var timestamp = angular.copy(row[ts]);
-        if (typeof row[ts] == 'string')
-            timestamp = new Date(timestamp);
-        if (timestamp.getTime)
-            timestamp = timestamp.getTime();
-
-        // Condition
-        var res;
-        if (to == '$now')
-            res = timestamp < Date.now();
-        else
-            res = (timestamp + (row[to] * 60000)) < Date.now();
-        //console.log( row[ to ], timestamp, res );
-        return res;
-    };
-
-    /**
-     * Set columns width
-     */
-    $scope.setColumnsWidth = function setColumnsWidth() {
-        console.log("setColumnsWidth");
-        $timeout(function () {
-            var scrollHead = document.querySelector('.dataTables_scrollHead');
-
-            var headThs = scrollHead.querySelectorAll('thead th');
-            var bodyTds = $scope.scrollBody.querySelectorAll('tr:first-child td');
-
-            for (var i = 0; i < headThs.length; i++) {
-                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-
-                var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-                var newThWidth = tdWidth + (tdPadding - thPadding);
-
-                headThs[i].style.minWidth = newThWidth + "px";
-                headThs[i].style.maxWidth = newThWidth + "px";
-                headThs[i].style.width = newThWidth + "px";
-            }
-
-            for (var i = 0; i < headThs.length; i++) {
-                var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-                var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-
-                var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-                var x = tdWidth - (thPadding - tdPadding);
-                x = Math.round(x * 10) / 10;
-
-                if (thWidth != x) {
-                    var newTdWidth = thWidth + (thPadding - tdPadding);
-
-                    bodyTds[i].style.minWidth = newTdWidth + "px";
-                    bodyTds[i].style.maxWidth = newTdWidth + "px";
-                    bodyTds[i].style.width = newTdWidth + "px";
-                }
-            }
-        })
-    }
-
-    /**
-    * Set list height
-    */
-    $scope.setListHeight = function setListHeight() {
-        $timeout(function () {
-            $scope.lineHeight = $scope.scrollBody.scrollHeight / (100 * ($scope.page + 1));
-            $scope.nbLines = Math.floor((2 / 3) * window.innerHeight / $scope.lineHeight);
-
-            if ($scope.filtered > $scope.nbLines)
-                $scope.listHeight = $scope.lineHeight * $scope.nbLines + 'px';
-            else
-                $scope.listHeight = 'initial';
-        })
     }
 });

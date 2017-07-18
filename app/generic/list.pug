@@ -1,19 +1,6 @@
-//- OLD
-    form#filters
-        input( type='search', ng-model='$parent.search', placeholder='{{"search:placeholder"|translate}}' )
-        select.pull-right( ng-model='$parent.status' )
-            option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-            option( disabled, value='──────────' ) ──────────
-            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-            option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-        span( ng-if='total' ) {{'results:' + $root.__module.name | translate }} {{total}}
-        span.loading( ng-if='total === undefined')
-            | {{ 'loading:' + $root.__module.name | translate }}
-
 //- Managed
 h1.page-title(style="margin:0")
-    | {{ $root.__module.name + ':module:title' | translate }} 
+    | {{ $root.__module.name + ':module:title' | translate }}
     small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 .m-heading-1.border-green.m-bordered(ng-if='message')
@@ -21,7 +8,7 @@ h1.page-title(style="margin:0")
     p
         | DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
     p
-        | For more info please check out 
+        | For more info please check out
         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
 
 .portlet.light.bordered(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
@@ -31,7 +18,7 @@ h1.page-title(style="margin:0")
                 .col-md-5.col-sm-5
                     .form-group
                         label
-                            | Show 
+                            | Show
                             select.form-control.input-inline(ng-model='$parent.status')
                                 option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
                                 option( disabled, value='──────────' ) ──────────
@@ -46,7 +33,7 @@ h1.page-title(style="margin:0")
                 .col-md-2.col-sm-2
                     .btn-group.pull-right
                         button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
-                            | Tools 
+                            | Tools
                             i.fa.fa-angle-down
                         ul.dropdown-menu.pull-right
                             li
@@ -62,7 +49,18 @@ h1.page-title(style="margin:0")
                                 i.fa.fa-file-excel-o
                                 |  Export to Excel
 
-            .table-scrollable(scroll='scroll')
+            //-
+            list-view(
+              ng-class='{detailed:__id}'
+              columns="columns",
+              data="data",
+              config="listViewConfig",
+              selected-fn="select",
+              sort-fn="orderBy",
+              at-bottom="loadMore()",
+              filtered="filtered")
+
+            //-.table-scrollable(scroll='scroll')
                 .dataTables_scroll(style='overflow: hidden;')
                     .dataTables_scrollHead(style='overflow: hidden;')
                         .dataTables_scrollHeadInner
@@ -74,8 +72,8 @@ h1.page-title(style="margin:0")
                                                 input.group-checkable(type='checkbox')
                                                 span
                                         th.sorting(ng-repeat='column in columns track by $index', ng-click='orderBy(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting_desc": (sorting.col == column && sorting.order == "desc") }')
-                                            |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }} 
-                                        th.sorting_disabled  Actions 
+                                            |  {{ column + ':' + $root.__module.name + ':' + 'column' | translate }}
+                                        th.sorting_disabled  Actions
 
                     .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
                         table.table.table-striped.table-bordered.order-column.dataTable.no-footer(style='border-top:0;')
@@ -104,7 +102,7 @@ h1.page-title(style="margin:0")
                                     td
                                         .btn-group(style='position: relative;')
                                             button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                                | Actions 
+                                                | Actions
                                                 i.fa.fa-angle-down
                                             ul.dropdown-menu(role='menu')
                                                 li
@@ -119,17 +117,18 @@ h1.page-title(style="margin:0")
                                                     a(href='javascript:;')
                                                         i.icon-user
                                                         |  New User
-                                                li.divider  
+                                                li.divider
                                                 li
                                                     a(href='javascript:;')
                                                         i.icon-flag
                                                         |  Comments
                                                         span.badge.badge-success 4
-            .row
+            //-.row
                 .col-md-5.col-sm-12
                     .dataTables_info(ng-if='filtered > 0')
                         | Showing {{ first }} to {{ last }} of {{ filtered }} records
                     .dataTables_info(ng-if='filtered <= 0')
                         | No data found
+
 
 ng-include.col-lg-5.col-xs-12(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")

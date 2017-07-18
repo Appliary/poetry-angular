@@ -4,7 +4,7 @@ $simple-line-font-path: "./fonts/";
 $fa-font-path: "./fonts";
 @import 'metronic/font-awesome/font-awesome.scss';
 
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '../../bootstrap-sass/assets/stylesheets/_bootstrap';
 
 @import 'metronic/datatables.bootstrap';
 @import 'metronic/datatables.min';

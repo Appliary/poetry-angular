@@ -267,20 +267,15 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       }
       scope.save = save;
 
-      // do sort
-      function sort(col){
-        console.log(col);
-        if ( scope.sorting && scope.sorting.col == col )
-          scope.sorting.order = ( scope.sorting.order == 'asc' ) ? 'desc' : 'asc';
-        else
-          scope.sorting = {
+      // do orderBy
+      function orderBy(col, order){
+        scope.sorting = {
               col: col,
-              order: 'asc'
-          };
-
+              order: order
+        };
         getlist(true);
       }
-      scope.sort = sort;
+      scope.orderBy = orderBy;
 
       var lastParams = {};
       var lastCall;
@@ -594,24 +589,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         return true;
       }
 
-      /**
-       * Scrolling handler ( infinite scroll + header mover )
-       *
-       * @arg {Event} event Native JS scroll event
-       */
-      scope.scroll = function scroll( event ) {
-          var elem = event.target;
-          var header = elem.querySelectorAll( 'th' );
-          for ( var i = 0; i < header.length; i++ )
-              header[ i ].style.top = elem.scrollTop + 'px';
-          if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight ){
-            if(typeof scope.total === 'undefined' ||
-            (scope.total && scope.data && scope.data.length < scope.total)
-            ){
-              getlist( );
-            }
-          }
-      };
+      scope.loadMore = function(){
+        getlist();
+      }
 
       var cvr;
       function cleanVisualReturn( n ) {
