@@ -22,35 +22,7 @@
                 ul.dropdown-menu
             // END NOTIFICATION DROPDOWN
             
-            // BEGIN INBOX DROPDOWN
-            li#header_inbox_bar.dropdown.dropdown-extended.dropdown-inbox
-                a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true')
-                    i.icon-envelope-open
-                    span.badge.badge-default  0
-                ul.dropdown-menu
-            // END INBOX DROPDOWN
-            
-            // BEGIN TODO DROPDOWN
-            li#header_task_bar.dropdown.dropdown-extended.dropdown-tasks
-                a.dropdown-toggle(href='javascript:;', data-toggle='dropdown', data-hover='dropdown', data-close-others='true')
-                    i.icon-calendar
-                    span.badge.badge-default  0
-                ul.dropdown-menu
-            // END TODO DROPDOWN
-            
             //BEGIN USER DROPDOWN
-            //- not working (with app-dropdown)
-                li.dropdown.dropdown-user.app-dropdown( icon='user', text="userName" )
-                    li
-                        a( ng-click="editprofile()" )
-                            i.icon-user
-                            | {{ 'edit profile:topbar' | translate }}
-                    li
-                        a( href="/logout" ) 
-                            i.icon-key
-                            | {{ 'logout:topbar' | translate }}
-                            
-            //- working (without app-dropdown)
             li.dropdown.dropdown-user.app-userselector
             //END USER DROPDOWN
             

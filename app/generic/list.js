@@ -316,6 +316,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         $http.get($scope.$root.__module.api + '/' + id)
             .then(function success(response) {
                 $scope.item = response.data;
+                console.log($scope.item._id);
                 $scope.setColumnsWidth();
             }, function error(response) {
                 $location.path('/error/' + response.status);
@@ -405,7 +406,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     $scope.setListHeight = function setListHeight() {
         $timeout(function () {
             $scope.lineHeight = $scope.scrollBody.scrollHeight / (100 * ($scope.page + 1));
-            $scope.nbLines = Math.floor((1 / 2) * window.innerHeight / $scope.lineHeight);
+            $scope.nbLines = Math.floor((2 / 3) * window.innerHeight / $scope.lineHeight);
 
             if ($scope.filtered > $scope.nbLines)
                 $scope.listHeight = $scope.lineHeight * $scope.nbLines + 'px';

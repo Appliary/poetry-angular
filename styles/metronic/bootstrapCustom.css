@@ -1,4 +1,4 @@
-.form-group .form-control, .form-group label, .table td, .portlet.box {
+.form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
     font-size: 12px!important;
 }
 
