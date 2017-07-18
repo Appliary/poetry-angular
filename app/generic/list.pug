@@ -39,10 +39,9 @@ h1.page-title(style="margin:0")
                             option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
                 .col-md-5.col-sm-5
                     .form-group
-                        label
-                            | {{"search:placeholder"|translate}} 
-                            input.form-control.input-inline( type='search', ng-model='$parent.search',
-                            ng-model-options="{debounce: 250}", placeholder='')
+                        .input-icon.right
+                            i.icon-magnifier
+                            input.form-control( type="text", ng-model="$parent.search", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
                 .col-md-2.col-sm-2
                     .btn-group.pull-right
                         button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
