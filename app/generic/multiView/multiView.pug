@@ -1,19 +1,20 @@
-button#mvAddEntityBtn.btn-action(ng-click="actions.addTopEntity()") {{ "Add:Buttons" | translate }}
-.mvActionsBar
-    .actionCol.searchContainer
-        input(type="text", ng-model="searchText" ng-model-options="{debounce: 250}", placeholder="{{'search ...:General' | translate}}")
-    .alignR.actionCol.viewTypeContainer(ng-if='options.viewSwitch === false')
-        .btn-group
-            label.btn.btn-default(for="setListActive", ng-class="{'active': general.activeView === 'list'}")
-                input#setListActive.dispNone(type="radio", name="activeView", value="list", ng-model="general.activeView")
-                | {{ "List:Buttons" | translate}}
-            label.btn.btn-default(for="setTreeViewActive", ng-class="{'active': general.activeView === 'tree'}")
-                input#setTreeViewActive.dispNone(type="radio", name="activeView", value="tree", ng-model="general.activeView")
-                | {{ "Tree:Buttons" | translate}}
+.portlet.light.bordered(ng-class="editItem ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
+    .portlet-title.tabbable-line
+        .col-xs-7.col-md-8.row
+            input.form-control( type="text", ng-model="searchText", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
+        ul.nav.nav-tabs
+            li(ng-class="{active: general.activeView == 'tree'}")
+                a(ng-click="general.activeView = 'tree'")
+                    | {{'treeview:multiview'|translate}}
+            li(ng-class="{active: general.activeView == 'list'}")
+                a(ng-click="general.activeView = 'list'")
+                    | {{'listview:multiview'|translate}}
 
-div.multiViewBody
-    div.list.noHeaderRow(ng-show="general.activeView === 'list'", ng-class="{detailed: editItem}")
-        table.table.table-striped.table-hover.table-bordered.dataTable(datatable="", dt-options="listView.dtListOptions", dt-columns="listView.dtListColumns", dt-instance="listView.dtInstanceCallback")
-    div.list.treeViewContainer(ng-if="general.activeView === 'tree'", ng-class="{detailed: editItem}")
+    .portlet-body(ng-if="general.activeView === 'tree'")
         tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
-    ng-include.details(src="actions.getMultiViewEdit()", ng-class="{detailed: editItem}")
+
+    .portlet-body(ng-if="general.activeView === 'list'")
+        h1 todo
+
+.col-md-5(ng-class="{hidden: !editItem}")
+    ng-include(src="actions.getMultiViewEdit()")
