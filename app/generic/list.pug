@@ -29,14 +29,15 @@ h1.page-title(style="margin:0")
         .dataTables_wrapper.no-footer.DTS
             .row
                 .col-md-5.col-sm-5
-                    label
-                        | Show 
-                        select.form-control.input-inline(ng-model='$parent.status')
-                            option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-                            option( disabled, value='──────────' ) ──────────
-                            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-                            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-                            option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
+                    .form-group
+                        label
+                            | Show 
+                            select.form-control.input-inline(ng-model='$parent.status')
+                                option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+                                option( disabled, value='──────────' ) ──────────
+                                option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+                                option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
+                                option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
                 .col-md-5.col-sm-5
                     .form-group
                         .input-icon.right
@@ -131,4 +132,4 @@ h1.page-title(style="margin:0")
                     .dataTables_info(ng-if='filtered <= 0')
                         | No data found
 
-ng-include.col-lg-5(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
+ng-include.col-lg-5.col-xs-12(ng-if='__id', src="$root.__module.subview || 'generic/details.pug'")
