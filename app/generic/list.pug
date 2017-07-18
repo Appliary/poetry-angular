@@ -14,7 +14,7 @@
 //- Managed
 h1.page-title(style="margin:0")
     | {{ $root.__module.name + ':module:title' | translate }} 
-    small {{ $root.__module.name + ':module:title' | translate }}
+    small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 .m-heading-1.border-green.m-bordered(ng-if='message')
     h3 DataTables jQuery Plugin
@@ -42,7 +42,8 @@ h1.page-title(style="margin:0")
                     .form-group
                         label
                             | {{"search:placeholder"|translate}} 
-                            input.form-control.input-inline( type='search', ng-model='$parent.search', placeholder='')
+                            input.form-control.input-inline( type='search', ng-model='$parent.search',
+                            ng-model-options="{debounce: 250}", placeholder='')
                 .col-md-2.col-sm-2
                     .btn-group.pull-right
                         button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
