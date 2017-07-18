@@ -120,12 +120,12 @@ app.component('appRouter', {
             $scope.__view = path[2];
             console.info('Going to', $scope.$root.__module.name, $scope.__id, $scope.__view);
 
-            if(!$scope.__id) $scope.item = undefined;
+            console.log($scope);
 
             try {
                 if ($scope.$root.__module.controller && $scope.$root.__module.name != lastModule) {
 
-                    Object.keys($scope)
+                    Object.keys($scope) 
                         .forEach(function (k) {
                             if (k.indexOf('$') && k.indexOf('_'))
                                 delete $scope[k];

@@ -7,10 +7,10 @@
         li
             a(ng-click='$root.go($root.__module)') 
                 | {{ $root.__module.name + ':module:title' | translate }}
-            i.fa.fa-circle(ng-if='__id')
-        li(ng-if='__id')
+            i.fa.fa-circle(ng-if='item.name')
+        li(ng-if='item.name')
             a(ng-click="tab('')")
-                | {{ __id }}
+                | {{ item.name }}
             i.fa.fa-circle(ng-if='__view')
         li(ng-if='__view')
             a {{ __view | translate }}

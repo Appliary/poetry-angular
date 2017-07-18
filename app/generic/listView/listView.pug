@@ -91,7 +91,8 @@
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         td
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.checkboxes(type='checkbox', value='1')
+                                input.checkboxes(ng-if='_id == row._id', type='checkbox', value='1', checked)
+                                input.checkboxes(ng-if='_id != row._id', type='checkbox', value='1')
                                 span
                         //- data
                         td( ng-repeat='(idx, column) in columns'
