@@ -24,4 +24,4 @@ h1.page-title(style="margin-top:0")
         h1 todo
 
 .col-md-5(ng-if="editItem")
-    ng-include(src="actions.getMultiViewEdit()")
+    ng-include(old-src="actions.getMultiViewEdit()", src="'generic/details.pug'")
