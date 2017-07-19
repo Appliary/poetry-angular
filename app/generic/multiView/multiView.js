@@ -12,10 +12,10 @@ app.directive( 'multiView', function (
             options: '=options'
         },
         templateUrl: 'generic/multiView/multiView.pug',
-        controller: function ( $scope ) {
+        controller: function multiViewCtrl( $scope, $http ) {
 
             /*** List view ***/
-            ( function multiViewCtrl() {
+            ( function () {
 
                 // Get the values from the darkness of the kliment's code
                 $scope.listView = {
@@ -62,6 +62,32 @@ app.directive( 'multiView', function (
 
             } )();
             /*** End of list view ***/
+
+
+            /*** Fields for edition ***/
+            ( function () {
+
+                // Get the list of fields
+                $scope.fields = $scope.options.fields;
+
+                // Get the validation for fields form API
+                $http.put( '/__joi' + $scope.$root.__module.api + '/validation' )
+                    .then( function success( response ) {
+                        if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
+                            $scope.__joi = response.data.payload;
+                        } else {
+                            $scope.__joi = {};
+                            response.data.payload._inner.children.forEach(
+                                function ( elem ) {
+                                    $scope.__joi[ elem.key ] = elem.schema;
+                                }
+                            );
+                        }
+                    } );
+
+            } )();
+            /*** End of fields for edition ***/
+
 
             /*** Shit from kliment, for treeview ***/
             var _enableCache = !!$scope.options.cache,
