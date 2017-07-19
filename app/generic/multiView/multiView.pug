@@ -23,7 +23,8 @@ h1.page-title(style="margin-top:0")
     .portlet-body(ng-if="general.activeView === 'list'")
         list-view(
           data="listView.data",
-          columns="listView.columns"
+          columns="listView.columns",
+          selected-fn="listView.select"
         )
 
 .col-md-5(ng-if="editItem")

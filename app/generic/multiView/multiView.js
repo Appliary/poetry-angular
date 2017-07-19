@@ -19,10 +19,29 @@ app.directive( 'multiView', function (
 
                 // Get the values from the darkness of the kliment's code
                 $scope.listView = {
-                    columns: $scope.options.listColumns.map( function ( c ) {
-                        if ( c.name ) return c.name;
-                        return c;
-                    } ),
+                    columns: $scope.options.listColumns
+                        .filter( function ( c ) {
+                            // Remove hidden columns
+                            // (why listing them then ???)
+                            return !c.hidden;
+                        } )
+                        .map( function ( c ) {
+                            // Get the name of the column if it is
+                            // kliment's way
+                            if ( c.name ) return c.name;
+                            return c;
+                        } ),
+                    select: function ( id ) {
+                        console.log( 'SELECT', id );
+                        $scope.listView.data.some( function ( i ) {
+
+                            if ( i._id != id ) return false;
+
+                            $scope.editItem = i;
+                            return true;
+
+                        } );
+                    },
                     data: []
                 };
 
@@ -149,9 +168,7 @@ app.directive( 'multiView', function (
                     };
                     //}
                 },
-                toggleColumnPicker: function () {
-
-                },
+                toggleColumnPicker: function () {},
                 editItem: function ( item ) {
                     $scope.editItem = item;
                 },
