@@ -38,6 +38,7 @@ app.directive( 'multiView', function (
                             if ( i._id != id ) return false;
 
                             $scope.editItem = i;
+                            $scope.item = i;
                             return true;
 
                         } );
@@ -67,9 +68,6 @@ app.directive( 'multiView', function (
             /*** Fields for edition ***/
             ( function () {
 
-                // Get the list of fields
-                $scope.fields = $scope.options.fields;
-
                 // Get the validation for fields form API
                 $http.put( '/__joi' + $scope.$root.__module.api + '/validation' )
                     .then( function success( response ) {
@@ -84,6 +82,9 @@ app.directive( 'multiView', function (
                             );
                         }
                     } );
+
+                // Get the list of fields
+                $scope.fields = $scope.options.fields;
 
             } )();
             /*** End of fields for edition ***/
@@ -196,7 +197,9 @@ app.directive( 'multiView', function (
                 },
                 toggleColumnPicker: function () {},
                 editItem: function ( item ) {
+                    console.log( 'select', item );
                     $scope.editItem = item;
+                    $scope.item = item;
                 },
                 resolveLVClickHandler: function ( id, colName ) {
                     var callBack = null,
@@ -320,6 +323,7 @@ app.directive( 'multiView', function (
             $scope.saveItem = $scope.actions.saveEditForm;
             $scope.cancelEdit = function () {
                 $scope.editItem = null;
+                $scope.item = null;
             };
 
             var _watchEditItem = function ( newValue, oldValue ) {
