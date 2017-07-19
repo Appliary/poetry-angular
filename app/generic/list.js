@@ -10,8 +10,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
 
     $scope.filtered = 0;
 
-    $scope.orderBy = function orderBy( col, order ) {
-        return $scope.sorting = {col: col, order: order};
+    $scope.orderBy = function orderBy(col, order) {
+        return $scope.sorting = { col: col, order: order };
         /*if ( $scope.sorting.col != col )
             return ( $scope.sorting = {
                 col: col,
@@ -56,14 +56,14 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
     $scope.page = 0;
 
 
-    if ( $scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject($scope.$root.__module.config.listView))
+    if ($scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject($scope.$root.__module.config.listView))
         $scope.listViewConfig = $scope.$root.__module.config.listView;
     else {
-      $scope.listViewConfig = {};
+        $scope.listViewConfig = {};
     }
     $scope.listViewConfig.defaultSort = $scope.sorting;
 
-    function getlist( n, o ) {
+    function getlist(n, o) {
 
         // Delegate to custom controller
         if ($scope.$root.__module.controller != 'generic/list') return;
@@ -103,13 +103,13 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
 
         if ($scope.data && $scope.data.length) {
             page = $scope.data.length / 100;
-            console.log("$scope.data.length / 100",$scope.data.length / 100);
+            console.log("$scope.data.length / 100", $scope.data.length / 100);
             console.log("Math.floor(page)", Math.floor(page));
             urlConfig.params.page = Math.floor(page);
             url += "&page=" + Math.floor(page);
         }
-        else{
-          url += "&page=0";
+        else {
+            url += "&page=0";
         }
 
         if (lastCall.timestamp + 5000 < Date.now() || lastCall.url != url) {
@@ -185,12 +185,14 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
      * @arg {String} id Id of the item to be selected
      */
     $scope.select = function select(id) {
-        retrieveItem(id);
-        $location.path(
-            '/' + $scope.$root.__module.name +
-            '/' + id +
-            '/' + ($scope.__view || '')
-        );
+        if (!$scope.item || $scope.item._id != id) {
+            retrieveItem(id);
+            $location.path(
+                '/' + $scope.$root.__module.name +
+                '/' + id +
+                '/' + ($scope.__view || '')
+            );
+        }
     };
 
     /**
@@ -206,8 +208,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
         );
     };
 
-    $scope.loadMore = function(){
-      getlist(true);
+    $scope.loadMore = function () {
+        getlist(true);
     }
 
     // Give access to the isArray function on the view
@@ -307,7 +309,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
             }));
 
         // Clean item
-        $scope.item = undefined;
+        //$scope.item = undefined;
 
         // Get item from API
         $http.get($scope.$root.__module.api + '/' + id)

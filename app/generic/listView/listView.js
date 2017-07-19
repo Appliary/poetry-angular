@@ -66,20 +66,14 @@ app.directive("listView", function ($timeout, $window, $q) {
         if (scope.config.noDetails) {
           return;
         }
-        scope._id = _id;
         if (isFunction(scope.selectedFn)) {
-          $timeout(
-            function () {
-              scope.selectedFn(scope._id);
-              scope.resize();
-            }
-            , 100)
+          scope.selectedFn(_id);
         }
-        print("selectedFn(" + scope._id + ")");
+        print("selectedFn(" + _id + ")");
       }
 
       scope.sort = sort;
-      function sort(column) {
+      function sort(column) { 
         if (column.key == scope.sorting.key) {
           scope.sorting.order = scope.sorting.order == 'asc' ? 'desc' : 'asc';
         }
@@ -277,10 +271,12 @@ app.directive("listView", function ($timeout, $window, $q) {
 
       scope.resize = function (delay) {
         $timeout(function () {
-          console.log("resize");
-          //bootstrap
-          scope.setListHeight();
-          scope.setColumnsWidth();
+          if (scope.filtered > 0) {
+            console.log("resize");
+            //bootstrap
+            scope.setListHeight();
+            scope.setColumnsWidth();
+          }
         }, delay || 10);
       };
 
@@ -288,87 +284,83 @@ app.directive("listView", function ($timeout, $window, $q) {
       * Set list height
       */
       scope.setListHeight = function setListHeight() {
-        if (scope.filtered > 0) {
-          console.log('setListHeight');
-          if (angular.isUndefined(scope.filtered)) {
-            var globalHeight = $window.innerHeight;
-            var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
-            var offsetTop = tablediv.prop('offsetTop');
-            var margin = 200;
-            scope.listHeight = globalHeight - (margin + offsetTop);
-            return;
-          }
-
-          var elem = document.querySelector('.dataTables_scrollBody');
-          scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
-          scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
-
-          //console.log("filtered", scope.filtered);
-          if (scope.filtered > scope.nbLines)
-            scope.listHeight = scope.lineHeight * scope.nbLines;
-          else
-            scope.listHeight = 'initial';
-          //console.log("height:", scope.listHeight, "scope.nbLines:", scope.nbLines);
-          //console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
+        console.log('setListHeight');
+        if (angular.isUndefined(scope.filtered)) {
+          var globalHeight = $window.innerHeight;
+          var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
+          var offsetTop = tablediv.prop('offsetTop');
+          var margin = 200;
+          scope.listHeight = globalHeight - (margin + offsetTop);
+          return;
         }
+
+        var elem = document.querySelector('.dataTables_scrollBody');
+        scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
+        scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
+
+        //console.log("filtered", scope.filtered);
+        if (scope.filtered > scope.nbLines)
+          scope.listHeight = scope.lineHeight * scope.nbLines;
+        else
+          scope.listHeight = 'initial';
+        //console.log("height:", scope.listHeight, "scope.nbLines:", scope.nbLines);
+        //console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
-        if (scope.filtered > 0) {
-          console.log('setColumnsWidth');
-          var scrollBody = document.querySelector('.dataTables_scrollBody');
-          var scrollHead = document.querySelector('.dataTables_scrollHead');
+        console.log('setColumnsWidth');
+        var scrollBody = document.querySelector('.dataTables_scrollBody');
+        var scrollHead = document.querySelector('.dataTables_scrollHead');
 
-          var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
-          var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
-          try {
-            for (var i = 0; i < headThs.length; i++) {
-              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
+        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
+        try {
+          for (var i = 0; i < headThs.length; i++) {
+            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
-              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-              var newThWidth = tdWidth + (tdPadding - thPadding);
+            var newThWidth = tdWidth + (tdPadding - thPadding);
 
-              headThs[i].style.minWidth = newThWidth + "px";
-              headThs[i].style.maxWidth = newThWidth + "px";
-              headThs[i].style.width = newThWidth + "px";
-            }
-
-            for (var i = 0; i < headThs.length; i++) {
-              var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-
-              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-              var x = tdWidth - (thPadding - tdPadding);
-              x = Math.round(x * 10) / 10;
-
-              if (thWidth != x) {
-                var newTdWidth = thWidth + (thPadding - tdPadding);
-
-                bodyTds[i].style.minWidth = newTdWidth + "px";
-                bodyTds[i].style.maxWidth = newTdWidth + "px";
-                bodyTds[i].style.width = newTdWidth + "px";
-              }
-            }
-          } catch (e) {
-            console.error("[listView] setColumnsWidth:", e);
+            headThs[i].style.minWidth = newThWidth + "px";
+            headThs[i].style.maxWidth = newThWidth + "px";
+            headThs[i].style.width = newThWidth + "px";
           }
+
+          for (var i = 0; i < headThs.length; i++) {
+            var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+
+            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+
+            var x = tdWidth - (thPadding - tdPadding);
+            x = Math.round(x * 10) / 10;
+
+            if (thWidth != x) {
+              var newTdWidth = thWidth + (thPadding - tdPadding);
+
+              bodyTds[i].style.minWidth = newTdWidth + "px";
+              bodyTds[i].style.maxWidth = newTdWidth + "px";
+              bodyTds[i].style.width = newTdWidth + "px";
+            }
+          }
+        } catch (e) {
+          console.error("[listView] setColumnsWidth:", e);
         }
       }
 
-      scope.$watch('item', function () {
-        if (!scope.item) {
-          scope.resize();
-        }
-      })
+      scope.$watch('item', function (item) {
+        if (!item) scope._id = undefined;
+        else scope._id = item._id;
+        scope.resize();
+      });
 
       angular.element($window)
         .bind('resize', function () {
           scope.resize();
-        });
+        })
     }
-  };
-});
+  }
+})
