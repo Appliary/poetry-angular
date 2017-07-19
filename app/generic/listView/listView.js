@@ -1,4 +1,4 @@
-app.directive("listView", function($timeout, $window, $q, listViewService){
+app.directive("listView", function ($timeout, $window, $q, listViewService) {
   return {
     restrict: 'EA',
     transclude: false,
@@ -217,6 +217,8 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
         });
         setMeasurementsCount();
         scope.resize();
+        scope.first = 1;
+        scope.last = scope.filtered;
       });
       scope.$watchCollection("pColumns", function (nv) {
         scope.measurementsColumn = {};
@@ -296,17 +298,14 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
         var margin = 280;
         scope.listHeight = globalHeight - (margin + offsetTop);
 
-        scope.lineHeight = tableElem.scrollHeight / (100 * (0 + 1));
+        var scrollHeight = tableElem.prop('scrollHeight');
+        scope.lineHeight = scrollHeight / (100 * (0 + 1));
         scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
-/** OLD METHOD
-        //console.log("filtered", scope.filtered);
+
         if (scope.filtered > scope.nbLines)
           scope.listHeight = scope.lineHeight * scope.nbLines;
         else
           scope.listHeight = 'initial';
-        //console.log("height:", scope.listHeight, "scope.nbLines:", scope.nbLines);
-        //console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
-*/
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
@@ -364,7 +363,7 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
           scope.resize();
         });
 
-      listViewService.register({event: 'resize', callback: scope.resize});
+      listViewService.register({ event: 'resize', callback: scope.resize });
     }
   }
 })
