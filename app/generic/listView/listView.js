@@ -1,4 +1,4 @@
-app.directive("listView", function($timeout, $window, $q){
+app.directive("listView", function($timeout, $window, $q, listViewService){
   return {
     restrict: 'EA',
     transclude: false,
@@ -286,6 +286,8 @@ app.directive("listView", function($timeout, $window, $q){
           .bind( 'resize', function () {
               scope.resize();
           } );
+
+      listViewService.register({event: 'resize', callback: scope.resize});
     }
   };
 });
