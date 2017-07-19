@@ -21,7 +21,10 @@ h1.page-title(style="margin-top:0")
         tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
 
     .portlet-body(ng-if="general.activeView === 'list'")
-        h1 todo
+        list-view(
+          data="listView.data",
+          columns="listView.columns"
+        )
 
 .col-md-5(ng-if="editItem")
     ng-include(old-src="actions.getMultiViewEdit()", src="'generic/details.pug'")

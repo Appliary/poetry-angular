@@ -1,4 +1,11 @@
-app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $compile, ViewDataSource, ListViewService, $cacheFactory, $filter ) {
+app.directive( 'multiView', function (
+    $q,
+    $compile,
+    ViewDataSource,
+    ListViewService,
+    $cacheFactory,
+    $filter
+) {
     return {
         restrict: 'E',
         scope: {
@@ -6,6 +13,38 @@ app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $c
         },
         templateUrl: 'generic/multiView/multiView.pug',
         controller: function ( $scope ) {
+
+            /*** List view ***/
+            ( function multiViewCtrl() {
+
+                // Get the values from the darkness of the kliment's code
+                $scope.listView = {
+                    columns: $scope.options.listColumns.map( function ( c ) {
+                        if ( c.name ) return c.name;
+                        return c;
+                    } ),
+                    data: []
+                };
+
+                // Once we get data, get the one we need to show
+                $scope.$watchCollection(
+                    'options.data',
+                    function watchData( data ) {
+
+                        // The data is in `options.data`,
+                        // in a property defined in `options.topTierBO`
+
+                        $scope.listView.data = data[
+                            $scope.options.topTierBO
+                        ];
+
+                    }
+                );
+
+            } )();
+            /*** End of list view ***/
+
+            /*** Shit from kliment, for treeview ***/
             var _enableCache = !!$scope.options.cache,
                 _cache;
 
@@ -88,41 +127,6 @@ app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $c
             } );
 
             $scope.topTierBO = $scope.options.topTierBO;
-
-            $scope.listView = {
-                dtListOptions: ListViewService.generateListViewOptions( DTOptionsBuilder, $q, _viewDS.getListViewData() )
-                    .withOption( 'rowCallback', function ( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                        var $row = $( nRow );
-                        $row.unbind( 'click' );
-                        $row.on( 'click', function ( event ) {
-                            var item = angular.copy( _getListItemFromVS( aData._id ) );
-                            $scope.editItem = {
-                                _id: item._id,
-                                data: item,
-                                boType: $scope.topTierBO
-                            };
-
-                            $scope.$digest();
-
-                            applySelectRow( $row );
-                        } );
-                    } ),
-                dtListColumns: ListViewService.generateListViewCols( DTColumnBuilder, $scope.options.listColumns ),
-                dtInstance: null,
-                dtInstanceCallback: function ( dtInstance ) {
-                    $scope.listView.dtInstance = dtInstance;
-                    $scope.listView.dtInstance.DataTable.on( 'draw.dt', $scope.actions.compileDataTableHtml );
-
-                    // The instance callback is called after the DT has been drawn, which means
-                    // that we need to attach the event handler and then call it manually
-                    $scope.actions.compileDataTableHtml();
-
-                    if ( _enableCache ) {
-                        $scope.editItem = _cache.get( 'editItem' );
-                    }
-                },
-                data: []
-            };
 
             $scope.treeView = {
                 options: {
@@ -343,6 +347,8 @@ app.directive( 'multiView', function ( DTOptionsBuilder, DTColumnBuilder, $q, $c
             } );
 
             $scope.$watch( 'editItem', _watchEditItem );
+            /*** End shit from kliment ***/
+
         }
     };
 } );
