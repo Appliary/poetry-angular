@@ -15,53 +15,11 @@ form.form-horizontal
                 input.form-control.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lng:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lng')
         
         setup-map(controls='vm.controls', position='vm.staticPosition.positions', edit='true', name="'static'", toggle='vm.maps.static.toggled')
-        //-
-            div(ng-show='vm.gps && vm.gps.timestamp')
-                div
-                    b {{'gps:setup:device'|translate}}
-                    span  ({{ vm.gps.timestamp | localize }})
-                div
-                    .lat
-                        label latitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lat', disabled='')
-                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.gps.toggled = !vm.maps.gps.toggled', alt='{{vm.mapIcon.name}}')
-                    .lng
-                        label longitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.gps.positions.lng', disabled='')
-                setup-map(position='vm.gps.positions', edit='false', name="'gps'", toggle='vm.maps.gps.toggled')
-
-            div(ng-show='vm.network && vm.network.timestamp')
-                div
-                    b {{'network:setup:device'|translate}}
-                    span  ({{ vm.network.timestamp | localize }})
-                div
-                    .lat
-                        label latitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lat', disabled='')
-                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.network.toggled = !vm.maps.network.toggled', alt='{{vm.mapIcon.name}}')
-                    .lng
-                        label longitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.network.positions.lng', disabled='')
-                setup-map(position='vm.network.positions', edit='false', name="'network'", toggle='vm.maps.network.toggled')
-            
-            div(ng-show='vm.lbs && vm.lbs.timestamp')
-                div
-                    b {{'lbs:setup:device'|translate}}
-                    span  ({{ vm.lbs.timestamp | localize }})
-                div
-                    .lat
-                        label latitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lat', disabled='')
-                    img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.lbs.toggled = !vm.maps.lbs.toggled', alt='{{vm.mapIcon.name}}')
-                    .lng
-                        label longitude
-                        input.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', ng-model='vm.lbs.positions.lng', disabled='')
-                setup-map(position='vm.lbs.positions', edit='false', name="'lbs'", toggle='vm.maps.lbs.toggled')
 
         b {{'icon:setup:device'|translate}}
         div
-            canvas#canvas(width='36', height='36', ng-click='openModal()')
-            color-picker(style='display: inline-table', ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
+            canvas#canvas(width='36', height='36', ng-click='openModal()', style='vertical-align: middle;')
+            color-picker(style='display: inline-table; vertical-align: middle;', ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
         
             icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
             canvas#canvasHistory(ng-show='false', width='60', height='60')
@@ -93,10 +51,3 @@ form.form-horizontal
                             | {{'update:general'|translate}}
                         span(ng-if='vm.loadingUpdate')
                             | {{'update:general'|translate}}...
-
-
-//-
-    span.saved( ng-if=' __saved ' )
-        | {{ 'saved:' | translate }}
-    span.failed( ng-if=' __failed ' )
-        | {{ 'failed:save:' | translate }}

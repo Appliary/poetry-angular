@@ -5,12 +5,12 @@ span
         </div>
         <div class="modal-body">
             <div class="input-group col-xs-12">
-                <span class="input-group-addon">
-                    <i class="fa fa-search"></i>
-                </span>
-                <input type="text" class="form-control" ng-model="filterIconsName">
+                <div class="input-icon right">
+                    <i class="icon-magnifier"></i>
+                    <input type="text" class="form-control" ng-model="filterIconsName" placeholder="{{'search:'+$root.__module.name|translate}}">
+                </div>
             </div>
-            <div style="overflow-y: auto; max-height:400px;" >
+            <div style="overflow-y: auto; max-height:400px; margin-top:15px;" >
                 <span ng-repeat="icon in icons | filter: { name : filterIconsName } track by $index"  >
                     <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon );" ng-style="icon.data == vm.iconSelected && {'background-color':'#32c5d2'}"/>
                 </span>
