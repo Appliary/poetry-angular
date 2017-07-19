@@ -1,4 +1,3 @@
-//- Managed
 h1.page-title(style="margin:0")
     | {{ $root.__module.name + ':module:title' | translate }}
     small {{ $root.__module.name + ':module:subtitle' | translate }}
@@ -18,7 +17,7 @@ h1.page-title(style="margin:0")
                 .col-md-5.col-sm-5
                     .form-group
                         label
-                            | Show
+                            | Show 
                             select.form-control.input-inline(ng-model='$parent.status')
                                 option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
                                 option( disabled, value='──────────' ) ──────────
@@ -58,7 +57,8 @@ h1.page-title(style="margin:0")
               selected-fn="select",
               sort-fn="orderBy",
               at-bottom="loadMore()",
-              filtered="filtered")
+              filtered="filtered",
+              item="item")
 
             //-.table-scrollable(scroll='scroll')
                 .dataTables_scroll(style='overflow: hidden;')

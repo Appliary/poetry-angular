@@ -1,4 +1,4 @@
-app.directive("listView", function($timeout, $window, $q){
+app.directive("listView", function ($timeout, $window, $q) {
   return {
     restrict: 'EA',
     transclude: false,
@@ -13,9 +13,10 @@ app.directive("listView", function($timeout, $window, $q){
       atBottom: "&?",
 
       //mostly used for display
-      filtered: "="
+      filtered: "=",
+      item: "="
     },
-    link: function(scope, elem, attrs, ctrls){
+    link: function (scope, elem, attrs, ctrls) {
 
       /**
       * VARS
@@ -29,11 +30,11 @@ app.directive("listView", function($timeout, $window, $q){
 
       scope.sorting = {};
 
-      if(isObject(scope.config.defaultSort)){
-        if(scope.config.defaultSort.key){
+      if (isObject(scope.config.defaultSort)) {
+        if (scope.config.defaultSort.key) {
           scope.sorting.key = scope.config.defaultSort.key;
         }
-        else if(scope.config.defaultSort.col){
+        else if (scope.config.defaultSort.col) {
           scope.sorting.key = scope.config.defaultSort.col;
         }
         scope.sorting.order = scope.config.defaultSort.order == "asc" ? "asc" : "desc";
@@ -48,161 +49,162 @@ app.directive("listView", function($timeout, $window, $q){
       */
       print("loading");
 
-      function print(message){
-        if(!scope.config.debug)
+      function print(message) {
+        if (!scope.config.debug)
           return;
-        console.log("%c [listView] "+JSON.stringify(message),"background-color: black; color: #2BFF00");
+        console.log("%c [listView] " + JSON.stringify(message), "background-color: black; color: #2BFF00");
       }
 
-      function getUserLanguage(){
+      function getUserLanguage() {
         return (scope.$root.user) ? scope.$root.user.language : "";
       }
 
       scope.ng = angular;
 
       scope.select = select;
-      function select(_id){
-        if(scope.config.noDetails){
+      function select(_id) {
+        if (scope.config.noDetails) {
           return;
         }
         scope._id = _id;
-        if(isFunction(scope.selectedFn)){
+        if (isFunction(scope.selectedFn)) {
           $timeout(
-            function(){
+            function () {
               scope.selectedFn(scope._id);
+              scope.resize();
             }
-          ,100)
+            , 100)
         }
-        print("selectedFn("+scope._id+")");
+        print("selectedFn(" + scope._id + ")");
       }
 
       scope.sort = sort;
-      function sort(column){
-        if(column.key == scope.sorting.key){
+      function sort(column) {
+        if (column.key == scope.sorting.key) {
           scope.sorting.order = scope.sorting.order == 'asc' ? 'desc' : 'asc';
         }
-        else{
+        else {
           scope.sorting.key = column.key;
           scope.sorting.order = 'asc';
         }
-        if(isFunction(scope.sortFn)){
+        if (isFunction(scope.sortFn)) {
           $timeout(
-            function(){
+            function () {
               scope.sortFn(scope.sorting.key, scope.sorting.order);
             }
-          ,100);
+            , 100);
         }
-        print("sortFn("+scope.sorting.key+", "+scope.sorting.order+") =>" );
+        print("sortFn(" + scope.sorting.key + ", " + scope.sorting.order + ") =>");
       }
 
       // isDefined
       scope.isDefined = isDefined;
-      function isDefined(v){
+      function isDefined(v) {
         return v !== null && !angular.isUndefined(v) && v;
       }
 
       // isObject
       scope.isObject = isObject;
-      function isObject(v){
+      function isObject(v) {
         return v && angular.isObject(v);
       }
 
       // isFunction
       scope.isFunction = isFunction;
-      function isFunction(v){
+      function isFunction(v) {
         return typeof v === 'function';
       }
 
       // isTimedOut
       scope.isTimedOut = isTimedOut;
-      function isTimedOut(row){
+      function isTimedOut(row) {
         return scope.config.timeout && row.hasOwnProperty('timeout') && row.timeout;
       }
 
       // isContext
       scope.isContext = isContext;
-      function isContext(coord){
+      function isContext(coord) {
         return isObject(coord) && coord.hasOwnProperty('id') && coord.hasOwnProperty('kind');
       }
 
       // isDataType
       scope.isDataType = isDataType;
-      function isDataType(column){
+      function isDataType(column) {
         return column.type == 'data' || (column.type == 'subkey' && column.subtype == 'data');
       }
 
       // sameDataTypeValue
       scope.sameDataTypeValue = sameDataTypeValue;
-      function sameDataTypeValue(row, col1, col2){
-        if(!(isDataType(col1) && isDataType(col2))){
+      function sameDataTypeValue(row, col1, col2) {
+        if (!(isDataType(col1) && isDataType(col2))) {
           return false;
         }
         return getSubkeyValue(row, col1) == getSubkeyValue(row, col2);
       }
 
-      function getSubkeyValue(row, column){
+      function getSubkeyValue(row, column) {
         var map = column.key.split(".");
         var i = 0;
         var value = row;
-        if(map.length == 0)
-           value = "";
-        try{
-          while(i < map.length){
+        if (map.length == 0)
+          value = "";
+        try {
+          while (i < map.length) {
             value = value[map[i]];
             i++;
           }
         }
-        catch(e){
+        catch (e) {
           value = "";
         }
         return value;
       }
 
-      function findSubkeyValue (row, column){
-        return $q(function(res, rej){
-				       return res(getSubkeyValue(row, column));
-			   });
+      function findSubkeyValue(row, column) {
+        return $q(function (res, rej) {
+          return res(getSubkeyValue(row, column));
+        });
       }
 
 
 
       // displayTranslatable
       scope.displayTranslatable = displayTranslatable;
-      function displayTranslatable(row, column){
+      function displayTranslatable(row, column) {
         var userLn = getUserLanguage();
         return getUserLanguage && angular.isString(userLn) && row[column.key + userLn.toUpperCase()]
-                ? row[column.key + userLn.toUpperCase()]
-                : row[ column.key ];
+          ? row[column.key + userLn.toUpperCase()]
+          : row[column.key];
       }
 
       // displaySubkey
       scope.displaySubkey = displaySubkey;
-      function displaySubkey(row, column){
+      function displaySubkey(row, column) {
         return findSubkeyValue(row, column).$$state.value;
       }
 
       // getColumnType
       scope.getColumnType = getColumnType;
-      function getColumnType(column){
+      function getColumnType(column) {
         return column.type || (column.key == '_id' ? '_id' : 'string');
       }
 
       // getMeasurementsCount
       scope.getMeasurementsCount = getMeasurementsCount;
-      function getMeasurementsCount( ){
+      function getMeasurementsCount() {
         return new Array(measurementsCount);
       }
 
-      function setMeasurementsCount(){
-        if(!hasMeasurements || !scope.list || !scope.measurementsColumn.key)
+      function setMeasurementsCount() {
+        if (!hasMeasurements || !scope.list || !scope.measurementsColumn.key)
           return;
         measurementsCount = 0;
         var key = scope.measurementsColumn.key;
-        scope.list.forEach(function(elem){
+        scope.list.forEach(function (elem) {
           measurementsCount = angular.isArray(elem[key]) ?
-                                (elem[key].length) > measurementsCount ?
-                                  (elem[key].length) : measurementsCount :
-                                measurementsCount;
+            (elem[key].length) > measurementsCount ?
+              (elem[key].length) : measurementsCount :
+            measurementsCount;
         });
       }
 
@@ -212,37 +214,37 @@ app.directive("listView", function($timeout, $window, $q){
       */
 
       // watch: data
-      scope.$watchCollection("data", function(nv){
+      scope.$watchCollection("data", function (nv) {
         var newValue = angular.isArray(nv) ? nv : [];
-        scope.list = newValue.filter(function(elem){
+        scope.list = newValue.filter(function (elem) {
           return isObject(elem);
         });
         setMeasurementsCount();
         scope.resize();
       });
-      scope.$watchCollection("pColumns", function(nv){
+      scope.$watchCollection("pColumns", function (nv) {
         scope.measurementsColumn = {};
         measurementsCount = 0;
         var newValue = angular.isArray(nv) ? nv : [];
-        scope.columns = newValue.map(function(elem){
-          if(!elem)
+        scope.columns = newValue.map(function (elem) {
+          if (!elem)
             return;
 
           return isObject(elem) && elem.key ?
-                            elem :
-                            angular.isString(elem) ?
-                              {key: elem} :
-                              undefined;
-        }).filter(function(elem){
+            elem :
+            angular.isString(elem) ?
+              { key: elem } :
+              undefined;
+        }).filter(function (elem) {
           return isObject(elem);
         });
 
-        hasMeasurements = scope.columns.some(function(elem){
-          if(elem.type == "measurements"){
+        hasMeasurements = scope.columns.some(function (elem) {
+          if (elem.type == "measurements") {
             scope.measurementsColumn = elem;
             return true;
           }
-          else{
+          else {
             return false;
           }
         });
@@ -259,107 +261,114 @@ app.directive("listView", function($timeout, $window, $q){
        * Scrolling handler ( infinite scroll + header mover )
        *
        */
-      scope.scroll = function scroll( event ) {
-          var elem = document.querySelector('.dataTables_scrollBody');
+      scope.scroll = function scroll(event) {
+        var elem = document.querySelector('.dataTables_scrollBody');
 
-          scope.$apply(function () {
-              scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
-              scope.last = scope.first + scope.nbLines - 1;
-          });
+        scope.$apply(function () {
+          scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
+          scope.last = scope.first + scope.nbLines - 1;
+        });
 
-          if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight){
-            if(scope.atBottom)
-              scope.atBottom();
-          }
+        if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
+          if (scope.atBottom)
+            scope.atBottom();
+        }
       };
 
-      scope.resize = function ( delay ) {
-              $timeout( function () {
-                  //bootstrap
-                  scope.setListHeight();
-                  scope.setColumnsWidth();
-              }, delay || 10 );
+      scope.resize = function (delay) {
+        $timeout(function () {
+          console.log("resize");
+          //bootstrap
+          scope.setListHeight();
+          scope.setColumnsWidth();
+        }, delay || 10);
       };
 
       /**
       * Set list height
       */
       scope.setListHeight = function setListHeight() {
-          $timeout(function () {
-            if(angular.isUndefined(scope.filtered)){
-              var globalHeight = $window.innerHeight;
-              var tablediv = angular.element( document.querySelector( '.dataTables_scrollBody' ) );
-              var offsetTop = tablediv.prop( 'offsetTop' );
-              var margin = 200;
-              scope.listHeight = globalHeight - ( margin + offsetTop );
-              return;
-            }
+        if (scope.filtered > 0) {
+          console.log('setListHeight');
+          if (angular.isUndefined(scope.filtered)) {
+            var globalHeight = $window.innerHeight;
+            var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
+            var offsetTop = tablediv.prop('offsetTop');
+            var margin = 200;
+            scope.listHeight = globalHeight - (margin + offsetTop);
+            return;
+          }
 
-              var elem = document.querySelector('.dataTables_scrollBody');
-              scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
-              scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
+          var elem = document.querySelector('.dataTables_scrollBody');
+          scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
+          scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
 
-
-              console.log("filtered", scope.filtered);
-              if (scope.filtered > scope.nbLines)
-                  scope.listHeight = scope.lineHeight * scope.nbLines;
-              else
-                  scope.listHeight = 'initial';
-              console.log("height:",scope.listHeight, "scope.nbLines:",scope.nbLines);
-              console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
-          })
+          //console.log("filtered", scope.filtered);
+          if (scope.filtered > scope.nbLines)
+            scope.listHeight = scope.lineHeight * scope.nbLines;
+          else
+            scope.listHeight = 'initial';
+          //console.log("height:", scope.listHeight, "scope.nbLines:", scope.nbLines);
+          //console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
+        }
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
-          $timeout(function () {
-              var scrollBody = document.querySelector('.dataTables_scrollBody');
-              var scrollHead = document.querySelector('.dataTables_scrollHead');
+        if (scope.filtered > 0) {
+          console.log('setColumnsWidth');
+          var scrollBody = document.querySelector('.dataTables_scrollBody');
+          var scrollHead = document.querySelector('.dataTables_scrollHead');
 
-              var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
-              var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
-              try{
-                for (var i = 0; i < headThs.length; i++) {
-                    var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+          var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
+          var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
+          try {
+            for (var i = 0; i < headThs.length; i++) {
+              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
-                    var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                    var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-                    var newThWidth = tdWidth + (tdPadding - thPadding);
+              var newThWidth = tdWidth + (tdPadding - thPadding);
 
-                    headThs[i].style.minWidth = newThWidth + "px";
-                    headThs[i].style.maxWidth = newThWidth + "px";
-                    headThs[i].style.width = newThWidth + "px";
-                }
+              headThs[i].style.minWidth = newThWidth + "px";
+              headThs[i].style.maxWidth = newThWidth + "px";
+              headThs[i].style.width = newThWidth + "px";
+            }
 
-                for (var i = 0; i < headThs.length; i++) {
-                    var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-                    var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+            for (var i = 0; i < headThs.length; i++) {
+              var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
-                    var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                    var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-                    var x = tdWidth - (thPadding - tdPadding);
-                    x = Math.round(x * 10) / 10;
+              var x = tdWidth - (thPadding - tdPadding);
+              x = Math.round(x * 10) / 10;
 
-                    if (thWidth != x) {
-                        var newTdWidth = thWidth + (thPadding - tdPadding);
+              if (thWidth != x) {
+                var newTdWidth = thWidth + (thPadding - tdPadding);
 
-                        bodyTds[i].style.minWidth = newTdWidth + "px";
-                        bodyTds[i].style.maxWidth = newTdWidth + "px";
-                        bodyTds[i].style.width = newTdWidth + "px";
-                    }
-                }
-              }catch(e){
-                console.error("[listView] setColumnsWidth:",e);
+                bodyTds[i].style.minWidth = newTdWidth + "px";
+                bodyTds[i].style.maxWidth = newTdWidth + "px";
+                bodyTds[i].style.width = newTdWidth + "px";
               }
-
-          });
+            }
+          } catch (e) {
+            console.error("[listView] setColumnsWidth:", e);
+          }
+        }
       }
 
-      angular.element( $window )
-          .bind( 'resize', function () {
-              scope.resize();
-          } );
+      scope.$watch('item', function () {
+        if (!scope.item) {
+          scope.resize();
+        }
+      })
+
+      angular.element($window)
+        .bind('resize', function () {
+          scope.resize();
+        });
     }
   };
 });

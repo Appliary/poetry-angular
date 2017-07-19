@@ -120,12 +120,14 @@ app.component('appRouter', {
             $scope.__view = path[2];
             console.info('Going to', $scope.$root.__module.name, $scope.__id, $scope.__view);
 
-            console.log($scope);
+            if (!$scope.__id && !$scope.__view) {
+                $scope.item = undefined;
+            }
 
             try {
                 if ($scope.$root.__module.controller && $scope.$root.__module.name != lastModule) {
 
-                    Object.keys($scope) 
+                    Object.keys($scope)
                         .forEach(function (k) {
                             if (k.indexOf('$') && k.indexOf('_'))
                                 delete $scope[k];
@@ -156,12 +158,12 @@ app.component('appRouter', {
                     $scope.__id = "new";
                     $scope.tab('');
                 } else {
-                    return ngDialog.open( {
+                    return ngDialog.open({
                         template: $scope.__config.templateUrl || 'modals/toolbox.pug',
                         controller: $scope.__config.controller || 'modals/toolbox',
                         showClose: false,
                         scope: $scope
-                    } );
+                    });
                 }
 
             };
