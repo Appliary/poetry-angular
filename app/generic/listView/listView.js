@@ -12,7 +12,8 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
       sortFn: "<?", //params: sort, order
       atBottom: "&?",
 
-      minHeight: "<?"
+      minHeight: "<?",
+      maxHeight: "<?"
     },
     link: function(scope, elem, attrs, ctrls){
 
@@ -279,6 +280,11 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
                   var offsetTop = tablediv.prop( 'offsetTop' );
                   var margin = 80;
                   scope.currentHeight = globalHeight - ( margin + offsetTop ) + (angular.isNumber(scope.minHeight) ? scope.minHeight : 0);
+
+                  if(angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.currentHeight){
+                    scope.currentHeight = scope.maxHeight;
+                  }
+
               }, delay || 10 );
       };
 
