@@ -191,6 +191,17 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
         return new Array(measurementsCount);
       }
 
+      // getFantomMeasurements
+      scope.getFantomMeasurements = getFantomMeasurements;
+      function getFantomMeasurements(meas){
+        var total = measurementsCount || 0;
+        if(angular.isArray(meas)){
+          total -= meas.length;
+        }
+        total = total < 0 ? 0 : total;
+        return new Array(total);
+      }
+
       function setMeasurementsCount() {
         if (!hasMeasurements || !scope.list || !scope.measurementsColumn.key)
           return;
@@ -273,12 +284,9 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
 
       scope.resize = function (delay) {
         $timeout(function () {
-          if (scope.filtered > 0) {
-            console.log("resize");
-            //bootstrap
-            scope.setListHeight();
-            scope.setColumnsWidth();
-          }
+          print("resize");
+          scope.setListHeight();
+          scope.setColumnsWidth();
         }, delay || 10);
       };
 
@@ -295,9 +303,23 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
         var offsetTop = tableElem.prop('offsetTop');
         var margin = 280;
         scope.listHeight = globalHeight - (margin + offsetTop);
+        console.log("listHeight", scope.listHeight);
 
-        scope.lineHeight = tableElem.scrollHeight / (100 * (0 + 1));
+
+        console.log("maxHeight", scope.maxHeight);
+
+        if(!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)){
+          scope.listHeight = scope.maxHeight;
+        }
+
+        console.log("tableElem", tableElem);
+
+        var page = Math.floor(scope.data.length / 100);
+        scope.lineHeight = tableElem[0].scrollHeight / (100 * (page + 1));
         scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
+
+        console.log("lineHeight", scope.lineHeight);
+        console.log("nbLines", scope.nbLines);
 /** OLD METHOD
         //console.log("filtered", scope.filtered);
         if (scope.filtered > scope.nbLines)
@@ -314,7 +336,7 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
         var scrollBody = document.querySelector('.dataTables_scrollBody');
         var scrollHead = document.querySelector('.dataTables_scrollHead');
 
-        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
+        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead tr th');
         var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
         try {
           for (var i = 0; i < headThs.length; i++) {

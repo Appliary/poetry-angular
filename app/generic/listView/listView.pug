@@ -85,6 +85,8 @@
                             .dataTables_sizing
                         th(ng-repeat='column in columns', style='height: 0px; padding:0;')
                             .dataTables_sizing
+                        th( ng-repeat="mc in getMeasurementsCount() track by $index", style='height: 0px; padding:0;' )
+                            .dataTables_sizing
                         th(style='height: 0px; padding:0;')
                             .dataTables_sizing
                 tbody
@@ -136,6 +138,9 @@
                                 | {{ m.type }}
                                 span(ng-repeat="subM in m.value track by $index")
                                     | {{ subM | localize }}
+                        //- fantom measurements
+                        td( ng-repeat='fm in getFantomMeasurements(row[measurementsColumn.key]) track by $index', ng-click='select(row._id)' ng-if="measurementsColumn.key")
+                            span()
                         //-td( ng-repeat='column in columns')
                             span( ng-if='row[ column ] !== undefined && row[ column ] !== null && column === "icon" && !isContext(row[ column ])'
                             , ng-click='select(row._id)')
