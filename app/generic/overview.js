@@ -90,7 +90,8 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validati
      */
     $scope.confirmDeletion = function confirmDeletion() {
         return ngDialog.openConfirm( {
-                templateUrl: 'modals/confirmation.pug'
+                templateUrl: 'modals/confirmation.pug',
+                className: 'center-block'
             } )
             .then( function confirmed() {
                 $http.delete( $scope.$root.__module.api + '/' + $scope.__id )

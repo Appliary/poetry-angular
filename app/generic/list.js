@@ -169,7 +169,7 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                             templateUrl: 'modals/login.pug',
                             controller: 'modals/login',
                             showClose: false,
-                            className: 'login'
+                            className: 'login center-block'
                         });
 
                     $location.path('/error/' + response.status);

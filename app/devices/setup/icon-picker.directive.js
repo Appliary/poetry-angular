@@ -61,6 +61,7 @@
                 template: 'popupConfirm.pug',
                 scope: $scope,
                 showClose: false,
+                className: 'center-block'
             })
                 .then(function () { })
                 .catch(function () { });
