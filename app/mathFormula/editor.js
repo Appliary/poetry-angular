@@ -76,7 +76,8 @@ app.controller( 'mathFormula/editor', function (
             ngDialog.openConfirm( {
                     templateUrl: 'mathFormula/add.pug',
                     controller: 'mathFormula/add',
-                    scope: scope
+                    scope: scope,
+                    className: 'center-block'
                 } )
                 .then( function success( input ) {
 
@@ -99,7 +100,8 @@ app.controller( 'mathFormula/editor', function (
         remove: function ( i ) {
 
             ngDialog.openConfirm( {
-                    templateUrl: 'modals/confirmation.pug'
+                    templateUrl: 'modals/confirmation.pug',
+                    className: 'center-block'
                 } )
                 .then( function success() {
 

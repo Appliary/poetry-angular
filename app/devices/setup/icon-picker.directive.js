@@ -28,13 +28,12 @@
         // ***********************************************************
         //                  DECLARE VARIABLES
         var vm = this;
-        console.log(vm);
-        console.log($scope);
 
         // ***********************************************************
         //                  MAPPING FUNCTIONS
         vm.click = function (icon) {
-            vm.iconSelected = icon.data;
+            //vm.iconSelected = icon.data;
+            vm.iconPreSelected = icon.data;
         };
         vm.openConfirmModal = openConfirmModal;
 
@@ -62,6 +61,7 @@
                 template: 'popupConfirm.pug',
                 scope: $scope,
                 showClose: false,
+                className: 'center-block'
             })
                 .then(function () { })
                 .catch(function () { });
@@ -71,11 +71,12 @@
             return $sce.trustAsHtml(aString);
         }
 
-        $scope.cancel = function () {
-            console.log(vm);
-            console.log($scope);
+        $scope.save = function () {
+            vm.iconSelected = vm.iconPreSelected;
+        }
 
-            //vm.iconSelected = vm.currentIcon;
+        $scope.cancel = function () {
+            vm.iconPreSelected = undefined;
         }
 
     }

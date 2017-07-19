@@ -260,19 +260,11 @@
         }
 
         $scope.openModal = function () {
-            vm.currentIcon = vm.iconSelected;
-            $scope.currentIcon = vm.iconSelected;
-            $scope.vm.currentIcon = vm.iconSelected;
-
-            console.log(vm);
-            console.log($scope);
-
             vm.procSelectIcon = !vm.procSelectIcon;
+
             $timeout(function () {
-                if ($('.modal')[0])
-                    $('.modal')[0].style.display = "block";
-                else $scope.openModal();
-            }, 500);
+                vm.procSelectIcon = !vm.procSelectIcon;
+            }, 500)
         }
 
     }

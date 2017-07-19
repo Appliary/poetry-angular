@@ -162,7 +162,8 @@ app.component( 'appRouter', {
                         template: $scope.__config.templateUrl || 'modals/toolbox.pug',
                         controller: $scope.__config.controller || 'modals/toolbox',
                         showClose: false,
-                        scope: $scope
+                        scope: $scope,
+                        className: 'center-block'
                     } );
                 }
 
