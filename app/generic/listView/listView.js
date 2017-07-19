@@ -288,7 +288,7 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
       scope.setListHeight = function setListHeight() {
         console.log('setListHeight');
         /**
-        *
+        * fix a new max-height
         */
         var globalHeight = $window.innerHeight;
         var tableElem = angular.element(document.querySelector('.dataTables_scrollBody'));
@@ -298,7 +298,7 @@ app.directive("listView", function($timeout, $window, $q, listViewService){
 
         scope.lineHeight = tableElem.scrollHeight / (100 * (0 + 1));
         scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
-/** ???
+/** OLD METHOD
         //console.log("filtered", scope.filtered);
         if (scope.filtered > scope.nbLines)
           scope.listHeight = scope.lineHeight * scope.nbLines;
