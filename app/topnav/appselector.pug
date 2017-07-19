@@ -1,6 +1,6 @@
 .hor-menu.hidden-sm.hidden-xs
   ul.nav.navbar-nav.nav-tabs
     li.classic-menu-dropdown(ng-repeat='app in apps', ng-click='select(app)', ng-class="{active:(app==current)}", ng-if=' $root.role.permissions.APP[ app ] || $root.user.role == "SUPER" ')
-      a 
+      a(style='border:0;') 
         | {{ app + ':application' | translate }}
         span.selected(ng-if='app==current')
