@@ -1,6 +1,5 @@
 form.form-horizontal( ng-submit='' )
     .form-body
-        h4 Title
         .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
             label.col-md-3.control-label( for='{{field}}', ng-class="{ 'text-danger': __joi.computed[field]._flags.presence == 'required' }", ng-if="inputType(field) != 'timezoneOffset'")
                 | {{ field + ':field' | translate }} 

@@ -65,7 +65,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
       scope.select = select;
       function select(_id) {
-        if (scope.config.noDetails) {
+        if (scope.config.noDetails || scope._id == _id) {
           return;
         }
         if (isFunction(scope.selectedFn)) {
