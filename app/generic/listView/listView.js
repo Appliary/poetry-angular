@@ -1,4 +1,4 @@
-app.directive("listView", function ($timeout, $window, $q) {
+app.directive("listView", function ($timeout, $window, $q, listViewService) {
   return {
     restrict: 'EA',
     transclude: false,
@@ -14,7 +14,9 @@ app.directive("listView", function ($timeout, $window, $q) {
 
       //mostly used for display
       filtered: "=",
-      item: "="
+      item: "=",
+      minHeight: "<?",
+      maxHeight: "<?"
     },
     link: function (scope, elem, attrs, ctrls) {
 
@@ -215,6 +217,8 @@ app.directive("listView", function ($timeout, $window, $q) {
         });
         setMeasurementsCount();
         scope.resize();
+        scope.first = 1;
+        scope.last = scope.filtered;
       });
       scope.$watchCollection("pColumns", function (nv) {
         scope.measurementsColumn = {};
@@ -285,32 +289,23 @@ app.directive("listView", function ($timeout, $window, $q) {
       */
       scope.setListHeight = function setListHeight() {
         console.log('setListHeight');
-        if (angular.isUndefined(scope.filtered)) {
-          var globalHeight = $window.innerHeight;
-          var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
-          var offsetTop = tablediv.prop('offsetTop');
-          var margin = 200;
-          scope.listHeight = globalHeight - (margin + offsetTop);
-          return;
-        }
+        /**
+        * fix a new max-height
+        */
         var globalHeight = $window.innerHeight;
-        var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
-        var offsetTop = tablediv.prop('offsetTop');
+        var tableElem = angular.element(document.querySelector('.dataTables_scrollBody'));
+        var offsetTop = tableElem.prop('offsetTop');
         var margin = 280;
         scope.listHeight = globalHeight - (margin + offsetTop);
-        return;
 
-        var elem = document.querySelector('.dataTables_scrollBody');
-        scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
+        var scrollHeight = tableElem.prop('scrollHeight');
+        scope.lineHeight = scrollHeight / (100 * (0 + 1));
         scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
 
-        //console.log("filtered", scope.filtered);
         if (scope.filtered > scope.nbLines)
           scope.listHeight = scope.lineHeight * scope.nbLines;
         else
           scope.listHeight = 'initial';
-        //console.log("height:", scope.listHeight, "scope.nbLines:", scope.nbLines);
-        //console.log("scope.filtered > scope.nbLines", scope.filtered > scope.nbLines);
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
@@ -366,7 +361,9 @@ app.directive("listView", function ($timeout, $window, $q) {
       angular.element($window)
         .bind('resize', function () {
           scope.resize();
-        })
+        });
+
+      listViewService.register({ event: 'resize', callback: scope.resize });
     }
   }
 })
