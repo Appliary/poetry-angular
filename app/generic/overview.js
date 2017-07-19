@@ -2,7 +2,7 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validati
 
     $scope.$watch( '$root.__module.name', function init() {
         // Get validation object
-        $http.put( '/__joi' + $scope.$root.__module.api + '/id' )
+        $http.put( '/__joi' + $scope.$root.__module.api + '/validation' )
             .then( function success( response ) {
                 if ( !response.data.payload._inner || !response.data.payload._inner.children ) {
                     $scope.__joi = response.data.payload;
@@ -61,16 +61,16 @@ app.controller( 'generic/overview', function ( $scope, $http, ngDialog, validati
                     // When the af changes, change the computed to the related
                     var computeAF = function computeAF( n, o ) {
                         console.info( 'ALT changed !', n, o );
-                        console.debug($scope.__joi.alt);
+                        console.debug( $scope.__joi.alt );
                         try {
                             // Try to get the correct validation schema
                             $scope.__joi.computed = $scope.__joi.alt[
                                 $scope.item[ $scope.__joi.af ]
                             ];
-                            if(!$scope.__joi.computed && !nbInit){
-                              nbInit++;
-                              $scope.item[ $scope.__joi.af ] = Object.keys( $scope.__joi.alt )[ 0 ];
-                              $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
+                            if ( !$scope.__joi.computed && !nbInit ) {
+                                nbInit++;
+                                $scope.item[ $scope.__joi.af ] = Object.keys( $scope.__joi.alt )[ 0 ];
+                                $scope.__joi.computed = $scope.__joi.alt[ Object.keys( $scope.__joi.alt )[ 0 ] ];
                             }
                         } catch ( e ) {
                             // If not found, take the first one available

@@ -471,6 +471,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                     } );
 
                 scope.total = response.data.recordsFiltered;
+                scope.filtered = response.data.recordsFiltered;
 
                 if ( !scope.columns.length )
                     scope.data.forEach( function ( data ) {

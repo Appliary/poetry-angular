@@ -5,12 +5,6 @@
             span.caption-subject Search
         .actions
             span {{config.$open ? "&darr;" : "&uarr;"}}
-        //- span()
-                | {{ "selectAlerts:alertsList" | translate }} &nbsp;
-            span( ng-if='total' )
-                | {{'results' | translate }} {{total}}
-            span.loading( ng-if='total === undefined')
-                | {{ 'loading:' + $root.__module.name | translate }}
     .portlet-body(ng-hide="!config.$open")
         form.form-inline
             .form-group(ng-hide="isGenericApp()")
@@ -62,97 +56,19 @@
                 //- searchTags
                 tags-input.col-xs-12(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
 
-//- list-view
-list-view(
-  ng-class='{detailed:__id}'
-  columns="columns",
-  data="data",
-  config="{debug: true}",
-  selected-fn="select",
-  sort-fn="orderBy",
-  at-bottom="loadMore()")
-
-//-.table-scrollable(scroll='scroll')
-    .dataTables_scroll(style='overflow: hidden;')
-        .dataTables_scrollHead(style='overflow: hidden;')
-            .dataTables_scrollHeadInner
-                table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='padding-right: 17px;')
-                    thead: tr
-                        th.sorting_disabled
-                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.group-checkable(type='checkbox')
-                                span
-                        th.sorting( ng-repeat='column in columns', ng-click='sort(column)', ng-class='{ "sorting_asc": (sorting.col == column && sorting.order == "asc"), "sorting-desc": (sorting.col == column && sorting.order == "desc") }' )
-                            | {{ column + ':' + 'column' | translate }}
-                        th.sorting_disabled  Actions
-        .dataTables_scrollBody(style="overflow: auto;", ng-style="{'height': listHeight}")
-            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
-                thead
-                    tr(style='height: 0px; padding:0;')
-                        th(style='height: 0px; padding:0;')
-                            .dataTables_sizing
-                        th(ng-repeat='column in columns', style='height: 0px; padding:0;')
-                            .dataTables_sizing
-                        th(style='height: 0px; padding:0;')
-                            .dataTables_sizing
-                tbody
-                    tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: row._id == __id, danger: isTimedOut(row) } ' )
-                        td
-                            label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.checkboxes(type='checkbox', value='1')
-                                span
-                        td( ng-repeat='column in columns')
-                            span( ng-if='row[ column ] !== undefined && row[ column ] !== null && column === "icon" && !isContext(row[ column ])'
-                            , ng-click='select(row._id)')
-                                i(class="{{row[ column ]}}")
-                            span( ng-if='row[ column ] !== undefined && row[ column ] !== null && column != "_id" && column != "icon" && column != "message" && column != "tags" && !isContext(row[ column ])'
-                            , title="{{(row[ column ]._id)?row[ column ]._id:row[ column ]}}"
-                            , ng-click='select(row._id)' )
-                                | {{ row[ column ] | localize }}
-                            span( ng-if='column === "message"'
-                            , ng-click='select(row._id)')
-                                | {{displayMessage(row)}}
-                            em( ng-if='column == "_id"'
-                            , ng-click='select(row._id)')
-                                | {{ row[ column ] }}
-                            span( ng-if='column === "tags"')
-                                tags-viewer(array="row[ column ]", selected-tag="addSearchTag")
-                            span( ng-if="isContext(row[ column ])")
-                                //-| {{displayContext(row[ column ], row['lookedUpContext'])}}
-                                //- tags-viewer to remove if it continues to crash so much
-                                tags-viewer(array="[row[ column ]]")
-                        td
-                            .btn-group(style='position: relative;')
-                                button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions
-                                    i.fa.fa-angle-down
-                                ul.dropdown-menu(role='menu')
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-docs
-                                            |  New Post
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-tag
-                                            |  New Comment
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-user
-                                            |  New User
-                                    li.divider
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-flag
-                                            |  Comments
-                                            span.badge.badge-success 4
-.row
-    .col-md-5.col-sm-12
-        .dataTables_info(ng-if='filtered > 0')
-            | Showing {{ first }} to {{ last }} of {{ filtered }} records
-        .dataTables_info(ng-if='filtered <= 0')
-            | No data found
-//-
-    .noData( ng-if='total === 0' )
-        | {{ 'nodata' | translate}}
+.portlet.light.bordered(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'" style="margin-top: 20px;")
+    .portlet-body
+        .dataTables_wrapper.no-footer.DTS
+            //- list-view
+            list-view(
+            ng-class='{detailed:__id}'
+            columns="columns",
+            data="data",
+            config="{debug: true}",
+            selected-fn="select",
+            sort-fn="orderBy",
+            at-bottom="loadMore()",
+            filtered="filtered",
+            item="item")
 
 ng-include.details( ng-class='{detailed:__id}', src="'alertsList/details.pug'" )
