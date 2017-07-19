@@ -77,7 +77,7 @@
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
                         th.sorting_disabled  Actions
-        .dataTables_scrollBody(style="overflow: auto; height: {{listHeight}}px;")
+        .dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;")
             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
                 thead
                     tr(style='height: 0px; padding:0;')

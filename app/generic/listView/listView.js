@@ -73,7 +73,7 @@ app.directive("listView", function ($timeout, $window, $q) {
       }
 
       scope.sort = sort;
-      function sort(column) { 
+      function sort(column) {
         if (column.key == scope.sorting.key) {
           scope.sorting.order = scope.sorting.order == 'asc' ? 'desc' : 'asc';
         }
@@ -293,6 +293,12 @@ app.directive("listView", function ($timeout, $window, $q) {
           scope.listHeight = globalHeight - (margin + offsetTop);
           return;
         }
+        var globalHeight = $window.innerHeight;
+        var tablediv = angular.element(document.querySelector('.dataTables_scrollBody'));
+        var offsetTop = tablediv.prop('offsetTop');
+        var margin = 280;
+        scope.listHeight = globalHeight - (margin + offsetTop);
+        return;
 
         var elem = document.querySelector('.dataTables_scrollBody');
         scope.lineHeight = elem.scrollHeight / (100 * (0 + 1));
