@@ -23,7 +23,7 @@ div(ng-controller='devices/history')
                 h4.panel-title
                     span.accordion-toggle.collapsed(ng-click='measurement.$open = !measurement.$open')
                         | {{ measurement.timestamp | localize }}
-                        a.fa.fa-link.pull-right(ng-href="measurements/{{measurement._id}}/")
+                        a.fa.fa-share.pull-right(ng-href="measurements/{{measurement._id}}/")
             .panel-collapse.collapse(ng-class=' {in:measurement.$open} ')
                 .panel-body
                     table.table(style="margin-bottom: 0;")

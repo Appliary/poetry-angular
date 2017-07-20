@@ -191,6 +191,17 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         return new Array(measurementsCount);
       }
 
+      // getFantomMeasurements
+      scope.getFantomMeasurements = getFantomMeasurements;
+      function getFantomMeasurements(meas) {
+        var total = measurementsCount || 0;
+        if (angular.isArray(meas)) {
+          total -= meas.length;
+        }
+        total = total < 0 ? 0 : total;
+        return new Array(total);
+      }
+
       function setMeasurementsCount() {
         if (!hasMeasurements || !scope.list || !scope.measurementsColumn.key)
           return;
@@ -264,7 +275,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
         scope.$apply(function () {
           scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
-          scope.last = scope.first + scope.nbLines - 1;
+          scope.last = scope.first + Math.round(scope.listHeight/scope.lineHeight) - 1;
         });
 
         if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
@@ -274,14 +285,13 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
       };
 
       scope.resize = function (delay) {
-        $timeout(function () {
-          if (scope.filtered > 0) {
+        if (scope.filtered > 0) {
+          $timeout(function () {
             console.log("resize");
-            //bootstrap
             scope.setListHeight();
             scope.setColumnsWidth();
-          }
-        }, delay || 10);
+          }, delay || 10);
+        }
       };
 
       /**
@@ -297,15 +307,16 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         var offsetTop = tableElem.prop('offsetTop');
         var margin = 280;
         scope.listHeight = globalHeight - (margin + offsetTop);
+        //console.log("listHeight", scope.listHeight);
+        //console.log("maxHeight", scope.maxHeight);
 
-        var scrollHeight = tableElem.prop('scrollHeight');
-        scope.lineHeight = scrollHeight / (100 * (0 + 1));
-        scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
+        if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
+          scope.listHeight = scope.maxHeight;
+        }
+        //console.log("tableElem", tableElem);
 
-        if (scope.filtered > scope.nbLines)
-          scope.listHeight = scope.lineHeight * scope.nbLines;
-        else
-          scope.listHeight = 'initial';
+        scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
+        //console.log("lineHeight", scope.lineHeight);
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
@@ -313,7 +324,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         var scrollBody = document.querySelector('.dataTables_scrollBody');
         var scrollHead = document.querySelector('.dataTables_scrollHead');
 
-        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead th');
+        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead tr th');
         var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
         try {
           for (var i = 0; i < headThs.length; i++) {

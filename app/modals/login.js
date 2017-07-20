@@ -36,7 +36,7 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location, ng
             templateUrl: 'modals/register.pug',
             controller: 'modals/register',
             showClose: false,
-            className: 'register'
+            className: 'register center-block'
         } );
     };
 

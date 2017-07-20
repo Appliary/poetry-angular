@@ -93,7 +93,8 @@ app.controller( 'alertsList/overview', function ( $scope, $http, ngDialog, valid
      */
     $scope.confirmDeletion = function confirmDeletion() {
         return ngDialog.openConfirm( {
-                templateUrl: 'modals/confirmation.pug'
+                templateUrl: 'modals/confirmation.pug',
+                className: 'center-block'
             } )
             .then( function confirmed() {
                 $http.delete( $scope.root.moduleApi + '/' + $scope.root.__id )
