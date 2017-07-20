@@ -21,12 +21,14 @@ h1.page-title(style="margin-top:0")
         tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
 
     .portlet-body(ng-if="general.activeView === 'list'")
-        list-view(
-          data="listView.data",
-          columns="listView.columns",
-          selected-fn="listView.select",
-          item="editItem"
-        )
+        .dataTables_wrapper.no-footer.DTS
+            list-view( 
+            data="listView.data",
+            columns="listView.columns",
+            selected-fn="listView.select",
+            filtered="listView.data.length",
+            item="editItem"
+            )
 
 .col-md-5(ng-if="editItem")
     ng-include(old-src="actions.getMultiViewEdit()", src="'generic/details.pug'")
