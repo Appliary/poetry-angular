@@ -23,7 +23,7 @@
     "jquery": "^2.2.4",
     "js-cookie": "^2.1.4",
     "jstree": "^3.3.2",
-    "leaflet": "^1.0.2",
+    "leaflet": "1.0.2",
     "leaflet-draw": "^0.4.9",
     "leaflet-google-places-autocomplete": "0.0.5",
     "leaflet.markercluster": "^1.0.0",
