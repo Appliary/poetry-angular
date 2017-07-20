@@ -13,9 +13,18 @@ app.config( function ( $locationProvider, $httpProvider ) {
         $locationProvider.html5Mode( true );
         $httpProvider.defaults.withCredentials = true;
     } )
-    .run( function ( $rootScope, $http ) {
+    .run( function ( $rootScope, $http, $location, AppUserService ) {
         $rootScope.__appName = __appName;
         $rootScope.loaded = false;
+
+        /**
+        * on route change
+        if(!AppUserService.hasApp(__appName)){
+          if($location.path() != '' ){
+            return $location.path( '/error/403' );
+          }
+        }
+        */
 
         /**
          * Retrieve session
