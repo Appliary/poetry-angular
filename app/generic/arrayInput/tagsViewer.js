@@ -1,4 +1,4 @@
-var TAGScache;
+var TAGScache = {};
 app.directive( 'tagsViewer', function arrayInput() {
     return {
         templateUrl: 'generic/arrayInput/tagsViewer.pug',
