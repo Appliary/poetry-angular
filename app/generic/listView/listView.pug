@@ -7,9 +7,13 @@
                         th.sorting_disabled
                         //- columns header display
                         th.sorting( ng-repeat='column in columns'
-                        , ng-if="column.key != measurementsColumn.key"
+                        , ng-if="column.key != measurementsColumn.key && !config.noSort"
                         , ng-click='sort(column)'
                         , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }' )
+                            | {{ (column.label || column.key) + ':' + 'column' | translate }}
+                        //- columns header display noSort
+                        th.sorting_disabled( ng-repeat='column in columns'
+                        , ng-if="column.key != measurementsColumn.key && config.noSort" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- measurements header display
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
@@ -31,7 +35,7 @@
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         td
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.checkboxes(ng-checked='_id == row._id', ng-click='select(row._id)', type='checkbox')
+                                input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
                                 span
                         //- data
                         td( ng-repeat='(idx, column) in columns'
@@ -50,7 +54,7 @@
                                 | {{displayTranslatable(row, column)}}
                             //- _id
                             em( ng-if='isDefined(row[column.key]) && getColumnType(column) == "_id" && !isContext(row[ column.key ])')
-                                | {{ row[ column.key ] }}
+                                | {{ row[ column.key ] }} "_id"
                             //- tags
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "tags" && !isContext(row[ column.key ])')
                                 tags-viewer(array="row[ column.key ]")
@@ -63,7 +67,8 @@
                                 tags-viewer(array="[row[ column.key ]]")
                             //- subkey
                             span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ])')
-                                | {{displaySubkey(row, column) | localize}}
+                                span(ng-if="isDefined(displaySubkey(row, column))")
+                                    | {{displaySubkey(row, column) | localize}}
                             //- fallback
                             span( ng-if="!isDefined(row[column.key]) && isDefined(column.fallback) && getColumnType(column) != 'subKey'")
                                 | {{column.fallback}}
