@@ -275,7 +275,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
         scope.$apply(function () {
           scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
-          scope.last = scope.first + scope.nbLines - 1;
+          scope.last = scope.first + Math.round(scope.listHeight/scope.lineHeight) - 1;
         });
 
         if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
@@ -308,21 +308,15 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         var margin = 280;
         scope.listHeight = globalHeight - (margin + offsetTop);
         //console.log("listHeight", scope.listHeight);
-
         //console.log("maxHeight", scope.maxHeight);
 
         if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
           scope.listHeight = scope.maxHeight;
         }
-
         //console.log("tableElem", tableElem);
 
-        var page = Math.floor(scope.data.length / 100);
-        scope.lineHeight = tableElem[0].scrollHeight / (100 * (page + 1));
-        scope.nbLines = Math.floor((1 / 2) * window.innerHeight / scope.lineHeight);
-
+        scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
         //console.log("lineHeight", scope.lineHeight);
-        //console.log("nbLines", scope.nbLines);
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
