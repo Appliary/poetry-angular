@@ -43,7 +43,6 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
       }
 
 
-
       scope.measurementsColumn = {};
 
       /**

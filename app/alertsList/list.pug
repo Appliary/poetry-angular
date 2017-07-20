@@ -1,4 +1,4 @@
-.portlet.box.green(ng-init='config.$open = !$index')
+.portlet.box.green(ng-init='config.$open = !$index', ng-hide="hideFilters")
     .portlet-title(ng-click='config.$open = !config.$open;')
         .caption
             i.icon-magnifier
