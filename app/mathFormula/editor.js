@@ -58,7 +58,9 @@ app.controller( 'mathFormula/editor', function (
         scope.vals = vals;
         ngDialog.openConfirm( {
             templateUrl: 'mathFormula/showVals.pug',
-            scope: scope
+            scope: scope,
+            showClose: false,
+            className: 'center-block'
         } );
     };
 
@@ -77,6 +79,7 @@ app.controller( 'mathFormula/editor', function (
                     templateUrl: 'mathFormula/add.pug',
                     controller: 'mathFormula/add',
                     scope: scope,
+                    showClose: false,
                     className: 'center-block'
                 } )
                 .then( function success( input ) {
@@ -101,6 +104,7 @@ app.controller( 'mathFormula/editor', function (
 
             ngDialog.openConfirm( {
                     templateUrl: 'modals/confirmation.pug',
+                    showClose: false,
                     className: 'center-block'
                 } )
                 .then( function success() {

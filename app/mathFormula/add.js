@@ -260,6 +260,8 @@ app.controller( 'mathFormula/add', function (
 
     $scope.tab = function tab( name ) {
         $scope.tabview = name;
+        // prevent default select onClick event
+        return false;
     };
 
     $scope.rmTag = function rmTag( i ) {

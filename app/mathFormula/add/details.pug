@@ -1,35 +1,47 @@
-br
-br
-form
-    label(for="varName")
-        | {{ 'varName:' + $root.__module.name + ':field' | translate }}
-    input#varName( type="text", ng-class='{error: badName($parent.input.varName)}', ng-model='$parent.input.varName')
+form.form-horizontal
+    .form-body
+        .form-group
+            label.col-md-3.control-label(for="varName")
+                | {{ 'varName:' + $root.__module.name + ':field' | translate }}
+            .col-md-9
+                input.form-control#varName( type="text", ng-class='{error: badName($parent.input.varName)}', ng-model='$parent.input.varName')
 
-    label(for="device")
-        | {{ 'device:' + $root.__module.name + ':field' | translate }}
-    //-device-selector(filters="deviceSelectorFilters" on-change="deviceSelectorOnChange")
-    input#device.fakeSelect(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices')", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'")
-    div(ng-if="$parent.input.device.kind == 'tags'", style="width:60%;display:inline")
-        span.unit(ng-repeat="(i, tag) in $parent.input.device._id", style="padding-left:35%")
-            input#device(value="t {{ tag }}", readonly)
-            span(ng-click="rmTag(i)") &times;
-        input#tag.fakeSelect(readonly, ng-click="tab('tag')", placeholder="{{'addTag:device:mathformula'|translate}}" )
+        .form-group
+            label.col-md-3.control-label(for="device")
+                | {{ 'device:' + $root.__module.name + ':field' | translate }}
+            //-device-selector(filters="deviceSelectorFilters" on-change="deviceSelectorOnChange")
+            .col-md-9
+                .input-icon.right
+                    i.fa.fa-caret-down
+                    input.form-control#device(style='cursor:pointer', value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'", readOnly)
+        
+        //- div(ng-if="$parent.input.device.kind == 'tags'", style="width:60%;display:inline")
+            span.unit(ng-repeat="(i, tag) in $parent.input.device._id", style="padding-left:35%")
+                input#device(value="t {{ tag }}", readonly)
+                span(ng-click="rmTag(i)") &times;
+            input#tag.fakeSelect(readonly, ng-click="tab('tag')", placeholder="{{'addTag:device:mathformula'|translate}}" )
 
-    label(for="type", ng-if="formulaInput")
-        | {{ 'measurement:' + $root.__module.name + ':field' | translate }}
-    select#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type', ng-if="formulaInput")
-        option(ng-repeat='type in $parent.input.device.types', ng-value='type')
-            | {{ type[0] }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ type[1] }}
+        .form-group
+            label.col-md-3.control-label(for="type", ng-if="formulaInput")
+                | {{ 'measurement:' + $root.__module.name + ':field' | translate }}
+            .col-md-9
+                select.form-control#type(ng-disabled=' !$parent.input.device ', ng-model='$parent.input.type', ng-if="formulaInput")
+                    option(ng-repeat='type in $parent.input.device.types', ng-value='type')
+                        | {{ type[0] }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ type[1] }}
 
-    label(for="time", ng-if="formulaInput")
-        | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
-    span.unit(ng-if="formulaInput")
-        input#time(ng-model="$parent.input.time", placeholder="{{'last:timeoffset:mathformula'|translate}}")
-        span {{ 'days:unit' | translate }}
+        .form-group
+            label.col-md-3.control-label(for="time", ng-if="formulaInput")
+                | {{ 'timeOffset:' + $root.__module.name + ':field' | translate }}
+            .col-md-9
+                span.input-group(ng-if="formulaInput")
+                    input.form-control#time(ng-model="$parent.input.time", placeholder="{{'last:timeoffset:mathformula'|translate}}")
+                    span.input-group-addon.bootstrap-touchspin-postfix {{ 'days:unit' | translate }}
 
-    label(for="curVal", ng-if="formulaInput")
-        | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
-    input#curVal(readonly, value="{{inputValue}}", ng-if="formulaInput")
+        .form-group
+            label.col-md-3.control-label(for="curVal", ng-if="formulaInput")
+                | {{ 'currentValue:' + $root.__module.name + ':field' | translate }}
+            .col-md-9
+                input.form-control#curVal(readonly, value="{{inputValue}}", ng-if="formulaInput")
 
-    button(ng-click=' confirm( $parent.input ) ', ng-disabled="isInvalid($parent.input.varName)").pull-right.lightButton
-        | {{ 'addInput:' + $root.__module.name + ':button' | translate }}
+        //- button(ng-click=' confirm( $parent.input ) ', ng-disabled="isInvalid($parent.input.varName)").pull-right.lightButton
+            | {{ 'addInput:' + $root.__module.name + ':button' | translate }}

@@ -1,3 +1,5 @@
-h2 {{'Are you sure ?:confirmation' | translate}}
-button.lightButton.pull-right(ng-click="confirm({})") {{ 'Yes:confirmation' | translate }}
-button.lightButton.pull-right(ng-click="closeThisDialog()") {{ 'No:confirmation' | translate }}
+.modal-header
+    h4.modal-title {{'Are you sure ?:confirmation' | translate}}
+.modal-footer
+    button.btn.dark.btn-outline(type='button', ng-click='closeThisDialog()') {{ 'No:confirmation' | translate }}
+    button.btn.green(type='button', ng-click='confirm({})') {{ 'Yes:confirmation' | translate }}

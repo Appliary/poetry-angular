@@ -1,8 +1,11 @@
-.tab-header
-    h3.modal-title(ng-if='tabview=="details"')
+.modal-header
+    h4.modal-title(ng-if='tabview=="details"')
         | {{ 'addInput:title:mathformula' | translate }}
     tabs(ng-if='tabview!="details"')
         a( ng-click='$parent.tabview="details"' )
             | {{ 'backToForm:mathformula' | translate }}
-.tab-body
+.modal-body
     ng-include(src='"mathFormula/add/" + tabview + ".pug"')
+.modal-footer
+    button.btn.dark.btn-outline(type='button', ng-click='closeThisDialog()') Close
+    button.btn.green(type='button', ng-click='save()', ng-if="!disableSaveBTN") Save changes
