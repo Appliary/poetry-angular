@@ -67,7 +67,7 @@
                                 tags-viewer(array="[row[ column.key ]]")
                             //- subkey
                             span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ])')
-                                span(ng-if="isDefined(displaySubkey(row, column))")
+                                span(ng-if="!isUndefined(displaySubkey(row, column))")
                                     | {{displaySubkey(row, column) | localize}}
                             //- fallback
                             span( ng-if="!isDefined(row[column.key]) && isDefined(column.fallback) && getColumnType(column) != 'subKey'")

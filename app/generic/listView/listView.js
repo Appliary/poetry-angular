@@ -98,6 +98,12 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         return v !== null && !angular.isUndefined(v) && v;
       }
 
+      // isUndefined
+      scope.isUndefined = isUndefined;
+      function isUndefined(v) {
+        return v === null || angular.isUndefined(v);
+      }
+
       // isObject
       scope.isObject = isObject;
       function isObject(v) {
