@@ -1,21 +1,29 @@
 ng-include( src='"generic/form.pug"', ng-controller='alertsList/overview' )
 
-//- read and acknowledge
-.right.itemInfo
+//-
+.form-actions
+    .row
+        .col-xs-12
+            .btn-toolbar.pull-right
+                button.btn.green(ng-click=' save() ', ng-if="!disableSaveBTN")
+                    | {{ 'save:' + $root.__module.name + ':button' | translate }}
+                button.btn.default( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
+                    | {{ 'delete:button' | translate }}
 
-//- message
-span.saved( ng-if=' actionbtn.__success' )
-    | {{ 'success:' + $root.__module.name | translate }}
-span.failed( ng-if=' actionbtn.__failed' )
-    | {{ 'failed:' + $root.__module.name | translate }}
-
-//- acknowledge
-button.lightButton.pull-right( ng-if="item.acknowledged" ng-click='unacknowledge(item._id)' )
-    | {{'unacknowledge:alerts:button' | translate }}
-button.lightButton.pull-right( ng-if="!item.acknowledged" ng-click='acknowledge(item._id)' )
-    | {{'acknowledge:alerts:button' | translate }}
-//- read
-button.lightButton.pull-right( ng-if="item.read" ng-click='unread(item._id)' )
-    | {{'unread:alerts:button' | translate }}
-button.lightButton.pull-right( ng-if="!item.read" ng-click='read(item._id)' )
-    | {{'read:alerts:button' | translate }}
+//-
+.form-actions
+    .row
+        .col-xs-12
+            .btn-toolbar.pull-right
+                //- un
+                button.btn.default( ng-if="item.acknowledged" ng-click='unacknowledge(item._id)' )
+                    | {{ 'unacknowledge:alerts:button' | translate }}
+                //- acknowledge
+                button.btn.default( ng-if="!item.acknowledged" ng-click='acknowledge(item._id)' )
+                    | {{ 'acknowledge:alerts:button' | translate }}
+                //- un
+                button.btn.default( ng-if="item.read" ng-click='unread(item._id)' )
+                    | {{ 'unread:alerts:button' | translate }}
+                //- read
+                button.btn.default( ng-if="!item.read" ng-click='read(item._id)' )
+                    | {{ 'read:alerts:button' | translate }}

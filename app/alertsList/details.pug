@@ -1,9 +1,12 @@
-button.back( ng-click=' $root.go( $root.__module ) ; backToList();' )
-    | {{ 'back:button:details' | translate }}
-tabs
-    a(ng-repeat=' ( name, config ) in tabs ', ng-click=' tab( name ) ', ng-class=' { active: name == __view }', id="tab-{{ name || 'overview' }}")
-        span( ng-if=" name ") {{ name + ':tab'| translate }}
-        span( ng-if=" !name ") {{ __id }}
+.portlet.box.green(style="border-top: 1px solid #5cd1db;")
+    .portlet-body
+        .tabbable-line(style="padding:0")
+            i.fa.fa-close.pull-right(ng-click='$root.go( $root.__module ); backToList();' style="color: #737373; margin-top: 10px; cursor: pointer;")
+            ul.nav.nav-tabs
+                li(ng-repeat='(name, config) in tabs', ng-class='{ active: name == __view }')
+                    a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")
+                        span( ng-if="name") {{ name + ':tab' | translate }}
+                        span( ng-if="!name") {{ __id }}
 
-br
-ng-include( src="'alertsList/overview.pug' " tab="{{'overview'}}" )
+            .tab-content
+                ng-include( src="'alertsList/overview.pug' " tab="{{'overview'}}" )

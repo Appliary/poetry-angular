@@ -76,6 +76,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       scope.actionbtn = {};
       scope.maxDate = getDefaultMaxDateToString();
 
+
+      scope.after = AlertsService.getDefaultAfter();
+      scope.before = AlertsService.getDefaultBefore();
+
       if(!scope.urlApi){
         scope.urlApi = scope.moduleApi;
       }

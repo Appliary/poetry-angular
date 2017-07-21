@@ -54,7 +54,7 @@
                                 | {{displayTranslatable(row, column)}}
                             //- _id
                             em( ng-if='isDefined(row[column.key]) && getColumnType(column) == "_id" && !isContext(row[ column.key ])')
-                                | {{ row[ column.key ] }} "_id"
+                                | {{ row[ column.key ] }}
                             //- tags
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "tags" && !isContext(row[ column.key ])')
                                 tags-viewer(array="row[ column.key ]")

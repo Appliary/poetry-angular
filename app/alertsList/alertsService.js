@@ -38,9 +38,23 @@ app.factory("AlertsService", function($http){
     return {sorting: {col: 'createdAt', order: 'desc'}};
   }
 
+  function getDefaultAfter(){
+    var r = new Date();
+    r.setDate(r.getDate() -7);
+    return r;
+  }
+
+  function getDefaultBefore(){
+    var r = new Date();
+    r.setHours(23, 59, 59, 999);
+    return r;
+  }
+
 
   return {
     getDefaults: getDefaults,
+    getDefaultAfter: getDefaultAfter,
+    getDefaultBefore: getDefaultBefore,
     getColumns: getColumns,
 
     getRules: getRules,
