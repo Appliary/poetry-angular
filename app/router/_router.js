@@ -4,6 +4,8 @@ app.component( 'appRouter', {
         $window,
         $http,
         $scope,
+        $rootScope,
+        $location,
         $templateCache,
         $controller,
         $customRoutesProvider,
@@ -119,6 +121,16 @@ app.component( 'appRouter', {
             $scope.__id = path[ 1 ];
             $scope.__view = path[ 2 ];
             console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
+
+            $rootScope.$broadcast("appRouteChange", {
+              current: {
+                module: $scope.$root.__module || {},
+                path: $location.path() || "/"
+              },
+              old: {
+                module: lastModule
+              }
+            });
 
             if ( !$scope.__id && !$scope.__view ) {
                 $scope.item = undefined;
