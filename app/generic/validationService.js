@@ -26,12 +26,22 @@ app.service( 'validationService', function validationService( $http ) {
 
                     // Array
                     if($scope.__joi.computed[ name ]._type == 'array'){
-                      // Special date (only handle time)
-                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) )
+                      // Special array readonly
+                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
+                          $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
+                          $scope.item.__readonlyFields.push(name);
                           return 'readOnlyArray';
+                      }
 
                       // Default string otherwise
                       return 'array';
+                    }
+
+                    //generic readonly
+                    if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
+                        $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
+                        $scope.item.__readonlyFields.push(name);
+                        return 'readOnly';
                     }
 
                     // Dates

@@ -27,6 +27,7 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
             var _controlSelector = '#' + $scope.controlId,
                 _mode = $scope.options.mode || 'groups';
 
+                console.log("logs treeview", $scope);
 
             $scope.boMeta = $scope.options.boMeta;
             $scope.topTierBO = $scope.options.topTierBO || 'groups';
@@ -72,6 +73,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                     if ( $scope.saveState ) {
                         plugins.push( "state" );
                     }
+
+                    console.log("treeview data", _viewDS.getTreeViewData());
 
                     $jsTree
                         .jstree( {
