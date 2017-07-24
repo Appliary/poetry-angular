@@ -1,60 +1,61 @@
 .form(ng-controller='mathFormula/editor')
     h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
-    table.table
-        thead: tr
-            th(ng-if="!formulaInput", colspan="2") {{ 'varName:mathFormula:col' | translate }}
-            th(ng-if="!formulaInput", colspan="3") {{ 'device:mathFormula:col' | translate }}
-            th(ng-if="formulaInput") {{ 'varName:mathFormula:col' | translate }}
-            th(ng-if="formulaInput") {{ 'device:mathFormula:col' | translate }}
-            th(ng-if="formulaInput") {{ 'measurement:mathFormula:col' | translate }}
-            th(ng-if="formulaInput") {{ 'timeOffset:mathFormula:col' | translate }}
-            th(ng-if="formulaInput") {{ 'currentValue:mathFormula:col' | translate }}
-            th &nbsp;
-        tbody
-            tr( ng-repeat=' (i,input) in item.inputs ')
+    .table-scrollable
+        table.table
+            thead: tr
+                th(ng-if="!formulaInput", colspan="2") {{ 'varName:mathFormula:col' | translate }}
+                th(ng-if="!formulaInput", colspan="3") {{ 'device:mathFormula:col' | translate }}
+                th(ng-if="formulaInput") {{ 'varName:mathFormula:col' | translate }}
+                th(ng-if="formulaInput") {{ 'device:mathFormula:col' | translate }}
+                th(ng-if="formulaInput") {{ 'measurement:mathFormula:col' | translate }}
+                th(ng-if="formulaInput") {{ 'timeOffset:mathFormula:col' | translate }}
+                th(ng-if="formulaInput") {{ 'currentValue:mathFormula:col' | translate }}
+                th &nbsp;
+            tbody
+                tr( ng-repeat=' (i,input) in item.inputs ')
 
-                //- Name of the variable
-                td(ng-if="formulaInput"): b {{ input.varName }}
-                td(ng-if="!formulaInput", colspan="2"): b {{input.varName}}
+                    //- Name of the variable
+                    td(ng-if="formulaInput"): b {{ input.varName }}
+                    td(ng-if="!formulaInput", colspan="2"): b {{input.varName}}
 
-                //- Device name / Tags
-                td(ng-if="formulaInput") {{ input.kind.slice(0,1) }}&nbsp;
-                    tags-viewer(array="input.id", ng-if="input.kind == 'tags'")
-                    em(ng-if="input.kind != 'tags'")
-                        a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
+                    //- Device name / Tags
+                    td(ng-if="formulaInput") {{ input.kind.slice(0,1) }}&nbsp;
+                        tags-viewer(array="input.id", ng-if="input.kind == 'tags'")
+                        em(ng-if="input.kind != 'tags'")
+                            a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
+                                | {{ input.id }}
+                    td(ng-if="!formulaInput", colspan="3", style="text-align: center") {{ input.kind.slice(0,1) }}&nbsp;
+                        em(ng-if="input.kind == 'tags'")
                             | {{ input.id }}
-                td(ng-if="!formulaInput", colspan="3", style="text-align: center") {{ input.kind.slice(0,1) }}&nbsp;
-                    em(ng-if="input.kind == 'tags'")
-                        | {{ input.id }}
-                    em(ng-if="input.kind != 'tags'")
-                        a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
-                            | {{ input.id }}
+                        em(ng-if="input.kind != 'tags'")
+                            a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
+                                | {{ input.id }}
 
-                //- Value type
-                td(ng-if="formulaInput") {{ input.type }}&nbsp;
-                    em(ng-if="input.indice !== undefined") {{ input.indice }}
+                    //- Value type
+                    td(ng-if="formulaInput") {{ input.type }}&nbsp;
+                        em(ng-if="input.indice !== undefined") {{ input.indice }}
 
-                //- Time dimension
-                td(ng-if='input.time && formulaInput')
-                    | {{ input.time }} {{ 'days:unit'|translate}}
-                td.muted(ng-if='!input.time && formulaInput')
-                    | {{ 'last:time:formula' | translate }}
+                    //- Time dimension
+                    td(ng-if='input.time && formulaInput')
+                        | {{ input.time }} {{ 'days:unit'|translate}}
+                    td.muted(ng-if='!input.time && formulaInput')
+                        | {{ 'last:time:formula' | translate }}
 
-                //- Example value
-                td.muted( ng-if=" !inputValues[ input.varName ].forEach && formulaInput" )
-                    | {{ inputValues[ input.varName ] }}
-                td.muted( ng-if=" inputValues[ input.varName ].forEach && formulaInput", ng-click="showVals(inputValues[ input.varName ])" )
-                    | [ {{ inputValues[ input.varName ][0] }},… ]
+                    //- Example value
+                    td.muted( ng-if=" !inputValues[ input.varName ].forEach && formulaInput" )
+                        | {{ inputValues[ input.varName ] }}
+                    td.muted( ng-if=" inputValues[ input.varName ].forEach && formulaInput", ng-click="showVals(inputValues[ input.varName ])" )
+                        | [ {{ inputValues[ input.varName ][0] }},… ]
 
-                //- Delete btn
-                td.text-right: a.btn.btn-circle.red(ng-click='inputs.remove(i)')
-                        i.fa.fa-trash
-                        
-            tr
-                td( colspan="4" ) &nbsp;
-                td.text-right( colspan="2" )
-                    a.btn.btn-circle.green(ng-click='inputs.add()')
-                        i.fa.fa-plus
+                    //- Delete btn
+                    td.text-right: a.btn.btn-circle.red(ng-click='inputs.remove(i)')
+                            i.fa.fa-trash
+                            
+                tr
+                    td( colspan="4" ) &nbsp;
+                    td.text-right( colspan="2" )
+                        a.btn.btn-circle.green(ng-click='inputs.add()')
+                            i.fa.fa-plus
 
     h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
     .form-body(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
