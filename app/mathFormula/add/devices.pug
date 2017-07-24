@@ -1,26 +1,28 @@
-h3 {{'selectInput:mathformula'|translate}}
-.filters
+//- .filters
     .toggles
         span( ng-repeat='(filterKey, filterState) in $parent.filters', ng-click=' $parent.filters[ filterKey ] = !filterState', ng-class=' {active: filterState} ' )
             | {{ filterKey + ':filter:mathformula' | translate }}
     input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" )
 
-.results.list(style="position:static;max-height:50vh;overflow:auto")
-    table
-        thead: tr
-            th {{ 'kind:column:mathformula' | translate }}
-            th {{ 'name:column:mathformula' | translate }}
-            th {{ 'measurementTypes:column:mathformula' | translate }}
-        tbody
-            tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
-                td {{ result.kind }}
-                td(ng-if=" result.kind != 'tags' ") {{ result.name }}
-                td(ng-if=" result.kind == 'tags' ")
-                    tags-viewer( array="result.name" )
-                td {{ result.types[0][0] }}&nbsp;
-                    em(ng-if="result.types.length > 1")
-                        | {{'and:mathformula'|translate}}&nbsp;
-                        | {{result.types.length - 1}}&nbsp;
-                        | {{'others:mathformula'|translate}}
-    span.muted(ng-if=' $parent.results.length === 0 ')
-        | {{ 'nodata:results:mathformula'| translate }}
+
+//- .results.list(style="position:static;max-height:50vh;overflow:auto")
+
+table.table
+    thead: tr
+        th {{ 'kind:column:mathformula' | translate }}
+        th {{ 'name:column:mathformula' | translate }}
+        th {{ 'measurementTypes:column:mathformula' | translate }}
+    tbody
+        tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
+            td {{ result.kind }}
+            td(ng-if=" result.kind != 'tags' ") {{ result.name }}
+            td(ng-if=" result.kind == 'tags' ")
+                tags-viewer( array="result.name" )
+            td {{ result.types[0][0] }}&nbsp;
+                em(ng-if="result.types.length > 1")
+                    | {{'and:mathformula'|translate}}&nbsp;
+                    | {{result.types.length - 1}}&nbsp;
+                    | {{'others:mathformula'|translate}}
+span.muted(ng-if=' $parent.results.length === 0 ')
+    | {{ 'nodata:results:mathformula'| translate }}
+
