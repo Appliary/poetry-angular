@@ -276,11 +276,11 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
        *
        */
       scope.scroll = function scroll(event) {
-        var elem = document.querySelector('.dataTables_scrollBody');
+        var elem = event.target;
 
         scope.$apply(function () {
           scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
-          scope.last = scope.first + Math.round(scope.listHeight/scope.lineHeight) - 1;
+          scope.last = scope.first + Math.round(scope.listHeight / scope.lineHeight) - 1;
         });
 
         if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
@@ -303,68 +303,75 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
       * Set list height
       */
       scope.setListHeight = function setListHeight() {
-        console.log('setListHeight');
+        //console.log('setListHeight');
         /**
         * fix a new max-height
         */
         var globalHeight = $window.innerHeight;
-        var tableElem = angular.element(document.querySelector('.dataTables_scrollBody'));
-        var offsetTop = tableElem.prop('offsetTop');
-        var margin = 280;
-        scope.listHeight = globalHeight - (margin + offsetTop);
-        //console.log("listHeight", scope.listHeight);
-        //console.log("maxHeight", scope.maxHeight);
+        var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
 
-        if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
-          scope.listHeight = scope.maxHeight;
+        for (indexList = 0; indexList < scrollBody.length; indexList++) {
+          var tableElem = angular.element(scrollBody[indexList]);
+          var offsetTop = tableElem.prop('offsetTop');
+          var margin = 280;
+          scope.listHeight = globalHeight - (margin + offsetTop);
+          //console.log("listHeight", scope.listHeight);
+          //console.log("maxHeight", scope.maxHeight);
+
+          if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
+            scope.listHeight = scope.maxHeight;
+          }
+          //console.log("tableElem", tableElem);
+
+          scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
+          //console.log("lineHeight", scope.lineHeight);
         }
-        //console.log("tableElem", tableElem);
-
-        scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
-        //console.log("lineHeight", scope.lineHeight);
       }
 
       scope.setColumnsWidth = function setColumnsWidth() {
-        console.log('setColumnsWidth');
-        var scrollBody = document.querySelector('.dataTables_scrollBody');
-        var scrollHead = document.querySelector('.dataTables_scrollHead');
+        //console.log('setColumnsWidth');
+        var scrollHead = document.querySelectorAll('.dataTables_scrollHead');
+        var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
 
-        var headThs = scrollHead.querySelectorAll('.dataTables_scrollHeadInner table thead tr th');
-        var bodyTds = scrollBody.querySelectorAll('tr:first-child td');
-        try {
-          for (var i = 0; i < headThs.length; i++) {
-            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+        for (indexList = 0; indexList < scrollHead.length; indexList++) {
+          var headThs = scrollHead[indexList].querySelectorAll('.dataTables_scrollHeadInner table thead tr th');
+          var bodyTds = scrollBody[indexList].querySelectorAll('tr:first-child td');
 
-            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+          try {
+            for (var i = 0; i < headThs.length; i++) {
+              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
-            var newThWidth = tdWidth + (tdPadding - thPadding);
+              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-            headThs[i].style.minWidth = newThWidth + "px";
-            headThs[i].style.maxWidth = newThWidth + "px";
-            headThs[i].style.width = newThWidth + "px";
-          }
+              var newThWidth = tdWidth + (tdPadding - thPadding);
 
-          for (var i = 0; i < headThs.length; i++) {
-            var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
-
-            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-            var x = tdWidth - (thPadding - tdPadding);
-            x = Math.round(x * 10) / 10;
-
-            if (thWidth != x) {
-              var newTdWidth = thWidth + (thPadding - tdPadding);
-
-              bodyTds[i].style.minWidth = newTdWidth + "px";
-              bodyTds[i].style.maxWidth = newTdWidth + "px";
-              bodyTds[i].style.width = newTdWidth + "px";
+              headThs[i].style.minWidth = newThWidth + "px";
+              headThs[i].style.maxWidth = newThWidth + "px";
+              headThs[i].style.width = newThWidth + "px";
             }
+
+            for (var i = 0; i < headThs.length; i++) {
+              var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+              var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight) + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+
+              var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+              var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight) + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+
+              var x = tdWidth - (thPadding - tdPadding);
+              x = Math.round(x * 10) / 10;
+
+              if (thWidth != x) {
+                var newTdWidth = thWidth + (thPadding - tdPadding);
+
+                bodyTds[i].style.minWidth = newTdWidth + "px";
+                bodyTds[i].style.maxWidth = newTdWidth + "px";
+                bodyTds[i].style.width = newTdWidth + "px";
+              }
+            }
+          } catch (e) {
+            console.error("[listView] setColumnsWidth:", e);
           }
-        } catch (e) {
-          console.error("[listView] setColumnsWidth:", e);
         }
       }
 
