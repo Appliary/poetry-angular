@@ -1,27 +1,25 @@
 //- category
-select( ng-model='item.category' )
+select.form-control( ng-model='item.category' )
     option( value='' ) {{ 'allCategories:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
     option( value='public' ) {{ 'public:category:alertsList' | translate }}
     option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
-.input-group-building
 //- level
-select( ng-model='item.level' )
+select.form-control( ng-model='item.level' )
     option( value='' ) {{ 'allLevels:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
     option( value='low' ) {{ 'low:level:alertsList' | translate }}
     option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
     option( value='high' ) {{ 'high:level:alertsList' | translate }}
     option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
-.input-group-building
 //- rules
-select( ng-model='item.rule' )
+select.form-control( ng-model='item.rule' )
     option( value='' ) {{ 'allRules:alertsList' | translate }}
     option( disabled, value='──────────' ) ──────────
     option(ng-repeat="r in rules | orderBy:'+name'", value="{{r._id}}", ng-selected="r._id == item.rule") {{ r.name }}
 
 
-array-input.tags-input-overview( name='tags', array='item.tags' )
+array-input( name='tags', array='item.tags' )
 
 //- div( )
     div(ng-repeat="(i,r) in item.recipients")
@@ -55,4 +53,3 @@ array-input.tags-input-overview( name='tags', array='item.tags' )
         | {{ 'language:field' | translate }}
     select( name='language', ng-model='item.language' )
         option( ng-repeat='opt in ["en","fr","nl"] ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
-br
