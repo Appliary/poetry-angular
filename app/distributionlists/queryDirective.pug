@@ -1,25 +1,28 @@
 //- category
-select.form-control( ng-model='item.category' )
-    option( value='' ) {{ 'allCategories:alertsList' | translate }}
-    option( disabled, value='──────────' ) ──────────
-    option( value='public' ) {{ 'public:category:alertsList' | translate }}
-    option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
+.form-group
+    select.form-control( ng-model='item.category' )
+        option( value='' ) {{ 'allCategories:alertsList' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option( value='public' ) {{ 'public:category:alertsList' | translate }}
+        option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
 //- level
-select.form-control( ng-model='item.level' )
-    option( value='' ) {{ 'allLevels:alertsList' | translate }}
-    option( disabled, value='──────────' ) ──────────
-    option( value='low' ) {{ 'low:level:alertsList' | translate }}
-    option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
-    option( value='high' ) {{ 'high:level:alertsList' | translate }}
-    option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
+.form-group
+    select.form-control( ng-model='item.level' )
+        option( value='' ) {{ 'allLevels:alertsList' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option( value='low' ) {{ 'low:level:alertsList' | translate }}
+        option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
+        option( value='high' ) {{ 'high:level:alertsList' | translate }}
+        option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
 //- rules
-select.form-control( ng-model='item.rule' )
-    option( value='' ) {{ 'allRules:alertsList' | translate }}
-    option( disabled, value='──────────' ) ──────────
-    option(ng-repeat="r in rules | orderBy:'+name'", value="{{r._id}}", ng-selected="r._id == item.rule") {{ r.name }}
+.form-group
+    select.form-control( ng-model='item.rule' )
+        option( value='' ) {{ 'allRules:alertsList' | translate }}
+        option( disabled, value='──────────' ) ──────────
+        option(ng-repeat="r in rules | orderBy:'+name'", value="{{r._id}}", ng-selected="r._id == item.rule") {{ r.name }}
 
-
-array-input( name='tags', array='item.tags' )
+.form-group
+    array-input( name='tags', array='item.tags' )
 
 //- div( )
     div(ng-repeat="(i,r) in item.recipients")

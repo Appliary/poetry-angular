@@ -1,52 +1,54 @@
 h4 {{ 'frequency:dlist:title'| translate }}
-br
-form(ng-submit="save()")
-  div()
 
-    timezone-offset(ng-model='item.timezoneOffset')
+form.form.form-horizontal(ng-submit="save()")
+    .form-body
+        // timezone-offset(ng-model='item.timezoneOffset')
 
-    div( )
-        label()
-            | {{ 'startingAt:field' | translate }}
-        date-input(name='startingAt', ng-model='item.startingAt' )
-        br
+        .form-group
+            label.col-md-3.control-label
+                | {{ 'startingAt:field' | translate }}
+            .col-md-9
+                date-input(name='startingAt', ng-model='item.startingAt' )
 
-    div( )
-        label(class="required")
-            | {{ 'interval:field' | translate }}
-        select( name='interval', ng-model='item.interval', ng-required="required" )
-            option( ng-repeat=" opt in ['NRT','hourly','daily','weekly','monthly','yearly'] ", value='{{opt}}' ) {{ opt + ':interval:option' | translate }}
-        br
+        .form-group
+            label.col-md-3.control-label(class="required")
+                | {{ 'interval:field' | translate }}
+            .col-md-9
+                select.form-control( name='interval', ng-model='item.interval', ng-required="required" )
+                    option( ng-repeat=" opt in ['NRT','hourly','daily','weekly','monthly','yearly'] ", value='{{opt}}' ) {{ opt + ':interval:option' | translate }}
+        
+        .form-group( ng-if="item.interval == 'weekly' || item.interval == 'monthly' || item.interval == 'yearly'" )
+            label.col-md-3.control-label(class="required")
+                | {{ 'intervalStart:field' | translate }}
+            .col-md-9
+                select.form-control( name='intervalStart', ng-model='item.intervalStart', ng-required="required")
+                    option( ng-repeat=" opt in ['firstDay','lastDay'] ", value='{{opt}}' ) {{ opt + ':intervalStart:option' | translate }}
+                
+        .form-group( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
+            label.col-md-3.control-label( for='intervalTime' )
+                | {{ 'intervalTime:field' | translate }}
+            .col-md-9
+                time-input(name='intervalTime' , ng-model='item.intervalTime' )
+        
+        .form-group( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
+            label.col-md-3.control-label( for='intervalTimeNumber' )
+                | {{ 'intervalTimeNumber:field' | translate }}
+            .col-md-9
+                number-time-input(name='intervalTimeNumber' , ng-model='item.intervalTimeNumber' )
 
-    div( ng-if="item.interval == 'weekly' || item.interval == 'monthly' || item.interval == 'yearly'" )
-      label(class="required")
-          | {{ 'intervalStart:field' | translate }}
-      select( name='intervalStart', ng-model='item.intervalStart', ng-required="required")
-          option( ng-repeat=" opt in ['firstDay','lastDay'] ", value='{{opt}}' ) {{ opt + ':intervalStart:option' | translate }}
-      br
+        .form-group
+            label.col-md-3.control-label( for='endingAt' )
+                | {{ 'endingAt:field' | translate }}
+            .col-md-9
+                date-input(name='endingAt', ng-model='item.endingAt' )
+        
+        .form-group.text-right
+            button.btn.green(ng-disabled='currentOutputErr')
+                | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
-    div( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
-        label( for='intervalTime' )
-            | {{ 'intervalTime:field' | translate }}
-        time-input(name='intervalTime' , ng-model='item.intervalTime' )
-        br
-    //-
-    div( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
-        label( for='intervalTimeNumber' )
-            | {{ 'intervalTimeNumber:field' | translate }}
-        number-time-input(name='intervalTimeNumber' , ng-model='item.intervalTimeNumber' )
-        br
 
-    div( )
-        label( for='endingAt' )
-            | {{ 'endingAt:field' | translate }}
-        date-input(name='endingAt', ng-model='item.endingAt' )
-        br
-
-  br
-  span.saved( ng-if=' item.__saved ' )
+//-  span.saved( ng-if=' item.__saved ' )
       | {{ 'saved:' + $root.__module.name | translate }}
   span.failed( ng-if=' item.__failed ' )
       | {{ 'failed:save:' + $root.__module.name | translate }}
-  button(ng-disabled='currentOutputErr').pull-right.lightButton
-      | {{ 'save:' + $root.__module.name + ':button' | translate }}
+  

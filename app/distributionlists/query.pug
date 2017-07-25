@@ -1,9 +1,8 @@
 h4 {{ 'filters:dlist:title'| translate }}
 
-form( ng-submit="save()")
+form.form.form-horizontal( ng-submit="save()")
     .form-body
-        .form-group
-            distribution-lists-query-directive(item='item')
+        distribution-lists-query-directive(item='item')
 
     //- div
         span.saved( ng-if=' item.__saved ' )
