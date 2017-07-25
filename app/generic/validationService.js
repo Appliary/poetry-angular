@@ -29,7 +29,9 @@ app.service( 'validationService', function validationService( $http ) {
                       // Special array readonly
                       if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
                           $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
-                          $scope.item.__readonlyFields.push(name);
+                          if($scope.item.__readonlyFields.indexOf(name) == -1){
+                            $scope.item.__readonlyFields.push(name);
+                          }
                           return 'readOnlyArray';
                       }
 
@@ -40,7 +42,9 @@ app.service( 'validationService', function validationService( $http ) {
                     //generic readonly
                     if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
                         $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
-                        $scope.item.__readonlyFields.push(name);
+                        if($scope.item.__readonlyFields.indexOf(name) == -1){
+                          $scope.item.__readonlyFields.push(name);
+                        }
                         return 'readOnly';
                     }
 
