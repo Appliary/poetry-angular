@@ -1,11 +1,11 @@
 h4 {{ 'message:dlist:title'| translate }}
 
-form( ng-submit="save()")
+form.form.form-horizontal( ng-submit="save()")
     .form-body
         .form-group(ng-repeat="(i,r) in item.recipients")
-            label.col-md-3.control-label(ng-if="i == 0")
-                | {{ 'recipients:field' | translate }}
-
+            label.col-md-3.control-label
+                span(ng-if="i == 0") {{ 'recipients:field' | translate }}
+                span(ng-if="i != 0") 
             .col-md-9
                 input.form-control(ng-model="r.email", ng-blur="r.email?null:item.recipients.splice(i,1)")
                 //span.cross(ng-click="item.recipients.splice(i,1) && save()") &times;
@@ -13,34 +13,38 @@ form( ng-submit="save()")
         .form-group(ng-if="item.recipients.length == 0")
             label.col-md-3.control-label
                 | {{'recipients:field' | translate}}
-            
             .col-md-9
                 input.form-control(ng-model="newRecipient.email" ng-blur="newRecipient.email?( item.recipients.push(newRecipient) && (newRecipient={})):undefined" placeholder="{{ 'addEmail:mailing:rules' | translate }}")
+    
+        .form-group.text-right
+            button.btn.green(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
+                | {{ 'add:' + $root.__module.name + ':button' | translate }}
 
-        button(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
-            | {{ 'add:' + $root.__module.name + ':button' | translate }}
+        .form-group
+            label.col-md-3.control-label
+                | {{ 'subject:field' | translate }}
+            .col-md-9
+                input.form-control(type="text" name='subject', ng-model='item.subject' )
 
-    //- subject
-    div( )
-        label()
-            | {{ 'subject:field' | translate }}
-        input(type="text" name='subject', ng-model='item.subject' )
+        .form-group
+            label.col-md-3.control-label
+                | {{ 'message:field' | translate }}
+            .col-md-9
+                textarea.form-control( name='message', ng-model='item.message', rows="3" )
 
-    div( )
-        label()
-            | {{ 'message:field' | translate }}
-        textarea( name='message', ng-model='item.message' )
+        .form-group
+            label.col-md-3.control-label
+                | {{ 'language:field' | translate }}
+            .col-md-9
+                select.form-control( name='language', ng-model='item.language' )
+                    option( ng-repeat='opt in ["en","fr","nl"] ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
-    //- language
-    div( )
-        label()
-            | {{ 'language:field' | translate }}
-        select( name='language', ng-model='item.language' )
-            option( ng-repeat='opt in ["en","fr","nl"] ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+        .form-group.text-right
+            button.btn.green(ng-disabled='currentOutputErr').pull-right.lightButton
+                | {{ 'save:' + $root.__module.name + ':button' | translate }}
+
 
 //- span.saved( ng-if=' item.__saved ' )
         | {{ 'saved:' + $root.__module.name | translate }}
     span.failed( ng-if=' item.__failed ' )
         | {{ 'failed:save:' + $root.__module.name | translate }}
-    button(ng-disabled='currentOutputErr').pull-right.lightButton
-        | {{ 'save:' + $root.__module.name + ':button' | translate }}
