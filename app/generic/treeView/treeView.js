@@ -39,6 +39,10 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
             if ( $scope.options.viewDS ) {
                 _viewDS = $scope.options.viewDS;
                 _viewDS.updateInternalData(); // In case state is changed and data is messed up
+                console.groupCollapsed("treeView.js");
+                console.log("%cviewDS","background-color: blanchedAlmond; color: white; font-weight: bolder");
+                console.log(_viewDS);
+                console.groupEnd();
             } else {
                 _viewDS = new ViewDataSource( {
                     rawData: $scope.options.data,
@@ -47,6 +51,16 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                     boMeta: $scope.options.boMeta,
                     tvMode: $scope.options.mode
                 } );
+                console.groupCollapsed("treeView.js");
+                console.log("%cnew viewDS","background-color: blanchedAlmond; color: white; font-weight: bolder");
+                console.log({
+                    rawData: $scope.options.data,
+                    topTierBO: $scope.options.topTierBO,
+                    mode: 'tree-view',
+                    boMeta: $scope.options.boMeta,
+                    tvMode: $scope.options.mode
+                });
+                console.groupEnd();
             }
 
             _viewDS.setTreeViewSelector( _controlSelector );
@@ -74,7 +88,11 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                         plugins.push( "state" );
                     }
 
-                    console.log("treeview data", _viewDS.getTreeViewData());
+                    console.groupCollapsed("treeView.js");
+                    console.log("%cgetTreeViewData","background-color: blanchedAlmond; color: white; font-weight: bolder");
+                    console.log(_viewDS.getTreeViewData());
+                    console.groupEnd();
+                    //console.log("treeview data", _viewDS.getTreeViewData());
 
                     $jsTree
                         .jstree( {
@@ -103,10 +121,17 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                             }
                         } );
 
+                    //listen to click on a node
                     $jsTree.bind( 'select_node.jstree', function ( node, selected, event ) {
                         var boData = selected.node.data,
                             boType = selected.node.data.boType;
 
+                            console.groupCollapsed("treeView.js");
+                            console.log("%cselected","background-color: blanchedAlmond; color: white; font-weight: bolder");
+                            console.log(selected);
+                            console.groupEnd();
+
+                        //if it is the root
                         if ( boData.isRoot && ( $scope.isGroups || !$scope.boMeta[ boType ].editTemplate ) ) {
                             $scope.editItem = null;
                             if ( $scope.updateItem ) {
@@ -204,6 +229,10 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
 
                     $jsTree.bind( 'loaded.jstree', function ( event, node ) {
                         _viewDS.treeViewReady( $scope.options.instance );
+                        console.groupCollapsed("treeView.js");
+                        console.log("%cbind loaded","background-color: blanchedAlmond; color: white; font-weight: bolder");
+                        console.log($scope.options.instance);
+                        console.groupEnd();
                     } );
 
 
