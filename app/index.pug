@@ -31,9 +31,9 @@ html(ng-app=app.name)
 
         //script(src='//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
         script(src='//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-        
+
         script(language='javascript').
-            jQuery(document).ready(function() { 
+            jQuery(document).ready(function() {
                    App.init(); // init metronic core componets
                    Layout.init(); // init layout
                    Demo.init();
@@ -123,16 +123,16 @@ html(ng-app=app.name)
                         // END STYLE CUSTOMIZER
 
                         app-router(module="{{$root.__module.name}}")
+
+                        //- Custom routing
+                        ui-view(ng-show="!$root.__module || $root.__module.dynamic")
             .page-footer
               .page-footer-inner
                 | 2017 © IOT Factory
 
-            
+
             div(ng-if="$root.__module.dependencies")
                 link(rel="stylesheet", ng-repeat="file in $root.__module.dependencies.style", ng-href="{{file}}")
                 script(ng-repeat="file in $root.__module.dependencies.script", ng-src="{{file}}")
-
-            //- Custom routing
-            ui-view(ng-show="!$root.__module || $root.__module.dynamic")
 
             script( src="//track.relationly.com/script", data-relationly="583ecc3aa56e9f0a00137d1c" )

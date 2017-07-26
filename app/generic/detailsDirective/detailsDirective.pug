@@ -1,0 +1,13 @@
+.portlet.box.green(style="border-top: 1px solid #5cd1db;")
+    .portlet-body
+        .tabbable-line(style="padding:0")
+            i.fa.fa-close.pull-right(ng-click='close ? close($root.__module ) : $root.go( $root.__module );' style="color: #737373; margin-top: 10px; cursor: pointer;")
+            ul.nav.nav-tabs
+                li(ng-repeat='(name, configTab) in config.tabs', ng-class='{ active: name == view }')
+                    a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")
+                        span( ng-if="name") {{ (configTab.label || name) + ':tab:' + $root.__module.name | translate }}
+                        span( ng-if="!name") {{ (configTab.label || item._id) }}
+
+
+            .tab-content
+                ng-include( src=" config.tabs[view].templateUrl || 'generic/overview.pug' " tab="{{view||'overview'}}")
