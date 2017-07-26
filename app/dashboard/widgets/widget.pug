@@ -1,12 +1,11 @@
-.widget
-    .panel.panel-default.panel-widget(ng-if="widget.edit")
-        p.headerWidgetTitle: strong {{widget.title}}
-        dropdown.widgetOptions
-            a(ng-click='edit(widget)')
-                | {{ 'edit:widget:dashboard' | translate }}
-            a(ng-click='remove(widget)')
-                | {{ 'remove:widget:dashboard' | translate }}
+div(ng-if="widget.edit")
+    .pull-right
+        i.fa.fa-edit(ng-click='edit(widget)')
+        i.fa.fa-cog(ng-click='remove(widget)')
+    
+    strong {{widget.title}}
 
-    .widgetBody(ng-include='"dashboard/widgets/"+widget.type+"/view.pug"', ng-if="widget.type")
-    .widgetBody(ng-if="!widget.type") Old widget system
-    label(ng-if="loading") {{ 'loading:widget:dashboard' | translate }}
+div(ng-include='"dashboard/widgets/"+widget.type+"/view.pug"', ng-if="widget.type")
+div(ng-if="!widget.type") Old widget system
+
+label(ng-if="loading") {{ 'loading:widget:dashboard' | translate }}
