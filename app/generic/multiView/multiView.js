@@ -1,3 +1,13 @@
+/**
+*
+* TODO: have to find a way to clean up
+*
+* 1. replace $scope.editItem by $scope.item
+* 2. render a custom edit tab using the generic way of doin' it (with config.js, etc ...)
+* 3. etc...
+*
+* comment all functions and some properties (to understand how there are used by the treeView)
+*/
 app.directive( 'multiView', function (
     $q,
     $compile,
@@ -37,8 +47,9 @@ app.directive( 'multiView', function (
 
                             if ( i._id != id ) return false;
 
-                            $scope.editItem = i;
+                            //$scope.editItem = i;
                             $scope.item = i;
+                            $scope.__id = i._id;
                             return true;
 
                         } );
@@ -105,8 +116,11 @@ app.directive( 'multiView', function (
             if ( _enableCache ) {
                 var cacheToken = $scope.options.general.pageId + 'multiView';
                 _cache = $cacheFactory.get( cacheToken ) || $cacheFactory( cacheToken );
-                if ( !_cache.get( 'editItem' ) ) {
+                /*if ( !_cache.get( 'editItem' ) ) {
                     _cache.put( 'editItem', null );
+                }*/
+                if ( !_cache.get( 'item' ) ) {
+                    _cache.put( 'item', null );
                 }
             }
 
@@ -189,7 +203,11 @@ app.directive( 'multiView', function (
             $scope.actions = {
                 addTopEntity: function () {
                     //if ( !$scope.editItem ) {
-                    $scope.editItem = {
+                    /*$scope.editItem = {
+                        boType: $scope.topTierBO,
+                        data: {}
+                    };*/
+                    $scope.item = {
                         boType: $scope.topTierBO,
                         data: {}
                     };
@@ -198,8 +216,9 @@ app.directive( 'multiView', function (
                 toggleColumnPicker: function () {},
                 editItem: function ( item ) {
                     console.log( 'select', item );
-                    $scope.editItem = item;
+                    //$scope.editItem = item;
                     $scope.item = item;
+                    $scope.__id = item._id;
                 },
                 resolveLVClickHandler: function ( id, colName ) {
                     var callBack = null,
@@ -224,7 +243,12 @@ app.directive( 'multiView', function (
 
                     if ( item ) {
                         if ( isEdit ) {
-                            $scope.editItem = {
+                            /*$scope.editItem = {
+                                _id: item._id,
+                                data: item,
+                                boType: $scope.topTierBO
+                            };*/
+                            $scope.item = {
                                 _id: item._id,
                                 data: item,
                                 boType: $scope.topTierBO
@@ -253,16 +277,21 @@ app.directive( 'multiView', function (
                     }
                 },
                 saveEditForm: function () {
-                    var isEdit = !!$scope.editItem._id;
+                    /*var isEdit = !!$scope.editItem._id;
                     if ( $scope.editItem.boType === 'groups' ) {
                         $scope.options.general.saveGroup( $scope.editItem )
+                    */
+                    var isEdit = !!$scope.item._id;
+                    if ( $scope.item.boType === 'groups' ) {
+                        $scope.options.general.saveGroup( $scope.item )
                             .then( function ( savedItem ) {
                                 _viewDS.addItem( savedItem, savedItem.parent );
                             } );
                     } else {
                         $scope.options.general.fileService.processFileQuee( $scope.fileUploadQuee )
                             .then( function () {
-                                $scope.options.general.saveItem( $scope.editItem )
+                                //$scope.options.general.saveItem( $scope.editItem )
+                                $scope.options.general.saveItem( $scope.item )
                                     .then( function ( savedItem ) {
                                         if ( !savedItem.data || !savedItem.data._id ) {
                                             return;
@@ -272,7 +301,9 @@ app.directive( 'multiView', function (
                                             _viewDS.updateItem( savedItem );
                                         } else {
                                             _viewDS.addItem( savedItem, savedItem.parent );
-                                            $scope.editItem = null;
+                                            //$scope.editItem = null;
+                                            $scope.item = null;
+                                            $scope.__id = null;
                                         }
                                     } );
                             } )
@@ -293,12 +324,15 @@ app.directive( 'multiView', function (
                 getBOEditTabs: function () {
                     var result = [];
 
-                    if ( !$scope.editItem ) {
+                    /*if ( !$scope.editItem ) {
+                        return result;
+                    }*/
+                    if ( !$scope.item ) {
                         return result;
                     }
 
                     $scope.general.editTabs.forEach( function ( tab ) {
-                        if ( tab.boType === $scope.editItem.boType ) {
+                        if ( tab.boType === $scope.item.boType/*tab.boType === $scope.editItem.boType*/ ) {
                             result.push( tab );
                         }
                     } );
@@ -306,7 +340,8 @@ app.directive( 'multiView', function (
                     return result;
                 },
                 getMultiViewEdit: function () {
-                    if ( $scope.editItem ) {
+                    //if ( $scope.editItem ) {
+                    if ( $scope.item ) {
                         return 'generic/multiView/multiViewEdit.pug';
                     } else {
                         return null;
@@ -316,14 +351,16 @@ app.directive( 'multiView', function (
 
             if ( $scope.general.hasSwitchToFV ) {
                 $scope.actions.switchToFullView = function () {
-                    $scope.options.general.switchToFullView( $scope.editItem );
+                    //$scope.options.general.switchToFullView( $scope.editItem );
+                    $scope.options.general.switchToFullView( $scope.item );
                 };
             }
 
             $scope.saveItem = $scope.actions.saveEditForm;
             $scope.cancelEdit = function () {
-                $scope.editItem = null;
+                //$scope.editItem = null;
                 $scope.item = null;
+                $scope.__id = null;
             };
 
             var _watchEditItem = function ( newValue, oldValue ) {
@@ -336,12 +373,14 @@ app.directive( 'multiView', function (
 
                     for ( var i = 0, len = $scope.general.editTabs.length; i < len; i++ ) {
                         var tab = $scope.general.editTabs[ i ];
-                        if ( tab.boType === $scope.editItem.boType ) {
+                        //if ( tab.boType === $scope.editItem.boType ) {
+                        if ( tab.boType === $scope.item.boType ) {
                             if ( tab.primary ) {
                                 $scope.general.activeEditTab = tab.name;
 
                                 if ( _enableCache ) {
-                                    _cache.put( 'editItem', newValue );
+                                    //_cache.put( 'editItem', newValue );
+                                    _cache.put( 'item', newValue );
                                 }
                                 return;
                             } else {
@@ -357,7 +396,8 @@ app.directive( 'multiView', function (
                 }
 
                 if ( _enableCache ) {
-                    _cache.put( 'editItem', newValue );
+                    //_cache.put( 'editItem', newValue );
+                    _cache.put( 'item', newValue );
                 }
             };
 
@@ -381,20 +421,51 @@ app.directive( 'multiView', function (
 
 
             $scope.updateItem = function ( item ) {
-                $scope.editItem = item;
+                $scope.item = item;
+                $scope.__id = item._id;
+                //$scope.editItem = item;
                 $scope.$digest();
             };
 
             $scope.$watch( 'general.activeView', function ( newValue, oldValue ) {
                 $scope.currentEditForm = null;
-                $scope.editItem = null;
+                //$scope.editItem = null;
+                $scope.item = null;
+                $scope.__id = null;
                 if ( _enableCache ) {
                     _cache.put( 'activeView', newValue );
                 }
             } );
 
-            $scope.$watch( 'editItem', _watchEditItem );
+            //$scope.$watch( 'editItem', _watchEditItem );
+            $scope.$watch( 'item', _watchEditItem );
             /*** End shit from kliment ***/
+
+
+            /*** Quick fix from stephane, to optimise by himself as soon as possible ***/
+            /*** but understand, comment and clean up k's code first ***/
+            $scope.__view = "";
+            $scope.backToList = function(module){
+              $scope.__id = undefined;
+              delete $scope.__id;
+            }
+            /**
+            * TODO: a common service fn for this watch __view
+            */
+            $scope.$watch('__view', function loadView() {
+                $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields || [];
+                $scope.buttons = $scope.$root.__module.config.tabs[$scope.__view || ''].buttons || [];
+                //all defaults
+                $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
+            });
+            /**
+            * TODO: a common service fn for this tab()
+            */
+            $scope.tab = function tab(name) {
+                console.log("%ctab(): "+name,"background-color: blanchedAlmond; color: white; font-weight: bolder");
+                $scope.__view = name;
+            };
+            /*** End quick fix from stephane, to optimise by himself as soon as possible ***/
 
         }
     };
