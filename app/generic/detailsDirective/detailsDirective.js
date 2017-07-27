@@ -4,8 +4,10 @@ app.directive("detailsDirective", function(){
     scope: {
       config: "=",
       item: "=?",
+      customData: "=?",
       view: "=?",
-      close: "&?"
+      close: "&?",
+      saveItemFn: "=?"
     },
     templateUrl: "generic/detailsDirective/detailsDirective.pug",
     transclude: false,
@@ -15,6 +17,12 @@ app.directive("detailsDirective", function(){
       }
       scope.tab = function(name){
         scope.view = name;
+      }
+
+      scope.saveItem = function saveItem(){
+        if(scope.saveItemFn){
+          scope.saveItemFn(scope.item);
+        }
       }
 
       console.log("%cTest detailsDirective","background-color: blanchedAlmond; color: white; font-weight: bolder");

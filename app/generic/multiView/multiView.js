@@ -2,7 +2,7 @@
 *
 * TODO: have to find a way to clean up
 *
-* 1. replace $scope.editItem by $scope.item
+* 1. replace $scope.editItem by $scope.item (because of assetManager, not done yet)
 * 2. render a custom edit tab using the generic way of doin' it (with config.js, etc ...)
 * 3. etc...
 *
@@ -47,7 +47,7 @@ app.directive( 'multiView', function (
 
                             if ( i._id != id ) return false;
 
-                            //$scope.editItem = i;
+                            $scope.editItem = i;
                             $scope.item = i;
                             $scope.__id = i._id;
                             return true;
@@ -203,20 +203,17 @@ app.directive( 'multiView', function (
             $scope.actions = {
                 addTopEntity: function () {
                     //if ( !$scope.editItem ) {
-                    /*$scope.editItem = {
-                        boType: $scope.topTierBO,
-                        data: {}
-                    };*/
                     $scope.item = {
                         boType: $scope.topTierBO,
                         data: {}
                     };
+                    $scope.editItem = $scope.item;
                     //}
                 },
                 toggleColumnPicker: function () {},
                 editItem: function ( item ) {
                     console.log( 'select', item );
-                    //$scope.editItem = item;
+                    $scope.editItem = item;
                     $scope.item = item;
                     $scope.__id = item._id;
                 },
@@ -253,6 +250,7 @@ app.directive( 'multiView', function (
                                 data: item,
                                 boType: $scope.topTierBO
                             };
+                            $scope.editItem = $scope.item;
                         } else if ( callBack ) {
                             callBack.call( $scope, item );
                         }
@@ -301,7 +299,7 @@ app.directive( 'multiView', function (
                                             _viewDS.updateItem( savedItem );
                                         } else {
                                             _viewDS.addItem( savedItem, savedItem.parent );
-                                            //$scope.editItem = null;
+                                            $scope.editItem = null;
                                             $scope.item = null;
                                             $scope.__id = null;
                                         }
@@ -358,7 +356,7 @@ app.directive( 'multiView', function (
 
             $scope.saveItem = $scope.actions.saveEditForm;
             $scope.cancelEdit = function () {
-                //$scope.editItem = null;
+                $scope.editItem = null;
                 $scope.item = null;
                 $scope.__id = null;
             };
@@ -423,13 +421,13 @@ app.directive( 'multiView', function (
             $scope.updateItem = function ( item ) {
                 $scope.item = item;
                 $scope.__id = item._id;
-                //$scope.editItem = item;
+                $scope.editItem = item;
                 $scope.$digest();
             };
 
             $scope.$watch( 'general.activeView', function ( newValue, oldValue ) {
                 $scope.currentEditForm = null;
-                //$scope.editItem = null;
+                $scope.editItem = null;
                 $scope.item = null;
                 $scope.__id = null;
                 if ( _enableCache ) {
