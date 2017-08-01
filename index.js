@@ -75,6 +75,34 @@ Poetry.route({
     });
 });
 
+Poetry.route({
+    method: 'GET',
+    path: '/assets/layouts/layout/css/themes/{file*}',
+    config: {
+        description: config.app.name,
+        tags: ['Applications (front-end)'],
+        cors: false
+    }
+}, (request, reply) => {
+    if (~ngcache.indexOf(request.params.file))
+        return reply(angular());
+
+      //- theme files
+      fs.readFile('./styles/metronic/layouts/layout/themes/' + request.params.file, (err, file) => {
+            Poetry.log.silly(err, file);
+            if (!err)
+                return reply(file)
+                    .type(mime.lookup(request.params.file));
+        // for img files
+        fs.readFile('./node_modules/poetry-angular/assets/img/' + request.params.file, (err, file) => {
+            Poetry.log.silly(err, file);
+            if (!err)
+                return reply(file)
+                    .type(mime.lookup(request.params.file));
+        });
+      });
+});
+
 require('./handlers/javascripts');
 require('./handlers/templates');
 require('./handlers/styles');
