@@ -1,4 +1,4 @@
-.portlet.box.green(style="border-top: 1px solid #5cd1db;")
+.portlet.box.green(style="border-top: 1px solid #5cd1db; height: 70vh; background: initial;")
     .portlet-body
         .tabbable-line(style="padding:0")
             i.fa.fa-close.pull-right(ng-click='backToList ? backToList($root.__module ) : $root.go( $root.__module );' style="color: #737373; margin-top: 10px; cursor: pointer;")
@@ -9,5 +9,5 @@
                         span( ng-if="!name") {{ __id }}
 
 
-            .tab-content
+            .tab-content(style="height: 60vh; overflow-y: auto;")
                 ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")
