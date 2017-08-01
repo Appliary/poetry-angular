@@ -2,7 +2,7 @@ h4 Title
 
 ng-include( src='"generic/form.pug"', ng-controller='generic/overview' )
 
-.form-actions
+.form-actions.col-xs-12
     .row
         .col-xs-12
             .btn-toolbar.pull-right
@@ -12,7 +12,7 @@ ng-include( src='"generic/form.pug"', ng-controller='generic/overview' )
                     | {{ 'delete:button' | translate }}
 
 
-div( style='margin-top: 25px; padding-top: 25px; border-top: 1px solid #EFEFEF', ng-if= "item.last")
+.col-xs-12( style='margin-top: 25px; padding-top: 25px; border-top: 1px solid #EFEFEF', ng-if= "item.last")
     .pull-right
         span(ng-if="item.timestamp") {{ item.timestamp | localize }}
 
