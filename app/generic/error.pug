@@ -1,3 +1,10 @@
-h2 {{ 'error:' + __id + ':title' | translate }}
-p {{ 'error:' + __id + ':detail' | translate }}
-img(src="https://www.ouest-var.net/actualite/repose-en-paix-petit-ange-132559.jpg")
+h1.page-title(style="margin-top:0;") {{ 'error:title' | translate }} {{ __id }}
+
+.row
+    .col-md-12.page-404
+        .number.font-green {{ __id }}
+        .details
+            h3 Oops! You're lost.
+            p  We can not find the page you're looking for.
+    
+//img(src="https://www.ouest-var.net/actualite/repose-en-paix-petit-ange-132559.jpg")

@@ -1,10 +1,10 @@
 h1.page-title(style="margin-top:0")
-    | {{ $root.__module.name + ':module:title' | translate }}
+    | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 
 //-.portlet.light.bordered(ng-class="editItem ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
-.portlet.light.bordered(ng-class="__id ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
+.portlet.light.bordered(ng-class="__id ? 'col-md-6 visible-md-block visible-lg-block' : 'col-md-12'", style="height: 70vh; margin-bottom: 0;")
     .portlet-title.tabbable-line
         .col-xs-7.col-md-8.row
             .input-icon.right
@@ -18,7 +18,7 @@ h1.page-title(style="margin-top:0")
                 a(ng-click="general.activeView = 'list'")
                     | {{'listview:multiview'|translate}}
 
-    .portlet-body(ng-if="general.activeView === 'tree'")
+    .portlet-body(ng-if="general.activeView === 'tree'", style="height: 60vh; overflow-y: auto;")
         //-tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
         tree-view(options="treeView.options", edit-item="item", update-item="updateItem")
 
@@ -42,5 +42,5 @@ h1.page-title(style="margin-top:0")
 
 //-.col-md-5(ng-if="editItem")
     ng-include(old-src="actions.getMultiViewEdit()", src="'generic/details.pug'")
-.col-md-5(ng-if="__id")
+.col-md-6(ng-if="__id")
     ng-include(src="'generic/details.pug'")

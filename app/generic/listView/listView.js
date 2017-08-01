@@ -313,7 +313,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
         for (indexList = 0; indexList < scrollBody.length; indexList++) {
           var tableElem = angular.element(scrollBody[indexList]);
           var offsetTop = tableElem.prop('offsetTop');
-          var margin = 280;
+          var margin = 350;
           scope.listHeight = globalHeight - (margin + offsetTop);
           //console.log("listHeight", scope.listHeight);
           //console.log("maxHeight", scope.maxHeight);
