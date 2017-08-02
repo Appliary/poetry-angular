@@ -34,10 +34,12 @@ html(ng-app=app.name)
 
         script(language='javascript').
             jQuery(document).ready(function() {
-                   App.init(); // init metronic core componets
-                   Layout.init(); // init layout
-                   Demo.init();
-                   QuickSidebar.init(); // init quick sidebar
+                App.init(); // init metronic core componets
+                Layout.init(); // init layout
+                Demo.init();
+                QuickSidebar.init(); // init quick sidebar
+
+                $('[data-toggle="tooltip"]').tooltip(); 
             });
 
         link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all', rel='stylesheet', type='text/css')
@@ -48,7 +50,7 @@ html(ng-app=app.name)
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
             link#style_color(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "/assets/layouts/layout/css/themes/default.min.css" }}.css`)
 
-
+    
     body.page-header-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')
 
         .page-wrapper
