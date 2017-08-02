@@ -173,9 +173,9 @@ app.component( 'appRouter', {
                     return ngDialog.open( {
                         template: $scope.__config.templateUrl || 'modals/toolbox.pug',
                         controller: $scope.__config.controller || 'modals/toolbox',
-                        showClose: false,
                         scope: $scope,
-                        className: 'center-block'
+                        className: 'ngdialog-theme-default',
+                        width: '450px'
                     } );
                 }
 

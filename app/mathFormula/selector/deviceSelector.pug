@@ -1,2 +1,2 @@
-input#device.fakeSelect(value="{{ device.kind?device.kind + ' ':'' }}{{ device.name }}", placeholder="{{'clickToSelect:mathformula'|translate}}", readonly, ng-click="showSelectDevice()", ng-if="!device || device.kind != 'tags'")
-input#tag.fakeSelect(value="{{ device.kind?device.kind + ' ':'' }}[{{ device.name }}]", readonly, ng-click="showSelectDevice()", ng-if="device && device.kind == 'tags'")
+input#device.form-control(value="{{ device.kind?device.kind + ' ':'' }}{{ device.name }}", placeholder="{{'clickToSelect:mathformula'|translate}}", readonly, ng-click="showSelectDevice()", ng-if="!device || device.kind != 'tags'")
+input#tag.form-control(value="{{ device.kind?device.kind + ' ':'' }}[{{ device.name }}]", readonly, ng-click="showSelectDevice()", ng-if="device && device.kind == 'tags'")

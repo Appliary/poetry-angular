@@ -8,11 +8,11 @@ app.directive('appUserselector', function () {
             $scope.user = "";
 
             /*$scope.editprofile = function () {
-                return ngDialog.open({
+                ngDialog.openConfirm({
                     templateUrl: 'modals/editprofile.pug',
-                    controller: 'modals/editprofile',
-                    showClose: true,
-                    className: 'ngdialog'
+                    className: 'ngdialog-theme-default',
+                    width: '450px',
+                    controller: 'modals/editprofile'
                 });
             }*/
 

@@ -1,10 +1,11 @@
-.tab-header
+.modal-header
     h1.modal-title {{ 'edit profile:modal:title' | translate }}
     tabs
         a.modal-edit(ng-click="showEdit()", ng-class=' { active: editView }') {{'profile:editmodal' | translate}}
         a.modal-changepwd(ng-click="showChangepwd()", ng-class=' { active: pwdView }') {{'Change password:editmodal' | translate}}
-.tab-body
-    .tab-content(ng-if="editView")
+
+.modal-body
+    div(ng-if="editView")
         form( ng-submit='edit()' )
             label( for='firstName', ng-class="{ required: __joi['firstName']._flags.presence == 'required' }") {{ 'firstName:field:edit' | translate }}
             input( type='text', ng-model='user.firstName', name='firstName' )
@@ -32,7 +33,8 @@
                 | {{ 'failed:' | translate }}
             button(type='submit').pull-right.lightButton
                 | {{ 'save:button' | translate }}
-    .tab-content(ng-if="pwdView")
+    
+    div(ng-if="pwdView")
         form( ng-submit='changePassword()' )
             label( for='oldPassword' class="required" ) {{ 'old password:field:edit' | translate }}
             input( type='password', ng-model='password.oldPassword', name='oldPassword', required, ng-class='{error: (!password.oldPassword && password.newPassword1) }' )

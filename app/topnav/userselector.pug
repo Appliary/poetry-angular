@@ -19,11 +19,11 @@ a.dropdown-toggle(data-toggle='dropdown', aria-haspopup="true", aria-expanded="t
 
 ul.dropdown-menu.dropdown-menu-default
     li
-        a( href="" )
+        a( ng-click="editprofile()" )
             i.icon-user
             | {{ 'edit profile:topbar' | translate }}
     li
-        a.my-toggler.hidden-sm.hidden-xs()
+        a.my-toggler.hidden-sm.hidden-xs
             i.icon-settings
             | {{'theme:topbar' | translate}}
     li

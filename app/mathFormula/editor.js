@@ -1,4 +1,4 @@
-app.controller( 'mathFormula/editor', function (
+app.controller('mathFormula/editor', function (
     $scope,
     $http,
     ngDialog
@@ -20,48 +20,48 @@ app.controller( 'mathFormula/editor', function (
 
     try {
         var mfConfig = $scope.$root.__module.config.mathFormula;
-        if ( angular.isObject( mfConfig ) ) {
-            if ( angular.isObject( mfConfig.alternatives ) ) {
+        if (angular.isObject(mfConfig)) {
+            if (angular.isObject(mfConfig.alternatives)) {
                 var propertyName = mfConfig.alternatives.property;
-                $scope.$watch( "item." + propertyName, function ( propertyValue ) {
-                    if ( angular.isObject( mfConfig.alternatives.values[ propertyValue ] ) ) {
-                        $scope.mathFormulaConfig = mfConfig.alternatives.values[ propertyValue ];
+                $scope.$watch("item." + propertyName, function (propertyValue) {
+                    if (angular.isObject(mfConfig.alternatives.values[propertyValue])) {
+                        $scope.mathFormulaConfig = mfConfig.alternatives.values[propertyValue];
 
                         preConfigure();
                     }
-                    console.debug( "item." + propertyName,"=", propertyValue );
-                } );
+                    console.debug("item." + propertyName, "=", propertyValue);
+                });
             } else {
                 $scope.mathFormulaConfig = mfConfig;
                 preConfigure();
             }
         }
-    } catch ( e ) {
-        console.debug( e );
+    } catch (e) {
+        console.debug(e);
     }
 
     function preConfigure() {
         var mfConfig = $scope.mathFormulaConfig;
-        if ( !angular.isObject( mfConfig ) )
+        if (!angular.isObject(mfConfig))
             return;
 
-        if ( mfConfig.hasOwnProperty( 'formulaInput' ) ) {
+        if (mfConfig.hasOwnProperty('formulaInput')) {
             $scope.formulaInput = mfConfig.formulaInput;
         }
-        else{
+        else {
             $scope.formulaInput = true;
         }
     }
 
-    $scope.showVals = function showVals( vals ) {
+    $scope.showVals = function showVals(vals) {
         var scope = $scope.$new();
         scope.vals = vals;
-        ngDialog.openConfirm( {
+        ngDialog.openConfirm({
             templateUrl: 'mathFormula/showVals.pug',
             scope: scope,
-            showClose: false,
-            className: 'center-block'
-        } );
+            className: 'ngdialog-theme-default',
+            width: '450px'
+        });
     };
 
     $scope.inputs = {
@@ -75,43 +75,43 @@ app.controller( 'mathFormula/editor', function (
             var scope = $scope.$new();
             scope.inputs = $scope.item.inputs;
 
-            ngDialog.openConfirm( {
-                    templateUrl: 'mathFormula/add.pug',
-                    controller: 'mathFormula/add',
-                    scope: scope,
-                    showClose: false,
-                    className: 'center-block'
-                } )
-                .then( function success( input ) {
+            ngDialog.openConfirm({
+                templateUrl: 'mathFormula/add.pug',
+                controller: 'mathFormula/add',
+                scope: scope,
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function success(input) {
 
-                    if ( !$scope.item.inputs )
+                    if (!$scope.item.inputs)
                         $scope.item.inputs = [];
 
-                    $scope.item.inputs.push( {
+                    $scope.item.inputs.push({
                         varName: input.varName,
                         kind: input.device.kind,
                         id: input.device._id,
-                        type: input.type ? input.type[ 0 ] : undefined,
-                        indice: input.type ? input.type[ 1 ] : undefined,
+                        type: input.type ? input.type[0] : undefined,
+                        indice: input.type ? input.type[1] : undefined,
                         time: input.time
-                    } );
+                    });
 
-                }, function () {} );
+                }, function () { });
 
         },
 
-        remove: function ( i ) {
+        remove: function (i) {
 
-            ngDialog.openConfirm( {
-                    templateUrl: 'modals/confirmation.pug',
-                    showClose: false,
-                    className: 'center-block'
-                } )
-                .then( function success() {
+            ngDialog.openConfirm({
+                templateUrl: 'modals/confirmation.pug',
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function success() {
 
-                    $scope.item.inputs.splice( i, 1 );
+                    $scope.item.inputs.splice(i, 1);
 
-                }, function () {} );
+                }, function () { });
 
         }
 
@@ -122,29 +122,29 @@ app.controller( 'mathFormula/editor', function (
     function getVars() {
 
         $scope.inputValues = {};
-        if ( !$scope.item || !$scope.item.inputs || !$scope.item.inputs.length ) return;
+        if (!$scope.item || !$scope.item.inputs || !$scope.item.inputs.length) return;
         $scope.currentOutput = '';
         $scope.currentOutputErr = false;
 
-        $http.post( '/api/rules/getVars', {
-                inputs: $scope.item.inputs
-            } )
-            .then( function success( d ) {
+        $http.post('/api/rules/getVars', {
+            inputs: $scope.item.inputs
+        })
+            .then(function success(d) {
                 $scope.inputValues = d.data;
-                testFormula( true );
-            }, console.error );
+                testFormula(true);
+            }, console.error);
     }
-    $scope.$watchCollection( 'item.inputs', getVars );
+    $scope.$watchCollection('item.inputs', getVars);
 
-    function testFormula( n ) {
-        if ( !n )
-            return ( $scope.currentOutput = '' );
+    function testFormula(n) {
+        if (!n)
+            return ($scope.currentOutput = '');
 
         var out;
         try {
-            out = math.eval( $scope.item.formula, $scope.inputValues );
+            out = math.eval($scope.item.formula, $scope.inputValues);
             $scope.currentOutputErr = false;
-        } catch ( err ) {
+        } catch (err) {
             out = err;
             $scope.currentOutputErr = true;
         }
@@ -152,5 +152,5 @@ app.controller( 'mathFormula/editor', function (
         $scope.currentOutput = out;
 
     }
-    $scope.$watch( 'item.formula', testFormula );
-} );
+    $scope.$watch('item.formula', testFormula);
+});
