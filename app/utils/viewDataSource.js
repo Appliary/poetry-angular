@@ -326,6 +326,7 @@ app.service( 'ViewDataSource', function ( $q, $filter ) {
         };
 
         var _updateItemGroup = function ( obj ) {
+            console.log("[utils/viewDataSource] _updateItemGroup: ~329");
             // Find the previous parent, according to the _rawData structure
             var prevGroup = _findObjParent( obj, _rawData );
 

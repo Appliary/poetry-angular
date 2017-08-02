@@ -1,4 +1,20 @@
-button.back(ng-click="cancelEdit()") {{ "Back:Buttons" | translate }}
-tabs
+//-button.back(ng-click="cancelEdit()") {{ "Back:Buttons" | translate }}
+//-tabs
     a(ng-repeat="tab in actions.getBOEditTabs()", ng-click="actions.setActiveTab(tab.name)", ng-class="{'active': general.activeEditTab === tab.name}") {{tab.title + ":AssetManager:Tabs" | translate}}
-ng-include(src="actions.resolveEditTabInclude()")
+//-ng-include(src="actions.resolveEditTabInclude()")
+
+//-
+.portlet.box.green.col-md-12(style="border-top: 1px solid #5cd1db; margin-bottom: 0; height: 70vh; background: initial;")
+    .portlet-body.col-md-12(style="padding-bottom: 0;")
+        .tabbable-line(style="padding:0")
+            i.fa.fa-close.pull-right(ng-click='cancelEdit( )' style="color: #737373; margin-top: 10px; cursor: pointer;")
+            ul.nav.nav-tabs
+                li(ng-repeat="tab in actions.getBOEditTabs()", ng-class="{'active': general.activeEditTab === tab.name}")
+                    a(ng-click="actions.setActiveTab(tab.name)", id="tab-{{ tab.name || 'overview' }}")
+                        span( ng-if="tab.title") {{tab.title + ":AssetManager:Tabs" | translate}}
+                        span( ng-if="!tab.title") {{ __id }}
+
+
+            .tab-content(style="height: 60vh; overflow-y: auto;")
+                //-ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")
+                ng-include(src="actions.resolveEditTabInclude()")

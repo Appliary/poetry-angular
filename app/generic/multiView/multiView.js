@@ -141,7 +141,7 @@ app.directive( 'multiView', function (
             } );
 
             _viewDS.events.addListener( 'data_updated', function () {
-                $scope.actions.redrawListView();
+                //$scope.actions.redrawListView();
             } );
 
             _viewDS.events.addListener( 'change_parent', function ( obj, newParent ) {
@@ -149,10 +149,10 @@ app.directive( 'multiView', function (
                     var result = $scope.options.events.onChangeParent( obj, newParent, $scope );
                     if ( result.then ) {
                         result.then( function () {
-                            $scope.actions.redrawListView();
+                            //$scope.actions.redrawListView();
                         } );
                     } else {
-                        $scope.actions.redrawListView();
+                        //$scope.actions.redrawListView();
                     }
                 } else if ( $scope.options.treeView.boMeta[ obj.boType ].apiService ) {
                     $scope.options.treeView.boMeta[ obj.boType ].apiService.save( obj.data );
@@ -267,6 +267,10 @@ app.directive( 'multiView', function (
                     } );
                 },
                 resolveEditTabInclude: function () {
+                    //- item
+                    /*if($scope.item == "groups"){
+                      return ""
+                    }*/
                     for ( var i = 0, len = $scope.general.editTabs.length; i < len; i++ ) {
                         var tab = $scope.general.editTabs[ i ];
                         if ( tab.name === $scope.general.activeEditTab ) {
@@ -294,6 +298,8 @@ app.directive( 'multiView', function (
                                         if ( !savedItem.data || !savedItem.data._id ) {
                                             return;
                                         }
+
+                                        console.log("[generic/multiView/multiView.js] options.general.saveItem", $scope.item);
 
                                         if ( isEdit ) {
                                             _viewDS.updateItem( savedItem );
