@@ -25,6 +25,10 @@ app.directive("detailsDirective", function(){
         }
       }
 
+      scope.$watch('item', function(nv){
+        console.log(nv);
+      });
+
       console.log("%cTest detailsDirective","background-color: blanchedAlmond; color: white; font-weight: bolder");
       console.groupCollapsed( 'detailsDirective' );
       console.log( 'scope', scope );
