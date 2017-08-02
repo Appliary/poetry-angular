@@ -1,35 +1,37 @@
 div
-  .tab-header
-      h1
-          | {{ containerTitle | translate }}
-      tabs(ng-if='showMe')
-          a( ng-click='showTemplate(false)' )
-              | {{ 'backToForm' | translate }}
-  .tab-body
-  div(ng-if="showMe")
-    .filters
-        .toggles(ng-hide='hideFilterButtons')
-            span( ng-repeat='(filterKey, filterState) in filters', ng-click=' filters[ filterKey ] = !filterState', ng-class=' {active: filterState} ' )
-                | {{ filterKey + ':filter:mathformula' | translate }}
-        input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
+    .modal-header
+        .pull-right(ng-if='showMe')
+                a( ng-click='showTemplate(false)' )
+                    | {{ 'backToForm' | translate }}
+        h4.modal-title {{ containerTitle | translate }}
+        
+    .modal-body
+        .row(ng-if="showMe")
+            .col-xs-12.form-group
+                .toggles(ng-hide='hideFilterButtons')
+                    span( ng-repeat='(filterKey, filterState) in filters', ng-click=' filters[ filterKey ] = !filterState', ng-class=' {active: filterState} ' )
+                        | {{ filterKey + ':filter:mathformula' | translate }}
+                input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
 
-    .results.list(style="position:static;max-height:50vh;overflow:auto")
-        table
-            thead: tr
-                th {{ 'kind:column:mathformula' | translate }}
-                th {{ 'name:column:mathformula' | translate }}
-                th {{ 'measurementTypes:column:mathformula' | translate }}
-            tbody
-                tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: input.device == result}')
-                    td {{ result.kind }}
-                    td(ng-if=" result.kind != 'tags' ") {{ result.name }}
-                    td(ng-if=" result.kind == 'tags' ")
-                        tags-viewer( array="result.name" )
-                    td {{ result.types[0][0] }}&nbsp;
-                        em(ng-if="result.types.length > 1")
-                            | {{'and:mathformula'|translate}}&nbsp;
-                            | {{result.types.length - 1}}&nbsp;
-                            | {{'others:mathformula'|translate}}
-        span.muted(ng-if=' results.length === 0 ')
-            | {{ 'nodata:results:mathformula'| translate }}
-  div(ng-hide="showMe" ng-transclude)
+            .col-xs-12
+                .table-scrollable(style="max-height:50vh;overflow:auto")
+                    table.table.table-hover
+                        thead: tr
+                            th {{ 'kind:column:mathformula' | translate }}
+                            th {{ 'name:column:mathformula' | translate }}
+                            th {{ 'measurementTypes:column:mathformula' | translate }}
+                        tbody
+                            tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: input.device == result}')
+                                td {{ result.kind }}
+                                td(ng-if=" result.kind != 'tags' ") {{ result.name }}
+                                td(ng-if=" result.kind == 'tags' ")
+                                    tags-viewer( array="result.name" )
+                                td {{ result.types[0][0] }}&nbsp;
+                                    em(ng-if="result.types.length > 1")
+                                        | {{'and:mathformula'|translate}}&nbsp;
+                                        | {{result.types.length - 1}}&nbsp;
+                                        | {{'others:mathformula'|translate}}
+                    span.muted(ng-if=' results.length === 0 ')
+                        | {{ 'nodata:results:mathformula'| translate }}
+        
+        .row(ng-hide="showMe" ng-transclude)
