@@ -1,7 +1,7 @@
 .modal-header
     h4.modal-title {{ __config.toolboxName + ':' + module.name + ':title' | translate}}
 .modal-body
-    ng-include(src='"generic/form.pug"', ng-if='loaded')
+    ng-include.row(src='"generic/form.pug"', ng-if='loaded')
 .modal-footer
     .has-error(ng-if='__validation.length == 0')
         span.help-block {{ message }}

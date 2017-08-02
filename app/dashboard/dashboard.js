@@ -1,4 +1,4 @@
-app.controller( 'dashboard/dashboard', function (
+app.controller('dashboard/dashboard', function (
     $scope,
     ngDialog,
     $http
@@ -19,28 +19,30 @@ app.controller( 'dashboard/dashboard', function (
                 'video',
             ];
 
-            scope.allowed = function allowed( type ) {
-                if ( !$scope.$root.__module.config.widgets.length )
+            scope.allowed = function allowed(type) {
+                if (!$scope.$root.__module.config.widgets.length)
                     return true;
 
-                return !!~$scope.$root.__module.config.widgets.indexOf( type );
+                return !!~$scope.$root.__module.config.widgets.indexOf(type);
             };
 
             // Open widget creation modal
-            ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/widgets/create.pug',
-                    scope: scope
-                } )
-                .then( function ( widget ) {
+            ngDialog.openConfirm({
+                templateUrl: 'dashboard/widgets/create.pug',
+                scope: scope,
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function (widget) {
                     var w = {
                         edit: true,
                         type: widget.type,
                         title: widget.title
                     };
-                    $scope.Dashboards.current.widgets.push( w );
+                    $scope.Dashboards.current.widgets.push(w);
                     $scope.Dashboards.save();
-                    $scope.Widgets.edit( w );
-                } );
+                    $scope.Widgets.edit(w);
+                });
 
         },
 
@@ -48,33 +50,35 @@ app.controller( 'dashboard/dashboard', function (
          * Edit widget params
          * @param {Object} id Widget to be edited
          */
-        edit: function editWidget( widget ) {
+        edit: function editWidget(widget) {
 
             // Get the array index of the widget
-            var id = $scope.Dashboards.current.widgets.indexOf( widget );
-            if ( !~id ) return console.error( 'widget not found' );
+            var id = $scope.Dashboards.current.widgets.indexOf(widget);
+            if (!~id) return console.error('widget not found');
 
             var scope = $scope.$new();
-            scope.widget = $scope.Dashboards.current.widgets[ id ];
+            scope.widget = $scope.Dashboards.current.widgets[id];
 
             // Show edition modal
-            ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/widgets/' + widget.type + '/edit.pug',
-                    scope: scope
-                } )
-                .then( function ( widget ) {
+            ngDialog.openConfirm({
+                templateUrl: 'dashboard/widgets/' + widget.type + '/edit.pug',
+                scope: scope,
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function (widget) {
 
                     // Update widget
-                    $scope.Dashboards.current.widgets[ id ] = widget;
+                    $scope.Dashboards.current.widgets[id] = widget;
 
                     // Save Dashboard
                     $scope.Dashboards.save();
 
                     // Update view if needed
-                    if ( typeof widget.refresh == 'function' )
+                    if (typeof widget.refresh == 'function')
                         widget.refresh();
 
-                } );
+                });
 
         },
 
@@ -84,7 +88,7 @@ app.controller( 'dashboard/dashboard', function (
         resize: function resizeWidgets() {
 
             // Emit an event to googleCharts to be redrawn
-            $scope.$root.$emit( 'resizeMsg', 'resizeMsg' );
+            $scope.$root.$emit('resizeMsg', 'resizeMsg');
 
         },
 
@@ -92,25 +96,27 @@ app.controller( 'dashboard/dashboard', function (
          * Remove widget from current dashboard
          * @param {Object} widget Widget to be removed
          */
-        remove: function removeWidget( widget ) {
+        remove: function removeWidget(widget) {
 
             // Ask confirmation
-            ngDialog.openConfirm( {
-                    templateUrl: 'modals/confirmation.pug'
-                } )
-                .then( function confirmed() {
+            ngDialog.openConfirm({
+                templateUrl: 'modals/confirmation.pug',
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function confirmed() {
 
                     // Find the index
-                    var i = $scope.Dashboards.current.widgets.indexOf( widget );
-                    if ( !~i ) return console.error( 'Widget not found' );
+                    var i = $scope.Dashboards.current.widgets.indexOf(widget);
+                    if (!~i) return console.error('Widget not found');
 
                     // Remove
-                    $scope.Dashboards.current.widgets.splice( i, 1 );
+                    $scope.Dashboards.current.widgets.splice(i, 1);
 
                     // Save to DB
                     $scope.Dashboards.save();
 
-                } );
+                });
 
         }
 
@@ -124,10 +130,10 @@ app.controller( 'dashboard/dashboard', function (
          * Get or set the draggable option
          * @param {Boolean} val Value to set
          */
-        draggable: function draggableDashboard( val ) {
+        draggable: function draggableDashboard(val) {
 
             // Set the value if defined
-            if ( val !== undefined )
+            if (val !== undefined)
                 $scope.gridsterOpts.draggable.enabled = !!val;
 
             // Get the value
@@ -140,11 +146,11 @@ app.controller( 'dashboard/dashboard', function (
          * @param {Object} id Dashboard or id to check
          * @return {Boolean} True if current dashboard, otherwise false
          */
-        isCurrent: function isCurrentDashboard( dashboard ) {
+        isCurrent: function isCurrentDashboard(dashboard) {
 
             // Check if the IDs are the same
-            dashboard = getId( dashboard );
-            return ( dashboard == $scope.Dashboards.current._id );
+            dashboard = getId(dashboard);
+            return (dashboard == $scope.Dashboards.current._id);
 
         },
         current: {}, // Current dashboard to be shown
@@ -155,29 +161,29 @@ app.controller( 'dashboard/dashboard', function (
         load: function loadDashboards() {
 
             // Ask API to get all dashboards of the user
-            return $http.get( '/api/myDashboards' )
-                .then( function success( res ) {
+            return $http.get('/api/myDashboards')
+                .then(function success(res) {
 
                     // Catch HTTP errors
-                    if ( res.status !== 200 ) throw res;
+                    if (res.status !== 200) throw res;
 
                     // Format the widgets
-                    res.data = res.data.map( function ( dashboard ) {
-                        dashboard.widgets = dashboard.widgets.map( function ( widget ) {
+                    res.data = res.data.map(function (dashboard) {
+                        dashboard.widgets = dashboard.widgets.map(function (widget) {
                             widget.edit = true;
                             return widget;
-                        } );
+                        });
                         return dashboard;
-                    } );
+                    });
 
                     // Load dashboards in scope
                     $scope.Dashboards.list = res.data;
 
                     // Select first dashboard if exists
-                    if ( $scope.Dashboards.list.length )
-                        $scope.Dashboards.select( $scope.Dashboards.list[ 0 ] );
+                    if ($scope.Dashboards.list.length)
+                        $scope.Dashboards.select($scope.Dashboards.list[0]);
 
-                } );
+                });
 
         },
         list: [], // List of all user's dashboards
@@ -186,19 +192,19 @@ app.controller( 'dashboard/dashboard', function (
          * Show selected dashboard
          * @param {Object} id Dashboard or id to be shown
          */
-        select: function selectDashboard( id ) {
+        select: function selectDashboard(id) {
 
             // Empty
-            if ( !id ) return ( $scope.Dashboards.current = {} );
+            if (!id) return ($scope.Dashboards.current = {});
 
-            id = getId( id );
+            id = getId(id);
 
             // Iterate through dashboards
             var goodOne;
-            $scope.Dashboards.list.some( function getDashboard( dashboard ) {
+            $scope.Dashboards.list.some(function getDashboard(dashboard) {
 
                 // If the dashboard id does not match, continues iteration
-                if ( dashboard._id != id ) return false;
+                if (dashboard._id != id) return false;
 
                 // If match, copy dashboard as "current"
                 $scope.Dashboards.current = dashboard;
@@ -206,7 +212,7 @@ app.controller( 'dashboard/dashboard', function (
                 // And stop iterating more
                 return true;
 
-            } );
+            });
 
         },
 
@@ -217,29 +223,31 @@ app.controller( 'dashboard/dashboard', function (
         create: function createDashboard() {
 
             // Show modal form
-            ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/edit.pug'
-                } )
-                .then( function applyEdit( nameValue ) {
+            ngDialog.openConfirm({
+                templateUrl: 'dashboard/edit.pug',
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function applyEdit(nameValue) {
 
                     var id = Date.now()
-                        .toString( 36 );
+                        .toString(36);
 
                     // Create new Dashboard in the list
-                    $scope.Dashboards.list.push( {
+                    $scope.Dashboards.list.push({
                         _id: id,
                         name: nameValue,
                         widgets: []
-                    } );
+                    });
 
                     // Select it
-                    $scope.Dashboards.select( id );
+                    $scope.Dashboards.select(id);
 
                     // Save to API
                     $scope.Dashboards.save();
                     $scope.Dashboards.load();
 
-                } );
+                });
 
         },
 
@@ -252,17 +260,19 @@ app.controller( 'dashboard/dashboard', function (
             scope.nameValue = $scope.Dashboards.current.name;
 
             // Show modal form
-            ngDialog.openConfirm( {
-                    templateUrl: 'dashboard/edit.pug',
-                    scope: scope
-                } )
-                .then( function applyEdit( nameValue ) {
+            ngDialog.openConfirm({
+                templateUrl: 'dashboard/edit.pug',
+                scope: scope,
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function applyEdit(nameValue) {
 
                     // Copy new name and save
                     $scope.Dashboards.current.name = nameValue;
                     $scope.Dashboards.save();
 
-                } );
+                });
         },
 
         /**
@@ -271,44 +281,46 @@ app.controller( 'dashboard/dashboard', function (
         remove: function removeDashboard() {
 
             // Ask confirmation
-            ngDialog.openConfirm( {
-                    templateUrl: 'modals/confirmation.pug'
-                } )
-                .then( function confirmed() {
+            ngDialog.openConfirm({
+                templateUrl: 'modals/confirmation.pug',
+                className: 'ngdialog-theme-default',
+                width: '450px'
+            })
+                .then(function confirmed() {
 
                     // Call the API to delete this lil' boy
                     return $http.delete(
-                            '/api/myDashboards/' + $scope.Dashboards.current._id
-                        )
-                        .then( function success( res ) {
+                        '/api/myDashboards/' + $scope.Dashboards.current._id
+                    )
+                        .then(function success(res) {
 
                             // Find index for local deletion
-                            var i = $scope.Dashboards.list.indexOf( $scope.Dashboards.current );
+                            var i = $scope.Dashboards.list.indexOf($scope.Dashboards.current);
 
                             // Catch inexistant dashboard
-                            if ( !~i ) return;
+                            if (!~i) return;
 
                             // Remove
-                            $scope.Dashboards.list.splice( i, 1 );
+                            $scope.Dashboards.list.splice(i, 1);
 
                             // Select nextOne
-                            if ( $scope.Dashboards.list[ i ] )
+                            if ($scope.Dashboards.list[i])
                                 return $scope.Dashboards.select(
-                                    $scope.Dashboards.list[ i ]
+                                    $scope.Dashboards.list[i]
                                 );
 
                             // Or the firstOne
-                            if ( $scope.Dashboards.list[ 0 ] )
+                            if ($scope.Dashboards.list[0])
                                 return $scope.Dashboards.select(
-                                    $scope.Dashboards.list[ 0 ]
+                                    $scope.Dashboards.list[0]
                                 );
 
                             // Or emptify
                             return $scope.Dashboards.select();
 
-                        } );
+                        });
 
-                } );
+                });
 
         },
 
@@ -328,19 +340,19 @@ app.controller( 'dashboard/dashboard', function (
         save: function saveDashboard() {
 
             // Be sure there is a current Dashboard
-            if ( !$scope.Dashboards.current._id )
+            if (!$scope.Dashboards.current._id)
                 return;
 
             // Use the API to save current dashboard
-            return $http.post( '/api/myDashboards', $scope.Dashboards.current )
-                .then( function success( res ) {
+            return $http.post('/api/myDashboards', $scope.Dashboards.current)
+                .then(function success(res) {
 
                     // Catch HTTP errors
-                    if ( res.status !== 200 ) throw res;
+                    if (res.status !== 200) throw res;
 
-                    console.info( 'Dashboard saved' );
+                    console.info('Dashboard saved');
 
-                } );
+                });
 
         }
 
@@ -351,12 +363,12 @@ app.controller( 'dashboard/dashboard', function (
      * @param {StringOrObject} item  Source to find the ID. Can be the id itself
      * @return id
      */
-    function getId( item ) {
+    function getId(item) {
 
-        if ( typeof item == 'object' ) {
-            if ( item._id )
+        if (typeof item == 'object') {
+            if (item._id)
                 item = item._id;
-            else if ( item.id )
+            else if (item.id)
                 item = item.id;
         }
 
@@ -369,7 +381,7 @@ app.controller( 'dashboard/dashboard', function (
     $scope.Dashboards.load();
 
     // Catch collapse event to resize widgets then
-    $scope.$root.$watch( 'collapse', $scope.Widgets.resize );
+    $scope.$root.$watch('collapse', $scope.Widgets.resize);
 
 
     // Set default gridster options
@@ -381,7 +393,7 @@ app.controller( 'dashboard/dashboard', function (
         width: 'auto', // Pixels or 'auto'
         colWidth: 'auto', // Pixels or 'auto'
         rowHeight: 250, // Pixels or 'match' to be squares
-        margins: [ 60, 20 ], // the pixel distance between each widget
+        margins: [60, 20], // the pixel distance between each widget
         outerMargin: true, // whether margins apply to outer edges of the grid
         isMobile: false, // stacks the grid items if true
         mobileBreakPoint: 600, // Less than that, widgets will stacks
@@ -397,10 +409,10 @@ app.controller( 'dashboard/dashboard', function (
         maxSizeY: null, // maximum row height of an item
         resizable: {
             enabled: true,
-            handles: [ 'e', 's', 'w', 'ne', 'se', 'sw', 'nw' ],
-            start: function ( event, $element, widget ) {},
-            resize: function ( event, $element, widget ) {},
-            stop: function ( event, $element, widget ) {
+            handles: ['e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+            start: function (event, $element, widget) { },
+            resize: function (event, $element, widget) { },
+            stop: function (event, $element, widget) {
                 $scope.Widgets.resize();
                 $scope.Dashboards.save();
             }
@@ -408,12 +420,12 @@ app.controller( 'dashboard/dashboard', function (
         draggable: {
             enabled: false, // whether dragging items is supported
             handle: '.widget', // optional selector for drag handle
-            start: function ( event, $element, widget ) {},
-            drag: function ( event, $element, widget ) {},
-            stop: function ( event, $element, widget ) {
+            start: function (event, $element, widget) { },
+            drag: function (event, $element, widget) { },
+            stop: function (event, $element, widget) {
                 $scope.Dashboards.save();
             }
         }
     };
 
-} );
+});

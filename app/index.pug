@@ -46,7 +46,7 @@ html(ng-app=app.name)
 
         //-
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
-            link(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}.css`)
+            link#style_color(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "/assets/layouts/layout/css/themes/default.min.css" }}.css`)
 
 
     body.page-header-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')

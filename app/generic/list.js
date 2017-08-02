@@ -168,8 +168,8 @@ app.controller('generic/list', function ($scope, $http, $location, ngDialog, $q,
                         return ngDialog.open({
                             templateUrl: 'modals/login.pug',
                             controller: 'modals/login',
-                            showClose: false,
-                            className: 'login center-block'
+                            className: 'ngdialog-theme-default',
+                            width: '450px'
                         });
 
                     $location.path('/error/' + response.status);
