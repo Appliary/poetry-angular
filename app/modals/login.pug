@@ -1,14 +1,24 @@
-header
-    h1 {{ 'login:modal:title' | translate }}
+.modal-header
+    h4 {{ 'login:modal:title' | translate }}
 
-form( ng-submit='auth()' )
-    label( for='email' ) {{ 'email:field:login' | translate }}
-    input( type='email', ng-model='login.email', name='email' )
+.modal-body
+    form.form-horizontal( ng-submit='auth()' )
+        .form-body
+            .form-group
+                label.col-md-3.control-label( for='email' ) {{ 'email:field:login' | translate }}
+                .col-md-9
+                    input.form-control( type='email', ng-model='login.email', name='email' )
+            .form-group
+                label.col-md-3.control-label( for='password' ) {{ 'password:field:login' | translate }}
+                .col-md-9
+                    input.form-control( type='password', ng-model='login.password', name='password' )
 
-    label( for='password' ) {{ 'password:field:login' | translate }}
-    input( type='password', ng-model='login.password', name='password' )
+        .form-actions
+            .row
+                .col-xs-12
+                    .btn-toolbar.pull-right
+                        button.btn.green( type='submit' ) 
+                            | {{ 'login:button' | translate }}
 
-    button( type='submit' ).pull-right {{ 'login:button' | translate }}
-
-button.lightButton.pull-right( ng-if='__appRegister' ng-click='register()' )
-    | {{ 'register:button' | translate }}
+                        button.btn.green( ng-if='__appRegister', ng-click='register()' )
+                            | {{ 'register:button' | translate }}
