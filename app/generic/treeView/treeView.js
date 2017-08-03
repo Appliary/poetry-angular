@@ -362,6 +362,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                     icon: $scope.boMeta[ type ].icon,
                     action: function ( event ) {
                         if ( _meta.onAdd ) {
+                            console.log("[treeview] _meta.onAdd event", event);
+                            console.log("[treeview] _meta.onAdd", _meta.onAdd);
                             _meta.onAdd( event );
                         } else {
                             var jsTree = $.jstree.reference( event.reference.context );

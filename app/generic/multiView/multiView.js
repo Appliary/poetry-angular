@@ -425,6 +425,7 @@ app.directive( 'multiView', function (
 
 
             $scope.updateItem = function ( item ) {
+                console.log("item=",item);
                 $scope.item = item;
                 $scope.__id = item._id;
                 $scope.editItem = item;
