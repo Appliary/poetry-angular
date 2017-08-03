@@ -45,6 +45,7 @@ app.directive("logsDirective", function($http){
         scope.config.limit = options.limit || 100;
         scope.config.order = options.order || "desc";
         scope.config.page = options.page || 0;
+        scope.config.tagify = options.tagify;
 
         // handlers
         //scope.config.responseData = options.responseData;
@@ -56,12 +57,16 @@ app.directive("logsDirective", function($http){
       function getHistory() {
         console.debug("getHISTORY");
         scope.loaded = false;
-          $http.get( '/api/'+ (scope.type && scope.type != "logs" ? scope.type+"/" : "") + scope.module
+          var url = '/api/'+ (scope.type && scope.type != "logs" ? scope.type+"/" : "") + scope.module
             + '/' + scope.__id + scope.config.apiPath
             + '?page=' + scope.config.page
             + '&limit='+ scope.config.limit
             +'&sort='+ scope.config.sort
-            +'&order='+ scope.config.order )
+            +'&order='+ scope.config.order;
+            if(scope.config.tagify){
+              url += "&tagify=true";
+            }
+          $http.get( url )
               .then( function success( response ) {
                 scope.loaded = true;
                   scope.logs = response.data.data;

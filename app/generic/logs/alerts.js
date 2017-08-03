@@ -49,6 +49,7 @@ app.controller( 'generic/logs/alerts', function ( $scope, $http ) {
       $scope.config.limit = options.limit || 100;
       $scope.config.order = options.order || "desc";
       $scope.config.page = options.page || 0;
+      $scope.config.tagify = options.tagify || false;
 
       return $scope.config;
     }
