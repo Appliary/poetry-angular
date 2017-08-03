@@ -1,5 +1,5 @@
 h1.page-title(style="margin-top:0")
-    | {{ $root.__module.name + ':module:title' | translate }}
+    | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 
@@ -10,7 +10,7 @@ h1.page-title(style="margin-top:0")
             .input-icon.right
                 i.icon-magnifier
                 input.form-control( type="text", ng-model="searchText", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
-        ul.nav.nav-tabs
+        //-ul.nav.nav-tabs
             li(ng-class="{active: general.activeView == 'tree'}")
                 a(ng-click="general.activeView = 'tree'")
                     | {{'treeview:multiview'|translate}}
