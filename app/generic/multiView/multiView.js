@@ -267,10 +267,6 @@ app.directive( 'multiView', function (
                     } );
                 },
                 resolveEditTabInclude: function () {
-                    //- item
-                    /*if($scope.item == "groups"){
-                      return ""
-                    }*/
                     for ( var i = 0, len = $scope.general.editTabs.length; i < len; i++ ) {
                         var tab = $scope.general.editTabs[ i ];
                         if ( tab.name === $scope.general.activeEditTab ) {
@@ -425,10 +421,21 @@ app.directive( 'multiView', function (
 
 
             $scope.updateItem = function ( item ) {
-                console.log("item=",item);
+                if(!item){
+                  $scope.item = null;
+                  $scope.__id = null;
+                  return;
+                }
                 $scope.item = item;
                 $scope.__id = item._id;
                 $scope.editItem = item;
+                $scope.$digest();
+            };
+
+            $scope.addItem = function ( item ) {
+                $scope.item = item;
+                $scope.__id = "new";
+                $scope.editItem = $scope.item;
                 $scope.$digest();
             };
 

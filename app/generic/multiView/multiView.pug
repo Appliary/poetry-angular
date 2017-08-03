@@ -20,7 +20,11 @@ h1.page-title(style="margin-top:0")
 
     .portlet-body(ng-if="general.activeView === 'tree'", style="height: 60vh; overflow-y: auto;")
         //-tree-view(options="treeView.options", edit-item="editItem", update-item="updateItem")
-        tree-view(options="treeView.options", edit-item="item", update-item="updateItem")
+        tree-view(
+          options="treeView.options",
+          edit-item="item",
+          update-item="updateItem",
+          add-item="addItem")
 
     //- listView not working well with treeView (treeView needs to redesigned)
     //-.portlet-body(ng-if="general.activeView === 'list'")

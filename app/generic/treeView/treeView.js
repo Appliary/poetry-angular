@@ -15,7 +15,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
         scope: {
             options: '=',
             editItem: '=?',
-            updateItem: '=?'
+            updateItem: '=?',
+            addItem: '=?'
         },
         //templateUrl: 'treeView/treeView.pug',
         template: '<div class="mvTreeView"><div id="{{controlId}}"></div></div>',
@@ -126,7 +127,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                                                 $scope.editItem = angular.copy( boData );
 
                                                 if ( $scope.updateItem ) {
-                                                    $scope.updateItem( $scope.editItem );
+                                                    console.log("[treeview] editItem");
+                                                    $scope.updateItem( $scope.editItem, "edit" );
                                                     _viewDS.updateItem( $scope.editItem, true );
 
                                                 }
@@ -141,7 +143,7 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                                     $scope.editItem = angular.copy( boData );
 
                                     if ( $scope.updateItem ) {
-                                        $scope.updateItem( $scope.editItem );
+                                        $scope.updateItem( $scope.editItem , "edit");
                                     }
                                 }
                                 //$scope.$parent.$digest();
@@ -295,8 +297,10 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                 } else if ( $scope.options.defaultActions ) {
                     $scope.options.defaultActions.forEach( function ( action ) {
                         if ( action === 'add' && !_isActionBlacklisted( obj, boMeta, $scope.options.actionBlacklist, action ) ) {
+                            console.log("boMeta canHave + add_...", boMeta);
                             if ( boMeta.canHave ) {
                                 boMeta.canHave.forEach( function ( type ) {
+                                  console.log('add_' + type, _getAddItemActon( type, obj.data ));
                                     result[ 'add_' + type ] = _getAddItemActon( type, obj.data );
                                 } );
                             }
@@ -385,8 +389,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
 
                             $scope.editItem = newItem;
 
-                            if ( $scope.updateItem ) {
-                                $scope.updateItem( newItem );
+                            if ( $scope.addItem ) {
+                                $scope.addItem( newItem );
                             }
                         }
                     }
