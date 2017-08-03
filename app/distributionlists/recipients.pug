@@ -1,24 +1,31 @@
 h4 {{ 'message:dlist:title'| translate }}
 
-form.form.form-horizontal( ng-submit="save()")
+form.form.form-horizontal( )
     .form-body
-        .form-group(ng-repeat="(i,r) in item.recipients")
-            label.col-md-3.control-label
-                span(ng-if="i == 0") {{ 'recipients:field' | translate }}
-                span(ng-if="i != 0") 
-            .col-md-9
-                input.form-control(ng-model="r.email", ng-blur="r.email?null:item.recipients.splice(i,1)")
-                //span.cross(ng-click="item.recipients.splice(i,1) && save()") &times;
-        
-        .form-group(ng-if="item.recipients.length == 0")
-            label.col-md-3.control-label
-                | {{'recipients:field' | translate}}
-            .col-md-9
-                input.form-control(ng-model="newRecipient.email" ng-blur="newRecipient.email?( item.recipients.push(newRecipient) && (newRecipient={})):undefined" placeholder="{{ 'addEmail:mailing:rules' | translate }}")
-    
-        .form-group.text-right
-            button.btn.green(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
-                | {{ 'add:' + $root.__module.name + ':button' | translate }}
+        form(ng-submit="newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true")
+            //- current recipients
+            .form-group(ng-repeat="(i,r) in item.recipients")
+                label.col-md-3.control-label
+                   span(ng-if="i == 0") {{ 'recipients:field' | translate }}
+                   span(ng-if="i != 0")
+                .col-md-9
+                    .input-icon.right
+                        i.fa.fa-close.font-red(ng-click="item.recipients.splice(i,1) && save()", title="{{'remove'|translate}}")
+                        input.form-control(ng-model="r.email", ng-blur="r.email?null:item.recipients.splice(i,1)")
+            //- new recipient
+            .form-group
+                label.col-md-3.control-label
+                    span(ng-if="item.recipients.length == 0") {{ 'recipients:field' | translate }}
+                    span(ng-if="item.recipients.length != 0")
+                .col-md-9
+                    .input-icon.right
+                        i.fa.fa-plus-circle.font-green(ng-click="newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true", title="{{'add'|translate}}")
+                        input.form-control(ng-model="newRecipient.email" ng-blur="newRecipient.email?( item.recipients.push(newRecipient) && (newRecipient={})):undefined" placeholder="{{ 'addEmail:mailing:rules' | translate }}")
+
+            //- add
+            .form-group.text-right
+                button.btn.green(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
+                    | {{ 'add:' + $root.__module.name + ':button' | translate }}
 
         .form-group
             label.col-md-3.control-label
@@ -40,7 +47,7 @@ form.form.form-horizontal( ng-submit="save()")
                     option( ng-repeat='opt in ["en","fr","nl"] ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
         .form-group.text-right
-            button.btn.green(ng-disabled='currentOutputErr').pull-right.lightButton
+            button.btn.green(ng-disabled='currentOutputErr', ng-click="save()").pull-right.lightButton
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
 
