@@ -1,4 +1,4 @@
-app.directive('appAppselector', function () {
+app.directive('appAppselector', function ($window) {
     return {
         restrict: 'C',
         templateUrl: 'topnav/appselector.pug',
@@ -13,6 +13,12 @@ app.directive('appAppselector', function () {
             $scope.select = function (app) {
                 window.location.replace('/' + app);
             };
+
+            angular.element($window)
+                .bind('resize', function () {
+                    //console.log("RESIZE");
+                    $('.nav-tabs').tabdrop();
+                });
         }
     }
 });
