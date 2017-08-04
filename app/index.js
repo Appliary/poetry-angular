@@ -44,23 +44,23 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 console.log( 'Team:', $rootScope.team );
                 console.groupEnd();
 
-                console.warn("listening to appRouteChange");
-                $rootScope.$on('appRouteChange',
-                  function(event, args){
-                    console.log("current path:",args.current.path);
-                    var authorized = AppUserService.hasApp(__appName, args.current.module.name);
-                    if(!authorized){
-                        var noPermissionPath = '/error/403';
-                        if(args.current.path != noPermissionPath){
-                          console.groupCollapsed( 'Permission [FAILED]' );
-                          console.log("stack:", "APP");
-                          console.log("service:",__appName);
-                          console.log("module:",args.current.module.name);
-                          console.groupEnd();
-                          $location.path(noPermissionPath);
+                console.warn( "listening to appRouteChange" );
+                $rootScope.$on( 'appRouteChange',
+                    function ( event, args ) {
+                        console.log( "current path:", args.current.path );
+                        var authorized = AppUserService.hasApp( __appName, args.current.module.name );
+                        if ( !authorized ) {
+                            var noPermissionPath = '/error/403';
+                            if ( args.current.path != noPermissionPath ) {
+                                console.groupCollapsed( 'Permission [FAILED]' );
+                                console.log( "stack:", "APP" );
+                                console.log( "service:", __appName );
+                                console.log( "module:", args.current.module.name );
+                                console.groupEnd();
+                                $location.path( noPermissionPath );
+                            }
                         }
-                    }
-                });
+                    } );
 
             }, function error( usersResponse ) {
 
@@ -78,3 +78,10 @@ app.config( function ( $locationProvider, $httpProvider ) {
             console.log( 'elem to print: ', elem );
         };
     } );
+
+toastr.options = {
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "timeOut": "6000"
+};
