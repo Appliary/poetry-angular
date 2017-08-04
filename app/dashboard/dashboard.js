@@ -30,8 +30,7 @@ app.controller('dashboard/dashboard', function (
             ngDialog.openConfirm({
                 templateUrl: 'dashboard/widgets/create.pug',
                 scope: scope,
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function (widget) {
                     var w = {
@@ -63,8 +62,7 @@ app.controller('dashboard/dashboard', function (
             ngDialog.openConfirm({
                 templateUrl: 'dashboard/widgets/' + widget.type + '/edit.pug',
                 scope: scope,
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function (widget) {
 
@@ -101,8 +99,7 @@ app.controller('dashboard/dashboard', function (
             // Ask confirmation
             ngDialog.openConfirm({
                 templateUrl: 'modals/confirmation.pug',
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function confirmed() {
 
@@ -225,8 +222,7 @@ app.controller('dashboard/dashboard', function (
             // Show modal form
             ngDialog.openConfirm({
                 templateUrl: 'dashboard/edit.pug',
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function applyEdit(nameValue) {
 
@@ -263,8 +259,7 @@ app.controller('dashboard/dashboard', function (
             ngDialog.openConfirm({
                 templateUrl: 'dashboard/edit.pug',
                 scope: scope,
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function applyEdit(nameValue) {
 
@@ -283,8 +278,7 @@ app.controller('dashboard/dashboard', function (
             // Ask confirmation
             ngDialog.openConfirm({
                 templateUrl: 'modals/confirmation.pug',
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function confirmed() {
 

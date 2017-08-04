@@ -1,16 +1,16 @@
-div
+div(ng-if="showMe")
     .modal-header
-        .pull-right(ng-if='showMe')
-                a( ng-click='showTemplate(false)' )
-                    | {{ 'backToForm' | translate }}
+        i.fa.fa-arrow-left.pull-right(ng-if='showMe', ng-click='showTemplate(false)')
         h4.modal-title {{ containerTitle | translate }}
         
     .modal-body
-        .row(ng-if="showMe")
+        .row
             .col-xs-12.form-group
-                .toggles(ng-hide='hideFilterButtons')
-                    span( ng-repeat='(filterKey, filterState) in filters', ng-click=' filters[ filterKey ] = !filterState', ng-class=' {active: filterState} ' )
-                        | {{ filterKey + ':filter:mathformula' | translate }}
+                .btn-toolbar(ng-hide='hideFilterButtons', style="margin-bottom: 10px;")
+                    .btn-group( ng-repeat='(filterKey, filterState) in filters')
+                        button.btn.green.btn-circle( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
+                            | {{ filterKey + ':filter:mathformula' | translate }}
+                
                 input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
 
             .col-xs-12
@@ -34,4 +34,4 @@ div
                     span.muted(ng-if=' results.length === 0 ')
                         | {{ 'nodata:results:mathformula'| translate }}
         
-        .row(ng-hide="showMe" ng-transclude)
+.row(ng-hide="showMe" ng-transclude)
