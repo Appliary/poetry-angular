@@ -1,6 +1,6 @@
 .modal-header
-    i(ng-if='tabview!="details"', ng-click='$parent.tabview="details"', class="fa fa-arrow-left pull-right" )
-    //    |  {{ 'backToForm:mathformula' | translate }}
+    i.fa.fa-arrow-left.pull-right(ng-if='tabview!="details"', ng-click='$parent.tabview="details"')
+
     h4.modal-title(ng-if='tabview=="details"')
         | {{ 'addInput:title:mathformula' | translate }}
     h4.modal-title(ng-if='tabview!="details"')

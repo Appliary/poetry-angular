@@ -35,8 +35,7 @@ app.controller( 'modals/login', function ( $scope, $http, $window, $location, ng
         return ngDialog.open( {
             templateUrl: 'modals/register.pug',
             controller: 'modals/register',
-            className: 'ngdialog-theme-default',
-            width: '450px'
+            className: 'ngdialog-theme-default'
         } );
     };
 

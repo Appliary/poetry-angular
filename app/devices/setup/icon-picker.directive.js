@@ -60,8 +60,7 @@
             ngDialog.openConfirm({
                 template: 'popupConfirm.pug',
                 scope: $scope,
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function () { })
                 .catch(function () { });
