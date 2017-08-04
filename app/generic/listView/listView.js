@@ -295,6 +295,8 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
             console.log("resize");
             scope.setListHeight();
             scope.setColumnsWidth();
+
+            $( '.nav-tabs' ).tabdrop();
           }, delay || 10);
         }
       };
