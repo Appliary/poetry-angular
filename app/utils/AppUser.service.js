@@ -1,4 +1,4 @@
-app.factory("AppUserService", function($rootScope){
+app.factory("AppUserService", function($rootScope, $http){
 
   function isObject(o){
     return o && angular.isObject(o);
@@ -35,9 +35,14 @@ app.factory("AppUserService", function($rootScope){
     return has("api", appName, moduleName);
   }
 
+  function getPermissions(){
+    return $http.get('/api/userGroups/permissions');
+  }
+
   return {
     has: has,
     hasApp: hasApp,
-    hasApi: hasApi
+    hasApi: hasApi,
+    getPermissions: getPermissions
   };
 });

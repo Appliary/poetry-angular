@@ -21,5 +21,7 @@
     "leaflet-draw/dist/leaflet.draw-src.css",
     "ng-dialog/js/ngDialog.min.js",
     "ng-dialog/css/ngDialog.min.css",
-    "ng-dialog/css/ngDialog-theme-default.min.css"
+    "ng-dialog/css/ngDialog-theme-default.min.css",
+    "angularjs-datepicker/src/js/angular-datepicker.js",
+    "angularjs-datepicker/src/css/angular-datepicker.css"
 ]
