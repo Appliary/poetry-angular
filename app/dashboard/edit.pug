@@ -1,6 +1,11 @@
-label
-    | {{ 'Enter the title:dashboard' | translate }}
-input(type="text", ng-model="nameValue")
-div.pull-right(class="ngdialog-buttons")
-    button.lightButton.pull-right(type="button", class="ngdialog-button ngdialog-button-secondary", ng-click="closeThisDialog(0)") {{ 'Cancel:dashboard' | translate }}
-    button.lightButton.pull-right(type="button", class="ngdialog-button ngdialog-button-primary", ng-click="confirm(nameValue)") {{ 'Confirm:dashboard' | translate }}
+.modal-header
+    h4.modal-title {{ 'Enter the title:dashboard' | translate }}
+
+.modal-body
+    input.form-control(type="text", ng-model="nameValue")
+
+.modal-footer
+    button.btn.default(type="button", ng-click="closeThisDialog(0)") 
+        | {{ 'Cancel:dashboard' | translate }}
+    button.btn.green(type="button", ng-click="confirm(nameValue)")
+        | {{ 'Confirm:dashboard' | translate }}
