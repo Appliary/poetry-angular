@@ -174,17 +174,7 @@ app.controller( 'generic/list', function (
 
                 }, function error( response ) {
                     isLoading = false;
-
-                    if ( response.status == 401 )
-                        return ngDialog.open( {
-                            templateUrl: 'modals/login.pug',
-                            controller: 'modals/login',
-                            className: 'ngdialog-theme-default',
-                            width: '450px'
-                        } );
-
-                    $location.path( '/error/' + response.status );
-
+                    errorHandler( response );
                 } );
         }
     }
@@ -337,6 +327,9 @@ app.controller( 'generic/list', function (
     }
 
     function errorHandler( response ) {
+
+        if ( response.status == 401 )
+            return $location.path( '/' );
 
         if ( window.clientInformation && !window.clientInformation.onLine )
             response.statusText = "You seems to be offline";

@@ -17,6 +17,13 @@ app.config( function ( $locationProvider, $httpProvider ) {
         $rootScope.__appName = __appName;
         $rootScope.loaded = false;
 
+        toastr.options = {
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "6000"
+        };
+
         /**
          * Retrieve session
          */
@@ -78,10 +85,3 @@ app.config( function ( $locationProvider, $httpProvider ) {
             console.log( 'elem to print: ', elem );
         };
     } );
-
-toastr.options = {
-    "newestOnTop": true,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "timeOut": "6000"
-};
