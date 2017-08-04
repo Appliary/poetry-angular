@@ -1,2 +1,2 @@
 .tags
-    .tag-item(ng-repeat="data in tags", ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)")
+    .label-default(ng-repeat="data in tags", ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)", style='display: inline-block;')

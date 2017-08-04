@@ -4,20 +4,10 @@ app.component('appTopnav', {
 
         $scope.userName = "";
 
-        /*$scope.editprofile = function () {
-            return ngDialog.open({
-                templateUrl: 'modals/editprofile.pug',
-                controller: 'modals/editprofile',
-                showClose: true,
-                className: 'editprofile'
-            });
-        }*/
-
         $scope.editprofile = function () {
             ngDialog.openConfirm({
                 templateUrl: 'modals/editprofile.pug',
                 className: 'ngdialog-theme-default',
-                width: '450px',
                 controller: 'modals/editprofile'
             });
         }

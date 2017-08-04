@@ -354,8 +354,7 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
             var _openDeleteConfim = function ( meta ) {
                 return ngDialog.openConfirm( {
                     template: meta.deleteConfirmTemplate || 'modals/confirmDeleteTreeView.pug',
-                    className: 'ngdialog-theme-default',
-                    width: '450px'
+                    className: 'ngdialog-theme-default'
                 } );
             };
 

@@ -1,18 +1,27 @@
-h3 {{ 'edit:PictureWidget' | translate }}
-label {{ 'title:widget:label' | translate }}
-input(ng-model="widget.title")
+.modal-header
+    h4.modal-title {{ 'edit:PictureWidget' | translate }}
 
-label {{ 'url:picture:dashboard' | translate }}
-input(type="text", ng-model="widget.options.url", required)
+.modal-body
+    form.form-horizontal
+        .form-body
+            .form-group
+                label.col-md-3.control-label {{ 'title:widget:label' | translate }}
+                .col-md-9
+                    input.form-control(ng-model="widget.title")
+            .form-group
+                label.col-md-3.control-label {{ 'url:picture:dashboard' | translate }}
+                .col-md-9
+                    input.form-control(type="text", ng-model="widget.options.url", required)
+            .form-group
+                label.col-md-3.control-label {{ 'sizing:picture:dashboard' | translate }}
+                .col-md-9
+                    select.form-control(ng-model="widget.options.size", required)
+                        option(value='cover') {{'cover:picture:widget'|translate}}
+                        option(value='contain') {{'contain:picture:widget'|translate}}
+                        option(value='100%') {{'fullSize:picture:widget'|translate}}
 
-label {{ 'sizing:picture:dashboard' | translate }}
-select(ng-model="widget.options.size", required)
-    option(value='cover') {{'cover:picture:widget'|translate}}
-    option(value='contain') {{'contain:picture:widget'|translate}}
-    option(value='100%') {{'fullSize:picture:widget'|translate}}
-
-div.pull-right(class="ngdialog-buttons")
-    button.lightButton.pull-right(ng-click="closeThisDialog()")
+.modal-footer
+    button.btn.default(ng-click="closeThisDialog()")
         | {{ 'Cancel:dashboard' | translate }}
-    button.lightButton.pull-right(ng-click="confirm(widget)")
+    button.btn.green(ng-click="confirm(widget)")
         | {{ 'Confirm:dashboard' | translate }}

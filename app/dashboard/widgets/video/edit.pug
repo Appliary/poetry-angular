@@ -1,12 +1,20 @@
-h3 {{ 'edit:VideoWidget' | translate }}
-label {{ 'title:widget:label' | translate }}
-input(ng-model="widget.title")
+.modal-header
+    h4.modal-title {{ 'edit:VideoWidget' | translate }}
 
-label
-    | {{ 'url:video:dashboard' | translate }}
-input(type="text", ng-model="widget.options.url")
-div.pull-right(class="ngdialog-buttons")
-    button.lightButton.pull-right(ng-click="closeThisDialog()")
+.modal-body
+    form.form-horizontal
+        .form-body
+            .form-group
+                label.col-md-3.control-label {{ 'title:widget:label' | translate }}
+                .col-md-9
+                    input.form-control(ng-model="widget.title")
+            .form-group
+                label.col-md-3.control-label {{ 'url:video:dashboard' | translate }}
+                .col-md-9
+                    input.form-control(type="text", ng-model="widget.options.url")
+
+.modal-footer
+    button.btn.default(ng-click="closeThisDialog()")
         | {{ 'Cancel:dashboard' | translate }}
-    button.lightButton.pull-right(ng-click="confirm(widget)")
+    button.btn.green(ng-click="confirm(widget)")
         | {{ 'Confirm:dashboard' | translate }}

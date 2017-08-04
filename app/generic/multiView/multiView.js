@@ -1,13 +1,13 @@
 /**
-*
-* TODO: have to find a way to clean up
-*
-* 1. replace $scope.editItem by $scope.item (because of assetManager, not done yet)
-* 2. render a custom edit tab using the generic way of doin' it (with config.js, etc ...)
-* 3. etc...
-*
-* comment all functions and some properties (to understand how there are used by the treeView)
-*/
+ *
+ * TODO: have to find a way to clean up
+ *
+ * 1. replace $scope.editItem by $scope.item (because of assetManager, not done yet)
+ * 2. render a custom edit tab using the generic way of doin' it (with config.js, etc ...)
+ * 3. etc...
+ *
+ * comment all functions and some properties (to understand how there are used by the treeView)
+ */
 app.directive( 'multiView', function (
     $q,
     $compile,
@@ -141,7 +141,7 @@ app.directive( 'multiView', function (
             } );
 
             _viewDS.events.addListener( 'data_updated', function () {
-                //$scope.actions.redrawListView();
+                $scope.actions.redrawListView();
             } );
 
             _viewDS.events.addListener( 'change_parent', function ( obj, newParent ) {
@@ -149,10 +149,10 @@ app.directive( 'multiView', function (
                     var result = $scope.options.events.onChangeParent( obj, newParent, $scope );
                     if ( result.then ) {
                         result.then( function () {
-                            //$scope.actions.redrawListView();
+                            $scope.actions.redrawListView();
                         } );
                     } else {
-                        //$scope.actions.redrawListView();
+                        $scope.actions.redrawListView();
                     }
                 } else if ( $scope.options.treeView.boMeta[ obj.boType ].apiService ) {
                     $scope.options.treeView.boMeta[ obj.boType ].apiService.save( obj.data );
@@ -295,8 +295,6 @@ app.directive( 'multiView', function (
                                             return;
                                         }
 
-                                        console.log("[generic/multiView/multiView.js] options.general.saveItem", $scope.item);
-
                                         if ( isEdit ) {
                                             _viewDS.updateItem( savedItem );
                                         } else {
@@ -332,7 +330,7 @@ app.directive( 'multiView', function (
                     }
 
                     $scope.general.editTabs.forEach( function ( tab ) {
-                        if ( tab.boType === $scope.item.boType/*tab.boType === $scope.editItem.boType*/ ) {
+                        if ( tab.boType === $scope.item.boType /*tab.boType === $scope.editItem.boType*/ ) {
                             result.push( tab );
                         }
                     } );
@@ -421,21 +419,9 @@ app.directive( 'multiView', function (
 
 
             $scope.updateItem = function ( item ) {
-                if(!item){
-                  $scope.item = null;
-                  $scope.__id = null;
-                  return;
-                }
                 $scope.item = item;
                 $scope.__id = item._id;
                 $scope.editItem = item;
-                $scope.$digest();
-            };
-
-            $scope.addItem = function ( item ) {
-                $scope.item = item;
-                $scope.__id = "new";
-                $scope.editItem = $scope.item;
                 $scope.$digest();
             };
 
@@ -457,24 +443,24 @@ app.directive( 'multiView', function (
             /*** Quick fix from stephane, to optimise by himself as soon as possible ***/
             /*** but understand, comment and clean up k's code first ***/
             $scope.__view = "";
-            $scope.backToList = function(module){
-              $scope.__id = undefined;
-              delete $scope.__id;
-            }
+            $scope.backToList = function ( module ) {
+                $scope.__id = undefined;
+                delete $scope.__id;
+            };
             /**
-            * TODO: a common service fn for this watch __view
-            */
-            $scope.$watch('__view', function loadView() {
-                $scope.fields = $scope.$root.__module.config.tabs[$scope.__view || ''].fields || [];
-                $scope.buttons = $scope.$root.__module.config.tabs[$scope.__view || ''].buttons || [];
+             * TODO: a common service fn for this watch __view
+             */
+            $scope.$watch( '__view', function loadView() {
+                $scope.fields = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fields || [];
+                $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
                 //all defaults
-                $scope.defaults = angular.isObject($scope.$root.__module.config.defaults) ? $scope.$root.__module.config.defaults : {};
-            });
+                $scope.defaults = angular.isObject( $scope.$root.__module.config.defaults ) ? $scope.$root.__module.config.defaults : {};
+            } );
             /**
-            * TODO: a common service fn for this tab()
-            */
-            $scope.tab = function tab(name) {
-                console.log("%ctab(): "+name,"background-color: blanchedAlmond; color: white; font-weight: bolder");
+             * TODO: a common service fn for this tab()
+             */
+            $scope.tab = function tab( name ) {
+                console.log( "%ctab(): " + name, "background-color: blanchedAlmond; color: white; font-weight: bolder" );
                 $scope.__view = name;
             };
             /*** End quick fix from stephane, to optimise by himself as soon as possible ***/

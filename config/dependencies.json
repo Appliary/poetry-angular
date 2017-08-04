@@ -4,6 +4,7 @@
     "angular/angular.js",
     "async/dist/async.min.js",
     "jstree/dist/jstree.min.js",
+    "toastr/toastr.js",
     "jstree/dist/themes/default/style.min.css",
     "datatables/media/js/jquery.dataTables.min.js",
     "angular-datatables/dist/angular-datatables.min.js",

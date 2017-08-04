@@ -6,7 +6,7 @@
             | &times;
 
 
-div(style="background-color:{{data.color}}; padding: 0 5px;", class="{{data.collection}}", alt="{{data.text}}", title="{{data.text}}")
+.label(style="background-color:{{data.color}}; padding: 0 5px;", class="{{data.collection}}", alt="{{data.text}}", title="{{data.text}}")
     span(ng-if="!data.name") {{data.text}}
     span(ng-if="data.name") {{data.name}}
     span.remove-button(ng-click="$removeTag()", ng-if="!data.collection")

@@ -174,8 +174,7 @@ app.component( 'appRouter', {
                         template: $scope.__config.templateUrl || 'modals/toolbox.pug',
                         controller: $scope.__config.controller || 'modals/toolbox',
                         scope: $scope,
-                        className: 'ngdialog-theme-default',
-                        width: '450px'
+                        className: 'ngdialog-theme-default'
                     } );
                 }
 

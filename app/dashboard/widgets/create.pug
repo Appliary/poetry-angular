@@ -1,15 +1,22 @@
-h3 {{ 'newWidget:widget:dashboard' | translate }}
-div
-    label {{ 'title:widget:label' | translate }}
-    input(ng-model="widget.title")
+.modal-header
+    h4.modal-title {{ 'newWidget:widget:dashboard' | translate }}
 
-div
-    label {{ 'widget:widget:label' | translate }}
-    select(ng-model="widget.type", ng-init="widget.type='chart'")
-        option( ng-repeat="type in widgetTypes" value="{{type}}", ng-if="allowed(type)") {{ type+':widget' | translate }}
+.modal-body
+    form.form-horizontal
+        .form-body
+            .form-group
+                label.col-md-3.control-label {{ 'title:widget:label' | translate }}
+                .col-md-9
+                    input.form-control(ng-model="widget.title")
 
-div.pull-right(class="ngdialog-buttons")
-    button.lightButton.pull-right(ng-click="closeThisDialog()")
+            .form-group
+                label.col-md-3.control-label {{ 'widget:widget:label' | translate }}
+                .col-md-9
+                    select.form-control(ng-model="widget.type", ng-init="widget.type='chart'")
+                        option( ng-repeat="type in widgetTypes" value="{{type}}", ng-if="allowed(type)") {{ type+':widget' | translate }}
+
+.modal-footer
+    button.btn.default(ng-click="closeThisDialog()")
         | {{ 'cancel:widget:button' | translate }}
-    button.lightButton.pull-right(ng-click="confirm( widget )")
+    button.btn.green(ng-click="confirm( widget )")
         | {{ 'save:widget:button' | translate }}

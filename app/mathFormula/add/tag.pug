@@ -1,11 +1,11 @@
-.filters
-    .toggles
-        span.active
-            | {{ 'tags:filter:mathformula' | translate }}
+.form-group
+    .btn-toolbar
+        .btn-group
+            button.btn.green.btn-circle {{ 'tags:filter:mathformula' | translate }}
     input( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" )
 
-.results.list(style="position:static;max-height:50vh;overflow:auto")
-    table
+.table-scrollable(style="max-height:50vh;overflow:auto")
+    table.table.table-hover
         thead: tr
             th {{ 'kind:column:mathformula' | translate }}
             th {{ 'name:column:mathformula' | translate }}

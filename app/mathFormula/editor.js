@@ -59,8 +59,7 @@ app.controller('mathFormula/editor', function (
         ngDialog.openConfirm({
             templateUrl: 'mathFormula/showVals.pug',
             scope: scope,
-            className: 'ngdialog-theme-default',
-            width: '450px'
+            className: 'ngdialog-theme-default'
         });
     };
 
@@ -79,8 +78,7 @@ app.controller('mathFormula/editor', function (
                 templateUrl: 'mathFormula/add.pug',
                 controller: 'mathFormula/add',
                 scope: scope,
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function success(input) {
 
@@ -104,8 +102,7 @@ app.controller('mathFormula/editor', function (
 
             ngDialog.openConfirm({
                 templateUrl: 'modals/confirmation.pug',
-                className: 'ngdialog-theme-default',
-                width: '450px'
+                className: 'ngdialog-theme-default'
             })
                 .then(function success() {
 
