@@ -15,7 +15,7 @@
         li(ng-if='__view')
             a {{ __view | translate }}
 
-    .page-toolbar(ng-if="$root.__module.config.toolbox.length")
+    .page-toolbar(ng-if="$root.__module.config.toolbox")
         .btn-group.pull-right
             button.btn.green.btn-sm.btn-outline.dropdown-toggle(type='button', data-toggle='dropdown')
                 | Actions 
