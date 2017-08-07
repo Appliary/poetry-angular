@@ -7,54 +7,31 @@
         li
             a(ng-click='Dashboards.create()')
                 i.icon-bell 
-                | {{ 'addDashboard:dashboardHeader' | translate }}
+                |  {{ 'addDashboard:dashboardHeader' | translate }}
         li
             a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
                 i.icon-bell 
-                | {{ 'addWidget:dashboardHeader' | translate }}
+                |  {{ 'addWidget:dashboardHeader' | translate }}
         li
             a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
                 i.icon-bell 
-                | {{ 'editDashboard:dashboardHeader' | translate }}
+                |  {{ 'editDashboard:dashboardHeader' | translate }}
         li
             a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
                 i.icon-bell 
-                | {{ 'clearDashboard:dashboardHeader' | translate }}
+                |  {{ 'clearDashboard:dashboardHeader' | translate }}
         li
             a(ng-click='Dashboards.remove()', ng-if="Dashboards.list.length")
                 i.icon-bell 
-                | {{ 'deleteDashboard:dashboardHeader' | translate }}
+                |  {{ 'deleteDashboard:dashboardHeader' | translate }}
         li
             a(ng-click='Dashboards.draggable( true )', ng-if='!Dashboards.draggable() && Dashboards.list.length')
                 i.icon-bell 
-                | {{ 'enableDragWidget:dashboardHeader' | translate }}
+                |  {{ 'enableDragWidget:dashboardHeader' | translate }}
         li
             a(ng-click='Dashboards.draggable( false )',  ng-if='Dashboards.draggable() && Dashboards.list.length')
                 i.icon-bell 
-                | {{ 'disableDragWidget:dashboardHeader' | translate }}
-
-//-dropdown.pull-right(text="'manage:dashboards'|translate", style="position: absolute; top: 15px; right: 15px;")
-    a(ng-click='Dashboards.create()')
-        icon(name='th-large')
-        | {{ 'addDashboard:dashboardHeader' | translate }}
-    a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
-        icon(name='plus-square-o')
-        | {{ 'addWidget:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
-        icon(name='pen')
-        | {{ 'editDashboard:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
-        icon(name='circle-o')
-        | {{ 'clearDashboard:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.remove()', ng-if="Dashboards.list.length")
-        icon(name='trash')
-        | {{ 'deleteDashboard:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.draggable( true )', ng-if='!Dashboards.draggable() && Dashboards.list.length')
-        icon(name="arrows-alt")
-        | {{ 'enableDragWidget:dashboardHeader' | translate }}
-    a(ng-click='Dashboards.draggable( false )',  ng-if='Dashboards.draggable() && Dashboards.list.length')
-        icon(name="arrows-alt")
-        | {{ 'disableDragWidget:dashboardHeader' | translate }}
+                |  {{ 'disableDragWidget:dashboardHeader' | translate }}
 
 .portlet.light.bordered(ng-class="item ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
     .portlet-title.tabbable-line
@@ -65,5 +42,3 @@
         div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
             ul: li(gridster-item='widget', ng-repeat=' widget in Dashboards.current.widgets ')
                 ng-widget( widget='widget', edit='Widgets.edit', remove='Widgets.remove' )
-
-

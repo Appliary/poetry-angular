@@ -1,17 +1,3 @@
-//- not working
-    dropdown( icon='user', text="userName" )
-        li
-            a( ng-click="editprofile()" )
-                i.icon-user
-                | {{ 'edit profile:topbar' | translate }}
-        li
-            a( href="/logout" ) 
-                i.icon-key
-                | {{ 'logout:topbar' | translate }}
-        
-
-
-//- working
 a.dropdown-toggle(data-toggle='dropdown', aria-haspopup="true", aria-expanded="true")
     img.img-circle(alt='', src='{{user}}')
     span.username.username-hide-on-mobile  {{userName}} 
