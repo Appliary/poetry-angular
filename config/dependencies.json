@@ -19,7 +19,7 @@
     "leaflet-google-places-autocomplete/src/css/leaflet-gplaces-autocomplete.css",
     "leaflet-draw/dist/leaflet.draw.js",
     "leaflet-draw/dist/leaflet.draw-src.css",
-    "ng-dialog/js/ngDialog.js",
+    "ng-dialog/js/ngDialog.min.js",
     "ng-dialog/css/ngDialog.min.css",
     "ng-dialog/css/ngDialog-theme-default.min.css",
     "angularjs-datepicker/src/js/angular-datepicker.js",
