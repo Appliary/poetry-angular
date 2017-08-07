@@ -7,7 +7,8 @@ app.directive("detailsDirective", function(){
       customData: "=?",
       view: "=?",
       close: "&?",
-      saveItemFn: "=?"
+      saveItemFn: "=?",
+      deleteItemFn: "=?"
     },
     templateUrl: "generic/detailsDirective/detailsDirective.pug",
     transclude: false,
@@ -22,6 +23,12 @@ app.directive("detailsDirective", function(){
       scope.saveItem = function saveItem(){
         if(scope.saveItemFn){
           scope.saveItemFn(scope.item);
+        }
+      }
+
+      scope.deleteItem = function deleteItem(){
+        if(scope.deleteItemFn){
+          scope.deleteItemFn(scope.item);
         }
       }
 
