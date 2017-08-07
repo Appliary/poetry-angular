@@ -20,9 +20,9 @@ app.directive( 'arrayInput', function arrayInput() {
                 } );
             } );
 
-            $scope.loadTags = function(query){
-              return $http.get('/api/tags/' + query);
-            }
+            $scope.loadTags = function ( query ) {
+                return $http.get( '/api/tags/' + query );
+            };
 
             $scope.$watchCollection( 'array', function watchModel( n, o ) {
 
