@@ -13,7 +13,7 @@
                     | {{ "building:alerts" | translate }}
                 select.form-control(ng-model="building")
                     option(value="") {{ 'allBuildings:alertsList' | translate }}
-                    option(ng-repeat="building in buildings", ng-value="building") {{ building.name }}
+                    option(ng-repeat="bu in buildings", ng-value="bu") {{ bu.name }}
             .form-group.col-lg-4.col-xs-4
                 //- searchId
                 label(for="id")
