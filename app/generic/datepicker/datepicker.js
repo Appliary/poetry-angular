@@ -1,42 +1,43 @@
-app.directive("datepicker", function(){
-  return {
-    restrict: 'A',
-    replace: false,
-    //require: "ngModel",
-    transclude: false,
-    /*templateUrl: function(element, attrs){
-      var template;
-      if(!attrs.templateUrl || !angular.isString(attrs.templateUrl)){
-        template = "generic/datepicker/default.pug";
-      }
-      else{
-        template = "generic/datepicker/"+attrs.templateUrl+".pug";
-      }
-      return template;
-    },*/
-    link: function(scope, elem, attrs, ngModel){
-      console.debug("datepicker");
-      $(elem).datepicker();
-      /*if (!ngModel) return;
+var datepicker = $.fn.datepicker.noConflict();
+$.fn.bootstrapDP = datepicker;
 
-      scope.onChange = function(){
-        console.log("new value", scope.value);
-        ngModel.$setViewValue(scope.value);
-      };
+app.directive( "datepicker", function () {
+    console.log( 'DATEPICKER' );
+    return {
+        restrict: 'E',
+        scope: {
+            datevalue: '=ngModel'
+        },
+        templateUrl: 'generic/datepicker/datepicker.pug',
+        link: function ( scope, elem, attrs ) {
+            console.log( 'DATEPICKER link', scope, elem );
+            var lang = 'en',
+                hid = $( elem )
+                .children( '.valueHolder' ),
+                formc = $( elem )
+                .children( '.input-group' );
+            try {
+                lang = scope.$parent.$root.user.language;
+            } catch ( err ) {}
+            hid.bootstrapDP( {
+                language: lang,
+                format: {
+                    toDisplay: function ( date, format, language ) {
+                        var d = new Date( date );
+                        return d.toISOString();
+                    },
+                    toValue: function ( date, format, language ) {
+                        return new Date( date );
+                    }
+                },
+                todayBtn: "linked",
+                todayHighlight: true,
+                weekStart: 1
+            } );
 
-      attrs.$observe('class', function(className){
-            scope.className = className;
-      });
-
-      attrs.$observe('name', function(name){
-            scope.name = name;
-      });
-
-      ngModel.$render = function(){
-        console.log("ngModel.$render", ngModel.$modelValue);
-        if(!ngModel.$modelValue) return;
-        scope.value = new Date( ngModel.$modelValue );
-      };*/
-    }
-  };
-});
+            formc.on( 'click', function () {
+                hid.bootstrapDP( 'show' );
+            } );
+        }
+    };
+} );

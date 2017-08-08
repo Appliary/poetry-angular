@@ -22,6 +22,6 @@
     "ng-dialog/js/ngDialog.min.js",
     "ng-dialog/css/ngDialog.min.css",
     "ng-dialog/css/ngDialog-theme-default.min.css",
-    "angularjs-datepicker/src/js/angular-datepicker.js",
-    "angularjs-datepicker/src/css/angular-datepicker.css"
+    "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
+    "bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css"
 ]
