@@ -1,3 +1,2 @@
 .row(ng-repeat="data in tags")
-    .col-xs-12
-        .label-default(ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)", style='display: inline-block;')
+    .col-xs-12(style="margin-top: 5px;", ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)")

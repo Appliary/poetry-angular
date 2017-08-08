@@ -1,85 +1,27 @@
+/* ===== FONT-SIZE ===== */
+
 .form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
     font-size: 12px!important;
 }
 
+
+
+
+/* ===== TAGS ===== */
+
 tags-input .tags .tag-item {
-    background: #eff8ff;
-    color: gray;
-    font-weight: bold;
-    border: 1px solid #f1f1f1!important;
-    padding: 0!important;
+  padding: 0!important;
 }
 
-tags-input .tags .tag-item.selected {
-    background: #fe9090!important;
-    color: #fff;
+tags-input .tags .tag-item .label-default {
+  display: inline-block; 
 }
 
-/*
-.bootstrapCustom .tags {
-display: block;
-width: 100%;
-font-size: 14px;
-line-height: 1.428571429;
-color: #555;
-background-color: #fff;
-background-image: none;
-border: 1px solid #ccc;
-border-radius: 0px;
--webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
--webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+tags-input .tags .tag-item .label-default .label {
+  line-height: 1.8;
 }
 
-.bootstrapCustom .tags.focused {
-border-color: #66afe9;
-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(102,175,233,0.6);
+/* SELECTED */
+tags-input .tags .tag-item.selected .label-default .label{
+  background: #ed6b75!important;
 }
-
-.bootstrapCustom .tags .tag-item {
-background: #428bca;
-border: 1px solid #357ebd;
-border-radius: 0px;
-color: #fff;
-}
-
-.bootstrapCustom .tags .tag-item.selected {
-background: #d9534f;
-border: 1px solid #d43f3a;
-border-radius: 0px;
-color: #fff;
-}
-
-.bootstrapCustom .tags .tag-item button {
-background: transparent;
-color: #000;
-opacity: .4;
-}
-
-.bootstrapCustom .autocomplete {
-border-radius: 0px;
-}
-
-.bootstrapCustom .autocomplete .tag-item.selected {
-color: #262626;
-background-color: #e9e9e9;
-}
-
-.bootstrapCustom *, *:before, *:after {
--moz-box-sizing: border-box;
--webkit-box-sizing: border-box;
-box-sizing: border-box;
-}
-.bootstrapCustom {
-position: relative;
-}
-
-.bootstrapCustom:active {
-outline: none;
-}
-
-.bootstrapCustom .remove-button {
-    color: white!important;
-}
-*/
