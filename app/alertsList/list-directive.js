@@ -724,14 +724,30 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         $http.get( "/api/buildings" )
             .then( function success( response ) {
                 scope.buildings = response.data;
+                var rootSelectedBuilding;
                 scope.buildings.forEach(function(b){
                   if(angular.isObject(b) && angular.isArray(b.tags) && b.tags.length > 0){
                     // concat to build `allHiddenTags`
                     scope.allHiddenTags = scope.allHiddenTags.concat(b.tags);
                   }
+
+                  if(scope.$root.report_data && scope.$root.report_data.building){
+                    if(scope.$root.report_data.building._id == b._id){
+                     rootSelectedBuilding = b;
+                    }
+                  }
                 });
                 scope.displayable = true;
-                getlist(true);
+                if(rootSelectedBuilding){
+                  console.log("%cchange building to root selected","background-color: black; color: #2BFF00");
+                  console.debug("change building to root selected");
+                  scope.building = rootSelectedBuilding;
+                }
+                else{
+                  console.log("%cNOOOOOOOOOOOOOOOO","background-color: black; color: #2BFF00");
+                  console.debug("NOOOOOOOOOOOOOOOO");
+                  getlist(true);
+                }
             }, function error( response ) {
                 $location.path( '/error/' + response.status );
             } );
