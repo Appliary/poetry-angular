@@ -8,7 +8,7 @@ form.form.form-horizontal(ng-submit="save()")
             label.col-md-3.control-label
                 | {{ 'startingAt:field' | translate }}
             .col-md-9
-                date-input(name='startingAt', ng-model='item.startingAt' )
+                datepicker(name='startingAt', ng-model='item.startingAt' )
 
         .form-group
             label.col-md-3.control-label(class="required")
@@ -16,21 +16,21 @@ form.form.form-horizontal(ng-submit="save()")
             .col-md-9
                 select.form-control( name='interval', ng-model='item.interval', ng-required="required" )
                     option( ng-repeat=" opt in ['NRT','hourly','daily','weekly','monthly','yearly'] ", value='{{opt}}' ) {{ opt + ':interval:option' | translate }}
-        
+
         .form-group( ng-if="item.interval == 'weekly' || item.interval == 'monthly' || item.interval == 'yearly'" )
             label.col-md-3.control-label(class="required")
                 | {{ 'intervalStart:field' | translate }}
             .col-md-9
                 select.form-control( name='intervalStart', ng-model='item.intervalStart', ng-required="required")
                     option( ng-repeat=" opt in ['firstDay','lastDay'] ", value='{{opt}}' ) {{ opt + ':intervalStart:option' | translate }}
-                
+
         .form-group( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
             label.col-md-3.control-label( for='intervalTime' )
                 | {{ 'intervalTime:field' | translate }}
             .col-md-9
                 time-input(name='intervalTime' , ng-model='item.intervalTime' )
-        
-        .form-group( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
+
+        //- TODO when number-time-input: .form-group( ng-if="item.interval != 'NRT' && item.interval != 'hourly'" )
             label.col-md-3.control-label( for='intervalTimeNumber' )
                 | {{ 'intervalTimeNumber:field' | translate }}
             .col-md-9
@@ -40,8 +40,8 @@ form.form.form-horizontal(ng-submit="save()")
             label.col-md-3.control-label( for='endingAt' )
                 | {{ 'endingAt:field' | translate }}
             .col-md-9
-                date-input(name='endingAt', ng-model='item.endingAt' )
-        
+                datepicker(name='endingAt', ng-model='item.endingAt' )
+
         .form-group.text-right
             button.btn.green(ng-disabled='currentOutputErr')
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}
@@ -51,4 +51,3 @@ form.form.form-horizontal(ng-submit="save()")
       | {{ 'saved:' + $root.__module.name | translate }}
   span.failed( ng-if=' item.__failed ' )
       | {{ 'failed:save:' + $root.__module.name | translate }}
-  

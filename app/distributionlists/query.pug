@@ -3,3 +3,7 @@ h4 {{ 'filters:dlist:title'| translate }}
 form.form.form-horizontal( ng-submit="save()")
     .form-body
         distribution-lists-query-directive(item='item')
+
+        .form-group.text-right
+            button.btn.green(ng-disabled='currentOutputErr')
+                | {{ 'save:' + $root.__module.name + ':button' | translate }}
