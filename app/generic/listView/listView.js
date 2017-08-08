@@ -93,6 +93,13 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
                 print( "sortFn(" + scope.sorting.key + ", " + scope.sorting.order + ") =>" );
             }
 
+            // hasValue
+            scope.hasValue = hasValue;
+
+            function hasValue( v ) {
+                return v !== null && !angular.isUndefined( v );
+            }
+
             // isDefined
             scope.isDefined = isDefined;
 
