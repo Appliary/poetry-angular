@@ -62,12 +62,20 @@ $portlet-height: 70vh;
 							border-top: 0;
 						}
 					}
+					canvas {
+						vertical-align: middle;
+					}
+					color-picker {
+						vertical-align: middle;
+						display: inline-table;
+					}
 				}
 			}
 		}
 	}
 	&.light.bordered .portlet-body {
-		height: calc(#{$portlet-height} - 100px);
+		height: calc(#{$portlet-height} - 20px);
+		overflow-y: auto;
 	}
 }
 
@@ -76,11 +84,15 @@ list-directive .portlet.box.green {
 }
 
 /* ===== TABLES ===== */
-.dataTables_scrollHead table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer {
+table.table {
+	margin-bottom: 0;
+}
+
+.dataTables_scrollHead table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
 	padding-right: 17px;
 }
 
-.dataTables_scrollBody table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer {
+.dataTables_scrollBody table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
 	border-top: 0;
 	thead tr, thead tr th {
 		padding: 0;
@@ -94,7 +106,47 @@ list-directive .portlet.box.green {
 }
 
 /* ===== LOGS ===== */
-.panel-group.accordion .panel.panel-default .panel-collapse .panel-body table.table.table-hover tr td {
+.panel-group.accordion .panel.panel-default .panel-collapse .panel-body table.table tr td {
 	border-top: 0; 
 	padding-bottom: 0;
+}
+
+/* ===== DASHBOARD ===== */
+.dashboard-actions {
+	position: absolute; 
+	top: 5px; 
+	right: 15px;
+}
+
+.gridster .gridster-item {
+	.widget-view, .widget-view div {
+		height:100%;
+	}
+}
+
+/* ===== MODALS ===== */
+$color-green: #32c5d2;
+
+.modal-body .icon-picker {
+	overflow-y: auto;
+	max-height:400px; 
+	margin-top:15px;
+	.icon-selected {
+		background-color: $color-green;
+	}
+}
+
+/* ===== FORMS ===== */
+form.form-horizontal .form-body .form-group .input-icon.right {
+	input.form-control#device, i.fa.fa-caret-down {
+		cursor: pointer;
+	}
+	i.fa.fa-info-circle {
+		color:#6c7a8d;
+	}
+}
+
+/* ===== TOPNAV ===== */
+.hor-menu.hidden-sm.hidden-xs ul.nav.navbar-nav.nav-tabs li.classic-menu-dropdown a {
+	border: 0;
 }

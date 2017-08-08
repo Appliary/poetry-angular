@@ -1,5 +1,0 @@
-div(ng-controller='devices/rules')
-    h2.center.muted( ng-if=' total === 0 ' ) {{ 'noRule:device' | translate }}
-    div( ng-repeat=' rule in rules | orderBy:"timestamp":true ' )
-        span.pull-right.muted {{ rule.lastOutput }}
-        span {{ rule.name }}

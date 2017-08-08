@@ -13,14 +13,8 @@ form.form-horizontal
             .col-md-9
                 .input-icon.right
                     i.fa.fa-caret-down
-                    input.form-control#device(style='cursor:pointer', value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'", readOnly)
+                    input.form-control#device(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'", readOnly)
         
-        //- div(ng-if="$parent.input.device.kind == 'tags'", style="width:60%;display:inline")
-            span.unit(ng-repeat="(i, tag) in $parent.input.device._id", style="padding-left:35%")
-                input#device(value="t {{ tag }}", readonly)
-                span(ng-click="rmTag(i)") &times;
-            input#tag.fakeSelect(readonly, ng-click="tab('tag')", placeholder="{{'addTag:device:mathformula'|translate}}" )
-
         .form-group
             label.col-md-3.control-label(for="type", ng-if="formulaInput")
                 | {{ 'measurement:' + $root.__module.name + ':field' | translate }}

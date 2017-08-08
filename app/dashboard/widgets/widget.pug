@@ -5,7 +5,7 @@ div(ng-if="widget.edit")
     
     strong {{widget.title}}
 
-div(ng-include='"dashboard/widgets/"+widget.type+"/view.pug"', ng-if="widget.type")
+.widget-view(ng-include='"dashboard/widgets/"+widget.type+"/view.pug"', ng-if="widget.type")
 div(ng-if="!widget.type") Old widget system
 
 label(ng-if="loading") {{ 'loading:widget:dashboard' | translate }}

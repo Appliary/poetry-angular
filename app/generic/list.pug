@@ -13,40 +13,39 @@ h1.page-title
 .portlet.light.bordered(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
     .portlet-body
         .dataTables_wrapper.no-footer.DTS
-            .row
-                .col-md-5.col-sm-5
-                    .form-group
-                        label
-                            | Show 
-                            select.form-control.input-inline(ng-model='$parent.status')
-                                option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
-                                option( disabled, value='──────────' ) ──────────
-                                option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
-                                option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
-                                option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-                .col-md-5.col-sm-5
-                    .form-group
-                        .input-icon.right
-                            i.icon-magnifier
-                            input.form-control( type="text", ng-model="$parent.search", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
-                .col-md-2.col-sm-2
-                    .btn-group.pull-right
-                        button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
-                            | Tools 
-                            i.fa.fa-angle-down
-                        ul.dropdown-menu.pull-right
-                            li
-                                a(href='javascript:;')
-                                i.fa.fa-print
-                                |  Print
-                            li
-                                a(href='javascript:;')
-                                i.fa.fa-file-pdf-o
-                                |  Save as PDF
-                            li
-                                a(href='javascript:;')
-                                i.fa.fa-file-excel-o
-                                |  Export to Excel
+            .col-md-5.col-sm-5
+                .form-group
+                    label
+                        | Show 
+                        select.form-control.input-inline(ng-model='$parent.status')
+                            option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+                            option( disabled, value='──────────' ) ──────────
+                            option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
+                            option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
+                            option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
+            .col-md-5.col-sm-5
+                .form-group
+                    .input-icon.right
+                        i.icon-magnifier
+                        input.form-control( type="text", ng-model="$parent.search", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
+            .col-md-2.col-sm-2
+                .btn-group.pull-right
+                    button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
+                        | Tools 
+                        i.fa.fa-angle-down
+                    ul.dropdown-menu.pull-right
+                        li
+                            a(href='javascript:;')
+                            i.fa.fa-print
+                            |  Print
+                        li
+                            a(href='javascript:;')
+                            i.fa.fa-file-pdf-o
+                            |  Save as PDF
+                        li
+                            a(href='javascript:;')
+                            i.fa.fa-file-excel-o
+                            |  Export to Excel
 
             list-view(
               ng-class='{detailed:__id}'

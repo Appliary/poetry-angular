@@ -24,7 +24,7 @@
                         em(ng-if="input.kind != 'tags'")
                             a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
                                 | {{ input.id }}
-                    td(ng-if="!formulaInput", colspan="3", style="text-align: center") {{ input.kind.slice(0,1) }}&nbsp;
+                    td.text-center(ng-if="!formulaInput", colspan="3") {{ input.kind.slice(0,1) }}&nbsp;
                         em(ng-if="input.kind == 'tags'")
                             | {{ input.id }}
                         em(ng-if="input.kind != 'tags'")
@@ -63,21 +63,7 @@
                 textarea.form-control( ng-model='item.formula', rows="3" )
         .form-group
                 input.form-control( disabled, ng-value='currentOutput' )
-    
-    //- div(ng-if="!formulaInput")
 
-        label(for="timeout")
-          | {{ 'timeout:mathformula:field' | translate }}
-        span.unit
-          input(ng-model="item.timeout", required, type="number")
-          span
-            | {{'minutes'|translate}}
-
-    .form-actions.text-right(style='background:0 0;')
+    .col-xs-12.text-right
         button.btn.green(ng-click='save()', ng-disabled='currentOutputErr')
             | {{ 'save:' + $root.__module.name + ':button' | translate }}
-
-//- span.saved( ng-if=' item.__saved ' )
-        | {{ 'saved:' + $root.__module.name | translate }}
-    span.failed( ng-if=' item.__failed ' )
-        | {{ 'failed:save:' + $root.__module.name | translate }}

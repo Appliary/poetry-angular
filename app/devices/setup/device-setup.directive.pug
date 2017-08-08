@@ -1,4 +1,4 @@
-form.form-horizontal
+form.form-horizontal.col-xs-12
     // <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBR0v1tbeBiywdhvCVypCWlCETApBYqjLQ&sensor=false" type="text/javascript" ></script>
     .form-body
         b {{'static:setup:device'|translate}}
@@ -18,8 +18,8 @@ form.form-horizontal
 
         b {{'icon:setup:device'|translate}}
         div
-            canvas#canvas(width='36', height='36', ng-click='openModal()', style='vertical-align: middle;')
-            color-picker(style='display: inline-table; vertical-align: middle;', ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
+            canvas#canvas(width='36', height='36', ng-click='openModal()')
+            color-picker(ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
         
             icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
             canvas#canvasHistory(ng-show='false', width='60', height='60')
