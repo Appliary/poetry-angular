@@ -1,7 +1,7 @@
-.portlet.box.green(style="border-top: 1px solid #5cd1db;")
+.portlet.box.green
     .portlet-body
-        .tabbable-line(style="padding:0")
-            i.fa.fa-close.pull-right(ng-click='$root.go( $root.__module ); backToList();' style="color: #737373; margin-top: 10px; cursor: pointer;")
+        .tabbable-line
+            i.fa.fa-close.pull-right(ng-click='$root.go( $root.__module ); backToList();')
             ul.nav.nav-tabs
                 li(ng-repeat='(name, config) in tabs', ng-class='{ active: name == __view }')
                     a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")

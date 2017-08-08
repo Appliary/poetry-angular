@@ -1,2 +1,2 @@
 .row(ng-repeat="data in tags")
-    .col-xs-12(style="margin-top: 5px;", ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)")
+    .col-xs-12(ng-include="'generic/arrayInput/arrayInputItem.pug'", ng-click="selectedTag(data)")

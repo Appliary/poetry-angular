@@ -1,0 +1,100 @@
+/* ===== GLOBAL ===== */
+.form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
+	font-size: 12px!important;
+}
+
+h1.page-title {
+	margin: 0;
+}
+
+/* ===== TAGS ===== */
+tags-viewer .row {
+	margin-top: 5px;
+	.label-default {
+		display: inline-block; 
+		.label {
+			line-height: 1.8;
+		}
+	}
+}
+
+tags-input .tags {
+  	.tag-item {
+    	padding: 0!important;
+  	}
+  	.tag-item.selected .label-default .label{
+    	background: #ed6b75!important;
+  	}
+}
+
+/* ===== PORTLETS ===== */
+$portlet-height: 70vh;
+
+.portlet {
+	margin-bottom: 0;
+	height: $portlet-height;
+	&.box.green {
+		border-top: 1px solid #5cd1db;
+		background: initial;
+		/* margin-top: -20px; */ 
+		&.filters {
+			height: initial;
+			border-top: 0;
+			margin-bottom: 20px;
+		}
+		.portlet-body {
+			padding-bottom: 0;
+			.tabbable-line {
+				padding: 0;
+				i.fa.fa-close.pull-right {
+					color: #737373; 
+					margin-top: 10px; 
+					cursor: pointer;
+				}
+				.tab-content {
+					height: calc(#{$portlet-height} - 100px); 
+					overflow-y: auto;
+					.last {
+						margin-top: 25px; 
+						padding-top: 25px; 
+						border-top: 1px solid #EFEFEF;
+						td {
+							border-top: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	&.light.bordered .portlet-body {
+		height: calc(#{$portlet-height} - 100px);
+	}
+}
+
+list-directive .portlet.box.green {
+	margin-top: 0px;
+}
+
+/* ===== TABLES ===== */
+.dataTables_scrollHead table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer {
+	padding-right: 17px;
+}
+
+.dataTables_scrollBody table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer {
+	border-top: 0;
+	thead tr, thead tr th {
+		padding: 0;
+	}
+	tbody tr td .btn-group {
+		position: relative;
+		ul.dropdown-menu {
+			left: -85px;
+		}
+	}
+}
+
+/* ===== LOGS ===== */
+.panel-group.accordion .panel.panel-default .panel-collapse .panel-body table.table.table-hover tr td {
+	border-top: 0; 
+	padding-bottom: 0;
+}

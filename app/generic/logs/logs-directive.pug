@@ -8,10 +8,10 @@ div(ng-show="loaded")
                         span(ng-if="log.type && !config.noType")  - {{ log.type }}
             .panel-collapse.collapse(ng-class=' {in:log.$open} ')
                 .panel-body
-                    table.table
+                    table.table.table-hover
                         //- isArray
                         tr(ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && ng.isArray(value) && showField( key )')
-                            td(style='border-top: 0; padding-bottom:0;')
+                            td
                                 .panel-group.accordion
                                     .panel.panel-default(ng-repeat=' subLog in value | orderBy:"timestamp":true ', ng-init=' subLog.$open = !$index ')
                                         .panel-heading
@@ -23,23 +23,23 @@ div(ng-show="loaded")
                                             .panel-body
                                                 table.table
                                                     tr( ng-repeat=' (subkey, subvalue) in subLog ', ng-if=' showField( subkey )')
-                                                        td(style='border-top: 0; padding-bottom:0;')
+                                                        td
                                                             b {{ subkey + ':key:log:' + $root.__module.name | translate }}
-                                                        td(style='border-top: 0; padding-bottom:0;').text-right
+                                                        td.text-right
                                                             i {{ subvalue | localize }}
                         //- isNOTArray
                         tr( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && !config.subOnly && !ng.isArray(value) && showField( key )')
-                            td(style='border-top: 0; padding-bottom:0;')
+                            td
                                 b {{ key + ':key:log:' + $root.__module.name | translate }}
-                            td(style='border-top: 0; padding-bottom:0;').text-right
+                            td.text-right
                                 i {{ value | localize }}
 
                         //- measurements
                         tr( ng-repeat=' data in log.measurements ', ng-if='config.measurements')
-                            td(style='border-top: 0; padding-bottom:0;')
+                            td
                                 span {{ data.type }} &nbsp;
                                 i {{ data.id }}
-                            td.text-right(style='border-top: 0; padding-bottom:0;') {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
+                            td.text-right {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
 
                         //- isArrayObject
                         div( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && isArrayObject(key) && showField( key )')

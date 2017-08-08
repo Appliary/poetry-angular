@@ -1,26 +1,24 @@
-h4 Title
+h4 Overview
 
 ng-include.row( src='"generic/form.pug"', ng-controller='generic/overview' )
 
-.form-actions.col-xs-12
-    .row
-        .col-xs-12
-            .btn-toolbar.pull-right
-                button.btn.green(ng-click=' save() ', ng-if="!disableSaveBTN")
-                    | {{ 'save:' + $root.__module.name + ':button' | translate }}
-                button.btn.default( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
-                    | {{ 'delete:button' | translate }}
+.row
+    .col-xs-12
+        .btn-toolbar.pull-right
+            button.btn.default( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
+                | {{ 'delete:button' | translate }}
+            button.btn.green(ng-click=' save() ', ng-if="!disableSaveBTN")
+                | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
-
-.col-xs-12( style='margin-top: 25px; padding-top: 25px; border-top: 1px solid #EFEFEF', ng-if= "item.last")
+.last.col-xs-12(ng-if= "item.last")
     .pull-right
         span(ng-if="item.timestamp") {{ item.timestamp | localize }}
 
     h4 {{ 'last:' + $root.__module.name | translate }}
-    table.table
-        tr( ng-repeat="element in item.last")
-            td(style="border-top: 0;")
+    table.table.table-hover
+        tr(ng-repeat="element in item.last")
+            td
                 span {{ element.type + ':mtype' | translate }} &nbsp;
                 i {{ element.id }}
                 div {{ element.timestamp | localize }}
-            td.text-right(style="border-top: 0;") {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
+            td.text-right {{ element.value | localize }} {{ element.unit + ':unit' | translate }}
