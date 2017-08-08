@@ -1,5 +1,6 @@
-ng-include.row( src='"generic/form.pug"', ng-controller='alertsList/overview' )
+h4 Overview
 
+ng-include.row( src='"generic/form.pug"', ng-controller='alertsList/overview' )
 
 .row
     .col-xs-12
@@ -9,7 +10,7 @@ ng-include.row( src='"generic/form.pug"', ng-controller='alertsList/overview' )
             button.btn.green(ng-click=' save() ', ng-if="!disableSaveBTN")
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
-.row(style='margin-top: 10px;')
+.row.last
     .col-xs-12
         .btn-toolbar.pull-right
             //- un

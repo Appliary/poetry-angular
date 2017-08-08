@@ -95,36 +95,3 @@ form.form-horizontal.col-xs-12
                 span(ng-if='item.createdAt')
                     | &nbsp;{{ item.createdAt | localize }}
                 span(ng-if='item.createdBy')
-
-
-    //-
-                    span(ng-if='item.createdBy.firstName||item.createdBy.lastName')
-                        a( ng-if='($root.user.role == "SUPER" || $root.role.teamManager) && item.createdBy._id', style="text-decoration:underline", href="/teamManager/users/{{item.createdBy._id}}" )
-                            | {{'by:iteminfo'|translate}}
-                            | {{ item.createdBy.firstName }}
-                            | {{ item.createdBy.lastName }}
-                        span( ng-if='!$root.user.role == "SUPER" && $root.role.teamManager' )
-                            | {{'by:iteminfo'|translate}}
-                            | {{ item.createdBy.firstName }}
-                            | {{ item.createdBy.lastName }}
-                    span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&item.createdBy.email')
-                        | {{'by:iteminfo'|translate}}
-                        | {{ item.createdBy.email }}
-                    span(ng-if='!item.createdBy.firstName&&!item.createdBy.lastName&&!item.createdBy.email')
-                        | {{'by:iteminfo'|translate}}
-                        | {{ item.createdBy }}
-    //-
-        span.saved( ng-if=' item.__saved && !disableSaveBTN ' )
-            | {{ 'saved:' + $root.__module.name | translate }}
-        span.failed( ng-if=' item.__failed && !disableSaveBTN ' )
-            | {{ 'failed:save:' + $root.__module.name | translate }}
-        
-        br
-        br
-        div.actionBtn( ng-repeat=' button in buttons', ng-if='item._id' )
-            button.lightButton( ng-click='doBtn(button)', ng-if='displayBtn(button)' )
-                | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
-            span.saved( ng-if=' button.__success == item._id' )
-                | {{ 'success:' + $root.__module.name | translate }}
-            span.failed( ng-if=' button.__failed == item._id ' )
-                | {{ 'failed:' + $root.__module.name | translate }}

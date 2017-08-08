@@ -1,4 +1,4 @@
-.portlet.box.green(ng-init='config.$open = !$index', ng-hide="hideFilters").col-lg-12.col-xs-12
+.portlet.box.green.filters(ng-init='config.$open = !$index', ng-hide="hideFilters").col-lg-12.col-xs-12
     .portlet-title(ng-click='config.$open = !config.$open;').col-lg-12.col-xs-12
         .caption
             i.icon-magnifier
@@ -75,7 +75,7 @@
                     | {{ "tags:alerts" | translate }}
                 array-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
 
-.portlet.light.bordered.col-xs-12(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'" style="margin-top: 20px;")
+.portlet.light.bordered.col-xs-12(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
     .portlet-body
         .dataTables_wrapper.no-footer.DTS
             //- list-view

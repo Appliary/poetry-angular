@@ -2,7 +2,7 @@
     .dataTables_scroll(style='overflow: hidden;')
         .dataTables_scrollHead(style='overflow: hidden;')
             .dataTables_scrollHeadInner
-                table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='padding-right: 17px;')
+                table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
                     thead: tr
                         th.sorting_disabled
                         //- columns header display
@@ -20,16 +20,16 @@
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
                         th.sorting_disabled  Actions
         .dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;")
-            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
+            table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer
                 thead
-                    tr(style='height: 0px; padding:0;')
-                        th(style='height: 0px; padding:0;')
+                    tr
+                        th
                             .dataTables_sizing
-                        th(ng-repeat='column in columns', style='height: 0px; padding:0;')
+                        th(ng-repeat='column in columns')
                             .dataTables_sizing
-                        th( ng-repeat="mc in getMeasurementsCount() track by $index", style='height: 0px; padding:0;' )
+                        th( ng-repeat="mc in getMeasurementsCount() track by $index")
                             .dataTables_sizing
-                        th(style='height: 0px; padding:0;')
+                        th
                             .dataTables_sizing
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
@@ -85,11 +85,11 @@
                             span()
 
                         td
-                            .btn-group(style='position: relative;')
+                            .btn-group
                                 button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
                                     | Actions 
                                     i.fa.fa-angle-down
-                                ul.dropdown-menu(role='menu', style="left: -85px;")
+                                ul.dropdown-menu(role='menu')
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
