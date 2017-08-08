@@ -31,6 +31,7 @@
     "leaflet.markercluster": "^1.0.0",
     "mime-types": "^2.1.12",
     "ng-dialog": "git+https://github.com/sl0ki/ngBootstrapDialog.git",
+    "node-sass": "^4.5.3",
     "poetry": "0.0.99",
     "pug": "^2.0.0-beta6",
     "sass": "^0.5.0",
