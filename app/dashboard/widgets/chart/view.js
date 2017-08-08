@@ -243,7 +243,7 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         var dfd = $q.defer();
         var apiUrl = '/api/' + input.kind + ( input.kind.substr( input.kind.length - 1 ) == 's' ? '/' : 's/' );
         var aggregation = ( input.kind == 'smartdevice' && $scope.widget.options.step ) ? '/' + $scope.widget.options.step : "";
-        var limit = 0;
+        var limit = 1000;
         var mtype = input.type;
         if ( isSingleDataChart ) {
             limit = 1;

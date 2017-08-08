@@ -237,6 +237,15 @@ app.controller( 'generic/list', function (
             } );
         }
 
+        //If there are readonlyFields, delete them
+        if ( angular.isArray( $scope.item.__readonlyFields ) ) {
+            $scope.item.__readonlyFields.forEach( function ( field ) {
+                if ( $scope.item[ field ] ) {
+                    delete $scope.item[ field ];
+                }
+            } );
+        }
+
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success( res ) {
                 $scope.__validation = [];

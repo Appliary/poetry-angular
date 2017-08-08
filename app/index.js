@@ -13,7 +13,11 @@ app.config( function ( $locationProvider, $httpProvider ) {
         $locationProvider.html5Mode( true );
         $httpProvider.defaults.withCredentials = true;
     } )
+<<<<<<< HEAD
     .run( function ( $rootScope, $http, AppUserService, $location ) {
+=======
+    .run( function ( $rootScope, $http, $location, AppUserService ) {
+>>>>>>> master
         $rootScope.__appName = __appName;
         $rootScope.loaded = false;
 
@@ -23,6 +27,15 @@ app.config( function ( $locationProvider, $httpProvider ) {
             "positionClass": "toast-top-right",
             "timeOut": "6000"
         };
+
+        /**
+        * on route change
+        if(!AppUserService.hasApp(__appName)){
+          if($location.path() != '' ){
+            return $location.path( '/error/403' );
+          }
+        }
+        */
 
         /**
          * Retrieve session
