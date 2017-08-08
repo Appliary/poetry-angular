@@ -1,4 +1,3 @@
-<< << << < HEA
 app.factory( "AppUserService", function ( $rootScope, $http ) {
 
     function isObject( o ) {
