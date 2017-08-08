@@ -73,7 +73,7 @@
                 //- searchTags
                 label(for="tags")
                     | {{ "tags:alerts" | translate }}
-                tags-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
+                array-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
 
 .portlet.light.bordered.col-xs-12(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'" style="margin-top: 20px;")
     .portlet-body

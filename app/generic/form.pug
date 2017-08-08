@@ -63,7 +63,7 @@ form.form-horizontal.col-xs-12
                 array-input( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
                 
                 //- readOnlyArray
-                tags-viewer.input-type(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
+                tags-viewer(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
 
                 //- Date
                 input.form-control( name='{{field}}', type="date", ng-if="inputType(field) == 'date'", ng-init='toDateObject(field);' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
