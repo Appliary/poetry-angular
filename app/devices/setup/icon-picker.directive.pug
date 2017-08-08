@@ -10,9 +10,9 @@ span
                     <input type="text" class="form-control" ng-model="filterIconsName" placeholder="{{'search:'+$root.__module.name|translate}}">
                 </div>
             </div>
-            <div style="overflow-y: auto; max-height:400px; margin-top:15px;" >
+            <div class="icon-picker">
                 <span ng-repeat="icon in icons | filter: { name : filterIconsName } track by $index"  >
-                    <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon );" ng-style="icon.data == vm.iconPreSelected && {'background-color':'#32c5d2'}"/>
+                    <img data-ng-src="data:image/png;base64,{{icon.data}}" ng-click="vm.click( icon );" ng-class="{'icon-selected': icon.data == vm.iconPreSelected}"/>
                 </span>
             </div>
         </div>

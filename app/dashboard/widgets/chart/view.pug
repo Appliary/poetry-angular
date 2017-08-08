@@ -1,4 +1,2 @@
-div( ng-controller="dashboard/widgets/chart/view" , style="height:100%")
-    //button.toggleTable(ng-click="toggleTable()", ng-disabled="loadingChart", style="background-image: url('/themes/indexplus/contacts.png')", ng-if="!tgtab.isTable && widget.options.chartType != 'Table' && !(widget.options && widget.options.hideTable)")
-    //button.toggleTable(ng-click="toggleTable()", ng-disabled="loadingChart", style="background-image: url('/themes/indexplus/consumptions.png')", ng-if="tgtab.isTable && !(widget.options && widget.options.hideTable)")
-    div( google-chart, chart="widget.chartObject" , style="height:100%;overflow:hidden")
+div( ng-controller="dashboard/widgets/chart/view")
+    div( google-chart, chart="widget.chartObject")

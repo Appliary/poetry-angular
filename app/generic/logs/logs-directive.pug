@@ -8,43 +8,44 @@ div(ng-show="loaded")
                         span(ng-if="log.type && !config.noType")  - {{ log.type }}
             .panel-collapse.collapse(ng-class=' {in:log.$open} ')
                 .panel-body
-                    table.table.table-hover
-                        //- isArray
-                        tr(ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && ng.isArray(value) && showField( key )')
-                            td
-                                .panel-group.accordion
-                                    .panel.panel-default(ng-repeat=' subLog in value | orderBy:"timestamp":true ', ng-init=' subLog.$open = !$index ')
-                                        .panel-heading
-                                            h4.panel-title
-                                                span.accordion-toggle.collapsed(ng-click='subLog.$open = !subLog.$open')
-                                                    | {{ subLog.timestamp | localize }}
-                                        //-
-                                        .panel-collapse.collapse(ng-class=' {in:subLog.$open} ')
-                                            .panel-body
-                                                table.table
-                                                    tr( ng-repeat=' (subkey, subvalue) in subLog ', ng-if=' showField( subkey )')
-                                                        td
-                                                            b {{ subkey + ':key:log:' + $root.__module.name | translate }}
-                                                        td.text-right
-                                                            i {{ subvalue | localize }}
-                        //- isNOTArray
-                        tr( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && !config.subOnly && !ng.isArray(value) && showField( key )')
-                            td
-                                b {{ key + ':key:log:' + $root.__module.name | translate }}
-                            td.text-right
-                                i {{ value | localize }}
+                    .row
+                        table.table
+                            //- isArray
+                            tr(ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && ng.isArray(value) && showField( key )')
+                                td
+                                    .panel-group.accordion
+                                        .panel.panel-default(ng-repeat=' subLog in value | orderBy:"timestamp":true ', ng-init=' subLog.$open = !$index ')
+                                            .panel-heading
+                                                h4.panel-title
+                                                    span.accordion-toggle.collapsed(ng-click='subLog.$open = !subLog.$open')
+                                                        | {{ subLog.timestamp | localize }}
+                                            //-
+                                            .panel-collapse.collapse(ng-class=' {in:subLog.$open} ')
+                                                .panel-body
+                                                    table.table
+                                                        tr( ng-repeat=' (subkey, subvalue) in subLog ', ng-if=' showField( subkey )')
+                                                            td
+                                                                b {{ subkey + ':key:log:' + $root.__module.name | translate }}
+                                                            td.text-right
+                                                                i {{ subvalue | localize }}
+                            //- isNOTArray
+                            tr( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && !isArrayObject(key) && !config.subOnly && !ng.isArray(value) && showField( key )')
+                                td
+                                    b {{ key + ':key:log:' + $root.__module.name | translate }}
+                                td.text-right
+                                    i {{ value | localize }}
 
-                        //- measurements
-                        tr( ng-repeat=' data in log.measurements ', ng-if='config.measurements')
-                            td
-                                span {{ data.type }} &nbsp;
-                                i {{ data.id }}
-                            td.text-right {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
+                            //- measurements
+                            tr( ng-repeat=' data in log.measurements ', ng-if='config.measurements')
+                                td
+                                    span {{ data.type }} &nbsp;
+                                    i {{ data.id }}
+                                td.text-right {{ data.value | localize }} {{ data.unit + ':unit' | translate }}
 
-                        //- isArrayObject
-                        div( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && isArrayObject(key) && showField( key )')
-                            tr(ng-repeat=' subv in value ')
-                                td {{subv['type']}} - {{subv['value']}}
-                                td(ng-repeat=' subk in getArrayObjectValues(key)')
-                                    b(ng-if="!$last") {{ subv[subk] + ':key:log:' + $root.__module.name | translate }}
-                                    i(ng-if="$last").text-right {{ subv[subk] | localize  }}
+                            //- isArrayObject
+                            div( ng-repeat=' (key, value) in log ', ng-if='!config.measurements && isArrayObject(key) && showField( key )')
+                                tr(ng-repeat=' subv in value ')
+                                    td {{subv['type']}} - {{subv['value']}}
+                                    td(ng-repeat=' subk in getArrayObjectValues(key)')
+                                        b(ng-if="!$last") {{ subv[subk] + ':key:log:' + $root.__module.name | translate }}
+                                        i(ng-if="$last").text-right {{ subv[subk] | localize  }}

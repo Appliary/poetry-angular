@@ -3,11 +3,3 @@ h4 {{ 'filters:dlist:title'| translate }}
 form.form.form-horizontal( ng-submit="save()")
     .form-body
         distribution-lists-query-directive(item='item')
-
-    //- div
-        span.saved( ng-if=' item.__saved ' )
-            | {{ 'saved:' + $root.__module.name | translate }}
-        span.failed( ng-if=' item.__failed ' )
-            | {{ 'failed:save:' + $root.__module.name | translate }}
-        button(ng-disabled='currentOutputErr').pull-right.lightButton
-            | {{ 'save:' + $root.__module.name + ':button' | translate }}
