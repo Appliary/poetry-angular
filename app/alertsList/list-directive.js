@@ -739,13 +739,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                 });
                 scope.displayable = true;
                 if(rootSelectedBuilding){
-                  console.log("%cchange building to root selected","background-color: black; color: #2BFF00");
-                  console.debug("change building to root selected");
                   scope.building = rootSelectedBuilding;
                 }
                 else{
-                  console.log("%cNOOOOOOOOOOOOOOOO","background-color: black; color: #2BFF00");
-                  console.debug("NOOOOOOOOOOOOOOOO");
                   getlist(true);
                 }
             }, function error( response ) {

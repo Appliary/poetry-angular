@@ -30,6 +30,16 @@ app.factory("AlertsService", function($http){
     ];
   }
 
+  function getColumnsMin(){
+    return [
+      "message",
+      {key:"tags", type: "tags"},
+      "context",
+      "createdAt",
+      "notes",
+    ];
+  }
+
   function getRules(){
     return $http.get( "/api/rules" );
   }
@@ -56,6 +66,7 @@ app.factory("AlertsService", function($http){
     getDefaultAfter: getDefaultAfter,
     getDefaultBefore: getDefaultBefore,
     getColumns: getColumns,
+    getColumnsMin: getColumnsMin,
 
     getRules: getRules,
 

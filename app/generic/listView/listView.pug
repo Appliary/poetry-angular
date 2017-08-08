@@ -18,7 +18,7 @@
                         //- measurements header display
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
-                        th.sorting_disabled  Actions
+                        th.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)")  Actions
         .dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;")
             table.table.table-striped.table-bordered.table-hover.order-column.dataTable.no-footer(style='border-top:0;')
                 thead
@@ -84,10 +84,10 @@
                         td( ng-repeat='fm in getFantomMeasurements(row[measurementsColumn.key]) track by $index', ng-click='select(row._id)' ng-if="measurementsColumn.key")
                             span()
 
-                        td
+                        td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group(style='position: relative;')
                                 button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions 
+                                    | Actions
                                     i.fa.fa-angle-down
                                 ul.dropdown-menu(role='menu', style="left: -85px;")
                                     li
