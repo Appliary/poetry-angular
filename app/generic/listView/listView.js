@@ -128,6 +128,13 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
                 return typeof v === 'function';
             }
 
+            // isNumber
+            scope.isNumber = isNumber;
+
+            function isNumber( v ) {
+                return !isNaN(v);
+            }
+
             // isTimedOut
             scope.isTimedOut = isTimedOut;
 

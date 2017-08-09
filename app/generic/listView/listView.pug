@@ -41,6 +41,7 @@
                         td( ng-repeat='(idx, column) in columns'
                         , ng-click='select(row._id)'
                         , ng-if="column.key != measurementsColumn.key"
+                        , class="{{column.tdClass || ''}}"
                         , ng-class="{muted:(idx && isDataType(column) && sameDataTypeValue(row, column, columns[idx-1]))}")
                             //- icon
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "icon" && !isContext(row[ column.key ])')
