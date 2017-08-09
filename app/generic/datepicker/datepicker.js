@@ -23,8 +23,7 @@ app.directive( "datepicker", function () {
                 language: lang,
                 format: {
                     toDisplay: function ( date, format, language ) {
-                        var d = new Date( date );
-                        return d.toISOString();
+                        return new Date( date ).toISOString();
                     },
                     toValue: function ( date, format, language ) {
                         return new Date( date );
@@ -32,7 +31,9 @@ app.directive( "datepicker", function () {
                 },
                 todayBtn: "linked",
                 todayHighlight: true,
-                weekStart: 1
+                weekStart: 1,
+                autoclose: true,
+                defaultViewDate: scope.datevalue
             } );
 
             formc.on( 'click', function () {

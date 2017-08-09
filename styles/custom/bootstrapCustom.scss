@@ -7,6 +7,10 @@ h1.page-title {
 	margin: 0;
 }
 
+.datepicker {
+	z-index: 10000!important;
+}
+
 /* ===== TAGS ===== */
 tags-viewer .row {
 	margin-top: 5px;

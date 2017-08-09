@@ -66,7 +66,7 @@ form.form-horizontal.col-xs-12
                 tags-viewer(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
 
                 //- Date
-                datepicker(ng-model="item[field]",ng-if="inputType(field) == 'date'")
+                datepicker(ng-if="inputType(field) == 'date'", ng-model="item[field]")
 
                 //- Time
                 input.form-control( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
