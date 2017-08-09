@@ -2,5 +2,6 @@
     "datatables",
     "datatables.options",
     "leaflet-directive",
-    "ui.bootstrap"
+    "ui.bootstrap",
+    "frapontillo.bootstrap-switch"
 ]
