@@ -1,4 +1,4 @@
-app.directive('appAppselector', function ($window) {
+app.directive('appAppselector', function ($window, $timeout) {
     return {
         restrict: 'C',
         templateUrl: 'topnav/appselector.pug',
@@ -7,6 +7,11 @@ app.directive('appAppselector', function ($window) {
                 .then(function (r) {
                     $scope.apps = r.data;
                     $scope.apps.sort();
+                    
+                    $timeout(function() {
+                        console.log("tabdrop");
+                        $('.nav-tabs').tabdrop();
+                    },500);
                 });
 
             $scope.current = __appName;
@@ -16,7 +21,6 @@ app.directive('appAppselector', function ($window) {
 
             angular.element($window)
                 .bind('resize', function () {
-                    //console.log("RESIZE");
                     $('.nav-tabs').tabdrop();
                 });
         }
