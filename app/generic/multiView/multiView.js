@@ -439,6 +439,13 @@ app.directive( 'multiView', function (
             $scope.$watch( 'item', _watchEditItem );
             /*** End shit from kliment ***/
 
+            $scope.addItem = function ( item ) {
+              console.log("addItem",item);
+             $scope.item = item;
+             $scope.__id = "new";
+             $scope.editItem = $scope.item;
+             $scope.$digest();
+            };
 
             /*** Quick fix from stephane, to optimise by himself as soon as possible ***/
             /*** but understand, comment and clean up k's code first ***/

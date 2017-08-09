@@ -342,6 +342,8 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                     } );
                 }
 
+                console.log("contextmenu result",result);
+
                 return result;
             };
 
@@ -392,10 +394,13 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
 
             var _getAddItemActon = function ( type, parent ) {
                 var _meta = $scope.boMeta[ type ];
+
                 var result = {
                     label: $filter( 'translate' )( 'Add ' + _meta.label + ":TreeView" ),
                     icon: $scope.boMeta[ type ].icon,
                     action: function ( event ) {
+                        console.log("%cACTION ADD","background-color: black; color: #2BFF00");
+                        console.log(type,"_meta :", _meta);
                         if ( _meta.onAdd ) {
                             console.log("[treeview] _meta.onAdd event", event);
                             console.log("[treeview] _meta.onAdd", _meta.onAdd);
@@ -419,6 +424,10 @@ app.directive( 'treeView', function ( $q, $timeout, ViewDataSource, ngDialog, ng
                             }
 
                             $scope.editItem = newItem;
+
+                            console.log("newItem",newItem);
+                            console.log("$scope",$scope);
+                            console.log("$scope.addItem",$scope.addItem);
 
                             if ( $scope.addItem ) {
                                 $scope.addItem( newItem );
