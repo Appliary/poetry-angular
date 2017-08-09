@@ -16,6 +16,8 @@
         "async": "^1.5.2",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-sass": "^3.3.7",
+        "bootstrap-switch": "3.3.2",
+        "angular-bootstrap-switch": "0.5.2",
         "concatenate": "0.0.1",
         "datatables": "^1.10.12",
         "datatables.net": "^1.10.15",
