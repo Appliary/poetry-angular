@@ -23,11 +23,5 @@
     "ng-dialog/css/ngDialog.min.css",
     "ng-dialog/css/ngDialog-theme-default.min.css",
     "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
-    "bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css",
-    "angular-ui-bootstrap/dist/ui-bootstrap.js",
-    "angular-ui-bootstrap/dist/ui-bootstrap-csp.css",
-    "angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
-    "bootstrap-switch/dist/js/bootstrap-switch.min.js",
-    "bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css",
-    "angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"
+    "bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css"
 ]

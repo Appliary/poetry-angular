@@ -11,7 +11,7 @@ app.directive('appAppselector', function ($window, $timeout) {
                     $timeout(function() {
                         console.log("tabdrop");
                         $('.nav-tabs').tabdrop();
-                    },500);
+                    });
                 });
 
             $scope.current = __appName;
