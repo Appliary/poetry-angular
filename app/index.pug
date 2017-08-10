@@ -49,7 +49,7 @@ html(ng-app=app.name)
             link#style_color(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "/assets/layouts/layout/css/themes/default.min.css" }}.css`)
 
     
-    body.page-header-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')
+    body.page-header-fixed.page-footer-fixed.page-sidebar-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')
 
         .page-wrapper
             //- NoJS warning

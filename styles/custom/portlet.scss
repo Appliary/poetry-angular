@@ -1,0 +1,81 @@
+$color-green: #5cd1db;
+$color-light-grey: #EFEFEF;
+$color-grey: #737373;
+
+/* ===== PORTLETS ===== */
+.portlet-container {
+    height: calc(100vh - 230px)
+}
+
+.portlet {
+	margin-bottom: 0;
+    height: 100%;
+	&.box.green {
+        margin-bottom: 20px;
+		background: initial;
+        &.no-title {
+            border-top: 1px solid $color-green;
+        }
+		.portlet-body {
+			height: 100%;
+			padding-bottom: 0;
+			.tabbable-line {
+				height: 100%;
+				padding: 0;
+				i.fa.fa-close.pull-right {
+					color: $color-grey; 
+					margin-top: 10px; 
+					cursor: pointer;
+				}
+				.tab-content {
+                    overflow-y: auto;
+                    height: calc(100% - 60px);
+					.last {
+						margin-top: 25px; 
+						padding-top: 25px; 
+						border-top: 1px solid $color-light-grey;
+						td {
+							border-top: 0;
+						}
+					}
+					canvas {
+						vertical-align: middle;
+					}
+					color-picker {
+						vertical-align: middle;
+						display: inline-table;
+					}
+				}
+			}
+		}
+	}
+	&.light.bordered .portlet-body {
+		overflow-y: auto;
+		.report .report-data {
+			margin-bottom: 40px; 
+			display: inline-block;
+			.input-group-building-img {
+				display: inline-block;
+				.report-address {
+					width: 30%; 
+					display: inline-block;
+					label {
+						width: 100%; 
+						text-align: left; 
+						padding: 2px;
+					}
+				}
+				img {
+					height: 200px; 
+					width: 200px; 
+					margin-right: 30px; 
+					display: inline-block;
+				}
+			}
+		}
+    }
+}
+
+list-directive .portlet.box.green {
+	margin-top: 0px;
+}
