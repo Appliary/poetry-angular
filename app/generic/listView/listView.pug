@@ -47,9 +47,13 @@
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "icon" && !isContext(row[ column.key ])')
                                 i(class="{{row[ column.key ]}}")
                             //- string
-                            span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ])'
+                            span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && !isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
                                 | {{ row[ column.key ] | localize }}
+                            //- string + link
+                            span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && isFunction(column.link)'
+                            , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
+                                a(ng-href="{{column.link(row)}}", target="_blank") {{ row[ column.key ] | localize }}
                             //- translatable
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "translatable" && !isContext(row[ column.key ])')
                                 | {{displayTranslatable(row, column)}}
@@ -67,9 +71,13 @@
                                 //- tags-viewer to remove if it continues to crash so much
                                 tags-viewer(array="[row[ column.key ]]")
                             //- subkey
-                            span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ])')
+                            span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ]) && !isFunction(column.link)')
                                 span(ng-if="!isUndefined(displaySubkey(row, column))")
                                     | {{displaySubkey(row, column) | localize}}
+                            //- subkey + link
+                            span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ]) && isFunction(column.link)')
+                                span(ng-if="!isUndefined(displaySubkey(row, column))")
+                                    a(ng-href="{{column.link(row)}}", target="_blank") {{displaySubkey(row, column) | localize}}
                             //- fallback
                             span( ng-if="!isDefined(row[column.key]) && isDefined(column.fallback) && getColumnType(column) != 'subKey'")
                                 | {{column.fallback}}
