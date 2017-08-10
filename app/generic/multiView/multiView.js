@@ -313,8 +313,12 @@ app.directive( 'multiView', function (
 
                 },
                 redrawListView: function () {
+                  try{
                     $scope.listView.dtInstance.dataTable.fnClearTable();
                     $scope.listView.dtInstance.dataTable.fnAddData( _viewDS.getListViewData() );
+                  }catch(e){
+                    console.warn(e);
+                  }
                 },
                 setActiveTab: function ( tabName ) {
                     $scope.general.activeEditTab = tabName;
