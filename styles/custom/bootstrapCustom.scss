@@ -1,10 +1,12 @@
+$color-green: #32c5d2;
+
 /* ===== GLOBAL ===== */
-.form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
-	font-size: 12px!important;
+.page-content-wrapper .page-content h1.page-title {
+	margin-top: 0;
 }
 
-h1.page-title {
-	margin: 0;
+.form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
+	font-size: 12px!important;
 }
 
 .datepicker {
@@ -29,62 +31,6 @@ tags-input .tags {
   	.tag-item.selected .label-default .label{
     	background: #ed6b75!important;
   	}
-}
-
-/* ===== PORTLETS ===== */
-$portlet-height: 70vh;
-
-.portlet {
-	margin-bottom: 0;
-	height: $portlet-height;
-	&.box.green {
-		border-top: 1px solid #5cd1db;
-		background: initial;
-		/* margin-top: -20px; */ 
-		&.filters {
-			height: initial;
-			border-top: 0;
-			margin-bottom: 20px;
-		}
-		.portlet-body {
-			padding-bottom: 0;
-			.tabbable-line {
-				padding: 0;
-				i.fa.fa-close.pull-right {
-					color: #737373; 
-					margin-top: 10px; 
-					cursor: pointer;
-				}
-				.tab-content {
-					height: calc(#{$portlet-height} - 100px); 
-					overflow-y: auto;
-					.last {
-						margin-top: 25px; 
-						padding-top: 25px; 
-						border-top: 1px solid #EFEFEF;
-						td {
-							border-top: 0;
-						}
-					}
-					canvas {
-						vertical-align: middle;
-					}
-					color-picker {
-						vertical-align: middle;
-						display: inline-table;
-					}
-				}
-			}
-		}
-	}
-	&.light.bordered .portlet-body {
-		height: calc(#{$portlet-height} - 20px);
-		overflow-y: auto;
-	}
-}
-
-list-directive .portlet.box.green {
-	margin-top: 0px;
 }
 
 /* ===== TABLES ===== */
@@ -117,9 +63,10 @@ table.table {
 
 /* ===== DASHBOARD ===== */
 .dashboard-actions {
-	position: absolute; 
-	top: 5px; 
-	right: 15px;
+	position: relative;
+	float: right;
+    top: -55px;
+    right: 15px;
 }
 
 .gridster .gridster-item {
@@ -129,8 +76,6 @@ table.table {
 }
 
 /* ===== MODALS ===== */
-$color-green: #32c5d2;
-
 .modal-body .icon-picker {
 	overflow-y: auto;
 	max-height:400px; 
