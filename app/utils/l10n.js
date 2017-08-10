@@ -2,6 +2,12 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
 
     function localize( input, kind ) {
 
+        if(!angular.isUndefined(input) && !input)
+          return;
+
+        //console.log("%clocalize","background-color: black; color: #2BFF00");
+        //console.log("localize input ",(typeof input), input);
+
         if ( kind == 'daily' ) {
             if ( !input ) return;
             var val = _date( input );
