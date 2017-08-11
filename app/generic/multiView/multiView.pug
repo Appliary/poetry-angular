@@ -2,19 +2,20 @@ h1.page-title
     | {{ $root.__module.name + ':module:title' | translate }} 
     small {{ $root.__module.name + ':module:subtitle' | translate }}
 
-.portlet.light.bordered(ng-class="__id ? 'col-md-6 visible-md-block visible-lg-block' : 'col-md-12'")
-    .portlet-title.tabbable-line
-        .col-xs-7.col-md-8.row
-            .input-icon.right
-                i.icon-magnifier
-                input.form-control( type="text", ng-model="searchText", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
+.portlet-container(ng-class="__id ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
+    .portlet.light.bordered
+        .portlet-title
+            .col-xs-7.col-md-8.row
+                .input-icon.right
+                    i.icon-magnifier
+                    input.form-control( type="text", ng-model="searchText", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
 
-    .portlet-body(ng-if="general.activeView === 'tree'", style="overflow-y: auto;")
-        tree-view(
-          options="treeView.options",
-          edit-item="item",
-          update-item="updateItem",
-          add-item="addItem")
+        .portlet-body(ng-if="general.activeView === 'tree'", style="overflow-y: auto;")
+            .tab-content
+                tree-view(
+                options="treeView.options",
+                edit-item="item",
+                update-item="updateItem",
+                add-item="addItem")
 
-.col-md-6(ng-if="__id")
-    ng-include(src="actions.getMultiViewEdit()")
+ng-include.portlet-container.col-md-5.col-xs-12(ng-if="__id", src="actions.getMultiViewEdit()")

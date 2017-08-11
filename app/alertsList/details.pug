@@ -8,5 +8,5 @@
                         span( ng-if="name") {{ name + ':tab' | translate }}
                         span( ng-if="!name") {{ __id }}
 
-            .tab-content
-                ng-include( src="'alertsList/overview.pug' " tab="{{'overview'}}" )
+        .tab-content
+            ng-include( src="'alertsList/overview.pug' " tab="{{'overview'}}" )

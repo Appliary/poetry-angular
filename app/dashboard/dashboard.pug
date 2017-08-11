@@ -33,12 +33,14 @@
                 i.icon-bell 
                 |  {{ 'disableDragWidget:dashboardHeader' | translate }}
 
-.portlet.light.bordered(ng-class="item ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
-    .portlet-title.tabbable-line
-        ul.nav.nav-tabs
-            li(ng-repeat="dashboard in Dashboards.list", ng-click="Dashboards.select(dashboard)", ng-class='{active: Dashboards.isCurrent(dashboard) }', ng-dblclick="Dashboards.edit(dashboard)")
-                a {{ dashboard.name }}
-    .portlet-body
-        div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
-            ul: li(gridster-item='widget', ng-repeat=' widget in Dashboards.current.widgets ')
-                ng-widget( widget='widget', edit='Widgets.edit', remove='Widgets.remove' )
+.portlet-container(ng-class="item ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
+    .portlet.light.bordered
+        .portlet-title.tabbable-line
+            ul.nav.nav-tabs
+                li(ng-repeat="dashboard in Dashboards.list", ng-click="Dashboards.select(dashboard)", ng-class='{active: Dashboards.isCurrent(dashboard) }', ng-dblclick="Dashboards.edit(dashboard)")
+                    a {{ dashboard.name }}
+        .portlet-body
+            .tab-content
+                div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
+                    ul: li(gridster-item='widget', ng-repeat=' widget in Dashboards.current.widgets ')
+                        ng-widget( widget='widget', edit='Widgets.edit', remove='Widgets.remove' )

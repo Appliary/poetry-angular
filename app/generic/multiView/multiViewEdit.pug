@@ -11,5 +11,5 @@
                         span( ng-if="tab.title") {{tab.title + ":AssetManager:Tabs" | translate}}
                         span( ng-if="!tab.title") {{ __id }}
 
-            .tab-content
-                ng-include(src="actions.resolveEditTabInclude()")
+        .tab-content
+            ng-include(src="actions.resolveEditTabInclude()")
