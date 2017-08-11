@@ -23,5 +23,3 @@ ng-include.row( src='"generic/form.pug"', ng-controller='alertsList/overview' )
         //- read
         button.btn.default( ng-if="!item.read" ng-click='read(item._id)' )
             | {{ 'read:alerts:button' | translate }}
-
-        input(switch type="checkbox" name="my-checkbox" checked)
