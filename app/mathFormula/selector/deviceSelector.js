@@ -1,4 +1,4 @@
-app.directive('deviceSelectorContainer', function($http){
+app.directive('deviceSelectorContainer', function($http, $timeout){
   return {
     restrict: 'A',
     scope: {
@@ -132,6 +132,8 @@ app.directive('deviceSelectorContainer', function($http){
                         }
                       }
 
+                      console.log("%c$http( config )","background-color: black; color: #2BFF00");
+
                       $http( config )
                           .then( function success( response ) {
 
@@ -158,10 +160,10 @@ app.directive('deviceSelectorContainer', function($http){
               .map( function ( filter ) {
                   return 'filters.' + filter;
               } );
-          wg.push( 'query.search' );
+          //wg.push( 'query.search' );
           $scope.$watchGroup( wg, getDevices );
 
-          /*var toSearch;
+          var toSearch;
           $scope.$watch('query.search', function(){
             if(toSearch){
               $timeout.cancel(toSearch);
@@ -169,9 +171,9 @@ app.directive('deviceSelectorContainer', function($http){
             toSearch = $timeout(
               function(){
                 getDevices();
-              }, 1000
+              }, 360
             );
-          });*/
+          });
 
           /**
            * getVar()
