@@ -8,6 +8,5 @@
                         span( ng-if="name") {{ name + ':tab:' + $root.__module.name | translate }}
                         span( ng-if="!name") {{ __id }}
 
-
-            .tab-content
-                ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")
+        .tab-content
+            ng-include( src=" $root.__module.config.tabs[__view].templateUrl || 'generic/overview.pug' " tab="{{__view||'overview'}}")

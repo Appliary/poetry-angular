@@ -1,56 +1,48 @@
-$color-green: #5cd1db;
-$color-light-grey: #EFEFEF;
-$color-grey: #737373;
+$color-border-portlet: #5cd1db;
+$color-hr: #EFEFEF;
+$color-close-icon: #737373;
 
-/* ===== PORTLETS ===== */
+/* ===== GLOBAL ===== */
 .portlet-container {
-    height: calc(100vh - 230px)
+	height: calc(100vh - 230px);
 }
 
 .portlet {
+	height: 100%;
 	margin-bottom: 0;
-    height: 100%;
-	&.box.green {
-        margin-bottom: 20px;
-		background: initial;
-        &.no-title {
-            border-top: 1px solid $color-green;
-        }
-		.portlet-body {
-			height: 100%;
-			padding-bottom: 0;
-			.tabbable-line {
-				height: 100%;
-				padding: 0;
-				i.fa.fa-close.pull-right {
-					color: $color-grey; 
-					margin-top: 10px; 
-					cursor: pointer;
-				}
-				.tab-content {
-                    overflow-y: auto;
-                    height: calc(100% - 60px);
-					.last {
-						margin-top: 25px; 
-						padding-top: 25px; 
-						border-top: 1px solid $color-light-grey;
-						td {
-							border-top: 0;
-						}
-					}
-					canvas {
-						vertical-align: middle;
-					}
-					color-picker {
-						vertical-align: middle;
-						display: inline-table;
-					}
-				}
+	.portlet-body {
+		height: 100%;
+		padding-bottom: 0;
+		.tabbable-line {
+			padding-top: 0;
+			i.fa.fa-close.pull-right {
+				color: $color-close-icon; 
+				margin-top: 10px; 
+				cursor: pointer;
 			}
 		}
-	}
-	&.light.bordered .portlet-body {
-		overflow-y: auto;
+		.tab-content {
+			overflow-y: auto;
+			height: calc(100% - 60px);
+			.last {
+				margin-top: 25px; 
+				padding-top: 25px; 
+				border-top: 1px solid $color-hr;
+				td {
+					border-top: 0;
+				}
+			}
+			canvas {
+				vertical-align: middle;
+			}
+			color-picker {
+				vertical-align: middle;
+				display: inline-table;
+			}
+			button.full-view {
+				margin: 10px 0;
+			}
+		}
 		.report .report-data {
 			margin-bottom: 40px; 
 			display: inline-block;
@@ -73,9 +65,14 @@ $color-grey: #737373;
 				}
 			}
 		}
-    }
+	}
 }
 
-list-directive .portlet.box.green {
-	margin-top: 0px;
+/* ===== SPECIFIC ===== */
+.portlet.box.green:not(.no-title) {
+	margin-bottom: 20px;
+}
+
+.portlet.box.green.no-title {
+    border: 1px solid $color-border-portlet;
 }
