@@ -161,6 +161,18 @@ app.directive('deviceSelectorContainer', function($http){
           wg.push( 'query.search' );
           $scope.$watchGroup( wg, getDevices );
 
+          /*var toSearch;
+          $scope.$watch('query.search', function(){
+            if(toSearch){
+              $timeout.cancel(toSearch);
+            }
+            toSearch = $timeout(
+              function(){
+                getDevices();
+              }, 1000
+            );
+          });*/
+
           /**
            * getVar()
            * Find the current value of the selected input
