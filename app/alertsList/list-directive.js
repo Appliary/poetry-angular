@@ -489,14 +489,6 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             }, function error( response ) {
                 isLoading = false;
 
-                /*if ( response.status == 401 )
-                    return ngDialog.open( {
-                        templateUrl: 'modals/login.pug',
-                        controller: 'modals/login',
-                        showClose: false,
-                        className: 'login'
-                    } );*/
-
                     console.warn(scope);
 
                 //$location.path( '/error/' + response.status );

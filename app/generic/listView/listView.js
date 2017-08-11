@@ -1,4 +1,4 @@
-app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
+app.directive("listView", function ($timeout, $window, $q, listViewService) {
     return {
         restrict: 'EA',
         transclude: false,
@@ -18,7 +18,7 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
             minHeight: "<?",
             maxHeight: "<?"
         },
-        link: function ( scope, elem, attrs, ctrls ) {
+        link: function (scope, elem, attrs, ctrls) {
 
             /**
              * VARS
@@ -28,14 +28,14 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
 
             //scope._id;
 
-            scope.config = isObject( scope.config ) ? scope.config : {};
+            scope.config = isObject(scope.config) ? scope.config : {};
 
             scope.sorting = {};
 
-            if ( isObject( scope.config.defaultSort ) ) {
-                if ( scope.config.defaultSort.key ) {
+            if (isObject(scope.config.defaultSort)) {
+                if (scope.config.defaultSort.key) {
                     scope.sorting.key = scope.config.defaultSort.key;
-                } else if ( scope.config.defaultSort.col ) {
+                } else if (scope.config.defaultSort.col) {
                     scope.sorting.key = scope.config.defaultSort.col;
                 }
                 scope.sorting.order = scope.config.defaultSort.order == "asc" ? "asc" : "desc";
@@ -47,146 +47,146 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
             /**
              * FUNCTIONS
              */
-            print( "loading" );
+            print("loading");
 
-            function print( message ) {
-                if ( !scope.config.debug )
+            function print(message) {
+                if (!scope.config.debug)
                     return;
-                console.log( "%c [listView] " + JSON.stringify( message ), "background-color: black; color: #2BFF00" );
+                console.log("%c [listView] " + JSON.stringify(message), "background-color: black; color: #2BFF00");
             }
 
             function getUserLanguage() {
-                return ( scope.$root.user ) ? scope.$root.user.language : "";
+                return (scope.$root.user) ? scope.$root.user.language : "";
             }
 
             scope.ng = angular;
 
             scope.select = select;
 
-            function select( _id ) {
-                if ( scope.config.noDetails || scope._id == _id ) {
+            function select(_id) {
+                if (scope.config.noDetails || scope._id == _id) {
                     return;
                 }
-                if ( isFunction( scope.selectedFn ) ) {
-                    scope.selectedFn( _id );
+                if (isFunction(scope.selectedFn)) {
+                    scope.selectedFn(_id);
                 }
-                print( "selectedFn(" + _id + ")" );
+                print("selectedFn(" + _id + ")");
             }
 
             scope.sort = sort;
 
-            function sort( column ) {
-                if ( column.key == scope.sorting.key ) {
+            function sort(column) {
+                if (column.key == scope.sorting.key) {
                     scope.sorting.order = scope.sorting.order == 'asc' ? 'desc' : 'asc';
                 } else {
                     scope.sorting.key = column.key;
                     scope.sorting.order = 'asc';
                 }
-                if ( isFunction( scope.sortFn ) ) {
+                if (isFunction(scope.sortFn)) {
                     $timeout(
                         function () {
-                            scope.sortFn( scope.sorting.key, scope.sorting.order );
+                            scope.sortFn(scope.sorting.key, scope.sorting.order);
                         },
                         100
                     );
                 }
-                print( "sortFn(" + scope.sorting.key + ", " + scope.sorting.order + ") =>" );
+                print("sortFn(" + scope.sorting.key + ", " + scope.sorting.order + ") =>");
             }
 
             // hasValue
             scope.hasValue = hasValue;
 
-            function hasValue( v ) {
-                return v !== null && !angular.isUndefined( v );
+            function hasValue(v) {
+                return v !== null && !angular.isUndefined(v);
             }
 
             // isDefined
             scope.isDefined = isDefined;
 
-            function isDefined( v ) {
-                return v !== null && !angular.isUndefined( v ) && v;
+            function isDefined(v) {
+                return v !== null && !angular.isUndefined(v) && v;
             }
 
             // isUndefined
             scope.isUndefined = isUndefined;
 
-            function isUndefined( v ) {
-                return v === null || angular.isUndefined( v );
+            function isUndefined(v) {
+                return v === null || angular.isUndefined(v);
             }
 
             // isObject
             scope.isObject = isObject;
 
-            function isObject( v ) {
-                return v && angular.isObject( v );
+            function isObject(v) {
+                return v && angular.isObject(v);
             }
 
             // isFunction
             scope.isFunction = isFunction;
 
-            function isFunction( v ) {
+            function isFunction(v) {
                 return typeof v === 'function';
             }
 
             // isNumber
             scope.isNumber = isNumber;
 
-            function isNumber( v ) {
+            function isNumber(v) {
                 return !isNaN(v);
             }
 
             // isTimedOut
             scope.isTimedOut = isTimedOut;
 
-            function isTimedOut( row ) {
-                return scope.config.timeout && row.hasOwnProperty( 'timeout' ) && row.timeout;
+            function isTimedOut(row) {
+                return scope.config.timeout && row.hasOwnProperty('timeout') && row.timeout;
             }
 
             // isContext
             scope.isContext = isContext;
 
-            function isContext( coord ) {
-                return isObject( coord ) && coord.hasOwnProperty( 'id' ) && coord.hasOwnProperty( 'kind' );
+            function isContext(coord) {
+                return isObject(coord) && coord.hasOwnProperty('id') && coord.hasOwnProperty('kind');
             }
 
             // isDataType
             scope.isDataType = isDataType;
 
-            function isDataType( column ) {
-                return column.type == 'data' || ( column.type == 'subkey' && column.subtype == 'data' );
+            function isDataType(column) {
+                return column.type == 'data' || (column.type == 'subkey' && column.subtype == 'data');
             }
 
             // sameDataTypeValue
             scope.sameDataTypeValue = sameDataTypeValue;
 
-            function sameDataTypeValue( row, col1, col2 ) {
-                if ( !( isDataType( col1 ) && isDataType( col2 ) ) ) {
+            function sameDataTypeValue(row, col1, col2) {
+                if (!(isDataType(col1) && isDataType(col2))) {
                     return false;
                 }
-                return getSubkeyValue( row, col1 ) == getSubkeyValue( row, col2 );
+                return getSubkeyValue(row, col1) == getSubkeyValue(row, col2);
             }
 
-            function getSubkeyValue( row, column ) {
-                var map = column.key.split( "." );
+            function getSubkeyValue(row, column) {
+                var map = column.key.split(".");
                 var i = 0;
                 var value = row;
-                if ( map.length == 0 )
+                if (map.length == 0)
                     value = "";
                 try {
-                    while ( i < map.length ) {
-                        value = value[ map[ i ] ];
+                    while (i < map.length) {
+                        value = value[map[i]];
                         i++;
                     }
-                } catch ( e ) {
+                } catch (e) {
                     value = "";
                 }
                 return value;
             }
 
-            function findSubkeyValue( row, column ) {
-                return $q( function ( res, rej ) {
-                    return res( getSubkeyValue( row, column ) );
-                } );
+            function findSubkeyValue(row, column) {
+                return $q(function (res, rej) {
+                    return res(getSubkeyValue(row, column));
+                });
             }
 
 
@@ -194,58 +194,58 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
             // displayTranslatable
             scope.displayTranslatable = displayTranslatable;
 
-            function displayTranslatable( row, column ) {
+            function displayTranslatable(row, column) {
                 var userLn = getUserLanguage();
-                return getUserLanguage && angular.isString( userLn ) && row[ column.key + userLn.toUpperCase() ] ?
-                    row[ column.key + userLn.toUpperCase() ] :
-                    row[ column.key ];
+                return getUserLanguage && angular.isString(userLn) && row[column.key + userLn.toUpperCase()] ?
+                    row[column.key + userLn.toUpperCase()] :
+                    row[column.key];
             }
 
             // displaySubkey
             scope.displaySubkey = displaySubkey;
 
-            function displaySubkey( row, column ) {
-                return findSubkeyValue( row, column )
+            function displaySubkey(row, column) {
+                return findSubkeyValue(row, column)
                     .$$state.value;
             }
 
             // getColumnType
             scope.getColumnType = getColumnType;
 
-            function getColumnType( column ) {
-                return column.type || ( column.key == '_id' ? '_id' : 'string' );
+            function getColumnType(column) {
+                return column.type || (column.key == '_id' ? '_id' : 'string');
             }
 
             // getMeasurementsCount
             scope.getMeasurementsCount = getMeasurementsCount;
 
             function getMeasurementsCount() {
-                return new Array( measurementsCount );
+                return new Array(measurementsCount);
             }
 
             // getFantomMeasurements
             scope.getFantomMeasurements = getFantomMeasurements;
 
-            function getFantomMeasurements( meas ) {
+            function getFantomMeasurements(meas) {
                 var total = measurementsCount || 0;
-                if ( angular.isArray( meas ) ) {
+                if (angular.isArray(meas)) {
                     total -= meas.length;
                 }
                 total = total < 0 ? 0 : total;
-                return new Array( total );
+                return new Array(total);
             }
 
             function setMeasurementsCount() {
-                if ( !hasMeasurements || !scope.list || !scope.measurementsColumn.key )
+                if (!hasMeasurements || !scope.list || !scope.measurementsColumn.key)
                     return;
                 measurementsCount = 0;
                 var key = scope.measurementsColumn.key;
-                scope.list.forEach( function ( elem ) {
-                    measurementsCount = angular.isArray( elem[ key ] ) ?
-                        ( elem[ key ].length ) > measurementsCount ?
-                        ( elem[ key ].length ) : measurementsCount :
+                scope.list.forEach(function (elem) {
+                    measurementsCount = angular.isArray(elem[key]) ?
+                        (elem[key].length) > measurementsCount ?
+                            (elem[key].length) : measurementsCount :
                         measurementsCount;
-                } );
+                });
             }
 
 
@@ -254,46 +254,46 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
              */
 
             // watch: data
-            scope.$watchCollection( "data", function ( nv ) {
-                var newValue = angular.isArray( nv ) ? nv : [];
-                scope.list = newValue.filter( function ( elem ) {
-                    return isObject( elem );
-                } );
+            scope.$watchCollection("data", function (nv) {
+                var newValue = angular.isArray(nv) ? nv : [];
+                scope.list = newValue.filter(function (elem) {
+                    return isObject(elem);
+                });
                 setMeasurementsCount();
                 scope.resize();
                 scope.first = 1;
                 scope.last = scope.filtered;
-            } );
-            scope.$watchCollection( "pColumns", function ( nv ) {
+            });
+            scope.$watchCollection("pColumns", function (nv) {
                 scope.measurementsColumn = {};
                 measurementsCount = 0;
-                var newValue = angular.isArray( nv ) ? nv : [];
-                scope.columns = newValue.map( function ( elem ) {
-                        if ( !elem )
-                            return;
+                var newValue = angular.isArray(nv) ? nv : [];
+                scope.columns = newValue.map(function (elem) {
+                    if (!elem)
+                        return;
 
-                        return isObject( elem ) && elem.key ?
-                            elem :
-                            angular.isString( elem ) ? {
-                                key: elem
-                            } :
+                    return isObject(elem) && elem.key ?
+                        elem :
+                        angular.isString(elem) ? {
+                            key: elem
+                        } :
                             undefined;
-                    } )
-                    .filter( function ( elem ) {
-                        return isObject( elem );
-                    } );
+                })
+                    .filter(function (elem) {
+                        return isObject(elem);
+                    });
 
-                hasMeasurements = scope.columns.some( function ( elem ) {
-                    if ( elem.type == "measurements" ) {
+                hasMeasurements = scope.columns.some(function (elem) {
+                    if (elem.type == "measurements") {
                         scope.measurementsColumn = elem;
                         return true;
                     } else {
                         return false;
                     }
-                } );
+                });
 
                 setMeasurementsCount();
-            } );
+            });
 
 
             /**
@@ -304,29 +304,29 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
              * Scrolling handler ( infinite scroll + header mover )
              *
              */
-            scope.scroll = function scroll( event ) {
+            scope.scroll = function scroll(event) {
                 var elem = event.target;
 
-                scope.$apply( function () {
-                    scope.first = Math.round( elem.scrollTop / scope.lineHeight ) + 1;
+                scope.$apply(function () {
+                    scope.first = Math.round(elem.scrollTop / scope.lineHeight) + 1;
                     scope.last = scope.first + Math.round(
-                        scope.listHeight / ( scope.lineHeight + 2 )
+                        scope.listHeight / (scope.lineHeight + 2)
                     ) - 1;
-                } );
+                });
 
-                if ( ( elem.scrollTop + elem.offsetHeight + 300 ) > elem.scrollHeight ) {
-                    if ( scope.atBottom )
+                if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
+                    if (scope.atBottom)
                         scope.atBottom();
                 }
             };
 
-            scope.resize = function ( delay ) {
-                if ( scope.filtered > 0 ) {
-                    $timeout( function () {
-                        console.log( "resize" );
+            scope.resize = function (delay) {
+                if (scope.filtered > 0) {
+                    $timeout(function () {
+                        console.log("resize");
                         scope.setListHeight();
                         scope.setColumnsWidth();
-                    }, delay || 10 );
+                    }, delay || 10);
                 }
             };
 
@@ -339,99 +339,80 @@ app.directive( "listView", function ( $timeout, $window, $q, listViewService ) {
                  * fix a new max-height
                  */
                 var globalHeight = $window.innerHeight;
-                var scrollBody = document.querySelectorAll( '.dataTables_scrollBody' );
+                var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
 
-                for ( indexList = 0; indexList < scrollBody.length; indexList++ ) {
-                    var tableElem = angular.element( scrollBody[ indexList ] );
-                    var offsetTop = tableElem.prop( 'offsetTop' );
+                for (indexList = 0; indexList < scrollBody.length; indexList++) {
+                    var tableElem = angular.element(scrollBody[indexList]);
+                    var offsetTop = tableElem.prop('offsetTop');
                     var margin = 350;
-                    scope.listHeight = globalHeight - ( margin + offsetTop );
+                    scope.listHeight = globalHeight - (margin + offsetTop);
                     //console.log("listHeight", scope.listHeight);
                     //console.log("maxHeight", scope.maxHeight);
 
-                    if ( !scope.listHeight || ( angular.isNumber( scope.maxHeight ) && scope.maxHeight < scope.listHeight ) ) {
+                    if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
                         scope.listHeight = scope.maxHeight;
                     }
                     //console.log("tableElem", tableElem);
 
-                    scope.lineHeight = tableElem[ 0 ].scrollHeight / scope.data.length;
+                    scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
                     //console.log("lineHeight", scope.lineHeight);
                 }
             };
 
             scope.setColumnsWidth = function setColumnsWidth() {
                 //console.log('setColumnsWidth');
-                var scrollHead = document.querySelectorAll( '.dataTables_scrollHead' );
-                var scrollBody = document.querySelectorAll( '.dataTables_scrollBody' );
+                var scrollHead = document.querySelectorAll('.dataTables_scrollHead');
+                var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
 
-                for ( indexList = 0; indexList < scrollHead.length; indexList++ ) {
-                    var headThs = scrollHead[ indexList ].querySelectorAll( '.dataTables_scrollHeadInner table thead tr th' );
-                    var bodyTds = scrollBody[ indexList ].querySelectorAll( 'tr:first-child td' );
+                for (indexList = 0; indexList < scrollHead.length; indexList++) {
+                    var headThs = scrollHead[indexList].querySelectorAll('.dataTables_scrollHeadInner table thead tr th');
+                    var bodyTds = scrollBody[indexList].querySelectorAll('tr:first-child td');
 
                     try {
-                        for ( var i = 0; i < headThs.length; i++ ) {
-                            var thPadding = ( parseFloat( window.getComputedStyle( headThs[ i ] )
-                                .paddingRight ) + parseFloat( window.getComputedStyle( headThs[ i ] )
-                                .paddingLeft ) );
+                        for (var i = 0; i < headThs.length; i++) {
+                            var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
+                            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight)
+                                + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
 
-                            var tdWidth = parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .width );
-                            var tdPadding = ( parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .paddingRight ) + parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .paddingLeft ) );
+                            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
+                            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight)
+                                + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
 
-                            var newThWidth = tdWidth + ( tdPadding - thPadding );
+                            if ((thWidth + thPadding) < (tdWidth + tdPadding)) {
+                                var newThWidth = tdWidth + (tdPadding - thPadding);
 
-                            headThs[ i ].style.minWidth = newThWidth + "px";
-                            headThs[ i ].style.maxWidth = newThWidth + "px";
-                            headThs[ i ].style.width = newThWidth + "px";
-                        }
-
-                        for ( i = 0; i < headThs.length; i++ ) {
-                            var thWidth = parseFloat( window.getComputedStyle( headThs[ i ] )
-                                .width );
-                            var thPadding = ( parseFloat( window.getComputedStyle( headThs[ i ] )
-                                .paddingRight ) + parseFloat( window.getComputedStyle( headThs[ i ] )
-                                .paddingLeft ) );
-
-                            var tdWidth = parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .width );
-                            var tdPadding = ( parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .paddingRight ) + parseFloat( window.getComputedStyle( bodyTds[ i ] )
-                                .paddingLeft ) );
-
-                            var x = tdWidth - ( thPadding - tdPadding );
-                            x = Math.round( x * 10 ) / 10;
-
-                            if ( thWidth != x ) {
-                                var newTdWidth = thWidth + ( thPadding - tdPadding );
+                                headThs[i].style.minWidth = newThWidth + "px";
+                                headThs[i].style.maxWidth = newThWidth + "px";
+                                headThs[i].style.width = newThWidth + "px";
+                            } else {
+                                var newTdWidth = thWidth + (thPadding - tdPadding);
 
                                 bodyTds[ i ].style.minWidth = newTdWidth + "px";
                                 bodyTds[ i ].style.maxWidth = newTdWidth + "px";
                                 bodyTds[ i ].style.width = newTdWidth + "px";
                             }
                         }
-                    } catch ( e ) {
-                        console.error( "[listView] setColumnsWidth:", e );
+                    } catch (e) {
+                        console.error("[listView] setColumnsWidth:", e);
                     }
                 }
             };
 
-            scope.$watch( 'item', function ( item ) {
-                if ( !item ) scope._id = undefined;
+            scope.$watch('item', function (item) {
+                if (!item) scope._id = undefined;
                 else scope._id = item._id;
                 scope.resize();
-            } );
+            });
 
-            angular.element( $window )
-                .bind( 'resize', function () {
+            angular.element($window)
+                .bind('resize', function () {
                     scope.resize();
-                } );
+                });
 
-            listViewService.register( {
+            listViewService.register({
                 event: 'resize',
                 callback: scope.resize
-            } );
+            });
         }
     };
-} );
+});
