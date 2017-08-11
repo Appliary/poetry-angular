@@ -29,24 +29,24 @@ h1.page-title
                         .input-icon.right
                             i.icon-magnifier
                             input.form-control( type="text", ng-model="$parent.search", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
-                .col-md-2.col-sm-2
+                .col-md-2.col-sm-2.text-right
                     .btn-group.pull-right
-                        button.btn.green.btn-outline.dropdown-toggle(data-toggle='dropdown')
+                        button.btn.green.btn-outline.dropdown-toggle(type='button', data-toggle='dropdown')
                             | Tools 
                             i.fa.fa-angle-down
-                        ul.dropdown-menu.pull-right
+                        ul.dropdown-menu.pull-right(role='menu')
                             li
                                 a(href='javascript:;')
-                                i.fa.fa-print
-                                |  Print
+                                    i.fa.fa-print
+                                    |  Print
                             li
                                 a(href='javascript:;')
-                                i.fa.fa-file-pdf-o
-                                |  Save as PDF
+                                    i.fa.fa-file-pdf-o
+                                    |  Save as PDF
                             li
                                 a(href='javascript:;')
-                                i.fa.fa-file-excel-o
-                                |  Export to Excel
+                                    i.fa.fa-file-excel-o
+                                    |  Export to Excel
 
                 list-view(
                 ng-class='{detailed:__id}'

@@ -5,7 +5,7 @@ $color-green: #32c5d2;
 	margin-top: 0;
 }
 
-.form-group .form-control, .form-group label, .table:not(.dataTable) td, .portlet.box, .accordion-toggle {
+.form-group .form-control, .form-group label, table.table td, .portlet.box, .accordion-toggle {
 	font-size: 12px!important;
 }
 
@@ -31,28 +31,6 @@ tags-input .tags {
   	.tag-item.selected .label-default .label{
     	background: #ed6b75!important;
   	}
-}
-
-/* ===== TABLES ===== */
-table.table {
-	margin-bottom: 0;
-}
-
-.dataTables_scrollHead table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
-	padding-right: 17px;
-}
-
-.dataTables_scrollBody table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
-	border-top: 0;
-	thead tr, thead tr th {
-		padding: 0;
-	}
-	tbody tr td .btn-group {
-		position: relative;
-		ul.dropdown-menu {
-			left: -85px;
-		}
-	}
 }
 
 /* ===== LOGS ===== */

@@ -20,10 +20,14 @@ $color-close-icon: #737373;
 				margin-top: 10px; 
 				cursor: pointer;
 			}
+			ul.nav.nav-tabs li a {
+				font-size: 13px;
+			}
 		}
 		.tab-content {
 			overflow-y: auto;
 			height: calc(100% - 60px);
+			margin-top: 20px;
 			.last {
 				margin-top: 25px; 
 				padding-top: 25px; 

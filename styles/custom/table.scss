@@ -1,0 +1,32 @@
+table.table {
+	margin-bottom: 0;
+}
+
+.dataTables_scrollHead table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
+	// vertical scrollbar
+	padding-right: 17px;
+	thead tr th {
+		font-size: 13px;
+	}
+}
+
+.dataTables_scrollBody table.table.table-striped.table-bordered.order-column.dataTable.no-footer {
+	border-top: 0;
+	thead tr, thead tr th {
+		padding: 0;
+	}
+	tbody tr {
+        cursor: pointer;
+        
+        // Actions dropdown
+        td .btn-group {
+            position: relative;
+            /*ul.dropdown-menu {
+                left: -85px;
+            }
+            ul.dropdown-menu:before, ul.dropdown-menu:after {
+                left: 120px;
+            }*/
+        }
+    }
+}

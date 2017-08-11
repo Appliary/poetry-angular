@@ -94,11 +94,11 @@
                             span()
 
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
-                            .btn-group
+                            .btn-group.pull-right
                                 button.btn.btn-xs.green.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions
+                                    | Actions 
                                     i.fa.fa-angle-down
-                                ul.dropdown-menu(role='menu')
+                                ul.dropdown-menu.pull-right(role='menu')
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
