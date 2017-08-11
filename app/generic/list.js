@@ -246,6 +246,10 @@ app.controller( 'generic/list', function (
             } );
         }
 
+        if(angular.isArray($scope.item.last)){
+          delete $scope.item.last;
+        }
+
         $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
             .then( function success( res ) {
                 $scope.__validation = [];
