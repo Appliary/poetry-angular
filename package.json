@@ -35,7 +35,7 @@
         "mime-types": "^2.1.12",
         "ng-dialog": "^1.4.0",
         "node-sass": "^4.5.3",
-        "poetry": "0.0.99",
+        "poetry": "0.1.0",
         "pug": "^2.0.0-beta6",
         "sass": "^0.5.0",
         "simple-line-icons": "^2.4.1",
