@@ -1,6 +1,10 @@
 $color-green: #32c5d2;
 
 /* ===== GLOBAL ===== */
+.page-toolbar .btn-group {
+	margin-right: 15px;
+}
+
 .page-content-wrapper .page-content h1.page-title {
 	margin-top: 0;
 }
@@ -40,13 +44,6 @@ tags-input .tags {
 }
 
 /* ===== DASHBOARD ===== */
-.dashboard-actions {
-	position: relative;
-	float: right;
-    top: -55px;
-    right: 15px;
-}
-
 .gridster .gridster-item {
 	.widget-view, .widget-view div {
 		height:100%;

@@ -1,37 +1,41 @@
+.page-toolbar
+    .btn-group.pull-right
+        button.btn.green.btn-sm.btn-outline.dropdown-toggle(type='button', data-toggle='dropdown')
+            | {{ 'manage:dashboards'|translate }} 
+            i.fa.fa-angle-down
+        ul.dropdown-menu.pull-right(role='menu')
+            li
+                a(ng-click='Dashboards.create()')
+                    i.icon-bell 
+                    |  {{ 'addDashboard:dashboardHeader' | translate }}
+            li
+                a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
+                    i.icon-bell 
+                    |  {{ 'addWidget:dashboardHeader' | translate }}
+            li
+                a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
+                    i.icon-bell 
+                    |  {{ 'editDashboard:dashboardHeader' | translate }}
+            li
+                a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
+                    i.icon-bell 
+                    |  {{ 'clearDashboard:dashboardHeader' | translate }}
+            li
+                a(ng-click='Dashboards.remove()', ng-if="Dashboards.list.length")
+                    i.icon-bell 
+                    |  {{ 'deleteDashboard:dashboardHeader' | translate }}
+            li
+                a(ng-click='Dashboards.draggable( true )', ng-if='!Dashboards.draggable() && Dashboards.list.length')
+                    i.icon-bell 
+                    |  {{ 'enableDragWidget:dashboardHeader' | translate }}
+            li
+                a(ng-click='Dashboards.draggable( false )',  ng-if='Dashboards.draggable() && Dashboards.list.length')
+                    i.icon-bell 
+                    |  {{ 'disableDragWidget:dashboardHeader' | translate }}
 
-.dashboard-actions
-    button.btn.green.btn-sm.btn-outline.dropdown-toggle(type='button', data-toggle='dropdown')
-        | {{ 'manage:dashboards'|translate }} 
-        i.fa.fa-angle-down
-    ul.dropdown-menu.pull-right(role='menu')
-        li
-            a(ng-click='Dashboards.create()')
-                i.icon-bell 
-                |  {{ 'addDashboard:dashboardHeader' | translate }}
-        li
-            a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
-                i.icon-bell 
-                |  {{ 'addWidget:dashboardHeader' | translate }}
-        li
-            a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
-                i.icon-bell 
-                |  {{ 'editDashboard:dashboardHeader' | translate }}
-        li
-            a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
-                i.icon-bell 
-                |  {{ 'clearDashboard:dashboardHeader' | translate }}
-        li
-            a(ng-click='Dashboards.remove()', ng-if="Dashboards.list.length")
-                i.icon-bell 
-                |  {{ 'deleteDashboard:dashboardHeader' | translate }}
-        li
-            a(ng-click='Dashboards.draggable( true )', ng-if='!Dashboards.draggable() && Dashboards.list.length')
-                i.icon-bell 
-                |  {{ 'enableDragWidget:dashboardHeader' | translate }}
-        li
-            a(ng-click='Dashboards.draggable( false )',  ng-if='Dashboards.draggable() && Dashboards.list.length')
-                i.icon-bell 
-                |  {{ 'disableDragWidget:dashboardHeader' | translate }}
+h1.page-title
+    | {{ $root.__module.name + ':module:title' | translate }} 
+    small {{ $root.__module.name + ':module:subtitle' | translate }}
 
 .portlet-container(ng-class="item ? 'col-md-7 visible-md-block visible-lg-block' : 'col-md-12'")
     .portlet.light.bordered
