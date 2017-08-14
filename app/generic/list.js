@@ -10,7 +10,10 @@ app.controller( 'generic/list', function (
 ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
 
-    var lastCall = {};
+    var lastCall = {
+      timestamp: 0,
+      url: ''
+    };
 
     $scope.sorting = {
         col: '_id',
@@ -114,15 +117,19 @@ app.controller( 'generic/list', function (
 
         if ( $scope.data && $scope.data.length ) {
             page = $scope.data.length / 100;
-            console.log( "$scope.data.length / 100", $scope.data.length / 100 );
-            console.log( "Math.floor(page)", Math.floor( page ) );
             urlConfig.params.page = Math.floor( page );
             url += "&page=" + Math.floor( page );
         } else {
             url += "&page=0";
+            urlConfig.params.page = 0;
         }
 
-        if ( lastCall.timestamp + 5000 < Date.now() || lastCall.url != url ) {
+        if ( /*lastCall.timestamp + 2000 < Date.now() &&*/ lastCall.url != url  ) {
+          console.groupCollapsed( '[generic/list] URL' );
+          console.log( 'previous:', lastCall.url );
+          console.log( 'current:', url );
+          console.groupEnd();
+
             lastCall = {
                 url: url,
                 timestamp: Date.now()
