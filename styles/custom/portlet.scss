@@ -4,7 +4,8 @@ $color-close-icon: #737373;
 
 /* ===== GLOBAL ===== */
 .portlet-container {
-	height: calc(100vh - 230px);
+	// With breadcrumb : calc(100vh - 230px);
+	height: calc(100vh - 180px);
 }
 
 .portlet {
