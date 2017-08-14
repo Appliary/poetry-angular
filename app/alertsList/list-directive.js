@@ -419,9 +419,6 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             }
           }
 
-          console.log("%cACKNOWLEDGED VALUE:","background-color: black; color: #2BFF00");
-          console.log(scope.acknowledged, params.acknowledged);
-
           callApi(params)
       }
 
