@@ -7,9 +7,10 @@ $color-green: #32c5d2;
 
 .page-content-wrapper .page-content h1.page-title {
 	margin-top: 0;
+	margin-left: 15px;
 }
 
-.form-group .form-control, .form-group label, table.table td, .portlet.box, .accordion-toggle {
+body, .form-group .form-control, .form-group label, .input-group-addon, table.table td, .portlet.box, .accordion-toggle, button.btn {
 	font-size: 12px!important;
 }
 

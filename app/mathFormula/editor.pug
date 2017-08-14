@@ -1,4 +1,4 @@
-.form(ng-controller='mathFormula/editor')
+div(ng-controller='mathFormula/editor')
     h4 {{ 'inputs:' + $root.__module.name + ':title' | translate }}
     .table-scrollable
         table.table
@@ -58,12 +58,12 @@
                             i.fa.fa-plus
 
     h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
-    .form-body(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
+    div(ng-class='{error: currentOutputErr}', ng-if="formulaInput")
         .form-group
                 textarea.form-control( ng-model='item.formula', rows="3" )
         .form-group
                 input.form-control( disabled, ng-value='currentOutput' )
 
-    .col-xs-12.text-right
+    .text-right
         button.btn.green(ng-click='save()', ng-disabled='currentOutputErr')
             | {{ 'save:' + $root.__module.name + ':button' | translate }}
