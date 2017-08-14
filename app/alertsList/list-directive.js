@@ -76,7 +76,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       scope.actionbtn = {};
       scope.maxDate = getDefaultMaxDateToString();
 
-
+      scope.acknowledged = 'all';
       scope.after = AlertsService.getDefaultAfter();
       scope.before = AlertsService.getDefaultBefore();
 
@@ -309,6 +309,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         && lastParams.rule == params.rule
         && lastParams.before == params.before
         && lastParams.after == params.after
+        && lastParams.acknowledged == params.acknowledged
       );
       }
 
@@ -407,6 +408,19 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           if ( scope.after ){
             params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
           }
+
+          // acknowledged
+          if( scope.acknowledged && scope.acknowledged != 'all'){
+            if(scope.acknowledged == 'y'){
+              params.acknowledged = true;
+            }
+            else if(scope.acknowledged == 'n'){
+              params.acknowledged = false;
+            }
+          }
+
+          console.log("%cACKNOWLEDGED VALUE:","background-color: black; color: #2BFF00");
+          console.log(scope.acknowledged, params.acknowledged);
 
           callApi(params)
       }
@@ -694,6 +708,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         getlist(true);
       });
       scope.$watch('before', function(){
+        getlist(true);
+      });
+      scope.$watch('acknowledged', function(){
         getlist(true);
       });
       scope.$watch( 'item.__saved', cleanVisualReturn );

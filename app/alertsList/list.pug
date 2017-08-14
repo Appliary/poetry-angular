@@ -68,6 +68,15 @@
                 label(for="to")
                     | {{ "to:alerts" | translate }}
                 input.form-control(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+            //- acknowledged
+            .form-group.col-lg-4.col-xs-4
+                label(for="to")
+                    | {{ "acknowledged:alerts" | translate }}
+                select.form-control(ng-model="acknowledged")
+                    option( value='all' ) {{ 'all:acknowledged:alertsList' | translate }}
+                    option( disabled, value='──────────' ) ──────────
+                    option( value='y') {{ 'yes:acknowledged:alertsList' | translate }}
+                    option( value='n') {{ 'no:acknowledged:alertsList' | translate }}
             //- tags input
             .form-group.col-lg-12.col-xs-12
                 //- searchTags
