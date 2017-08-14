@@ -1,0 +1,23 @@
+$simple-line-font-path: "./fonts/";
+@import 'simple-line-icons/simple-line-icons.scss';
+
+$fa-font-path: "./fonts";
+@import 'font-awesome/font-awesome.scss';
+
+@import '../../../bootstrap-sass/assets/stylesheets/_bootstrap';
+
+@import 'datatables.bootstrap';
+@import 'datatables.min';
+@import 'error.min';
+@import 'toastr.min';
+@import 'bootstrap-datepicker3.min';
+
+@import 'layouts/layout/layout';
+@import 'layouts/layout/custom';
+
+@import 'global/components-main';
+@import 'global/plugins-main';
+
+body {
+    opacity: 1;
+}

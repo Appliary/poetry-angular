@@ -25,19 +25,15 @@ config.dependencies.forEach((dep) => {
 
 // Serve styles
 Poetry.route({
-
     method: 'GET',
-    path: '/' + config.app.name + '/__styles.css'
-
+    path: '/' + config.app.name + '/__metronic.css'
 }, (request, reply) => {
-
     concat(dependencies, (err, res) => {
-
         if (dependencies.length && err) return reply('body *{display:none} body::before{display:block;position:absolute;top:0;left:0;bottom:0;right:0;background:#A45;color:white;font-family:courrier;padding:20px;content:\'Dependency ' + err.toString() + '\';}')
             .type('text/css');
 
         sass.render({
-            file: __dirname + '/../styles/index.scss'
+            file: __dirname + '/../styles/metronic/index.scss'
         }, (err, result) => {
 
             if (err) {
@@ -45,14 +41,29 @@ Poetry.route({
                 return reply('body *{display:none} body::before{display:block;position:absolute;top:0;left:0;bottom:0;right:0;background:#A45;color:white;font-family:courrier;padding:20px;content:\'' + err.message + ' at ' + err.file + ':' + err.line + '\';}')
                     .type('text/css');
             }
-
             reply(res + result.css)
                 .type('text/css');
-
         });
-
     });
+});
 
+Poetry.route({
+    method: 'GET',
+    path: '/' + config.app.name + '/__custom.css'
+}, (request, reply) => {
+    concat(dependencies, (err, res) => {
+        sass.render({
+            file: __dirname + '/../styles/custom/index.scss'
+        }, (err, result) => {
+            if (err) {
+                Poetry.log.error('SASS', err);
+                return reply('body *{display:none} body::before{display:block;position:absolute;top:0;left:0;bottom:0;right:0;background:#A45;color:white;font-family:courrier;padding:20px;content:\'' + err.message + ' at ' + err.file + ':' + err.line + '\';}')
+                    .type('text/css');
+            }
+            reply(res + result.css)
+                .type('text/css');
+        });
+    });
 });
 
 var getThemePath = function (color) {
