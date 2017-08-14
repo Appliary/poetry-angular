@@ -261,6 +261,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 });
                 setMeasurementsCount();
                 scope.resize();
+                scope.resize();
                 scope.first = 1;
                 scope.last = scope.filtered;
             });
@@ -326,7 +327,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                         console.log("resize");
                         scope.setListHeight();
                         scope.setColumnsWidth();
-                    }, delay || 10);
+                    }, delay || 100);
                 }
             };
 
