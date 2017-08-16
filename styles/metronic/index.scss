@@ -18,6 +18,10 @@ $fa-font-path: "./fonts";
 @import 'global/components-main';
 @import 'global/plugins-main';
 
+@import 'bootstrapCustom';
+@import 'portlet';
+@import 'table';
+
 body {
     opacity: 1;
 }
