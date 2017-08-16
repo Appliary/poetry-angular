@@ -3,7 +3,16 @@
 * TODO: clean up to make it understandable and maybe less restrictive when time is given
 */
 
-app.directive("listDirective", function($http, $location, $timeout, ngDialog, AlertsService, $window){
+app.directive("listDirective", function(
+  $http,
+  $location,
+  $timeout,
+  ngDialog,
+  AlertsService,
+  listViewService,
+  $window,
+  assetsUtils,
+  $filter){
   return {
     restrict: 'EA',
     transclude: false,
@@ -25,12 +34,11 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
     },
     link: function(scope, elem, attrs, ctrls){
 
+      assetsUtils.initializeScopeMin(scope);
+
       if ( scope.__id ) console.debug( "id equals",scope.__id );
-      console.debug(scope);
 
-      var isLoading = false;
-
-      var currentHeightPlus = 0;
+      scope.isLoading = false;
 
       console.debug("appName", scope.$root.__appName);
 
@@ -55,17 +63,11 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       var directivePath = pathStart;
       var lastSlash = pathStart.lastIndexOf('/');
       var hasPossibleId = false;
-      /*console.debug("lastSlash", lastSlash);
-      console.debug("directivePath", directivePath);
-      console.debug("directivePath length", directivePath.length);*/
       var len = directivePath.length - lastSlash - 1;
-      //console.debug("len",len);
       if(len >= 24){
         var possibleId = directivePath.substr(lastSlash + 1, 24);
         if(possibleId.indexOf('/') == -1){
-          //console.debug("go to "+possibleId);
           directivePath = directivePath.substring(0,lastSlash);
-          //console.debug("new directivePath", directivePath);
           hasPossibleId= true;
           scope.searchId = possibleId;
           select(possibleId);
@@ -119,42 +121,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         }
       });
 
-      // if is context: {id:..., kind:...}
-      scope.isContext = function(coord){
-        return coord
-                && angular.isObject(coord)
-                && coord.hasOwnProperty('id')
-                && coord.hasOwnProperty('kind');
-      }
-
-      // if is context: {id:..., kind:...}
-      scope.displayContext = function(coord){
-        return [coord];
-      }
-      scope.displayContextTitle = function(coord){
-        return coord.kind +':'+ coord.id;
-      }
-
-      function getUserLanguage(){
-        return (scope.$root.user) ? scope.$root.user.language : "";
-      }
-      var messageProp = "message";
-
-      /**
-      * Display message depending on the user language
-      */
-      scope.displayMessage = function( row ){
-        if(!(row && angular.isObject(row))){
-          return;
-        }
-        var userLn = getUserLanguage();
-        return getUserLanguage && angular.isString(userLn) && row[messageProp + userLn.toUpperCase()]
-                ? row[messageProp + userLn.toUpperCase()]
-                : row[ messageProp ];
-      }
-
       function select( id ) {
-          if(scope.hideFilters) return;
+          if(scope.hideFilters){
+            return;
+          }
           console.debug("search item", id);
           scope.__id = id;
           retrieveItem(id);
@@ -168,6 +138,8 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       function backToList(){
         delete scope.__id;
+        delete scope.item;
+        listViewService.emit('resize');
       }
       scope.backToList = backToList;
 
@@ -213,6 +185,11 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
         scope.actionbtn.__success = true;
 
+        toastr.success(
+            $filter( 'translate' )( 'The element has been saved:' + scope.$root.__module.name ),
+            $filter( 'translate' )( 'Saved' )
+        );
+
         // replace in details
         scope.item = r.data;
 
@@ -228,11 +205,13 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       function responseErrorHandler(e){
         console.warn(e);
+        toastr.error(e.statusText + ' ' + e.statusText,'error');
         scope.item.__failed = true;
       }
 
       function responseErrorActionHandler(e){
         console.warn(e);
+        toastr.error(e.statusText + ' ' + e.statusText,'error');
         scope.actionbtn.__failed = true;
       }
 
@@ -313,13 +292,17 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       );
       }
 
+      scope.generate = function (){
+        getlist(true);
+      }
+
       /**
       * function
       * Builds params depending on filters and then calls function `callApi`
       */
       function getlist( cleanOldData ) {
-          if(isLoading){
-            console.debug("isLoading", isLoading);
+          if(scope.isLoading){
+            console.debug("scope.isLoading", scope.isLoading);
              return;
            }
           // is not supposed to be called when not yet fully operated
@@ -332,7 +315,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           }
           if ( scope.data && scope.total <= scope.data.length ) return;
 
-          isLoading = true;
+          scope.isLoading = true;
 
 
           var params = {};
@@ -370,7 +353,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                 }
               });
             }
-            else if(/*!scope.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
+            else if(/*!scope.$root.report_data.building &&*/ scope.allHiddenTags &&  scope.allHiddenTags.length > 0){
                 if(!angular.isArray(params.tags)){
                   params.tags = [];
                 }
@@ -398,7 +381,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             params.rule = scope.rule._id;
           }
 
-          // before
+          /*// before
           if ( scope.before ){
             params.before = new Date( scope.before.getTime() - scope.before.getTimezoneOffset() * 60000 );
             params.before.setHours(23, 59, 59, 999);
@@ -407,6 +390,19 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           // after
           if ( scope.after ){
             params.after = new Date( scope.after.getTime() - scope.after.getTimezoneOffset() * 60000 );
+          }*/
+
+          // before
+          if ( scope.$root.report_date.end ){
+            params.before = new Date(scope.$root.report_date.end);
+            params.before = new Date( params.before.getTime() - params.before.getTimezoneOffset() * 60000 );
+            params.before.setHours(23, 59, 59, 999);
+          }
+
+          // after
+          if ( scope.$root.report_date.start ){
+            params.after = new Date(scope.$root.report_date.start);
+            params.after = new Date( params.after.getTime() - params.after.getTimezoneOffset() * 60000 );
           }
 
           // acknowledged
@@ -423,7 +419,6 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       }
 
       AlertsService.observeParams(function(params, mustClean){
-        currentHeightPlus = 150;
         callApi(params, mustClean);
       });
 
@@ -449,7 +444,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
         if(!canCall(params)){
           console.warn("Cannot recall API with the same params");
-          isLoading = false;
+          scope.isLoading = false;
           return;
         }
 
@@ -463,42 +458,42 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
         $http( urlConfig )
             .then( function success( response ) {
 
-                isLoading = false;
+                scope.isLoading = false;
 
                 if ( response.data.data ) {
                     if ( page )
                         response.data.data.forEach( function loop( i ) {
                             if ( scope.data && !~scope.data.indexOf( i ) ){
                                 scope.data.push( i );
-                                scope.resize();
+                                //scope.resize();
                             }
                         } );
                     else{
                         scope.data = response.data.data;
-                        scope.resize();
+                        //scope.resize();
                     }
                 } else if ( response.data instanceof Array )
                     response.data.forEach( function loop( i ) {
                         if ( scope.data && !~scope.data.indexOf( i ) ){
                             scope.data.push( i );
-                            scope.resize();
+                            //scope.resize();
                         }
                     } );
 
                 scope.total = response.data.recordsFiltered;
                 scope.filtered = response.data.recordsFiltered;
 
-                if ( !scope.columns.length )
+                /*if ( !scope.columns.length )
                     scope.data.forEach( function ( data ) {
                         Object.keys( data )
                             .forEach( function ( col ) {
                                 if ( !~scope.columns.indexOf( col ) )
                                     scope.columns.push( col );
                             } );
-                    } );
+                    } );*/
 
             }, function error( response ) {
-                isLoading = false;
+                scope.isLoading = false;
 
                     console.warn(scope);
 
@@ -517,9 +512,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           scope.__validation = [];
 
           // TODO: Load controller and template
-          /*if ( $scope.$root.__module.config && $scope.$root.__module.config.tabs && $scope.$root.__module.config.tabs[ $scope.__view || "" ].controller )
-              return ( $scope.ctrl = $controller( $root.__module.config.tabs[ $scope.__view || "" ].controller, {
-                  $scope: $scope
+          /*if ( scope.$root.__module.config && scope.$root.__module.config.tabs && scope.$root.__module.config.tabs[ scope.__view || "" ].controller )
+              return ( scope.ctrl = $controller( $root.__module.config.tabs[ scope.__view || "" ].controller, {
+                  scope: scope
               } ) );*/
 
           // Clean item
@@ -534,50 +529,20 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
               } );
       }
 
-      scope.isTimedOut = function isTimedOut( row ) {
-
-          if(!scope.alert) return false;
-
-          var to = 'timeout';
-          var ts = 'timestamp';
-          if ( angular.isString(scope.properties.timeout) )
-            to = scope.properties.timeout;
-
-          if ( angular.isString(scope.properties.timestamp) )
-            ts = scope.properties.timestamp;
-
-          // If missing, return false
-          if ( ( !row[ to ] && to != '$now' ) || !row[ ts ] )
-              return false;
-
-          // Get the timestamp and format it
-          var timestamp = angular.copy( row[ ts ] );
-          if ( typeof row[ ts ] == 'string' )
-              timestamp = new Date( timestamp );
-          if ( timestamp.getTime )
-              timestamp = timestamp.getTime();
-
-          // Condition
-          var res;
-          if ( to == '$now' )
-              res = timestamp < Date.now();
-          else
-              res = ( timestamp + ( row[ to ] * 60000 ) ) < Date.now();
-          console.log( row[ to ], timestamp, res );
-          return res;
-
-      };
-
-
       scope.allRules = [];
       function getRules(){
-        $http.get( "/api/rules" )
-            .then( function success( response ) {
-                scope.allRules = response.data && response.data.data ? response.data.data : [];
-                scope.rules = angular.copy(scope.allRules);
-            }, function error( response ) {
-                console.warn( response );
-        } );
+        if(scope.isGenericApp()){
+          $http.get( "/api/rules" )
+              .then( function success( response ) {
+                  scope.allRules = response.data && response.data.data ? response.data.data : [];
+                  scope.rules = angular.copy(scope.allRules);
+              }, function error( response ) {
+                  console.warn( response );
+          } );
+        }
+        else{
+          scope.rules = [];
+        }
       }
 
       function filterRules(){
@@ -613,26 +578,10 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           }, 3000 );
       }
 
-
-      //scope.$watch('data', scope.resize);
-
-      scope.resize = function ( delay ) {
-              $timeout( function () {
-                  //console.log( "resizing" );
-                  var globalHeight = $window.innerHeight;
-                  var tablediv = angular.element( document.querySelector( '#tablediv' ) );
-                  var offsetTop = tablediv.prop( 'offsetTop' );
-                  var margin = 80;
-                  scope.currentHeight = globalHeight - ( margin + offsetTop ) + currentHeightPlus;
-                  //console.log(scope.currentHeight);
-              }, delay || 10 );
-      };
-
       /**
       * WATCHERS
       */
-      scope.$watch( 'building', function(nv){
-        console.debug("building", nv);
+      scope.$watch( '$root.report_data.building', function(nv){
         if(angular.isObject(nv) && angular.isArray(nv.tags) && nv.tags.length > 0){
           scope.hiddenTags = nv.tags;
         }
@@ -641,28 +590,74 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
             scope.hiddenTags = [];
           //}
         }
-        console.debug("hiddenTags", scope.hiddenTags);
-        getlist(true);
+        //getlist(true);
       } );
 
-      /*scope.$watchCollection( 'hiddenTags', function(nv){
-        console.debug("hiddenTags", nv);
-        getlist(true);
-      } );*/
+      scope.$watch( 'block', function(nv){
+        var ind;
+        if(angular.isObject(nv) && angular.isString(nv._id) && nv._id){
+
+          var docAsTag = "blocks:"+nv._id;
+          if(scope.hiddenTags.some(function(tt, idx){
+            ind = idx;
+            return tt.indexOf("blocks:") == 0;
+          })){
+            scope.hiddenTags[ind] = docAsTag;
+          }
+          else{
+            scope.hiddenTags.push(docAsTag);
+          }
+        }
+        else{
+          if(scope.hiddenTags.some(function(tt, idx){
+            ind = idx;
+            return tt.indexOf("blocks:") == 0;
+          })){
+            scope.hiddenTags.splice(ind, 1);
+          }
+        }
+        console.debug("hiddenTags", scope.hiddenTags);
+        //getlist(true);
+      } );
+
+      scope.$watch( 'apartment', function(nv){
+        var ind;
+        if(angular.isObject(nv) && angular.isString(nv._id) && nv._id){
+
+          var docAsTag = "apartments:"+nv._id;
+          if(scope.hiddenTags.some(function(tt, idx){
+            ind = idx;
+            return tt.indexOf("apartments:") == 0;
+          })){
+            scope.hiddenTags[ind] = docAsTag;
+          }
+          else{
+            scope.hiddenTags.push(docAsTag);
+          }
+        }
+        else{
+          if(scope.hiddenTags.some(function(tt, idx){
+            ind = idx;
+            return tt.indexOf("apartments:") == 0;
+          })){
+            scope.hiddenTags.splice(ind, 1);
+          }
+        }
+        console.debug("hiddenTags", scope.hiddenTags);
+        //getlist(true);
+      } );
 
       var searchPromise;
       scope.$watchCollection( 'searchTags', function(nv){
-        console.debug("searchTags", nv);
         if(searchPromise){
           $timeout.cancel(searchPromise);
         }
         searchPromise = $timeout(function(){
-          getlist(true);
+          //getlist(true);
         }, 200);
       } );
 
       scope.addSearchTag = function(dt){
-        //console.log(dt);
         if(scope.hideFilters) return;
         dt = angular.isObject(dt) ? dt.text : dt;
         if(!dt || !angular.isString(dt)){
@@ -672,10 +667,6 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
           scope.searchTags.push({text: dt});
         }
       }
-
-      /*scope.$watchCollection( 'searchTags2', function(nv){
-        console.debug("searchTags2", nv);
-      } );*/
 
       scope.$watch( 'searchId', function(){
         if(hasPossibleId){
@@ -688,27 +679,33 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       } );
 
       scope.$watch( 'status', function(){
-        getlist(true);
+        //getlist(true);
       } );
       scope.$watch( 'level', function(){
         filterRules();
-        getlist(true);
+        //getlist(true);
       } );
       scope.$watch( 'category', function(){
         filterRules();
-        getlist(true);
+        //getlist(true);
       } );
       scope.$watch( 'rule', function(){
-        getlist(true);
+        //getlist(true);
       } );
-      scope.$watch('after', function(){
-        getlist(true);
+      /*scope.$watch('after', function(){
+        //getlist(true);
       });
       scope.$watch('before', function(){
-        getlist(true);
+        //getlist(true);
+      });*/
+      scope.$watch('$root.report_date.start', function(){
+        //getlist(true);
+      });
+      scope.$watch('$root.report_date.end', function(){
+        //getlist(true);
       });
       scope.$watch('acknowledged', function(){
-        getlist(true);
+        //getlist(true);
       });
       scope.$watch( 'item.__saved', cleanVisualReturn );
       scope.$watch( 'item.__failed', cleanVisualReturn );
@@ -717,7 +714,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       angular.element( $window )
           .bind( 'resize', function () {
-              scope.resize();
+              //scope.resize();
           } );
 
 
@@ -729,9 +726,9 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
       function getBuildings(){
         $http.get( "/api/buildings" )
             .then( function success( response ) {
-                scope.buildings = response.data;
+                scope.$root.report_buildingList = response.data;
                 var rootSelectedBuilding;
-                scope.buildings.forEach(function(b){
+                scope.$root.report_buildingList.forEach(function(b){
                   if(angular.isObject(b) && angular.isArray(b.tags) && b.tags.length > 0){
                     // concat to build `allHiddenTags`
                     scope.allHiddenTags = scope.allHiddenTags.concat(b.tags);
@@ -745,7 +742,7 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
                 });
                 scope.displayable = true;
                 if(rootSelectedBuilding){
-                  scope.building = rootSelectedBuilding;
+                  scope.$root.report_data.building = rootSelectedBuilding;
                 }
                 else{
                   getlist(true);
@@ -757,6 +754,47 @@ app.directive("listDirective", function($http, $location, $timeout, ngDialog, Al
 
       getBuildings();
       getRules();
+
+      /** non generic functions **/
+
+      scope.dt = {};
+
+      if(!scope.$root.report_data){
+        scope.$root.report_data = {};
+      }
+
+      var isContact = false;
+      var appIds = [];
+
+      scope.showBuilding = function () {
+          scope.block = "";
+          scope.apartment = "";
+
+          scope.$root.report_data.blocks1 = [];
+          scope.$root.report_data.devices1 = [];
+          scope.$root.report_data.apartments1 = [];
+
+          if ( scope.$root.report_data.building ) {
+              //in case 'children' is string or undefined instead of Array
+              var children1 = assetsUtils.getChildren( scope.$root.report_data.building );
+              assetsUtils.parseChildren( children1, scope.$root.report_data.blocks1, scope.$root.report_data.apartments1, scope.$root.report_data.devices1, isContact, appIds );
+              var building = {
+                  name: scope.$root.report_data.building.name,
+                  children: children1
+              };
+          }
+      };
+
+      scope.showBlock = function () {
+          scope.dt.apartments = "";
+
+          scope.dt.blocks2 = [];
+          scope.dt.devices2 = [];
+          scope.dt.apartments2 = [];
+
+          var children2 = assetsUtils.getChildren( scope.block );
+          assetsUtils.parseChildren( children2, scope.dt.blocks2, scope.dt.apartments2, scope.dt.devices2, isContact, appIds );
+      };
     }
   };
 });
