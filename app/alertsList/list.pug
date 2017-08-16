@@ -108,7 +108,9 @@
                 //- buttons
                 .form-group.col-lg-12.col-xs-12
                     .btn-toolbar.pull-right
-                        button.btn.green(ng-click="generate()", ng-disabled="isLoading") {{ 'Generate:report' | translate }}
+                        button.btn.green(ng-click="generate()", ng-disabled="isLoading")
+                            span(ng-hide="!isGenericApp()") {{ 'Generate:report' | translate }}
+                            span(ng-hide="isGenericApp()") {{'search:'+$root.__module.name|translate}}
 
 div(ng-class="__id ? 'col-xs-7 visible-lg-block' : 'col-xs-12'")
     .portlet.light.bordered(ng-hide="isLoading")
