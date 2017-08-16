@@ -10,8 +10,13 @@ $color-green: #32c5d2;
 	margin-left: 15px;
 }
 
-body, .form-group .form-control, .form-group label, .input-group-addon, table.table td, .portlet.box, .accordion-toggle, button.btn {
-	font-size: 12px!important;
+body, .form-group .form-control, .form-group label, .input-group-addon, table.table td, .portlet.box, 
+.accordion-toggle, button.btn, tags-input .tags .input {
+	font-size: 12px;
+}
+
+p, .dataTables_info {
+	font-size: 11px;
 }
 
 .datepicker {
