@@ -66,6 +66,8 @@ app.service( 'validationService', function validationService( $http ) {
                             return 'password';
                         if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )
                             return 'textarea';
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'icon' ) )
+                            return 'icon';
 
                         // Select enums
                         if ( $scope.__joi.computed[ name ]._flags.allowOnly )
