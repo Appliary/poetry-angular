@@ -45,16 +45,16 @@ try {
     if ( fs.existsSync( poetryAngularConf ) ) {
         poaFiles = fs.readdirSync( poetryAngularConf );
     }
-    Poetry.log.info( 'Sucessfully read the poetry-angular files: ', poaFiles )
+    Poetry.log.info( 'Sucessfully read the poetry-angular files: ', poaFiles );
 } catch ( err ) {
     throw Poetry.log.error( 'Unable to access config directory', err );
 }
 
 
 // Process first the poetry-angular's own dependencies
-_processFiles( poaFiles, './config/' )
+_processFiles( poaFiles, './config/' );
 
 // Process then the app's dependencies
-_processFiles( files, '../../config/' )
+_processFiles( files, '../../config/' );
 
 module.exports = config;

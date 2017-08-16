@@ -129,16 +129,17 @@ Poetry.route( {
             } )
             .map( file => {
 
-                let module = a.split( '.' );
-                if ( module[ module.length - 1 ] != 'json' ) return;
+                let module = file.split( '.' );
+                if ( module[ module.length - 1 ] != 'json' )
+                    return {};
 
+                let conf = {};
                 try {
-                    let conf = require( `../../../${modulesPath}/${file}` );
+                    conf = require( `../../../${modulesPath}/${file}` );
                     if ( !conf.name )
                         conf.name = module[ module.length - 2 ].toLowerCase();
                 } catch ( err ) {
                     Poetry.log.error( err );
-                    return {};
                 }
 
                 return conf;
