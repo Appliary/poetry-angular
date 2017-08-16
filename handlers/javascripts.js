@@ -1,4 +1,5 @@
 const Poetry = require( 'poetry' ),
+    FS = require( 'fs' ),
     config = require( '../config' ),
     concat = require( 'concatenate' );
 
@@ -101,7 +102,41 @@ Poetry.route( {
     method: 'GET',
     path: '/' + config.app.name + '/__sidebar.json'
 }, ( request, reply ) => {
-    reply.file( './config/sidebar.json' );
+
+    const modulesPath = 'config/modules';
+
+    FS.readdir( modulesPath, ( err, files ) => {
+
+        // Old way
+        if ( err ) {
+            Poetry.log.warn( 'DEPRECATED : `config/sidebar.json`\nPlease use the `config/modules` folder' );
+            return reply.file( './config/sidebar.json' );
+        }
+
+        reply( files.map( file => {
+
+            let module = file.split( '.' );
+            if ( module[ module.length - 1 ] != 'json' )
+                return {};
+
+            console.log( 'file', file );
+
+            let conf = {};
+            try {
+                conf = require( `../../../${modulesPath}/${file}` );
+                console.log( 'conf', conf );
+                if ( !conf.name )
+                    conf.name = module[ module.length - 2 ].toLowerCase();
+            } catch ( err ) {
+                Poetry.log.error( err );
+            }
+
+            return conf;
+
+        } ) );
+
+    } );
+
 } );
 
 Poetry.route( {

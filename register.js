@@ -20,7 +20,7 @@ Poetry.on( 'app:init', {}, () => {
 Poetry.on( 'app', {}, ( app ) => {
     if ( !~apps.indexOf( app.name ) )
         apps.push( app.name );
-} )
+} );
 
 // At boot, emit an app:init to get others
 Poetry.emit( 'app:init', {} );

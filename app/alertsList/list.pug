@@ -11,10 +11,24 @@
                 .form-group.col-lg-4.col-xs-4(ng-hide="isGenericApp()")
                     //- buildings
                     label(for="building")
-                        | {{ "building:alerts" | translate }}
-                    select.form-control(ng-model="building")
-                        option(value="") {{ 'allBuildings:alertsList' | translate }}
-                        option(ng-repeat="bu in buildings", ng-value="bu") {{ bu.name }}
+                        | {{ "Choose building:alerts" | translate }}
+                    select.form-control(ng-model="$root.report_data.building", ng-change="showBuilding()")
+                        option(value="") {{ 'Choose building:alertsList' | translate }}
+                        option(ng-repeat="bu in $root.report_buildingList", ng-value="bu") {{ bu.name }}
+                .form-group.col-lg-4.col-xs-4(ng-hide="isGenericApp()")
+                    //- blocks
+                    label(for="block")
+                        | {{ "Choose block:alerts" | translate }}
+                    select.form-control(ng-model="block", ng-change="showBlock()")
+                        option(value="") {{ 'Choose block:alertsList' | translate }}
+                        option(ng-repeat="bl in $root.report_data.blocks1", ng-value="bl") {{ bl.name }}
+                .form-group.col-lg-4.col-xs-4(ng-hide="isGenericApp()")
+                    //- apartments
+                    label(for="apartments")
+                        | {{ "Choose apartment:alerts" | translate }}
+                    select.form-control(ng-model="apartment")
+                        option(value="") {{ 'Choose apartment:alertsList' | translate }}
+                        option(ng-repeat="ap in dt.apartments2", ng-value="ap") {{ ap.name }}
                 .form-group.col-lg-4.col-xs-4
                     //- searchId
                     label(for="id")
@@ -40,7 +54,7 @@
                         option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
                         option( value='high' ) {{ 'high:level:alertsList' | translate }}
                         option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
-                .form-group.col-lg-4.col-xs-4
+                .form-group.col-lg-4.col-xs-4(ng-hide="!isGenericApp()")
                     //- rules
                     label(for="rules")
                         | {{ "rules:alerts" | translate }}
@@ -48,7 +62,7 @@
                         option( value='' ) {{ 'allRules:alertsList' | translate }}
                         option( disabled, value='──────────' ) ──────────
                         option(ng-repeat="rule in rules | orderBy:'+name'", ng-value="rule") {{ rule.name }}
-                .form-group.col-lg-4.col-xs-4
+                .form-group.col-lg-4.col-xs-4(ng-hide="!isGenericApp()")
                     //- status
                     label(for="status")
                         | {{ "status:alerts" | translate }}
@@ -63,14 +77,21 @@
                 .form-group.col-lg-4.col-xs-4
                     //- from
                     label(for="from")
-                        | {{ "from:alerts" | translate }}
-                    input.form-control(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                        | {{ "from:report" | translate }}
+                    datepicker(ng-model="$root.report_date.start", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
                     //- to
                     label(for="to")
+                        | {{ "to:report" | translate }}
+                    datepicker(ng-model="$root.report_date.end", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                    //-label(for="from")
+                        | {{ "from:alerts" | translate }}
+                    //-input.form-control(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+
+                    //-label(for="to")
                         | {{ "to:alerts" | translate }}
-                    input.form-control(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                    //-input.form-control(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
                 //- acknowledged
-                .form-group.col-lg-4.col-xs-4
+                .form-group.col-lg-4.col-xs-4(ng-hide="isGenericApp()")
                     label(for="to")
                         | {{ "acknowledged:alerts" | translate }}
                     select.form-control(ng-model="acknowledged")
@@ -84,9 +105,15 @@
                     label(for="tags")
                         | {{ "tags:alerts" | translate }}
                     array-input(ng-model="searchTags", placeholder="{{'add:arrayInput'|translate}}")
+                //- buttons
+                .form-group.col-lg-12.col-xs-12
+                    .btn-toolbar.pull-right
+                        button.btn.green(ng-click="generate()", ng-disabled="isLoading")
+                            span(ng-if="!isGenericApp()") {{ 'Generate:report' | translate }}
+                            span(ng-if="isGenericApp()") {{'search:'+$root.__module.name|translate}}
 
-div(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-xs-12'")
-    .portlet.light.bordered
+div(ng-class="__id ? 'col-xs-7 visible-lg-block' : 'col-xs-12'")
+    .portlet.light.bordered(ng-hide="isLoading")
         .portlet-body
             .dataTables_wrapper.no-footer.DTS
                 //- list-view
