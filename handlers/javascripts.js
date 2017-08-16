@@ -113,38 +113,27 @@ Poetry.route( {
             return reply.file( './config/sidebar.json' );
         }
 
-        reply( files.sort( ( a, b ) => {
+        reply( files.map( file => {
 
-                let A = a.split( '.' ),
-                    B = b.split( '.' );
+            let module = file.split( '.' );
+            if ( module[ module.length - 1 ] != 'json' )
+                return {};
 
-                let Anum = parseInt( A[ 0 ] ),
-                    Bnum = parseInt( B[ 0 ] );
+            console.log( 'file', file );
 
-                if ( Anum == A[ 0 ] ) A[ 0 ] = Anum;
-                if ( Bnum == B[ 0 ] ) B[ 0 ] = Bnum;
+            let conf = {};
+            try {
+                conf = require( `../../../${modulesPath}/${file}` );
+                console.log( 'conf', conf );
+                if ( !conf.name )
+                    conf.name = module[ module.length - 2 ].toLowerCase();
+            } catch ( err ) {
+                Poetry.log.error( err );
+            }
 
-                return ( A[ 0 ] > B[ 0 ] );
+            return conf;
 
-            } )
-            .map( file => {
-
-                let module = file.split( '.' );
-                if ( module[ module.length - 1 ] != 'json' )
-                    return {};
-
-                let conf = {};
-                try {
-                    conf = require( `../../../${modulesPath}/${file}` );
-                    if ( !conf.name )
-                        conf.name = module[ module.length - 2 ].toLowerCase();
-                } catch ( err ) {
-                    Poetry.log.error( err );
-                }
-
-                return conf;
-
-            } ) );
+        } ) );
 
     } );
 
