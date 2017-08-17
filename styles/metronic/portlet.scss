@@ -10,7 +10,6 @@ $color-close-icon: #737373;
 
 .portlet {
 	height: 100%;
-	margin-bottom: 0;
 	.portlet-body {
 		height: 100%;
 		padding-bottom: 0;
@@ -22,7 +21,7 @@ $color-close-icon: #737373;
 				cursor: pointer;
 			}
 			ul.nav.nav-tabs li a {
-				font-size: 13px;
+				//font-size: 13px;
 			}
 		}
 		.tab-content {
@@ -74,10 +73,6 @@ $color-close-icon: #737373;
 }
 
 /* ===== SPECIFIC ===== */
-.portlet.box.green:not(.no-title) {
-	margin-bottom: 20px;
-}
-
 .portlet.box.green.no-title {
     border: 1px solid $color-border-portlet;
 }

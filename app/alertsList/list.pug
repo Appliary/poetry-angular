@@ -108,7 +108,7 @@
                 //- buttons
                 .form-group.col-lg-12.col-xs-12
                     .btn-toolbar.pull-right
-                        button.btn.green(ng-click="generate()", ng-disabled="isLoading")
+                        button.btn.btn-sm.green(ng-click="generate()", ng-disabled="isLoading")
                             span(ng-if="!isGenericApp()") {{ 'Generate:report' | translate }}
                             span(ng-if="isGenericApp()") {{'search:'+$root.__module.name|translate}}
 
