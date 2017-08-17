@@ -2,10 +2,7 @@ app.controller('generic/overview', function ($scope, $http, ngDialog, validation
 
     $scope.$watch('$root.__module.name', function init() {
 
-        var api = $scope.$root.__module.config
-          && $scope.$root.__module.config.tabs
-          && angular.isString($scope.$root.__module.config.tabs.api) ?
-          $scope.$root.__module.config.tabs.api : $scope.$root.__module.api;
+        var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
 
         // Get validation object
         $http.put('/__joi' + api + '/validation')

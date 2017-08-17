@@ -257,10 +257,7 @@ app.controller( 'generic/list', function (
           delete $scope.item.last;
         }
 
-        var api = $scope.$root.__module.config
-          && $scope.$root.__module.config.tabs
-          && angular.isString($scope.$root.__module.config.tabs.api) ?
-          $scope.$root.__module.config.tabs.api : $scope.$root.__module.api;
+        var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
 
         $http.put( api + '/' + $scope.__id, $scope.item )
             .then( function success( res ) {
@@ -338,10 +335,7 @@ app.controller( 'generic/list', function (
         // Clean item
         //$scope.item = undefined;
 
-        var api = $scope.$root.__module.config
-          && $scope.$root.__module.config.tabs
-          && angular.isString($scope.$root.__module.config.tabs.api) ?
-          $scope.$root.__module.config.tabs.api : $scope.$root.__module.api;
+        var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
 
         // Get item from API
         $http.get( api + '/' + id )
