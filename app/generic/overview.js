@@ -1,8 +1,11 @@
 app.controller('generic/overview', function ($scope, $http, ngDialog, validationService) {
 
     $scope.$watch('$root.__module.name', function init() {
+
+        var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
+
         // Get validation object
-        $http.put('/__joi' + $scope.$root.__module.api + '/validation')
+        $http.put('/__joi' + api + '/validation')
             .then(function success(response) {
                 if (!response.data.payload._inner || !response.data.payload._inner.children) {
                     $scope.__joi = response.data.payload;
@@ -96,7 +99,7 @@ app.controller('generic/overview', function ($scope, $http, ngDialog, validation
             className: 'ngdialog-theme-default'
         })
             .then(function confirmed() {
-                $http.delete($scope.$root.__module.api + '/' + $scope.__id)
+                $http.delete(api + '/' + $scope.__id)
                     .then(function (res) {
                         $scope.data.some(function (v, i) {
 
