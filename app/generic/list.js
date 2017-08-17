@@ -257,7 +257,12 @@ app.controller( 'generic/list', function (
           delete $scope.item.last;
         }
 
-        $http.put( $scope.$root.__module.api + '/' + $scope.__id, $scope.item )
+        var api = $scope.$root.__module.config
+          && $scope.$root.__module.config.tabs
+          && angular.isString($scope.$root.__module.config.tabs.api) ?
+          $scope.$root.__module.config.tabs.api : $scope.$root.__module.api;
+
+        $http.put( api + '/' + $scope.__id, $scope.item )
             .then( function success( res ) {
                 $scope.__validation = [];
 
@@ -333,8 +338,13 @@ app.controller( 'generic/list', function (
         // Clean item
         //$scope.item = undefined;
 
+        var api = $scope.$root.__module.config
+          && $scope.$root.__module.config.tabs
+          && angular.isString($scope.$root.__module.config.tabs.api) ?
+          $scope.$root.__module.config.tabs.api : $scope.$root.__module.api;
+
         // Get item from API
-        $http.get( $scope.$root.__module.api + '/' + id )
+        $http.get( api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data;
                 //$scope.setColumnsWidth();
