@@ -128,13 +128,13 @@ div(ng-controller="dashboard/widgets/chart/edit")
         
         .modal-footer
             div(ng-if="!widget.options.chartType")
-                button.btn.green(ng-click="$parent.$parent.tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
+                button.btn.btn-sm.green(ng-click="$parent.$parent.tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
                     | {{ 'next:chart:dashboard' | translate }}
-                button.btn.green(ng-click="preSave()", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
+                button.btn.btn-sm.green(ng-click="preSave()", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
                     | {{ 'next:chart:dashboard' | translate }}
 
             div(ng-if="widget.options.chartType")
-                button.btn.default(ng-click="closeThisDialog()")
+                button.btn.btn-sm.default(ng-click="closeThisDialog()")
                     | {{ 'Cancel:dashboard' | translate }}
-                button.btn.green(ng-click="confirm(widget)")
+                button.btn.btn-sm.green(ng-click="confirm(widget)")
                     | {{ 'Confirm:dashboard' | translate }}
