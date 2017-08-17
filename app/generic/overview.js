@@ -62,7 +62,7 @@ app.controller('generic/overview', function ($scope, $http, ngDialog, validation
                     var computeAF = function computeAF(n, o) {
                         console.info('ALT changed !', n, o);
                         console.debug($scope.__joi.alt);
-                        //console.log('TABDROP');
+                        console.log("tabdrop");
                         $('.nav-tabs').tabdrop();
                         try {
                             // Try to get the correct validation schema

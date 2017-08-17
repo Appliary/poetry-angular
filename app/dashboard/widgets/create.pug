@@ -18,5 +18,5 @@
 .modal-footer
     button.btn.default(ng-click="closeThisDialog()")
         | {{ 'cancel:widget:button' | translate }}
-    button.btn.green(ng-click="confirm( widget )")
+    button.btn(ng-click="confirm( widget )")
         | {{ 'save:widget:button' | translate }}

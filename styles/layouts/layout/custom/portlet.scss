@@ -20,9 +20,6 @@ $color-close-icon: #737373;
 				margin-top: 10px; 
 				cursor: pointer;
 			}
-			ul.nav.nav-tabs li a {
-				//font-size: 13px;
-			}
 		}
 		.tab-content {
 			overflow-y: auto;
@@ -73,10 +70,7 @@ $color-close-icon: #737373;
 }
 
 /* ===== SPECIFIC ===== */
-.portlet.box.no-title {
-	border: 1px solid $color-portlet;
-}
-
 .portlet.box {
 	background: $color-portlet;	
+	border: 1px solid $color-portlet;
 }

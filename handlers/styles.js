@@ -33,7 +33,7 @@ Poetry.route({
             .type('text/css');
 
         sass.render({
-            file: __dirname + '/../styles/metronic/index.scss'
+            file: __dirname + '/../styles/index.scss'
         }, (err, result) => {
 
             if (err) {

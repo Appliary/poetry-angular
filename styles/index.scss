@@ -4,7 +4,7 @@ $simple-line-font-path: "./fonts/";
 $fa-font-path: "./fonts";
 @import 'font-awesome/font-awesome.scss';
 
-@import '../../../bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '../../bootstrap-sass/assets/stylesheets/_bootstrap';
 
 @import 'datatables.bootstrap';
 @import 'datatables.min';
@@ -13,14 +13,11 @@ $fa-font-path: "./fonts";
 @import 'bootstrap-datepicker3.min';
 
 @import 'layouts/layout/layout';
-@import 'layouts/layout/custom';
 
 @import 'global/components-main';
 @import 'global/plugins-main';
 
-@import 'bootstrapCustom';
-@import 'portlet';
-@import 'table';
+@import 'layouts/layout/custom';
 
 body {
     opacity: 1;

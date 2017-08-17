@@ -1,8 +1,8 @@
-.portlet.box.no-title
+.portlet.box
     .portlet-body
         .tabbable-line
             i.fa.fa-close.pull-right(ng-click='backToList ? backToList($root.__module ) : $root.go( $root.__module );')
-            ul.nav.nav-tabs
+            ul.nav.nav-tabs.nav-tabs-sm
                 li(ng-repeat='(name, config) in $root.__module.config.tabs', ng-class='{ active: name == __view }')
                     a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")
                         span( ng-if="name") {{ name + ':tab:' + $root.__module.name | translate }}

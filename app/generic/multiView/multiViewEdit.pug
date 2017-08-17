@@ -1,11 +1,11 @@
 //-button.back(ng-click="cancelEdit()") {{ "Back:Buttons" | translate }}
 
 
-.portlet.box.no-title
+.portlet.box
     .portlet-body
         .tabbable-line
             i.fa.fa-close.pull-right(ng-click='cancelEdit( )')
-            ul.nav.nav-tabs
+            ul.nav.nav-tabs.nav-tabs-sm
                 li(ng-repeat="tab in actions.getBOEditTabs()", ng-class="{'active': general.activeEditTab === tab.name}")
                     a(ng-click="actions.setActiveTab(tab.name)", id="tab-{{ tab.name || 'overview' }}")
                         span( ng-if="tab.title") {{tab.title + ":AssetManager:Tabs" | translate}}

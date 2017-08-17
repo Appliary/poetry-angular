@@ -1,6 +1,6 @@
 .modal-header
     .tabbable-line.pull-right
-        ul.nav.nav-tabs
+        ul.nav.nav-tabs.nav-tabs-sm
             li(ng-class=' { active: editView }')
                 a.modal-edit(ng-click="showEdit()") {{'profile:editmodal' | translate}}
             li(ng-class=' { active: pwdView }')
@@ -50,7 +50,7 @@
                             | {{ 'saved:' | translate }}
                         span.failed( ng-if=' editState.failed ' )
                             | {{ 'failed:' | translate }}
-                        button.btn.green(type='submit')
+                        button.btn(type='submit')
                             | {{ 'save:button' | translate }}
     
     div(ng-if="pwdView")
@@ -69,5 +69,5 @@
                         | {{ 'saved:' + $root.__module.name | translate }}
                     span.failed( ng-if=' changePasswordResult && changePasswordResult !== true ' )
                         | {{ 'failed:save:' + $root.__module.name | translate }}
-                    button.btn.green( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
+                    button.btn( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
                         | {{ 'Change password:button' | translate }}

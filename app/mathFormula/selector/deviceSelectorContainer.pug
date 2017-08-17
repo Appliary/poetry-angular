@@ -8,7 +8,7 @@ div(ng-if="showMe")
             .col-xs-12.form-group
                 .btn-toolbar(ng-hide='hideFilterButtons', style="margin-bottom: 10px;")
                     .btn-group( ng-repeat='(filterKey, filterState) in filters')
-                        button.btn.green.btn-circle( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
+                        button.btn.btn-circle( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
                             | {{ filterKey + ':filter:mathformula' | translate }}
                 
                 input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )

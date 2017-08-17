@@ -7,8 +7,8 @@ app.directive('appAppselector', function ($window, $timeout) {
                 .then(function (r) {
                     $scope.apps = r.data;
                     $scope.apps.sort();
-                    
-                    $timeout(function() {
+
+                    $timeout(function () {
                         console.log("tabdrop");
                         $('.nav-tabs').tabdrop();
                     });
@@ -18,11 +18,6 @@ app.directive('appAppselector', function ($window, $timeout) {
             $scope.select = function (app) {
                 window.location.replace('/' + app);
             };
-
-            angular.element($window)
-                .bind('resize', function () {
-                    $('.nav-tabs').tabdrop();
-                });
         }
     }
 });
