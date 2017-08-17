@@ -1,4 +1,4 @@
-$color-border-portlet: #5cd1db;
+$color-portlet: #5cd1db;
 $color-hr: #EFEFEF;
 $color-close-icon: #737373;
 
@@ -73,6 +73,10 @@ $color-close-icon: #737373;
 }
 
 /* ===== SPECIFIC ===== */
-.portlet.box.green.no-title {
-    border: 1px solid $color-border-portlet;
+.portlet.box.no-title {
+	border: 1px solid $color-portlet;
+}
+
+.portlet.box {
+	background: $color-portlet;	
 }

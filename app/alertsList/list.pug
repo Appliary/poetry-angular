@@ -1,9 +1,10 @@
 .col-xs-12
-    .portlet.box.green(ng-init='config.$open = !$index', ng-hide="hideFilters").col-xs-12
+    .portlet.box(ng-init='config.$open = !$index', ng-hide="hideFilters").col-xs-12
         .portlet-title(ng-click='config.$open = !config.$open;').col-xs-12
             .caption
-                i.icon-magnifier
-                span.caption-subject Search
+                span.icon-magnifier
+                span.caption-subject
+                    |  Search
             .actions
                 span {{config.$open ? "&darr;" : "&uarr;"}}
         .portlet-body(ng-hide="!config.$open").col-xs-12
