@@ -248,18 +248,35 @@ app.controller( 'generic/list', function (
         if ( angular.isArray( $scope.item.__readonlyFields ) ) {
             $scope.item.__readonlyFields.forEach( function ( field ) {
                 if ( $scope.item[ field ] ) {
+                    console.log("readOnly:", field);
                     delete $scope.item[ field ];
                 }
             } );
         }
 
+        // Delete last (avoid 413 Too large)
         if(angular.isArray($scope.item.last)){
           delete $scope.item.last;
         }
 
+        var payload = angular.copy($scope.item);
+
+        //__formatSubmit
+        if ( $scope.item.__formatSubmit && angular.isObject( $scope.item.__formatSubmit ) ) {
+            Object.keys($scope.item.__formatSubmit).forEach(
+              function(field){
+                if(payload[field] && angular.isObject(payload[field]) && $scope.item.__formatSubmit[field]){
+                  payload[field] = payload[field][$scope.item.__formatSubmit[field]];
+                }
+              }
+            );
+            delete payload.__formatSubmit;
+        }
+
+
         var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
 
-        $http.put( api + '/' + $scope.__id, $scope.item )
+        $http.put( api + '/' + $scope.__id, payload )
             .then( function success( res ) {
                 $scope.__validation = [];
 
