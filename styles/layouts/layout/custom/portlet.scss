@@ -10,6 +10,9 @@ $color-close-icon: #737373;
 
 .portlet {
 	height: 100%;
+	.portlet-title {
+		margin-bottom: 0;
+	}
 	.portlet-body {
 		height: 100%;
 		padding-bottom: 0;

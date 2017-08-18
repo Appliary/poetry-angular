@@ -5,5 +5,5 @@ form.form.form-horizontal( ng-submit="save()")
         distribution-lists-query-directive(item='item')
 
         .form-group.text-right
-            button.btn.btn-sm(ng-disabled='currentOutputErr')
+            button.btn.btn-sm.custom(ng-disabled='currentOutputErr')
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}

@@ -1,20 +1,30 @@
-.table-scrollable
-    table.table
-        thead: tr
-            th {{ 'kind:column:mathformula' | translate }}
-            th {{ 'name:column:mathformula' | translate }}
-            th {{ 'measurementTypes:column:mathformula' | translate }}
-        tbody
-            tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
-                td {{ result.kind }}
-                td(ng-if=" result.kind != 'tags' ") {{ result.name }}
-                td(ng-if=" result.kind == 'tags' ")
-                    | {{"#"+result.name}}
-                    //tags-viewer( array="result.name" )
-                td {{ result.types[0][0] }}&nbsp;
-                    em(ng-if="result.types.length > 1")
-                        | {{'and:mathformula'|translate}}&nbsp;
-                        | {{result.types.length - 1}}&nbsp;
-                        | {{'others:mathformula'|translate}}
-    span.muted(ng-if=' $parent.results.length === 0 ')
-        | {{ 'nodata:results:mathformula'| translate }}
+.row
+    .col-xs-12.form-group
+        .btn-toolbar(ng-hide='hideFilterButtons', style="margin-bottom: 10px;")
+            .btn-group( ng-repeat='(filterKey, filterState) in filters')
+                button.btn.btn-circle.custom( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
+                    | {{ filterKey + ':filter:mathformula' | translate }}
+        
+        input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
+
+    .col-xs-12
+        .table-scrollable
+            table.table
+                thead: tr
+                    th {{ 'kind:column:mathformula' | translate }}
+                    th {{ 'name:column:mathformula' | translate }}
+                    th {{ 'measurementTypes:column:mathformula' | translate }}
+                tbody
+                    tr(ng-repeat='result in results|orderBy:"name"', ng-click='selectResult(result)', ng-class='{active: $parent.input.device == result}')
+                        td {{ result.kind }}
+                        td(ng-if=" result.kind != 'tags' ") {{ result.name }}
+                        td(ng-if=" result.kind == 'tags' ")
+                            | {{"#"+result.name}}
+                            //tags-viewer( array="result.name" )
+                        td {{ result.types[0][0] }}&nbsp;
+                            em(ng-if="result.types.length > 1")
+                                | {{'and:mathformula'|translate}}&nbsp;
+                                | {{result.types.length - 1}}&nbsp;
+                                | {{'others:mathformula'|translate}}
+            span.muted(ng-if=' $parent.results.length === 0 ')
+                | {{ 'nodata:results:mathformula'| translate }}

@@ -1,5 +1,5 @@
 .modal-header
     h4.modal-title {{'Are you sure ?:confirmation' | translate}}
 .modal-footer
-    button.btn.dark.btn-outline(type='button', ng-click='closeThisDialog()') {{ 'No:confirmation' | translate }}
-    button.btn(type='button', ng-click='confirm({})') {{ 'Yes:confirmation' | translate }}
+    button.btn.btn-sm.default(type='button', ng-click='closeThisDialog()') {{ 'No:confirmation' | translate }}
+    button.btn.btn-sm.custom(type='button', ng-click='confirm({})') {{ 'Yes:confirmation' | translate }}

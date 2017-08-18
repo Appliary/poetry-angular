@@ -17,8 +17,8 @@
             .row
                 .col-xs-12
                     .btn-toolbar.pull-right
-                        button.btn( type='submit' ) 
-                            | {{ 'login:button' | translate }}
-
-                        button.btn( ng-if='__appRegister', ng-click='register()' )
+                        button.btn.btn-sm.default( ng-if='__appRegister', ng-click='register()' )
                             | {{ 'register:button' | translate }}
+                    
+                        button.btn.btn-sm.custom( type='submit' )
+                            | {{ 'login:button' | translate }}
