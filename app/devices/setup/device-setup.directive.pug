@@ -46,7 +46,7 @@ form.form-horizontal.col-xs-12
         .row
             .col-xs-12
                 .btn-toolbar.pull-right
-                    button.btn.btn-sm(ng-click='vm.updateDevice()')
+                    button.btn.btn-sm.custom(ng-click='vm.updateDevice()')
                         span(ng-if='!vm.loadingUpdate')
                             | {{'update:general'|translate}}
                         span(ng-if='vm.loadingUpdate')

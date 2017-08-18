@@ -54,7 +54,7 @@ div(ng-controller='mathFormula/editor')
                 tr
                     td( colspan="4" ) &nbsp;
                     td.text-right( colspan="2" )
-                        a.btn.btn-circle(ng-click='inputs.add()')
+                        a.btn.btn-circle.green(ng-click='inputs.add()')
                             i.fa.fa-plus
 
     h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
@@ -65,5 +65,5 @@ div(ng-controller='mathFormula/editor')
                 input.form-control( disabled, ng-value='currentOutput' )
 
     .text-right
-        button.btn(ng-click='save()', ng-disabled='currentOutputErr')
+        button.btn.btn-sm.custom(ng-click='save()', ng-disabled='currentOutputErr')
             | {{ 'save:' + $root.__module.name + ':button' | translate }}

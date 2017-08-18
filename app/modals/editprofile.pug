@@ -50,7 +50,7 @@
                             | {{ 'saved:' | translate }}
                         span.failed( ng-if=' editState.failed ' )
                             | {{ 'failed:' | translate }}
-                        button.btn(type='submit')
+                        button.btn.btn-sm.custom(type='submit')
                             | {{ 'save:button' | translate }}
     
     div(ng-if="pwdView")
@@ -69,5 +69,5 @@
                         | {{ 'saved:' + $root.__module.name | translate }}
                     span.failed( ng-if=' changePasswordResult && changePasswordResult !== true ' )
                         | {{ 'failed:save:' + $root.__module.name | translate }}
-                    button.btn( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
+                    button.btn.btn-sm.custom( type='submit', ng-disabled="!password.oldPassword || password.errors.length" )
                         | {{ 'Change password:button' | translate }}

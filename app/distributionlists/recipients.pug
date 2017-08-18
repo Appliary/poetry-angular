@@ -24,7 +24,7 @@ form.form.form-horizontal( )
 
             //- add
             .form-group.text-right
-                button.btn.btn-sm(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
+                button.btn.btn-sm.green(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
                     | {{ 'add:' + $root.__module.name + ':button' | translate }}
 
         .form-group
@@ -47,7 +47,7 @@ form.form.form-horizontal( )
                     option( ng-repeat='opt in ["en","fr","nl"] ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
 
         .form-group.text-right
-            button.btn.btn-sm(ng-disabled='currentOutputErr', ng-click="save()").pull-right.lightButton
+            button.btn.btn-sm.custom.pull-right(ng-disabled='currentOutputErr', ng-click="save()")
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
 
