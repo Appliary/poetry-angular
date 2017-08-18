@@ -2,9 +2,9 @@ form.form-horizontal.col-xs-12
     .form-body
         .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
             label.col-md-3.control-label( for='{{field}}', ng-if="inputType(field) != 'timezoneOffset'")
-                | {{ field + ':field' | translate }} 
+                | {{ field + ':field' | translate }}
                 span.required(ng-if="__joi.computed[field]._flags.presence == 'required'") *
-            
+
             .col-md-9
 
                 //- Unknown => Read only
@@ -53,6 +53,9 @@ form.form-horizontal.col-xs-12
                 //- Textareas
                 textarea.form-control( name='{{field}}', rows="3", ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
 
+                //- Icons
+                fa-iconpicker(name='{{field}}', model='item[field]', ng-if="inputType(field) == 'icon'")
+
                 //- Boolean
                 .mt-checkbox-inline(ng-if="inputType(field) == 'boolean'")
                     label.mt-checkbox.mt-checkbox-outline
@@ -61,7 +64,7 @@ form.form-horizontal.col-xs-12
 
                 //- Arrays
                 array-input( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
-                
+
                 //- readOnlyArray
                 tags-viewer(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
 
@@ -70,10 +73,10 @@ form.form-horizontal.col-xs-12
 
                 //- Time
                 input.form-control( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
-    
+
                 //- Error
                 span.help-block(ng-if='item.__failed && __validation.indexOf(field) !==-1') {{ 'failed:save:' + $root.__module.name | translate }}
-    
+
         p.text-right( ng-if='item.updatedAt || item.updatedBy' )
             | {{ 'lastUpdate:itemInfo' | translate }}
             span(ng-if='item.updatedAt')

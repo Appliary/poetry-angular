@@ -43,7 +43,7 @@ form.form.form-horizontal(ng-submit="save()")
                 datepicker( ng-model='item.endingAt' )
 
         .form-group.text-right
-            button.btn.green(ng-disabled='currentOutputErr')
+            button.btn.btn-sm(ng-disabled='currentOutputErr')
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}
 
 

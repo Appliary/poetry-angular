@@ -44,7 +44,7 @@ Portlets
         border-bottom: 1px solid #eee;
         padding: 0;   
         margin-bottom: 10px;
-        min-height: 41px;
+        min-height: 35px;
         
         @include border-radius($general-border-radius $general-border-radius 0 0);       
 
@@ -53,8 +53,8 @@ Portlets
         > .caption {
             float: left;   
             display: inline-block; 
-            font-size: 18px;
-            line-height: 18px;              
+            font-size: 14px;
+            line-height: 14px;              
             padding: 10px 0; 
 
             &.bold {

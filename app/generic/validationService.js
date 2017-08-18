@@ -1,4 +1,5 @@
-app.service( 'validationService', function validationService( $http ) {
+app.service( 'validationService', function validationService( $http, $timeout ) {
+    var to;
     return {
 
         inputType: function inputTypeFactory( $scope ) {
@@ -11,9 +12,27 @@ app.service( 'validationService', function validationService( $http ) {
 
                     // Readonly specials
                     if ( $scope.item[ name ] ) {
-                        if ( $scope.item[ name ].name ) return 'readOnlyName';
-                        if ( $scope.item[ name ].id ) return 'readOnlyId';
-                        if ( $scope.item[ name ]._id ) return 'readOnly_Id';
+                        var readOnlyType = '';
+                        if ( $scope.item[ name ].name ) {
+                          readOnlyType = 'readOnlyName';
+                        }
+                        else if ( $scope.item[ name ].id ){
+                          readOnlyType = 'readOnlyId';
+                        }
+                        else if ( $scope.item[ name ]._id ) {
+                          readOnlyType = 'readOnly_Id';
+                        }
+
+                        if(readOnlyType){
+                          if ($scope.__joi.computed[ name ]
+                            && $scope.__joi.computed[ name ]._meta.length
+                            && $scope.__joi.computed[name]._tags.indexOf( 'readonly' ) != -1
+                            && $scope.__joi.computed[name]._tags.indexOf( 'submit' ) != -1){
+                              $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
+                              $scope.item.__formatSubmit[name] = $scope.__joi.computed[ name ]._meta[0].value || '';
+                          }
+                          return readOnlyType;
+                        }
                     }
 
                     if ( $scope.__joi.af && $scope.__joi.af == name ) return 'af';
@@ -41,9 +60,16 @@ app.service( 'validationService', function validationService( $http ) {
 
                     //generic readonly
                     if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
-                        $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
-                        if($scope.item.__readonlyFields.indexOf(name) == -1){
-                          $scope.item.__readonlyFields.push(name);
+                        if($scope.__joi.computed[name]._tags.indexOf( 'submit' )
+                          && $scope.__joi.computed[ name ]._meta.length){
+                            $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
+                            $scope.item.__formatSubmit[name] = $scope.__joi.computed[ name ]._meta[0].value;
+                        }
+                        else{
+                          $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
+                          if($scope.item.__readonlyFields.indexOf(name) == -1){
+                            $scope.item.__readonlyFields.push(name);
+                          }
                         }
                         return 'readOnly';
                     }
@@ -66,6 +92,8 @@ app.service( 'validationService', function validationService( $http ) {
                             return 'password';
                         if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )
                             return 'textarea';
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'icon' ) )
+                            return 'icon';
 
                         // Select enums
                         if ( $scope.__joi.computed[ name ]._flags.allowOnly )
@@ -107,6 +135,7 @@ app.service( 'validationService', function validationService( $http ) {
                     return 'readOnly';
 
                 } catch ( e ) {
+                    console.log(e);
                     return 'readOnly';
                 }
 
@@ -147,9 +176,25 @@ app.service( 'validationService', function validationService( $http ) {
                                 return console.warn( response );
                             $scope.__inputEnums[ field ] = response.data.map(
                                 function ( opt ) {
+                                    var meta_show = joi._meta[ 0 ].show;
+                                    var show = '';
+                                    if(meta_show){
+                                      // concat attributes if '+' is present
+                                      var attrs = meta_show.split('+');
+                                      attrs.forEach(function(attr){
+                                        show += ' '+ (opt[attr] || '');
+                                        show = show.trim();
+                                      });
+                                      if(!show){
+                                        show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
+                                      }
+                                    }
+                                    else{
+                                      show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
+                                    }
                                     return {
                                         value: opt[ joi._meta[ 0 ].value || '_id' ],
-                                        show: opt[ joi._meta[ 0 ].show || '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ]
+                                        show: show
                                     };
                                 }
                             );

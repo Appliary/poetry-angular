@@ -6,7 +6,7 @@ table.table {
 	// vertical scrollbar
 	padding-right: 17px;
 	thead tr th {
-		font-size: 13px;
+		//font-size: 13px;
 	}
 }
 
@@ -21,12 +21,6 @@ table.table {
         // Actions dropdown
         td .btn-group {
             position: relative;
-            /*ul.dropdown-menu {
-                left: -85px;
-            }
-            ul.dropdown-menu:before, ul.dropdown-menu:after {
-                left: 120px;
-            }*/
         }
     }
 }

@@ -1,4 +1,4 @@
-$color-border-portlet: #5cd1db;
+$color-portlet: #5cd1db;
 $color-hr: #EFEFEF;
 $color-close-icon: #737373;
 
@@ -10,7 +10,6 @@ $color-close-icon: #737373;
 
 .portlet {
 	height: 100%;
-	margin-bottom: 0;
 	.portlet-body {
 		height: 100%;
 		padding-bottom: 0;
@@ -20,9 +19,6 @@ $color-close-icon: #737373;
 				color: $color-close-icon; 
 				margin-top: 10px; 
 				cursor: pointer;
-			}
-			ul.nav.nav-tabs li a {
-				font-size: 13px;
 			}
 		}
 		.tab-content {
@@ -74,10 +70,7 @@ $color-close-icon: #737373;
 }
 
 /* ===== SPECIFIC ===== */
-.portlet.box.green:not(.no-title) {
-	margin-bottom: 20px;
-}
-
-.portlet.box.green.no-title {
-    border: 1px solid $color-border-portlet;
+.portlet.box {
+	background: $color-portlet;	
+	border: 1px solid $color-portlet;
 }
