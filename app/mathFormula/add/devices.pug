@@ -9,7 +9,8 @@
                 td {{ result.kind }}
                 td(ng-if=" result.kind != 'tags' ") {{ result.name }}
                 td(ng-if=" result.kind == 'tags' ")
-                    tags-viewer( array="result.name" )
+                    | {{"#"+result.name}}
+                    //tags-viewer( array="result.name" )
                 td {{ result.types[0][0] }}&nbsp;
                     em(ng-if="result.types.length > 1")
                         | {{'and:mathformula'|translate}}&nbsp;
@@ -17,4 +18,3 @@
                         | {{'others:mathformula'|translate}}
     span.muted(ng-if=' $parent.results.length === 0 ')
         | {{ 'nodata:results:mathformula'| translate }}
-
