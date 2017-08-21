@@ -1183,7 +1183,7 @@ Content
 }
 
 /****
-Portlet Color
+Portlet
 ****/
 
 .portlet.box {
@@ -1192,7 +1192,7 @@ Portlet Color
 }
 
 /****
-Button Color
+Button
 ****/
 
 .btn.custom:not(.btn-outline), .btn.custom:not(.btn-outline)[disabled]:hover, 
@@ -1209,4 +1209,16 @@ Button Color
     border-color: $brand-main-color;
     color: $brand-main-color;
     background: none;
+}
+
+
+/****
+Nav-tabs
+****/
+.tabbable-line > .nav-tabs > li.active {
+    border-bottom-color: $brand-main-color;
+}
+
+.tabbable-line > .nav-tabs > li:hover {
+    border-bottom-color: lighten($brand-main-color, 20%);    
 }
