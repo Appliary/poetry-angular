@@ -56,6 +56,10 @@ app.directive("logsDirective", function($http){
 
       function getHistory() {
         console.debug("getHISTORY");
+        if(!scope.__id){
+          console.debug("objectId not defined");
+          return;
+        }
         scope.loaded = false;
           var url = '/api/'+ (scope.type && scope.type != "logs" ? scope.type+"/" : "") + scope.module
             + '/' + scope.__id + scope.config.apiPath
