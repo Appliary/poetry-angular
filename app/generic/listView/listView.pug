@@ -98,7 +98,7 @@
                                 button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
                                     | Actions
                                     i.fa.fa-angle-down
-                                ul.dropdown-menu.pull-right(role='menu')
+                                ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
@@ -117,6 +117,12 @@
                                             i.icon-flag
                                             |  Comments
                                             span.badge.badge-success 4
+                                ul.dropdown-menu.pull-right(role='menu', ng-if="isArray(config.actions)")
+                                    li(ng-repeat="act in config.actions", ng-click="doAction(act, row)")
+                                        a(href='javascript:;')
+                                            i(ng-class="act.icon")
+                                            |  {{act.text | translate}}
+                                            span.badge.badge-success(ng-if="hasValue(act.badge)") {{act.badge}}
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')
