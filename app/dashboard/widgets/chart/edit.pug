@@ -123,18 +123,18 @@ div(ng-controller="dashboard/widgets/chart/edit")
                                     option(ng-repeat="( i, type) in newInput.types", value="{{i}}")
                                         | {{type[0]}}    {{type[1]}}
                                 td.pull-right
-                                    a.btn.btn-circle(ng-click="addInput()")
+                                    a.btn.btn-circle.green(ng-click="addInput()")
                                         i.fa.fa-plus
         
         .modal-footer
             div(ng-if="!widget.options.chartType")
-                button.btn.btn-sm(ng-click="$parent.$parent.tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
+                button.btn.btn-sm.custom(ng-click="$parent.$parent.tab='inputs'", ng-if="tab=='timeframe'", ng-disabled="!widget.options.timeframe.type")
                     | {{ 'next:chart:dashboard' | translate }}
-                button.btn.btn-sm(ng-click="preSave()", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
+                button.btn.btn-sm.custom(ng-click="preSave()", ng-if="tab=='inputs'", ng-disabled="!widget.options.inputs.length")
                     | {{ 'next:chart:dashboard' | translate }}
 
             div(ng-if="widget.options.chartType")
                 button.btn.btn-sm.default(ng-click="closeThisDialog()")
                     | {{ 'Cancel:dashboard' | translate }}
-                button.btn.btn-sm(ng-click="confirm(widget)")
+                button.btn.btn-sm.cutom(ng-click="confirm(widget)")
                     | {{ 'Confirm:dashboard' | translate }}

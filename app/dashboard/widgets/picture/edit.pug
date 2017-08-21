@@ -21,7 +21,7 @@
                         option(value='100%') {{'fullSize:picture:widget'|translate}}
 
 .modal-footer
-    button.btn.default(ng-click="closeThisDialog()")
+    button.btn.btn-sm.default(ng-click="closeThisDialog()")
         | {{ 'Cancel:dashboard' | translate }}
-    button.btn(ng-click="confirm(widget)")
+    button.btn.btn-sm.custom(ng-click="confirm(widget)")
         | {{ 'Confirm:dashboard' | translate }}

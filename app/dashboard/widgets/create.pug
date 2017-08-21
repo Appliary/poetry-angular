@@ -16,7 +16,7 @@
                         option( ng-repeat="type in widgetTypes" value="{{type}}", ng-if="allowed(type)") {{ type+':widget' | translate }}
 
 .modal-footer
-    button.btn.default(ng-click="closeThisDialog()")
+    button.btn.btn-sm.default(ng-click="closeThisDialog()")
         | {{ 'cancel:widget:button' | translate }}
-    button.btn(ng-click="confirm( widget )")
+    button.btn.btn-sm.custom(ng-click="confirm( widget )")
         | {{ 'save:widget:button' | translate }}

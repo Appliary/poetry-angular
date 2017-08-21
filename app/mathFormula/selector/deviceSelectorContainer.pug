@@ -8,13 +8,13 @@ div(ng-if="showMe")
             .col-xs-12.form-group
                 .btn-toolbar(ng-hide='hideFilterButtons', style="margin-bottom: 10px;")
                     .btn-group( ng-repeat='(filterKey, filterState) in filters')
-                        button.btn.btn-circle( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
+                        button.btn.btn-circle.custom( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
                             | {{ filterKey + ':filter:mathformula' | translate }}
                 
                 input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
 
             .col-xs-12
-                .table-scrollable(style="max-height:50vh;overflow:auto")
+                .table-scrollable
                     table.table
                         thead: tr
                             th {{ 'kind:column:mathformula' | translate }}
@@ -25,7 +25,8 @@ div(ng-if="showMe")
                                 td {{ result.kind }}
                                 td(ng-if=" result.kind != 'tags' ") {{ result.name }}
                                 td(ng-if=" result.kind == 'tags' ")
-                                    tags-viewer( array="result.name" )
+                                    // tags-viewer( array="result.name" )
+                                    | {{ result.name }}
                                 td {{ result.types[0][0] }}&nbsp;
                                     em(ng-if="result.types.length > 1")
                                         | {{'and:mathformula'|translate}}&nbsp;
