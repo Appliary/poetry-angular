@@ -1,12 +1,14 @@
 .form-group
-    label.col-md-3.control-label.required( for='newPassword1' ) {{ 'new Password:field:edit' | translate }} *
+    label.col-md-3.control-label( for='newPassword1' ) {{ 'new Password:field:edit' | translate }}
+        span.required *
     .col-md-9
         .input-icon.right
             i.fa.fa-info-circle(data-toggle="tooltip", title="Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character.")
             input.form-control( type='password', ng-model='password.newPassword1', name='newPassword1' required, ng-class='{error: password.errors.length }' )
 
 .form-group
-    label.col-md-3.control-label.required( for='newPassword2' ) {{ 'confirmNewPassword:field:edit' | translate }} *
+    label.col-md-3.control-label( for='newPassword2' ) {{ 'confirmNewPassword:field:edit' | translate }}
+        span.required *
     .col-md-9
         input.form-control( type='password', ng-model='password.newPassword2', name='newPassword2' required, ng-class='{error: password.errors.indexOf("same") != -1 }' )
 
