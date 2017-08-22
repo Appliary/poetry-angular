@@ -91,6 +91,11 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
     }
 
     function _number( input ) {
+        if(!$rootScope.user.locale && input){
+          // matrix
+          console.log("%cMissing user locale ???","background-color: black; color: #2BFF00");
+        }
+
         return input.toLocaleString( $rootScope.user.locale || undefined );
     }
 

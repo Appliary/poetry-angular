@@ -118,8 +118,8 @@ app.component( 'appRouter', {
             }
 
             $scope.$root.__module = $scope.$root.__modules[ path[ 0 ] ];
-            $scope.__id = decodeURIComponent( path[ 1 ] );
-            $scope.__view = decodeURIComponent( path[ 2 ] );
+            $scope.__id = !angular.isUndefined(path[ 1 ]) ? decodeURIComponent( path[ 1 ] ) : undefined;
+            $scope.__view = !angular.isUndefined(path[ 2 ]) ? decodeURIComponent( path[ 2 ] ) : undefined;
             console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
 
             $rootScope.$broadcast( "appRouteChange", {
