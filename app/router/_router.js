@@ -118,19 +118,19 @@ app.component( 'appRouter', {
             }
 
             $scope.$root.__module = $scope.$root.__modules[ path[ 0 ] ];
-            $scope.__id = path[ 1 ];
-            $scope.__view = path[ 2 ];
+            $scope.__id = decodeURIComponent( path[ 1 ] );
+            $scope.__view = decodeURIComponent( path[ 2 ] );
             console.info( 'Going to', $scope.$root.__module.name, $scope.__id, $scope.__view );
 
-            $rootScope.$broadcast("appRouteChange", {
-              current: {
-                module: $scope.$root.__module || {},
-                path: $location.path() || "/"
-              },
-              old: {
-                module: lastModule
-              }
-            });
+            $rootScope.$broadcast( "appRouteChange", {
+                current: {
+                    module: $scope.$root.__module || {},
+                    path: $location.path() || "/"
+                },
+                old: {
+                    module: lastModule
+                }
+            } );
 
             if ( !$scope.__id && !$scope.__view ) {
                 $scope.item = undefined;
