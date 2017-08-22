@@ -6,9 +6,45 @@ app.controller( 'generic/list', function (
     $q,
     $timeout,
     $window,
-    $filter
+    $filter,
+    listViewService
 ) {
     if ( $scope.__id ) retrieveItem( $scope.__id );
+
+    $scope.visibleColumns = [];
+    $scope.columns = [];
+    $scope.$watchCollection('visibleColumns', function(nv){
+      if(!$scope.listViewConfig) return;
+      if(!$scope.listViewConfig.selectColumns) return;
+      
+      // matrix
+      console.log("%cvisibleColumns change","background-color: black; color: #2BFF00");
+      console.log(nv);
+      $scope.columns = $scope.columns.map(function(c, i){
+        var r = c;
+        if(angular.isString(c)){
+          r = {key: c};
+        }
+        if(nv.some(function(s){
+          return s.id == i;
+        })){
+          r.hide= false;
+        }
+        else{
+          r.hide = true;
+        }
+        return r;
+      });
+      $timeout(function(){
+        listViewService.emit('resize');
+      }, 100);
+      $timeout(function(){
+        listViewService.emit('resize');
+      }, 1300);
+      $timeout(function(){
+        listViewService.emit('resize');
+      }, 2700);
+    })
 
     var lastCall = {
       timestamp: 0,
@@ -162,6 +198,8 @@ app.controller( 'generic/list', function (
                     if ( $scope.$root.__module.config && $scope.$root.__module.config.columns )
                         $scope.columns = $scope.$root.__module.config.columns;
                     else $scope.columns = [];
+
+                    $scope.visibleColumns = [];
 
                     if ( !$scope.columns.length )
                         $scope.data.forEach( function ( data ) {

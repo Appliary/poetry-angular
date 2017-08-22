@@ -25,5 +25,7 @@
     "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",
     "bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css",
     "fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js",
-    "fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css"
+    "fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css",
+    "bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
+    "ng-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"
 ]

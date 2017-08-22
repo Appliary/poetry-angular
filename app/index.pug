@@ -23,6 +23,7 @@ html(ng-app=app.name)
                 __appRegister = "#{app.register}";
 
         //- Load Styles, Dependencies, Core application, Templates, App & Theme
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js")
         script(src=`/${app.name}/__dependencies.js`)
         script(src=`/${app.name}/__core.js`)
         script(src=`/${app.name}/__templates.js`)
@@ -41,7 +42,7 @@ html(ng-app=app.name)
             });
 
         link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all', rel='stylesheet', type='text/css')
-        
+
         link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
 
         link(rel='stylesheet' href=`/${app.name}/__metronic.css`)
@@ -56,7 +57,7 @@ html(ng-app=app.name)
             link(rel="shortcut icon" ng-href=`/themes/{{ $root.team.theme || "${app.defaultTheme}" }}/favicon.png`)
             link#style_color(rel="stylesheet" ng-href=`/themes/{{ $root.team.theme || "/assets/layouts/layout/css/themes/default.min.css" }}.css`)
 
-    
+
     body.page-header-fixed.page-footer-fixed.page-sidebar-fixed.page-sidebar-closed-hide-logo.page-content-white(ng-class='{collapsed:$root.collapseSidebar}')
 
         .page-wrapper

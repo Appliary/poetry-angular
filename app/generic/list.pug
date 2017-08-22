@@ -25,13 +25,14 @@ h1.page-title
                                     option( value='' ) {{ 'active:status:' + $root.__module.name | translate }}
                                     option( value='new' ) {{ 'new:status:' + $root.__module.name | translate }}
                                     option( value='archived' ) {{ 'archived:status:' + $root.__module.name | translate }}
-                        //-
-                        //-.form-group
+
+                        //- select columns
+                        .form-group(ng-if='listViewConfig.selectColumns')
                             label
                                 | Columns
-                                select.form-control.input-inline.mt-multiselect(ng-model='visibleColumns', multiple="multiple")
-                                    option(ng-repeat="col in columns", ng-value="col")
-                                        | {{col}}
+                                custom-dropdown-multiselect(options="columns" selected-model="visibleColumns")
+
+
                     .col-md-5.col-sm-5
                         .form-group
                             .input-icon.right

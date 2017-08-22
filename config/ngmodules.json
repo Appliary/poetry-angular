@@ -1,5 +1,6 @@
 [
     "datatables",
     "datatables.options",
-    "leaflet-directive"
+    "leaflet-directive",
+    "angularjs-dropdown-multiselect"
 ]
