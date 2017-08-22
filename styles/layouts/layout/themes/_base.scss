@@ -702,7 +702,8 @@ Page Header
                 &.active {
                     > a {
                         background: $sidebar-menu-sub-menu-link-bg-color-on-hover !important;
-
+                        color: $sidebar-menu-sub-menu-link-icon-font-color-on-hover;
+                        
                         > i {
                             color: $sidebar-menu-sub-menu-link-icon-font-color-on-hover;
                             @if $theme-name == "light" {
