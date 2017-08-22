@@ -16,7 +16,7 @@ app.controller( 'generic/list', function (
     $scope.$watchCollection('visibleColumns', function(nv){
       if(!$scope.listViewConfig) return;
       if(!$scope.listViewConfig.selectColumns) return;
-      
+
       // matrix
       console.log("%cvisibleColumns change","background-color: black; color: #2BFF00");
       console.log(nv);
