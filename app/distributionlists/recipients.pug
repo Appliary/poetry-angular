@@ -24,7 +24,7 @@ form.form.form-horizontal( )
 
             //- add
             .form-group.text-right
-                button.btn.btn-sm.green(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
+                button.btn.btn-sm.custom(type='button', ng-click='newRecipient.email?( item.recipients.push(newRecipient) && (recipients={})):true')
                     | {{ 'add:' + $root.__module.name + ':button' | translate }}
 
         .form-group

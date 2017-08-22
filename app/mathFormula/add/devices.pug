@@ -5,7 +5,7 @@
                 button.btn.btn-circle.custom( ng-click=' filters[ filterKey ] = !filterState', ng-class=' {"btn-outline": !filterState} ' )
                     | {{ filterKey + ':filter:mathformula' | translate }}
         
-        input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="query.search" )
+        input.form-control( placeholder=" {{ 'search:mathformula' | translate }} ", ng-model="$parent.search" )
 
     .col-xs-12
         .table-scrollable

@@ -4,16 +4,16 @@
             .dataTables_scrollHeadInner
                 table.table.table-striped.table-bordered.order-column.dataTable.no-footer
                     thead: tr
-                        th.sorting_disabled
+                        th.sorting_disabled(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                         //- columns header display
                         th.sorting( ng-repeat='column in columns'
-                        , ng-if="column.key != measurementsColumn.key && !config.noSort"
+                        , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
                         , ng-click='sort(column)'
                         , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }' )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- columns header display noSort
                         th.sorting_disabled( ng-repeat='column in columns'
-                        , ng-if="column.key != measurementsColumn.key && config.noSort" )
+                        , ng-if="column.key != measurementsColumn.key && config.noSort && !column.hide" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- measurements header display
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
@@ -23,24 +23,24 @@
             table.table.table-striped.table-bordered.order-column.dataTable.no-footer
                 thead
                     tr
-                        th
+                        th(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             .dataTables_sizing
-                        th(ng-repeat='column in columns')
+                        th(ng-repeat='column in columns', ng-if="!column.hide")
                             .dataTables_sizing
                         th( ng-repeat="mc in getMeasurementsCount() track by $index")
                             .dataTables_sizing
-                        th
+                        th(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .dataTables_sizing
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
-                        td
+                        td(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                 input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
                                 span
                         //- data
                         td( ng-repeat='(idx, column) in columns'
                         , ng-click='select(row._id)'
-                        , ng-if="column.key != measurementsColumn.key"
+                        , ng-if="column.key != measurementsColumn.key && !column.hide"
                         , class="{{column.tdClass || ''}}"
                         , ng-class="{muted:(idx && isDataType(column) && sameDataTypeValue(row, column, columns[idx-1]))}")
                             //- icon
@@ -96,9 +96,9 @@
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group.pull-right
                                 button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions 
+                                    | Actions
                                     i.fa.fa-angle-down
-                                ul.dropdown-menu.pull-right(role='menu')
+                                ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
@@ -117,6 +117,12 @@
                                             i.icon-flag
                                             |  Comments
                                             span.badge.badge-success 4
+                                ul.dropdown-menu.pull-right(role='menu', ng-if="isArray(config.actions)")
+                                    li(ng-repeat="act in config.actions", ng-click="doAction(act, row)")
+                                        a(href='javascript:;')
+                                            i(ng-class="act.icon")
+                                            |  {{act.text | translate}}
+                                            span.badge.badge-success(ng-if="hasValue(act.badge)") {{act.badge}}
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')

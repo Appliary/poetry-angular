@@ -2,9 +2,6 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
 
     function localize( input, kind ) {
 
-        if(!angular.isUndefined(input) && !input)
-          return;
-
         //console.log("%clocalize","background-color: black; color: #2BFF00");
         //console.log("localize input ",(typeof input), input);
 
@@ -52,7 +49,7 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
         }
         if ( kind ) return _date( input );
 
-        if ( input === undefined ) return undefined;
+        if ( input === undefined ) return;
         if ( input === null ) return $filter( 'translate' )( 'null:value' );
         if ( input === false ) return $filter( 'translate' )( 'false:value' );
         if ( input === true ) return $filter( 'translate' )( 'true:value' );

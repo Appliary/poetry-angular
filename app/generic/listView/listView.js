@@ -114,6 +114,13 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 return v === null || angular.isUndefined(v);
             }
 
+            // isArray
+            scope.isArray = isArray;
+
+            function isArray(v) {
+                return angular.isArray(v);
+            }
+
             // isObject
             scope.isObject = isObject;
 
@@ -154,6 +161,15 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
             function isDataType(column) {
                 return column.type == 'data' || (column.type == 'subkey' && column.subtype == 'data');
+            }
+
+            scope.doAction = function(action, row){
+              if(isFunction(action.callback)){
+                action.callback(row);
+              }
+              else{
+                console.debug("action clicked", action);
+              }
             }
 
             // sameDataTypeValue
