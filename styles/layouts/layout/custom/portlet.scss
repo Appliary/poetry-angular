@@ -16,6 +16,10 @@ $color-close-icon: #737373;
 	.portlet-body {
 		height: 100%;
 		padding-bottom: 0;
+		&.under-title {
+			height: calc(100% - 60px);
+			overflow-y: auto;
+		}
 		.tabbable-line {
 			padding-top: 0;
 			i.fa.fa-close.pull-right {
