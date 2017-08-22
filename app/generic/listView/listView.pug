@@ -1,8 +1,8 @@
 .table-scrollable(scroll='scroll')
     .dataTables_scroll(style='overflow: hidden;')
         .dataTables_scrollHead(style='overflow: hidden;')
-            .dataTables_scrollHeadInner
-                table.table.table-striped.table-bordered.order-column.dataTable.no-footer
+            .dataTables_scrollHeadInner()
+                table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf", thf-hide-scroll="true")
                     thead: tr
                         th.sorting_disabled(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                         //- columns header display
@@ -10,19 +10,21 @@
                         , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
                         , ng-click='sort(column)'
                         , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }'
-                        , class="{{column.class}}" )
+                        , class="{{column.class}}"
+                        , style="{{column.style}}" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- columns header display noSort
                         th.sorting_disabled( ng-repeat='column in columns'
                         , ng-if="column.key != measurementsColumn.key && config.noSort && !column.hide"
-                        , class="{{column.class}}" )
+                        , class="{{column.class}}"
+                        , style="{{column.style}}" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- measurements header display
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
                         th.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)")  Actions
         .dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;")
-            table.table.table-striped.table-bordered.order-column.dataTable.no-footer
+            table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf")
                 thead
                     tr
                         th(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
@@ -33,6 +35,7 @@
                             .dataTables_sizing
                         th(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .dataTables_sizing
+                //- body
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         //- checkboxes
@@ -45,6 +48,7 @@
                         , ng-click='select(row._id)'
                         , ng-if="column.key != measurementsColumn.key && !column.hide"
                         , class="{{column.tdClass || '' + (column.class || '')}}"
+                        , style="{{column.style}}"
                         , ng-class="{muted:(idx && isDataType(column) && sameDataTypeValue(row, column, columns[idx-1]))}")
                             //- icon
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "icon" && !isContext(row[ column.key ])')

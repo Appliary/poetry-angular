@@ -280,6 +280,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 scope.resize();
                 scope.first = 1;
                 scope.last = scope.filtered;
+                listViewService.emit('tableHeadFixer:run');
             });
             scope.$watchCollection("pColumns", function (nv) {
                 scope.measurementsColumn = {};
@@ -363,16 +364,12 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                     var offsetTop = tableElem.prop('offsetTop');
                     var margin = 350;
                     scope.listHeight = globalHeight - (margin + offsetTop);
-                    //console.log("listHeight", scope.listHeight);
-                    //console.log("maxHeight", scope.maxHeight);
 
                     if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
                         scope.listHeight = scope.maxHeight;
                     }
-                    //console.log("tableElem", tableElem);
 
                     scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
-                    //console.log("lineHeight", scope.lineHeight);
                 }
             };
 
