@@ -68,6 +68,11 @@ tags-input .tags {
 	}
 }
 
+.ngdialog-theme-default .ngdialog-content {
+	max-height: 70vh;
+	overflow-y: auto;
+}
+
 /* ===== FORMS ===== */
 form.form-horizontal .form-body .form-group .input-icon.right {
 	input.form-control#device, i.fa.fa-caret-down {
@@ -91,11 +96,4 @@ form.form-horizontal .form-body .form-group .input-icon.right {
 
 .hor-menu ul.nav.navbar-nav.nav-tabs li a {
 	border: 0;
-}
-
-
-/* ===== DIALOGS ===== */
-.ngdialog-theme-default .ngdialog-content {
-	max-height: 70vh;
-	overflow-y: auto;
 }

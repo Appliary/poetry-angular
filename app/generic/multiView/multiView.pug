@@ -10,7 +10,7 @@ h1.page-title
                     i.icon-magnifier
                     input.form-control( type="text", ng-model="searchText", ng-model-options="{debounce: 250}", placeholder="{{'search:'+$root.__module.name|translate}}")
 
-        .portlet-body(ng-if="general.activeView === 'tree'", style="overflow-y: auto;")
+        .portlet-body(ng-if="general.activeView === 'tree'")
             .tab-content
                 tree-view(
                 options="treeView.options",
