@@ -123,7 +123,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                                     option(ng-repeat="( i, type) in newInput.types", value="{{i}}")
                                         | {{type[0]}}    {{type[1]}}
                                 td.pull-right
-                                    a.btn.btn-circle.green(ng-click="addInput()")
+                                    a.btn.btn-circle.custom(ng-click="addInput()")
                                         i.fa.fa-plus
         
         .modal-footer
