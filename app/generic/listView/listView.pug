@@ -104,27 +104,13 @@
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group.pull-right
                                 button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | Actions
+                                    | {{'Actions'
                                     i.fa.fa-angle-down
                                 ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
-                                            |  New Post
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-tag
-                                            |  New Comment
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-user
-                                            |  New User
-                                    li.divider
-                                    li
-                                        a(href='javascript:;')
-                                            i.icon-flag
-                                            |  Comments
-                                            span.badge.badge-success 4
+                                            | TODO
                                 ul.dropdown-menu.pull-right(role='menu', ng-if="isArray(config.actions)")
                                     li(ng-repeat="act in config.actions", ng-click="doAction(act, row)")
                                         a(href='javascript:;')
@@ -134,6 +120,6 @@
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')
-        | Showing {{ first }} to {{ last }} of {{ filtered }} records
+        | {{'Showing'|translate}} {{ first|localize }} {{'to'|translate}} {{ last |localize}} {{'of'|translate}} {{ filtered|localize }} {{'records'|translate}}
     .dataTables_info(ng-if='filtered <= 0')
-        | No data found
+        | {{'noData'|translate}}
