@@ -2,13 +2,13 @@ h1.page-title
     | {{ $root.__module.name + ':module:title' | translate }}&nbsp;
     small {{ $root.__module.name + ':module:subtitle' | translate }}
 
-.m-heading-1.border-green.m-bordered(ng-if='message')
-    h3 DataTables jQuery Plugin
-    p
-        | DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
-    p
-        | For more info please check out
-        a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
+//- .m-heading-1.border-green.m-bordered(ng-if='message')
+//-     h3 DataTables jQuery Plugin
+//-     p
+//-         | DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
+//-     p
+//-         | For more info please check out
+//-         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
 
 .portlet-container(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
     .portlet.light.bordered
@@ -18,7 +18,7 @@ h1.page-title
                     .col-md-5.col-sm-5
                         .form-group
                             label
-                                | {{ "Show" | translate }}&nbsp;
+                                | {{'Status'|translate}}&nbsp;
                                 select.form-control.input-inline(ng-model='$parent.status')
                                     option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
                                     option( disabled, value='──────────' ) ──────────
