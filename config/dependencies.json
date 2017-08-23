@@ -27,5 +27,6 @@
     "fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js",
     "fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css",
     "bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
-    "ng-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"
+    "ng-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js",
+    "jquery-table-fixer/tableHeadFixer.js"
 ]
