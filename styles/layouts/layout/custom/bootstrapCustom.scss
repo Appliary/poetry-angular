@@ -13,7 +13,7 @@ $color-tag-selected: #ed6b75;
 	margin-left: 15px;
 }
 
-.form-control, tags-input .tags .input {
+.form-control, tags-input .tags .input, .accordion .panel .panel-title {
 	font-size: 12px;
 }
 
@@ -58,16 +58,17 @@ tags-input .tags {
 	}
 }
 
-/* ===== MODALS ===== */
-.modal-body .icon-picker {
+/* ===== ICON PICKER ===== */
+.icon-picker {
 	overflow-y: auto;
-	max-height:400px; 
-	margin-top:15px;
+	max-height: 40vh; 
+	margin-top: 15px;
 	.icon-selected {
 		background-color: $color-icon-picker-selected;
 	}
 }
 
+/* ===== DIALOGS ===== */
 .ngdialog-theme-default .ngdialog-content {
 	max-height: 70vh;
 	overflow-y: auto;
