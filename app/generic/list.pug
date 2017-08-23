@@ -18,7 +18,7 @@ h1.page-title
                     .col-md-5.col-sm-5
                         .form-group
                             label
-                                | Show
+                                | {{ "Show" | translate }}&nbsp;
                                 select.form-control.input-inline(ng-model='$parent.status')
                                     option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
                                     option( disabled, value='──────────' ) ──────────
@@ -29,7 +29,7 @@ h1.page-title
                         //- select columns
                         .form-group(ng-if='listViewConfig.selectColumns')
                             label
-                                | Columns
+                                | {{ "Columns" | translate }}&nbsp;
                                 custom-dropdown-multiselect(options="columns" selected-model="visibleColumns")
 
 
@@ -41,7 +41,7 @@ h1.page-title
                     .col-md-2.col-sm-2.text-right
                         .btn-group.pull-right
                             button.btn.btn-sm.btn-outline.custom.dropdown-toggle(type='button', data-toggle='dropdown')
-                                | Tools
+                                | {{ "Tools" | translate }}&nbsp;
                                 i.fa.fa-angle-down
                             ul.dropdown-menu.pull-right(role='menu')
                                 li

@@ -134,6 +134,6 @@
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')
-        | Showing {{ first }} to {{ last }} of {{ filtered }} records
+        | {{ "Showing:listView" | translate }} {{ first | localize}} {{ "to:listView" | translate }} {{ last | localize }} {{ "of:listView" | translate }} {{ filtered | localize }} {{ "records:listView" | translate }}
     .dataTables_info(ng-if='filtered <= 0')
         | No data found
