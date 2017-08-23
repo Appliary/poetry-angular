@@ -1,5 +1,5 @@
 .input-group.date
-    span.form-control {{datevalue | localize:'daily'}}
+    input.form-control(ng-value="datevalue | localize:'daily'")
     span.input-group-addon
         i.fa.fa-calendar
-input.valueHolder(ng-model="datevalue",style="box-sizing: border-box;width:0px;position:relative;opacity:0;top:-32px")
+input.valueHolder(ng-model="datevalue",style="box-sizing:border-box;width:0px;position:relative;opacity:0;top:-32px;border:none")
