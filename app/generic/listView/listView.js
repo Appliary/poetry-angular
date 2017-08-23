@@ -351,7 +351,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
             }
             /**
             * @function resize
-            * @description Calls local '__doResize' 4 times to be sure to get the right size
+            * @description Calls local '__doResize' X times to be sure to get the right size
             * @param {number} delay
             */
             scope.resize = function (delay) {
@@ -359,7 +359,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
-              }, 500, 3);
+              }, 100, 25);
             };
 
             /**
