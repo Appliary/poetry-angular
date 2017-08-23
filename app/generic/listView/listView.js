@@ -1,4 +1,4 @@
-app.directive("listView", function ($timeout, $window, $q, listViewService) {
+app.directive("listView", function ($timeout,$interval, $window, $q, listViewService) {
     return {
         restrict: 'EA',
         transclude: false,
@@ -311,6 +311,9 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 });
 
                 setMeasurementsCount();
+                scope.resize();
+                scope.resize();
+                listViewService.emit('tableHeadFixer:run');
             });
 
 
@@ -338,14 +341,25 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 }
             };
 
+            var __doResize = function(delay){
+              if (scope.filtered > 0) {
+                  $timeout(function () {
+                      scope.setListHeight();
+                      scope.setColumnsWidth();
+                  }, delay || 100);
+              }
+            }
+            /**
+            * @function resize
+            * @description Calls local '__doResize' 4 times to be sure to get the right size
+            * @param {number} delay
+            */
             scope.resize = function (delay) {
-                if (scope.filtered > 0) {
-                    $timeout(function () {
-                        console.log("resize");
-                        scope.setListHeight();
-                        scope.setColumnsWidth();
-                    }, delay || 100);
-                }
+              console.log("resize");
+              __doResize(delay);
+              $interval(function(){
+                __doResize(delay)
+              }, 500, 3);
             };
 
             /**
@@ -384,27 +398,34 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
                     try {
                         for (var i = 0; i < headThs.length; i++) {
-                            var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-                            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight)
-                                + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+                            var headTh = headThs[i];
+                            var bodyTd = bodyTds[i];
 
-                            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight)
-                                + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
+                            // remove all the custom style set previously (restart from scratch)
+                            $(headTh).css({"minWidth": "", "maxWidth": "", "width": ""});
+                            $(bodyTd).css({"minWidth": "", "maxWidth": "", "width": ""});
 
-                            if ((thWidth + thPadding) < (tdWidth + tdPadding)) {
-                                var newThWidth = tdWidth + (tdPadding - thPadding);
+                                var thWidth = parseFloat(window.getComputedStyle(headTh).width);
+                                var thPadding = (parseFloat(window.getComputedStyle(headTh).paddingRight)
+                                    + parseFloat(window.getComputedStyle(headTh).paddingLeft));
 
-                                headThs[i].style.minWidth = newThWidth + "px";
-                                headThs[i].style.maxWidth = newThWidth + "px";
-                                headThs[i].style.width = newThWidth + "px";
-                            } else {
-                                var newTdWidth = thWidth + (thPadding - tdPadding);
+                                var tdWidth = parseFloat(window.getComputedStyle(bodyTd).width);
+                                var tdPadding = (parseFloat(window.getComputedStyle(bodyTd).paddingRight)
+                                    + parseFloat(window.getComputedStyle(bodyTd).paddingLeft));
 
-                                bodyTds[ i ].style.minWidth = newTdWidth + "px";
-                                bodyTds[ i ].style.maxWidth = newTdWidth + "px";
-                                bodyTds[ i ].style.width = newTdWidth + "px";
-                            }
+                                if ((thWidth + thPadding) < (tdWidth + tdPadding)) {
+                                    var newThWidth = tdWidth + (tdPadding - thPadding);
+
+                                    headTh.style.minWidth = newThWidth + "px";
+                                    headTh.style.maxWidth = newThWidth + "px";
+                                    headTh.style.width = newThWidth + "px";
+                                } else {
+                                    var newTdWidth = thWidth + (thPadding - tdPadding);
+
+                                    bodyTd.style.minWidth = newTdWidth + "px";
+                                    bodyTd.style.maxWidth = newTdWidth + "px";
+                                    bodyTd.style.width = newTdWidth + "px";
+                                }
                         }
                     } catch (e) {
                         console.warn("[listView] setColumnsWidth:", e);

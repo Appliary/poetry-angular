@@ -4,7 +4,7 @@
             .dataTables_scrollHeadInner()
                 table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf", thf-hide-scroll="true")
                     thead: tr
-                        th.sorting_disabled(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        th.sorting_disabled.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                         //- columns header display
                         th.sorting( ng-repeat='column in columns'
                         , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
@@ -27,7 +27,7 @@
             table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf")
                 thead
                     tr
-                        th(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        th.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             .dataTables_sizing
                         th(ng-repeat='column in columns', ng-if="!column.hide", class="{{column.class}}")
                             .dataTables_sizing
@@ -39,7 +39,7 @@
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         //- checkboxes
-                        td(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        td.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                 input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
                                 span
