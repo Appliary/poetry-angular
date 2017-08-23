@@ -104,7 +104,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
             scope.isDefined = isDefined;
 
             function isDefined(v) {
-                return v !== null && !angular.isUndefined(v) && v;
+                return v !== null && !angular.isUndefined(v) && (v || v === 0);
             }
 
             // isUndefined
@@ -359,7 +359,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
-              }, 100, 25);
+              }, 100, 20);
             };
 
             /**

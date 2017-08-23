@@ -9,7 +9,6 @@ h1.page-title
 //-     p
 //-         | For more info please check out
 //-         a.btn.red.btn-outline(href='http://datatables.net/', target='_blank') the official documentation
-
 .portlet-container(ng-class="__id ? 'col-lg-7 visible-lg-block' : 'col-lg-12'")
     .portlet.light.bordered
         .portlet-body
@@ -29,7 +28,7 @@ h1.page-title
                         //- select columns
                         .form-group(ng-if='listViewConfig.selectColumns')
                             label
-                                | {{'Columns'|translate}}
+                                | {{ "Columns" | translate }}&nbsp;
                                 custom-dropdown-multiselect(options="columns" selected-model="visibleColumns")
 
 
@@ -41,7 +40,7 @@ h1.page-title
                     .col-md-2.col-sm-2.text-right
                         .btn-group.pull-right
                             button.btn.btn-sm.btn-outline.custom.dropdown-toggle(type='button', data-toggle='dropdown')
-                                | {{'Tools'|translate}}
+                                | {{ "Tools" | translate }}&nbsp;
                                 i.fa.fa-angle-down
                             ul.dropdown-menu.pull-right(role='menu')
                                 li
