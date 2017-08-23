@@ -49,7 +49,7 @@ app.factory('assetsUtils', function(){
               height: 400,
               hAxis: {
                 slantedText: true,
-                slantedTextAngle: 60
+                slantedTextAngle: 50
               }
           }
         },

@@ -83,6 +83,10 @@ form.form-horizontal .form-body .form-group .input-icon.right {
 	}
 }
 
+form.form-inline .form-group {
+	margin-right: 5px;
+}
+
 /* ===== TOPNAV ===== */
 .page-header.navbar .page-logo a.logo-default {
 		background-image: url($logo-path);
