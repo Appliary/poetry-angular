@@ -1,8 +1,10 @@
 app.controller('generic/overview', function ($scope, $http, ngDialog, validationService) {
 
+    var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
+
     $scope.$watch('$root.__module.name', function init() {
 
-        var api = $scope.$root.__module.editApi || $scope.$root.__module.api;
+        api = $scope.$root.__module.editApi || $scope.$root.__module.api;
 
         // Get validation object
         $http.put('/__joi' + api + '/validation')
