@@ -120,6 +120,6 @@
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')
-        | Showing {{ first }} to {{ last }} of {{ filtered }} records
+        | {{'Showing'|translate}} {{ first|localize }} {{'to'|translate}} {{ last |localize}} {{'of'|translate}} {{ filtered|localize }} {{'records'|translate}}
     .dataTables_info(ng-if='filtered <= 0')
-        | No data found
+        | {{'noData'|translate}}
