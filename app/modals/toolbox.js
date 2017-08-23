@@ -1,4 +1,4 @@
-app.controller('modals/toolbox', function ($scope, $http, $window, $location, validationService) {
+app.controller('modals/toolbox', function ($scope, $http, $window, $location, validationService, $filter) {
 
     // Instantiate new object
     $scope.item = {};
@@ -93,6 +93,11 @@ app.controller('modals/toolbox', function ($scope, $http, $window, $location, va
 
                 $scope.item.__saved = true;
                 $scope.item.__failed = false;
+
+                toastr.success(
+                    $filter( 'translate' )( 'The element has been saved:' + $scope.$root.__module.name ),
+                    $filter( 'translate' )( 'Saved' )
+                );
 
                 $scope.closeThisDialog();
 

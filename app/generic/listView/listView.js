@@ -312,7 +312,6 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
 
                 setMeasurementsCount();
                 scope.resize();
-                scope.resize();
                 listViewService.emit('tableHeadFixer:run');
             });
 
@@ -359,7 +358,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
-              }, 100, 20);
+              }, 100, 14);
             };
 
             /**

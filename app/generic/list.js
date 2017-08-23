@@ -199,8 +199,6 @@ app.controller( 'generic/list', function (
                         $scope.columns = $scope.$root.__module.config.columns;
                     else $scope.columns = [];
 
-                    $scope.visibleColumns = [];
-
                     if ( !$scope.columns.length )
                         $scope.data.forEach( function ( data ) {
                             Object.keys( data )
