@@ -9,7 +9,7 @@ app.controller( 'mathFormula/add', function (
     // Default tab
     $scope.tabview = 'details';
 
-    console.log("config", $scope.mathFormulaConfig);
+    console.log( "config", $scope.mathFormulaConfig );
 
     // Filters for device selection
     $scope.search = '';
@@ -19,9 +19,9 @@ app.controller( 'mathFormula/add', function (
         tags: false
     };
 
-    $scope.deviceSelectorOnChange = function(d){
-      console.log("d",d);
-    }
+    $scope.deviceSelectorOnChange = function ( d ) {
+        console.log( "d", d );
+    };
 
     // Avoid flood by stopping identical send & by iterating requests
     var lastRequests = {};
@@ -30,36 +30,35 @@ app.controller( 'mathFormula/add', function (
     preConfigure();
 
     /**
-    *
-    * Fn to preconfigure input add form
-    */
-    function preConfigure(){
-      console.log("%cpreConfigure","background-color: black; color: #2BFF00");
-      var conf = $scope.mathFormulaConfig;
-      if(!angular.isObject(conf))
-        return;
+     *
+     * Fn to preconfigure input add form
+     */
+    function preConfigure() {
+        console.log( "%cpreConfigure", "background-color: black; color: #2BFF00" );
+        var conf = $scope.mathFormulaConfig;
+        if ( !angular.isObject( conf ) )
+            return;
 
-      if(conf.filters){
-        var cFilters = conf.filters;
-        if(angular.isArray(cFilters)){
-          $scope.deviceSelectorFilters = cFilters;
-          $scope.filters = {};
-          cFilters.forEach(
-            function(elem){
-              $scope.filters[elem] = false;
+        if ( conf.filters ) {
+            var cFilters = conf.filters;
+            if ( angular.isArray( cFilters ) ) {
+                $scope.deviceSelectorFilters = cFilters;
+                $scope.filters = {};
+                cFilters.forEach(
+                    function ( elem ) {
+                        $scope.filters[ elem ] = false;
+                    }
+                );
             }
-          );
         }
-      }
 
-      if ( conf.hasOwnProperty( 'formulaInput' ) ) {
-          $scope.formulaInput = conf.formulaInput;
-      }
-      else{
-          $scope.formulaInput = true;
-      }
+        if ( conf.hasOwnProperty( 'formulaInput' ) ) {
+            $scope.formulaInput = conf.formulaInput;
+        } else {
+            $scope.formulaInput = true;
+        }
 
-      console.log("scope",$scope);
+        console.log( "scope", $scope );
     }
 
     /**
@@ -67,7 +66,7 @@ app.controller( 'mathFormula/add', function (
      * Get the devices, smartdevices and tags to select one of them
      */
     function getDevices() {
-      console.log("%cgetDevices","background-color: black; color: #2BFF00");
+        console.log( "%cgetDevices", "background-color: black; color: #2BFF00" );
         // Clean results
         $scope.results = [];
 
@@ -96,25 +95,25 @@ app.controller( 'mathFormula/add', function (
                 lastRequests[ filter ].search = angular.copy( $scope.search );
 
                 var config = {
-                  url: '/api/' + filter,
-                  method: 'GET',
-                  params: {
-                    search: $scope.search
-                  }
+                    url: '/api/' + filter,
+                    method: 'GET',
+                    params: {
+                        search: $scope.search
+                    }
                 };
-                console.log($scope.filters);
-                if(filter == "tags"){
-                  config.params.collections = Object.keys( $scope.filters )
-                  .map(function(col){
-                    return col;
-                  })
-                  .filter(function(el){
-                    return typeof el === 'string' && el != 'tags';
-                  });
+                console.log( $scope.filters );
+                if ( filter == "tags" ) {
+                    config.params.collections = Object.keys( $scope.filters )
+                        .map( function ( col ) {
+                            return col;
+                        } )
+                        .filter( function ( el ) {
+                            return typeof el === 'string' && el != 'tags';
+                        } );
 
-                  if(config.params.collections.length < 2){
-                    delete config.params.collections;
-                  }
+                    if ( config.params.collections.length < 2 ) {
+                        delete config.params.collections;
+                    }
                 }
 
                 $http( config )
@@ -167,11 +166,11 @@ app.controller( 'mathFormula/add', function (
             time: $scope.input.time
         } ];
 
-        console.debug("PAYLOAD",payload);
-        Object.keys($scope.input)
-         .forEach(function(elem){
-           console.log("%c"+elem+": "+JSON.stringify($scope.input[elem]),"background-color: black; color: #2BFF00");
-         });
+        console.debug( "PAYLOAD", payload );
+        Object.keys( $scope.input )
+            .forEach( function ( elem ) {
+                console.log( "%c" + elem + ": " + JSON.stringify( $scope.input[ elem ] ), "background-color: black; color: #2BFF00" );
+            } );
 
         // Search the value
         $http.post( '/api/rules/getVars', {
@@ -207,7 +206,7 @@ app.controller( 'mathFormula/add', function (
             };
 
             if ( item.last )
-              getItemLastTypes(item.last, res.types);
+                getItemLastTypes( item.last, res.types );
 
 
             // Populate the results
@@ -224,25 +223,25 @@ app.controller( 'mathFormula/add', function (
      * @param {Object} last Item.last
      * @param {Array} res Result
      */
-    function getItemLastTypes( last, res ){
-      Object.keys( last )
-      .forEach( function foreach( t ) {
-          var type = [ last[ t ].type, last[ t ].id ];
-          if ( !~res.indexOf( type ) )
-              res.push( type );
+    function getItemLastTypes( last, res ) {
+        Object.keys( last )
+            .forEach( function foreach( t ) {
+                var type = [ last[ t ].type, last[ t ].id ];
+                if ( !~res.indexOf( type ) )
+                    res.push( type );
 
-          /**
-          * check inner attributes name if value is object
-          */
-          if(angular.isObject(last[t].value)){
-            Object.keys( last[t].value )
-              .forEach( function foreach( t ) {
-                var ndType = [t, undefined]
-                if ( !~res.indexOf( ndType ) )
-                    res.push( ndType );
-              } );
-          }
-      } );
+                /**
+                 * check inner attributes name if value is object
+                 */
+                if ( angular.isObject( last[ t ].value ) ) {
+                    Object.keys( last[ t ].value )
+                        .forEach( function foreach( t ) {
+                            var ndType = [ t, undefined ];
+                            if ( !~res.indexOf( ndType ) )
+                                res.push( ndType );
+                        } );
+                }
+            } );
     }
 
     // Select the line as input
@@ -270,13 +269,13 @@ app.controller( 'mathFormula/add', function (
             delete $scope.input.device;
     };
 
-    $scope.isInvalid = function isInvalid( varName ){
-      if($scope.formulaInput)
-        return $scope.badName(varName) || !$scope.input.device || !$scope.input.type;
-      else {
-        return $scope.badName(varName) || !$scope.input.device;
-      }
-    }
+    $scope.isInvalid = function isInvalid( varName ) {
+        if ( $scope.formulaInput )
+            return $scope.badName( varName ) || !$scope.input.device || !$scope.input.type;
+        else {
+            return $scope.badName( varName ) || !$scope.input.device;
+        }
+    };
 
     // Check varName validity
     $scope.badName = function badName( varName ) {

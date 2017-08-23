@@ -10,5 +10,5 @@
     ng-include(src='"mathFormula/add/" + tabview + ".pug"')
     
 .modal-footer
-    button.btn.btn-sm.default(type='button', ng-click='closeThisDialog()') Close
-    button.btn.btn-sm.custom(type='button', ng-click='save()', ng-if="!disableSaveBTN") Save changes
+    button.btn.btn-sm.default(type='button', ng-click='closeThisDialog()') {{ 'cancel:addInput'| translate }}
+    button.btn.btn-sm.custom(type='button', ng-click='confirm($parent.input)', ng-if="!disableSaveBTN") {{ 'add:addInput'| translate }}
