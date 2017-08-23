@@ -514,7 +514,10 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
         $scope.widget.chartObject.options.hAxis = {
             showTextEvery: showTextEvery,
             slantedText: true,
-            slantedTextAngle: 50
+            slantedTextAngle: ($scope.widget.options
+              && $scope.widget.options.chartOptions
+              && $scope.widget.options.chartOptions.hAxis
+              && $scope.widget.options.chartOptions.hAxis.slantedTextAngle) ? $scope.widget.options.chartOptions.hAxis.slantedTextAngle : 50
         };
 
         if ( changePattern ) {
