@@ -277,7 +277,6 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 });
                 setMeasurementsCount();
                 scope.resize();
-                scope.resize();
                 scope.first = 1;
                 scope.last = scope.filtered;
                 listViewService.emit('tableHeadFixer:run');
@@ -342,10 +341,16 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
 
             var __doResize = function(delay){
               if (scope.filtered > 0) {
+                if(delay){
                   $timeout(function () {
                       scope.setListHeight();
                       scope.setColumnsWidth();
-                  }, delay || 100);
+                  }, delay);
+                }
+                else{
+                  scope.setListHeight();
+                  scope.setColumnsWidth();
+                }
               }
             }
             /**
@@ -354,11 +359,17 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
             * @param {number} delay
             */
             scope.resize = function (delay) {
+              var times = 8;
+              var ms = 150;
               console.log("resize");
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
-              }, 100, 11);
+              }, ms, times);
+              $timeout(function(){
+                console.log("re-resize");
+                  __doResize(delay)
+              }, (times*ms + 1000));
             };
 
             /**
