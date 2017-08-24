@@ -445,7 +445,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                                 }
                         }
                     } catch (e) {
-                        console.warn("[listView] setColumnsWidth:", e);
+                        //console.warn("[listView] setColumnsWidth:", e);
                     }
                 }
             };
