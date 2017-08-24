@@ -343,12 +343,10 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               if (scope.filtered > 0) {
                 if(delay){
                   $timeout(function () {
-                      scope.setListHeight();
                       scope.setColumnsWidth();
                   }, delay);
                 }
                 else{
-                  scope.setListHeight();
                   scope.setColumnsWidth();
                 }
               }
@@ -359,17 +357,23 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
             * @param {number} delay
             */
             scope.resize = function (delay) {
-              var times = 8;
-              var ms = 150;
-              console.log("resize");
+              $timeout(function(){
+                scope.setListHeight();
+              }, delay || 100);
+
+              var times = 7;
+              var ms = 160;
+
+              console.log("resize",ms,"x",times);
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
               }, ms, times);
               $timeout(function(){
-                console.log("re-resize");
-                  __doResize(delay)
-              }, (times*ms + 1000));
+                // shadow
+                console.log("%cevil resize","background-color: black; color: red");
+                  scope.setColumnsWidth(true);
+              }, (times*ms + 666));
             };
 
             /**
@@ -397,7 +401,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 }
             };
 
-            scope.setColumnsWidth = function setColumnsWidth() {
+            scope.setColumnsWidth = function setColumnsWidth(doNotReset) {
                 //console.log('setColumnsWidth');
                 var scrollHead = document.querySelectorAll('.dataTables_scrollHead');
                 var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
@@ -411,9 +415,12 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                             var headTh = headThs[i];
                             var bodyTd = bodyTds[i];
 
-                            // remove all the custom style set previously (restart from scratch)
-                            $(headTh).css({"minWidth": "", "maxWidth": "", "width": ""});
-                            $(bodyTd).css({"minWidth": "", "maxWidth": "", "width": ""});
+                            if(!doNotReset){
+                              // remove all the custom style set previously (restart from scratch)
+                              $(headTh).css({"minWidth": "", "maxWidth": "", "width": ""});
+                              $(bodyTd).css({"minWidth": "", "maxWidth": "", "width": ""});
+                            }
+
 
                                 var thWidth = parseFloat(window.getComputedStyle(headTh).width);
                                 var thPadding = (parseFloat(window.getComputedStyle(headTh).paddingRight)
