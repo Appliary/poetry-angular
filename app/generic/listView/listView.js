@@ -358,7 +358,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               __doResize(delay);
               $interval(function(){
                 __doResize(delay)
-              }, 100, 14);
+              }, 100, 11);
             };
 
             /**

@@ -38,12 +38,6 @@ app.controller( 'generic/list', function (
       $timeout(function(){
         listViewService.emit('resize');
       }, 100);
-      $timeout(function(){
-        listViewService.emit('resize');
-      }, 1300);
-      $timeout(function(){
-        listViewService.emit('resize');
-      }, 2700);
     })
 
     var lastCall = {
