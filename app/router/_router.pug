@@ -19,7 +19,7 @@
     .page-toolbar(ng-if="$root.__module.config.toolbox")
         .btn-group.pull-right
             button.btn.btn-sm.btn-outline.custom.dropdown-toggle(type='button', data-toggle='dropdown')
-                | {{'Actions'|translate}}
+                | {{ 'Actions' | translate }}&nbsp;
                 i.fa.fa-angle-down
             ul.dropdown-menu.pull-right(role='menu')
                 li(ng-repeat='( name, config ) in $root.__module.config.toolbox', ng-click="openToolbox( name )")

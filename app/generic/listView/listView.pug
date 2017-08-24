@@ -104,7 +104,7 @@
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group.pull-right
                                 button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | {{'Actions' | translate }}
+                                    | {{ 'Actions' | translate }}&nbsp;
                                     i.fa.fa-angle-down
                                 ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
                                     li
