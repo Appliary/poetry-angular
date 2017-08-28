@@ -205,8 +205,6 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 });
             }
 
-
-
             // displayTranslatable
             scope.displayTranslatable = displayTranslatable;
 
@@ -221,8 +219,9 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
             scope.displaySubkey = displaySubkey;
 
             function displaySubkey(row, column) {
-                return findSubkeyValue(row, column)
-                    .$$state.value;
+                var subkeyValue = findSubkeyValue(row, column).$$state.value;
+                //console.log(subkeyValue);
+                return subkeyValue;
             }
 
             // getColumnType

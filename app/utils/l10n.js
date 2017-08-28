@@ -4,6 +4,9 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
 
         //console.log("%clocalize","background-color: black; color: #2BFF00");
         //console.log("localize input ",(typeof input), input);
+        if(( !input && isNaN(input) ) || (angular.isUndefined(input))){
+          return;
+        }
 
         if ( kind == 'daily' ) {
             if ( !input ) return;
