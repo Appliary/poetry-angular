@@ -386,19 +386,21 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                  */
                 var globalHeight = $window.innerHeight;
                 var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
+                try{
+                  for (indexList = 0; indexList < scrollBody.length; indexList++) {
+                      var tableElem = angular.element(scrollBody[indexList]);
+                      var offsetTop = tableElem.prop('offsetTop');
+                      var margin = 350;
+                      scope.listHeight = globalHeight - (margin + offsetTop);
 
-                for (indexList = 0; indexList < scrollBody.length; indexList++) {
-                    var tableElem = angular.element(scrollBody[indexList]);
-                    var offsetTop = tableElem.prop('offsetTop');
-                    var margin = 350;
-                    scope.listHeight = globalHeight - (margin + offsetTop);
+                      if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
+                          scope.listHeight = scope.maxHeight;
+                      }
 
-                    if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
-                        scope.listHeight = scope.maxHeight;
-                    }
+                      scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
+                  }
+                }catch(e){}
 
-                    scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
-                }
             };
 
             scope.setColumnsWidth = function setColumnsWidth(doNotReset) {
