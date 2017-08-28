@@ -107,7 +107,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                                 td {{input.id}}
                                 td {{input.type}} {{input.indice}}
                                 td.pull-right
-                                    a.btn.btn-circle.red(ng-click="widget.options.inputs.splice(i,1)")
+                                    a.btn.btn-circle.btn-icon-only.red(ng-click="widget.options.inputs.splice(i,1)")
                                         i.fa.fa-trash
                             tr
                                 td: input.form-control(ng-class="{error: !newInput.varName}", ng-model="newInput.varName")
@@ -123,7 +123,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                                     option(ng-repeat="( i, type) in newInput.types", value="{{i}}")
                                         | {{type[0]}}    {{type[1]}}
                                 td.pull-right
-                                    a.btn.btn-circle.custom(ng-click="addInput()")
+                                    a.btn.btn-circle.btn-icon-only.custom(ng-click="addInput()")
                                         i.fa.fa-plus
         
         .modal-footer
