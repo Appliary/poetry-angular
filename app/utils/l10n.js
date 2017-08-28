@@ -4,9 +4,6 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
 
         //console.log("%clocalize","background-color: black; color: #2BFF00");
         //console.log("localize input ",(typeof input), input);
-        if(( !input && isNaN(input) ) || (angular.isUndefined(input))){
-          return;
-        }
 
         if ( kind == 'daily' ) {
             if ( !input ) return;
@@ -98,8 +95,12 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
           // matrix
           console.log("%cMissing user locale ???","background-color: black; color: #2BFF00");
         }
+        var val = input.toLocaleString( $rootScope.user.locale || undefined );
 
-        return input.toLocaleString( $rootScope.user.locale || undefined );
+        if(val == "NaN"){
+          return;
+        }
+        return val;
     }
 
     return localize;
