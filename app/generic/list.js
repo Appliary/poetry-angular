@@ -91,6 +91,7 @@ app.controller( 'generic/list', function (
         $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
         //all defaults
         $scope.defaults = angular.isObject( $scope.$root.__module.config.defaults ) ? $scope.$root.__module.config.defaults : {};
+        $scope.fieldsType = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fieldsType || {};
     } );
 
     var isLoading = false;
@@ -313,6 +314,35 @@ app.controller( 'generic/list', function (
                 // Update list
                 if ( res.data && res.data._id ) {
                     $scope.item = angular.copy( res.data );
+
+                    // fieldsType
+                    var types = ["string", "object", "number"];
+                    console.log("$scope.fieldsType", $scope.fieldsType);
+                    if(Object.keys($scope.fieldsType).length){
+                      // matrix
+                      console.log("%cCheck fieldsType","background-color: black; color: #2BFF00");
+                      Object.keys($scope.fieldsType).forEach(function(p){
+                        var type = $scope.fieldsType[p];
+                        // matrix
+                        console.log("%cType "+type,"background-color: black; color: #2BFF00");
+                        if(types.indexOf(type) > -1){
+                          if(type == "string" && angular.isObject($scope.item[p])){
+                            $scope.item[p] = $scope.item[p]._id;
+                          }
+                        }else{
+                          if(angular.isObject($scope.item[p])){
+                            $scope.item[p] = $scope.item[p][type];
+                            console.log($scope.item[p]);
+                          }
+                        }
+                      });
+                    }
+
+                    if($scope.item.contact && angular.isObject($scope.item.contact)){
+                      $scope.item.contact = $scope.item.contact._id;
+                    }
+
+
                     toastr.success(
                         $filter( 'translate' )( 'The element has been saved:' + $scope.$root.__module.name ),
                         $filter( 'translate' )( 'Saved' )
