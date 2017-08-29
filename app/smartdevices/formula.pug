@@ -1,0 +1,14 @@
+ng-include(src="'mathFormula/editor.pug'")
+
+div(ng-controller="smartdevices/formula")
+    h4 {{'Rebuild since' + ':' + $root.__module.name | translate }}
+
+    .form-group
+        input.form-control(type ="date", ng-model="date")
+        //- datepicker(ng-model="date")
+
+    .text-right
+        button.btn(ng-click="rebuild()") {{ 'Rebuild' }}
+
+//- span.saved( ng-if=' rebuilt ' )
+        | {{ rebuiltMsg + ':' + $root.__module.name | translate }}
