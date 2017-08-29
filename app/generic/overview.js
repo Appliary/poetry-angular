@@ -5,9 +5,12 @@ app.controller('generic/overview', function ($scope, $http, ngDialog, validation
     $scope.$watch('$root.__module.name', function init() {
 
         api = $scope.$root.__module.editApi || $scope.$root.__module.api;
+        var suffix = $scope.$root.__module.suffix === false ? '' :
+          ($scope.$root.__module.suffix === true ? '/validation' : ($scope.$root.__module.suffix || '/validation')
+        );
 
         // Get validation object
-        $http.put('/__joi' + api + '/validation')
+        $http.put('/__joi' + api + suffix)
             .then(function success(response) {
                 if (!response.data.payload._inner || !response.data.payload._inner.children) {
                     $scope.__joi = response.data.payload;
