@@ -311,27 +311,7 @@ app.controller( 'generic/list', function (
                 if ( res.data && res.data._id ) {
                     $scope.item = angular.copy( res.data );
 
-                    // fieldsType
-                    var types = ["string", "object", "number"];
-                    if(Object.keys($scope.fieldsType).length){
-                      Object.keys($scope.fieldsType).forEach(function(p){
-                        var type = $scope.fieldsType[p];
-                        if(types.indexOf(type) > -1){
-                          if(type == "string" && angular.isObject($scope.item[p])){
-                            $scope.item[p] = $scope.item[p]._id;
-                          }
-                        }else{
-                          if(angular.isObject($scope.item[p])){
-                            $scope.item[p] = $scope.item[p][type];
-                          }
-                        }
-                      });
-                    }
-
-                    if($scope.item.contact && angular.isObject($scope.item.contact)){
-                      $scope.item.contact = $scope.item.contact._id;
-                    }
-
+                    formatItemFieldType();
 
                     toastr.success(
                         $filter( 'translate' )( 'The element has been saved:' + $scope.$root.__module.name ),
@@ -408,11 +388,36 @@ app.controller( 'generic/list', function (
         $http.get( api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data;
-                //$scope.setColumnsWidth();
+                //formatItemFieldType();
             }, function ( response ) {
                 errorHandler( response );
                 $location.path( '/' + $scope.$root.__module.name );
             } );
+    }
+
+    /**
+     * Uses 'fieldType' property in tab config to format item's properties
+     *
+     */
+    function formatItemFieldType(){
+      if(!($scope.item && angular.isObject($scope.item)))
+          return;
+      // fieldsType
+      var types = ["string", "object", "number"];
+      if(Object.keys($scope.fieldsType).length){
+        Object.keys($scope.fieldsType).forEach(function(p){
+          var type = $scope.fieldsType[p];
+          if(types.indexOf(type) > -1){
+            if(type == "string" && angular.isObject($scope.item[p])){
+              $scope.item[p] = $scope.item[p]._id;
+            }
+          }else{
+            if(angular.isObject($scope.item[p])){
+              $scope.item[p] = $scope.item[p][type];
+            }
+          }
+        });
+      }
     }
 
     function errorHandler( response ) {

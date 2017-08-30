@@ -369,10 +369,8 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 __doResize(delay)
               }, ms, times);
               $timeout(function(){
-                // shadow
-                console.log("%cevil resize","background-color: black; color: red");
                   scope.setColumnsWidth(true);
-              }, (times*ms + 666));
+              }, (times*ms + (2*ms)));
             };
 
             /**
