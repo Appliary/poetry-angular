@@ -17,9 +17,6 @@ app.controller( 'generic/list', function (
       if(!$scope.listViewConfig) return;
       if(!$scope.listViewConfig.selectColumns) return;
 
-      // matrix
-      console.log("%cvisibleColumns change","background-color: black; color: #2BFF00");
-      console.log(nv);
       $scope.columns = $scope.columns.map(function(c, i){
         var r = c;
         if(angular.isString(c)){
@@ -279,7 +276,6 @@ app.controller( 'generic/list', function (
         if ( angular.isArray( $scope.item.__readonlyFields ) ) {
             $scope.item.__readonlyFields.forEach( function ( field ) {
                 if ( $scope.item[ field ] ) {
-                    console.log("readOnly:", field);
                     delete $scope.item[ field ];
                 }
             } );
@@ -317,14 +313,9 @@ app.controller( 'generic/list', function (
 
                     // fieldsType
                     var types = ["string", "object", "number"];
-                    console.log("$scope.fieldsType", $scope.fieldsType);
                     if(Object.keys($scope.fieldsType).length){
-                      // matrix
-                      console.log("%cCheck fieldsType","background-color: black; color: #2BFF00");
                       Object.keys($scope.fieldsType).forEach(function(p){
                         var type = $scope.fieldsType[p];
-                        // matrix
-                        console.log("%cType "+type,"background-color: black; color: #2BFF00");
                         if(types.indexOf(type) > -1){
                           if(type == "string" && angular.isObject($scope.item[p])){
                             $scope.item[p] = $scope.item[p]._id;
@@ -332,7 +323,6 @@ app.controller( 'generic/list', function (
                         }else{
                           if(angular.isObject($scope.item[p])){
                             $scope.item[p] = $scope.item[p][type];
-                            console.log($scope.item[p]);
                           }
                         }
                       });
