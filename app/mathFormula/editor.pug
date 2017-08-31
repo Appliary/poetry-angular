@@ -66,7 +66,7 @@ div(ng-controller='mathFormula/editor')
 
     div(ng-if="!formulaInput")
         .form-group
-                input(ng-model="item.timeout", required, type="number")
+                input.form-control(ng-model="item.timeout", required, type="number")
 
     .text-right
         button.btn.btn-sm.custom(ng-click='save()', ng-disabled='currentOutputErr')
