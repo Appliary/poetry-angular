@@ -73,6 +73,9 @@
                             //- data
                             span( ng-if='isDefined(row[column.key]) && isDataType(column) && !isContext(row[ column.key ])')
                                 | {{row[ column.key ] | localize}}
+                            //-date
+                            span( ng-if='getColumnType(column) === "date" && !isContext(row[ column.key ]) && !isFunction(column.link)')
+                                | {{row[ column.key ] | localize:(column.param || 'daily')}}
                             //- context
                             span( ng-if="isDefined(row[column.key]) && isContext(row[ column.key ])")
                                 //- tags-viewer to remove if it continues to crash so much
