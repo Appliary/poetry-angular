@@ -134,6 +134,9 @@ app.controller('mathFormula/editor', function (
     $scope.$watchCollection('item.inputs', getVars);
 
     function testFormula(n) {
+        if($scope.item.source == 'timeout')
+          return;
+
         if (!n)
             return ($scope.currentOutput = '');
 
