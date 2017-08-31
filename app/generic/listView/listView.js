@@ -370,7 +370,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               }, ms, times);
               $timeout(function(){
                   scope.setColumnsWidth(true);
-              }, (times*ms + (2*ms)));
+              }, (times*ms + 670));
             };
 
             /**
