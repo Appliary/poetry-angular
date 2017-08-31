@@ -50,7 +50,7 @@ div(ng-controller='mathFormula/editor')
                     //- Delete btn
                     td.text-right: a.btn.btn-circle.btn-icon-only.red(ng-click='inputs.remove(i)')
                             i.fa.fa-trash
-                            
+
                 tr
                     td( colspan="4" ) &nbsp;
                     td.text-right( colspan="2" )
@@ -63,6 +63,10 @@ div(ng-controller='mathFormula/editor')
                 textarea.form-control( ng-model='item.formula', rows="3" )
         .form-group
                 input.form-control( disabled, ng-value='currentOutput' )
+
+    div(ng-if="!formulaInput")
+        .form-group
+                input(ng-model="item.timeout", required, type="number")
 
     .text-right
         button.btn.btn-sm.custom(ng-click='save()', ng-disabled='currentOutputErr')
