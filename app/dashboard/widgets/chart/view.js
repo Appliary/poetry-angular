@@ -466,7 +466,10 @@ app.controller( 'dashboard/widgets/chart/view', function ChartWidget(
 
             // sort the array
             result.sort( function ( a, b ) {
-                return a[ 0 ].getTime() < b[ 0 ].getTime();
+                var rSort = a[ 0 ].getTime() < b[ 0 ].getTime();
+                if (!rSort) return 1;
+                if (rSort) return -1;
+                return 0;
             } );
 
             var total = result.length;
