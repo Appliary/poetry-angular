@@ -135,7 +135,7 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                     return 'readOnly';
 
                 } catch ( e ) {
-                    console.log(e);
+                    //console.log(e);
                     return 'readOnly';
                 }
 

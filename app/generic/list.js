@@ -17,9 +17,6 @@ app.controller( 'generic/list', function (
       if(!$scope.listViewConfig) return;
       if(!$scope.listViewConfig.selectColumns) return;
 
-      // matrix
-      console.log("%cvisibleColumns change","background-color: black; color: #2BFF00");
-      console.log(nv);
       $scope.columns = $scope.columns.map(function(c, i){
         var r = c;
         if(angular.isString(c)){
@@ -38,12 +35,6 @@ app.controller( 'generic/list', function (
       $timeout(function(){
         listViewService.emit('resize');
       }, 100);
-      $timeout(function(){
-        listViewService.emit('resize');
-      }, 1300);
-      $timeout(function(){
-        listViewService.emit('resize');
-      }, 2700);
     })
 
     var lastCall = {
@@ -97,6 +88,7 @@ app.controller( 'generic/list', function (
         $scope.buttons = $scope.$root.__module.config.tabs[ $scope.__view || '' ].buttons || [];
         //all defaults
         $scope.defaults = angular.isObject( $scope.$root.__module.config.defaults ) ? $scope.$root.__module.config.defaults : {};
+        $scope.fieldsType = $scope.$root.__module.config.tabs[ $scope.__view || '' ].fieldsType || {};
     } );
 
     var isLoading = false;
@@ -199,8 +191,6 @@ app.controller( 'generic/list', function (
                         $scope.columns = $scope.$root.__module.config.columns;
                     else $scope.columns = [];
 
-                    $scope.visibleColumns = [];
-
                     if ( !$scope.columns.length )
                         $scope.data.forEach( function ( data ) {
                             Object.keys( data )
@@ -286,7 +276,6 @@ app.controller( 'generic/list', function (
         if ( angular.isArray( $scope.item.__readonlyFields ) ) {
             $scope.item.__readonlyFields.forEach( function ( field ) {
                 if ( $scope.item[ field ] ) {
-                    console.log("readOnly:", field);
                     delete $scope.item[ field ];
                 }
             } );
@@ -321,6 +310,9 @@ app.controller( 'generic/list', function (
                 // Update list
                 if ( res.data && res.data._id ) {
                     $scope.item = angular.copy( res.data );
+
+                    formatItemFieldType();
+
                     toastr.success(
                         $filter( 'translate' )( 'The element has been saved:' + $scope.$root.__module.name ),
                         $filter( 'translate' )( 'Saved' )
@@ -396,11 +388,36 @@ app.controller( 'generic/list', function (
         $http.get( api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data;
-                //$scope.setColumnsWidth();
+                //formatItemFieldType();
             }, function ( response ) {
                 errorHandler( response );
                 $location.path( '/' + $scope.$root.__module.name );
             } );
+    }
+
+    /**
+     * Uses 'fieldType' property in tab config to format item's properties
+     *
+     */
+    function formatItemFieldType(){
+      if(!($scope.item && angular.isObject($scope.item)))
+          return;
+      // fieldsType
+      var types = ["string", "object", "number"];
+      if(Object.keys($scope.fieldsType).length){
+        Object.keys($scope.fieldsType).forEach(function(p){
+          var type = $scope.fieldsType[p];
+          if(types.indexOf(type) > -1){
+            if(type == "string" && angular.isObject($scope.item[p])){
+              $scope.item[p] = $scope.item[p]._id;
+            }
+          }else{
+            if(angular.isObject($scope.item[p])){
+              $scope.item[p] = $scope.item[p][type];
+            }
+          }
+        });
+      }
     }
 
     function errorHandler( response ) {

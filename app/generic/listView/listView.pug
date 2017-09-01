@@ -4,7 +4,7 @@
             .dataTables_scrollHeadInner()
                 table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf", thf-hide-scroll="true")
                     thead: tr
-                        th.sorting_disabled(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        th.sorting_disabled.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                         //- columns header display
                         th.sorting( ng-repeat='column in columns'
                         , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
@@ -27,7 +27,7 @@
             table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf")
                 thead
                     tr
-                        th(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        th.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             .dataTables_sizing
                         th(ng-repeat='column in columns', ng-if="!column.hide", class="{{column.class}}")
                             .dataTables_sizing
@@ -39,7 +39,7 @@
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         //- checkboxes
-                        td(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        td.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                 input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
                                 span
@@ -73,14 +73,21 @@
                             //- data
                             span( ng-if='isDefined(row[column.key]) && isDataType(column) && !isContext(row[ column.key ])')
                                 | {{row[ column.key ] | localize}}
+                            //-date
+                            span( ng-if='getColumnType(column) === "date" && !isContext(row[ column.key ]) && !isFunction(column.link)')
+                                | {{row[ column.key ] | localize:(column.param || 'daily')}}
                             //- context
                             span( ng-if="isDefined(row[column.key]) && isContext(row[ column.key ])")
                                 //- tags-viewer to remove if it continues to crash so much
                                 tags-viewer(array="[row[ column.key ]]")
                             //- subkey
-                            span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ]) && !isFunction(column.link)')
+                            span( ng-if='getColumnType(column) === "subkey" && column.subtype != "date" && !isContext(row[ column.key ]) && !isFunction(column.link)')
                                 span(ng-if="!isUndefined(displaySubkey(row, column))")
                                     | {{displaySubkey(row, column) | localize}}
+                            //- subkey + subtype == 'date'
+                            span( ng-if='getColumnType(column) === "subkey" && column.subtype == "date" && !isContext(row[ column.key ]) && !isFunction(column.link)')
+                                span(ng-if="!isUndefined(displaySubkey(row, column))")
+                                    | {{displaySubkey(row, column) | localize:column.param}}
                             //- subkey + link
                             span( ng-if='getColumnType(column) === "subkey" && !isContext(row[ column.key ]) && isFunction(column.link)')
                                 span(ng-if="!isUndefined(displaySubkey(row, column))")
@@ -104,7 +111,7 @@
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group.pull-right
                                 button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                                    | {{'Actions'
+                                    | {{ 'Actions' | translate }}&nbsp;
                                     i.fa.fa-angle-down
                                 ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
                                     li
@@ -120,6 +127,6 @@
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')
-        | {{'Showing'|translate}} {{ first|localize }} {{'to'|translate}} {{ last |localize}} {{'of'|translate}} {{ filtered|localize }} {{'records'|translate}}
+        | {{ "Showing:listView" | translate }} {{ first | localize}} {{ "to:listView" | translate }} {{ last | localize }} {{ "of:listView" | translate }} {{ filtered | localize }} {{ "records:listView" | translate }}
     .dataTables_info(ng-if='filtered <= 0')
         | {{'noData'|translate}}

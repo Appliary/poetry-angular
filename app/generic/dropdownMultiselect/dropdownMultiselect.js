@@ -1,4 +1,4 @@
-app.directive("customDropdownMultiselect", function(){
+app.directive("customDropdownMultiselect", function($filter){
   return {
     restrict: 'EA',
     transclude: false,
@@ -15,8 +15,15 @@ app.directive("customDropdownMultiselect", function(){
         }
         scope.columns = nv.map(function(opt, i){
           var nopt = angular.isString(opt) ? {label: opt, key: opt} : angular.copy(opt);
-          nopt.label = nopt.label || nopt.key;
+          nopt.label = $filter('translate')(nopt.label || nopt.key);
           nopt.id = i;
+          if(!nopt.hide && angular.isArray(scope.selectedModel)){
+            if(!scope.selectedModel.some(function(se){
+              return se.id == nopt.id;
+            })){
+              scope.selectedModel.push(nopt);
+            }
+          }
           return nopt;
         });
       });

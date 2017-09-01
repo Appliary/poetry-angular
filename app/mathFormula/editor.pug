@@ -48,13 +48,13 @@ div(ng-controller='mathFormula/editor')
                         | [ {{ inputValues[ input.varName ][0] }},… ]
 
                     //- Delete btn
-                    td.text-right: a.btn.btn-circle.red(ng-click='inputs.remove(i)')
+                    td.text-right: a.btn.btn-circle.btn-icon-only.red(ng-click='inputs.remove(i)')
                             i.fa.fa-trash
-                            
+
                 tr
                     td( colspan="4" ) &nbsp;
                     td.text-right( colspan="2" )
-                        a.btn.btn-circle.custom(ng-click='inputs.add()')
+                        a.btn.btn-circle.btn-icon-only.custom(ng-click='inputs.add()')
                             i.fa.fa-plus
 
     h4(ng-if="formulaInput") {{ 'formula:' + $root.__module.name + ':title' | translate }}
@@ -63,6 +63,10 @@ div(ng-controller='mathFormula/editor')
                 textarea.form-control( ng-model='item.formula', rows="3" )
         .form-group
                 input.form-control( disabled, ng-value='currentOutput' )
+
+    div(ng-if="!formulaInput")
+        .form-group
+                input.form-control(ng-model="item.timeout", required, type="number")
 
     .text-right
         button.btn.btn-sm.custom(ng-click='save()', ng-disabled='currentOutputErr')

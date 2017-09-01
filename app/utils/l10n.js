@@ -95,8 +95,12 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
           // matrix
           console.log("%cMissing user locale ???","background-color: black; color: #2BFF00");
         }
+        var val = input.toLocaleString( $rootScope.user.locale || undefined );
 
-        return input.toLocaleString( $rootScope.user.locale || undefined );
+        if(val == "NaN"){
+          return;
+        }
+        return val;
     }
 
     return localize;

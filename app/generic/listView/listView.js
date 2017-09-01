@@ -1,4 +1,4 @@
-app.directive("listView", function ($timeout, $window, $q, listViewService) {
+app.directive("listView", function ($timeout,$interval, $window, $q, listViewService) {
     return {
         restrict: 'EA',
         transclude: false,
@@ -104,7 +104,7 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
             scope.isDefined = isDefined;
 
             function isDefined(v) {
-                return v !== null && !angular.isUndefined(v) && v;
+                return v !== null && !angular.isUndefined(v) && (v || v === 0);
             }
 
             // isUndefined
@@ -205,8 +205,6 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 });
             }
 
-
-
             // displayTranslatable
             scope.displayTranslatable = displayTranslatable;
 
@@ -221,8 +219,9 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
             scope.displaySubkey = displaySubkey;
 
             function displaySubkey(row, column) {
-                return findSubkeyValue(row, column)
-                    .$$state.value;
+                var subkeyValue = findSubkeyValue(row, column).$$state.value;
+                //console.log(subkeyValue);
+                return subkeyValue;
             }
 
             // getColumnType
@@ -277,7 +276,6 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 });
                 setMeasurementsCount();
                 scope.resize();
-                scope.resize();
                 scope.first = 1;
                 scope.last = scope.filtered;
                 listViewService.emit('tableHeadFixer:run');
@@ -311,6 +309,8 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 });
 
                 setMeasurementsCount();
+                scope.resize();
+                listViewService.emit('tableHeadFixer:run');
             });
 
 
@@ -338,14 +338,39 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                 }
             };
 
-            scope.resize = function (delay) {
-                if (scope.filtered > 0) {
-                    $timeout(function () {
-                        console.log("resize");
-                        scope.setListHeight();
-                        scope.setColumnsWidth();
-                    }, delay || 100);
+            var __doResize = function(delay){
+              if (scope.filtered > 0) {
+                if(delay){
+                  $timeout(function () {
+                      scope.setColumnsWidth();
+                  }, delay);
                 }
+                else{
+                  scope.setColumnsWidth();
+                }
+              }
+            }
+            /**
+            * @function resize
+            * @description Calls local '__doResize' X times to be sure to get the right size
+            * @param {number} delay
+            */
+            scope.resize = function (delay) {
+              $timeout(function(){
+                scope.setListHeight();
+              }, delay || 100);
+
+              var times = 7;
+              var ms = 160;
+
+              console.log("resize",ms,"x",times);
+              __doResize(delay);
+              $interval(function(){
+                __doResize(delay)
+              }, ms, times);
+              $timeout(function(){
+                  scope.setColumnsWidth(true);
+              }, (times*ms + 670));
             };
 
             /**
@@ -358,22 +383,24 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
                  */
                 var globalHeight = $window.innerHeight;
                 var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
+                try{
+                  for (indexList = 0; indexList < scrollBody.length; indexList++) {
+                      var tableElem = angular.element(scrollBody[indexList]);
+                      var offsetTop = tableElem.prop('offsetTop');
+                      var margin = 350;
+                      scope.listHeight = globalHeight - (margin + offsetTop);
 
-                for (indexList = 0; indexList < scrollBody.length; indexList++) {
-                    var tableElem = angular.element(scrollBody[indexList]);
-                    var offsetTop = tableElem.prop('offsetTop');
-                    var margin = 350;
-                    scope.listHeight = globalHeight - (margin + offsetTop);
+                      if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
+                          scope.listHeight = scope.maxHeight;
+                      }
 
-                    if (!scope.listHeight || (angular.isNumber(scope.maxHeight) && scope.maxHeight < scope.listHeight)) {
-                        scope.listHeight = scope.maxHeight;
-                    }
+                      scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
+                  }
+                }catch(e){}
 
-                    scope.lineHeight = tableElem[0].scrollHeight / scope.data.length;
-                }
             };
 
-            scope.setColumnsWidth = function setColumnsWidth() {
+            scope.setColumnsWidth = function setColumnsWidth(doNotReset) {
                 //console.log('setColumnsWidth');
                 var scrollHead = document.querySelectorAll('.dataTables_scrollHead');
                 var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
@@ -384,30 +411,40 @@ app.directive("listView", function ($timeout, $window, $q, listViewService) {
 
                     try {
                         for (var i = 0; i < headThs.length; i++) {
-                            var thWidth = parseFloat(window.getComputedStyle(headThs[i]).width);
-                            var thPadding = (parseFloat(window.getComputedStyle(headThs[i]).paddingRight)
-                                + parseFloat(window.getComputedStyle(headThs[i]).paddingLeft));
+                            var headTh = headThs[i];
+                            var bodyTd = bodyTds[i];
 
-                            var tdWidth = parseFloat(window.getComputedStyle(bodyTds[i]).width);
-                            var tdPadding = (parseFloat(window.getComputedStyle(bodyTds[i]).paddingRight)
-                                + parseFloat(window.getComputedStyle(bodyTds[i]).paddingLeft));
-
-                            if ((thWidth + thPadding) < (tdWidth + tdPadding)) {
-                                var newThWidth = tdWidth + (tdPadding - thPadding);
-
-                                headThs[i].style.minWidth = newThWidth + "px";
-                                headThs[i].style.maxWidth = newThWidth + "px";
-                                headThs[i].style.width = newThWidth + "px";
-                            } else {
-                                var newTdWidth = thWidth + (thPadding - tdPadding);
-
-                                bodyTds[ i ].style.minWidth = newTdWidth + "px";
-                                bodyTds[ i ].style.maxWidth = newTdWidth + "px";
-                                bodyTds[ i ].style.width = newTdWidth + "px";
+                            if(!doNotReset){
+                              // remove all the custom style set previously (restart from scratch)
+                              $(headTh).css({"minWidth": "", "maxWidth": "", "width": ""});
+                              $(bodyTd).css({"minWidth": "", "maxWidth": "", "width": ""});
                             }
+
+
+                                var thWidth = parseFloat(window.getComputedStyle(headTh).width);
+                                var thPadding = (parseFloat(window.getComputedStyle(headTh).paddingRight)
+                                    + parseFloat(window.getComputedStyle(headTh).paddingLeft));
+
+                                var tdWidth = parseFloat(window.getComputedStyle(bodyTd).width);
+                                var tdPadding = (parseFloat(window.getComputedStyle(bodyTd).paddingRight)
+                                    + parseFloat(window.getComputedStyle(bodyTd).paddingLeft));
+
+                                if ((thWidth + thPadding) < (tdWidth + tdPadding)) {
+                                    var newThWidth = tdWidth + (tdPadding - thPadding);
+
+                                    headTh.style.minWidth = newThWidth + "px";
+                                    headTh.style.maxWidth = newThWidth + "px";
+                                    headTh.style.width = newThWidth + "px";
+                                } else {
+                                    var newTdWidth = thWidth + (thPadding - tdPadding);
+
+                                    bodyTd.style.minWidth = newTdWidth + "px";
+                                    bodyTd.style.maxWidth = newTdWidth + "px";
+                                    bodyTd.style.width = newTdWidth + "px";
+                                }
                         }
                     } catch (e) {
-                        console.warn("[listView] setColumnsWidth:", e);
+                        //console.warn("[listView] setColumnsWidth:", e);
                     }
                 }
             };

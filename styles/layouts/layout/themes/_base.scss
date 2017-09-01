@@ -1223,3 +1223,11 @@ Nav-tabs
 .tabbable-line > .nav-tabs > li:hover {
     border-bottom-color: lighten($brand-main-color, 20%);    
 }
+
+
+/****
+Icon-picker
+****/
+.icon-picker .icon-selected {
+	background-color: $brand-main-color;
+}

@@ -8,10 +8,12 @@ app.directive('appAppselector', function ($window, $timeout) {
                     $scope.apps = r.data;
                     $scope.apps.sort();
 
-                    $timeout(function () {
-                        console.log("tabdrop");
-                        $('.nav-tabs').tabdrop();
-                    });
+                    for (let i = 1; i <= 5; i++) {
+                        $timeout(function () {
+                            console.log("tabdrop");
+                            $('.nav-tabs').tabdrop();
+                        }, i * 1000);
+                    }
                 });
 
             $scope.current = __appName;
