@@ -6,6 +6,10 @@ ng-include.row( src='"generic/form.pug"', ng-controller='generic/overview' )
             | {{ 'delete:button' | translate }}
         button.btn.btn-sm.custom( ng-click=' save() ', ng-if="!disableSaveBTN" )
             | {{ 'save:' + $root.__module.name + ':button' | translate }}
+    //-
+    .btn-toolbar.pull-right( ng-repeat=' button in buttons', ng-if='item._id' )
+            button.lightButton( ng-click='doBtn(button)' )
+                | {{ button.name + ':' + $root.__module.name + ':button' | translate }}
 
 .last.col-xs-12(ng-if= "item.last")
     .pull-right
