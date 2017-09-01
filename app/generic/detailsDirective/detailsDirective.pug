@@ -6,7 +6,10 @@
                 li(ng-repeat='(name, configTab) in config.tabs', ng-class='{ active: name == view }')
                     a(ng-click='tab(name)', id="tab-{{ name || 'overview' }}")
                         span( ng-if="name") {{ (configTab.label || name) + ':tab:' + $root.__module.name | translate }}
-                        span( ng-if="!name") {{ (configTab.label || item._id) }}
+                        span( ng-if="!name && $parent.$parent.item.name")
+                            | {{ $parent.$parent.item.name }}
+                        span( ng-if="!name && !$parent.$parent.item.name")
+                            | {{ __id }}
 
         .tab-content
             ng-include( src=" config.tabs[view].templateUrl || 'generic/overview.pug' " tab="{{view||'overview'}}")
