@@ -110,6 +110,17 @@ app.component( 'appRouter', {
                 }
                 $scope.__id = undefined;
                 $scope.__view = undefined;
+
+                // unhandled route
+                $rootScope.$broadcast( "appRouteUnhandled", {
+                    current: {
+                        module: $scope.$root.__module || {},
+                        path: $location.path() || "/"
+                    },
+                    old: {
+                        module: lastModule
+                    }
+                } );
                 // var foundState = $customRoutesProvider.checkInitialState();
                 // if (foundState) {
                 //     angular.injector().get('$state').go(foundState);

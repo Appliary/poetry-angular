@@ -63,11 +63,14 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 console.warn( "listening to appRouteChange" );
                 $rootScope.$on( 'appRouteChange',
                     function ( event, args ) {
-                        console.log( "current path:", args.current.path );
+                        //console.log( "current path:", args.current.path );
                         var authorized = AppUserService.hasApp( __appName, args.current.module.name );
                         if ( !authorized ) {
                             var noPermissionPath = '/error/403';
-                            if ( args.current.path != noPermissionPath ) {
+                            if((args.current.path == "/")) {
+                              goToFirstModule(AppUserService.getPermissionsLocal());
+                            }
+                            else if ( args.current.path != noPermissionPath ) {
                                 console.groupCollapsed( 'Permission [FAILED]' );
                                 console.log( "stack:", "APP" );
                                 console.log( "service:", __appName );
@@ -77,6 +80,60 @@ app.config( function ( $locationProvider, $httpProvider ) {
                             }
                         }
                     } );
+
+
+                var loadingFirstModule = false;
+                console.warn( "listening to appRouteUnhandled" );
+                $rootScope.$on( 'appRouteUnhandled',
+                    function ( event, args ) {
+
+                      // matrix
+                      console.log("%cappRouteUnhandled","background-color: black; color: #2BFF00");
+
+                      if(loadingFirstModule) return;
+                      loadingFirstModule = true;
+
+                      if(!(args.current.path == "/")) {
+                        loadingFirstModule = false;
+                        return;
+                      }
+
+                      if(AppUserService.hasApp(__appName)){
+
+                        AppUserService.getPermissions().then(
+                          function(res){
+                            loadingFirstModule = false;
+                            goToFirstModule(res.data);
+                          },
+                          function(){
+                            loadingFirstModule = false;
+                            // if could not retrieve permissions from the API
+                            goToFirstModule(AppUserService.getPermissionsLocal());
+                          }
+                        )
+                      }
+                });
+
+                function goToFirstModule(permissions){
+
+                  var appPerm = permissions.APP && permissions.APP[__appName] ? permissions.APP[__appName] : {};
+                  var __modules = $rootScope.__modules;
+                  var __moduleNames = Object.keys(__modules);
+
+                  if(angular.isObject(appPerm)){
+                    var __module = {};
+
+                    // go to the first permitted module if it exists
+                    if(Object.keys(appPerm).some(function(moduleName){
+                      __module = __modules[moduleName];
+                      return appPerm[moduleName] && __moduleNames.indexOf(moduleName);
+                    })){
+                      if(loadingFirstModule == false){
+                        $rootScope.go(__module);
+                      }
+                    }
+                  }
+                }
 
             }, function error( usersResponse ) {
 

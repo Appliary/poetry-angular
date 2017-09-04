@@ -225,11 +225,25 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
             return function doBtn( button ) {
                 $http[ button.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + button.path )
                     .then( function success( a ) {
-                        button.__success = $scope.__id;
-                        button.__failed = false;
+                        toastr.success(
+                          $filter( 'translate' )( 'Action succeed:' + $scope.$root.__module.name ),
+                          $filter( 'translate' )( 'Saved' )
+                        );
                     }, function failed( e ) {
-                        button.__success = false;
-                        button.__failed = $scope.__id;
+                      if ( window.clientInformation && !window.clientInformation.onLine )
+                          e.statusText = "You seems to be offline";
+
+                      else if ( e.status == -1 )
+                          e.statusText = "Server not available";
+
+                      var errkind = 'error';
+                      if ( e.status >= 500 )
+                          errkind = 'warning';
+
+                      toastr[ errkind ](
+                          $filter( 'translate' )( e.statusText ),
+                          $filter( 'translate' )( 'Error' ) + ' ' + e.status
+                      );
                     } );
             };
         },
