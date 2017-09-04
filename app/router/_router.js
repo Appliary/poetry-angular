@@ -110,6 +110,8 @@ app.component( 'appRouter', {
                 }
                 $scope.__id = undefined;
                 $scope.__view = undefined;
+
+                // unhandled route
                 $rootScope.$broadcast( "appRouteUnhandled", {
                     current: {
                         module: $scope.$root.__module || {},
