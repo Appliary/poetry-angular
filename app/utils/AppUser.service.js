@@ -41,10 +41,15 @@ app.factory( "AppUserService", function ( $rootScope, $http ) {
         return $http.get( '/api/userGroups/permissions' );
     }
 
+    function getPermissionsLocal() {
+        return $rootScope.role ? ($rootScope.role.permissions || {}) : {};
+    }
+
     return {
         has: has,
         hasApp: hasApp,
         hasApi: hasApi,
+        getPermissionsLocal: getPermissionsLocal,
         getPermissions: getPermissions
     };
 } );

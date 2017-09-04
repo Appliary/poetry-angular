@@ -7,9 +7,6 @@ app.directive("tableHeadFixer", function($timeout, listViewService){
       thfHideScroll: "<?"
     },
     link: function(scope, elem, attrs, ctrls){
-      // matrix
-      console.log("%ctableHeadFixer","background-color: black; color: #2BFF00");
-
       run();
 
       function run(ar, ev){
