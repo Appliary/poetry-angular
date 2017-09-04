@@ -78,6 +78,53 @@ app.config( function ( $locationProvider, $httpProvider ) {
                         }
                     } );
 
+
+                var loadingFirstModule = false;
+                console.warn( "listening to appRouteUnhandled" );
+                $rootScope.$on( 'appRouteUnhandled',
+                    function ( event, args ) {
+                      if(loadingFirstModule) return;
+                      loadingFirstModule = true;
+
+                      // if unhandled path is "/", find the first module accessible by user
+                      if(!(args.current.path == "/")) {
+                        loadingFirstModule = false;
+                        return;
+                      }
+
+                      var __modules = $rootScope.__modules;
+                      var __moduleNames = Object.keys(__modules);
+
+                      // check if user can access application
+                      if(AppUserService.hasApp(__appName)){
+
+                        // get the permissions set
+                        AppUserService.getPermissions().then(
+                          function(res){
+                            loadingFirstModule = false;
+
+                            // get the permissions set for the current application
+                            var appPerm = res.data.APP[__appName];
+                            if(angular.isObject(appPerm)){
+                              var __module = {};
+
+                              // go to the first permitted module if it exists
+                              if(Object.keys(appPerm).some(function(moduleName){
+                                __module = __modules[moduleName];
+                                return appPerm[moduleName] && __moduleNames.indexOf(moduleName);
+                              })){
+                                console.log(args);
+                                if(loadingFirstModule == false){
+                                  $rootScope.go(__module);
+                                }
+                              }
+                            }
+                          },
+                          console.error
+                        )
+                      }
+                });
+
             }, function error( usersResponse ) {
 
                 console.group( 'Session [FAILED]' );
