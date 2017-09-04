@@ -63,11 +63,14 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 console.warn( "listening to appRouteChange" );
                 $rootScope.$on( 'appRouteChange',
                     function ( event, args ) {
-                        console.log( "current path:", args.current.path );
+                        //console.log( "current path:", args.current.path );
                         var authorized = AppUserService.hasApp( __appName, args.current.module.name );
                         if ( !authorized ) {
                             var noPermissionPath = '/error/403';
-                            if ( args.current.path != noPermissionPath ) {
+                            if((args.current.path == "/")) {
+                              goToFirstModule(AppUserService.getPermissionsLocal());
+                            }
+                            else if ( args.current.path != noPermissionPath ) {
                                 console.groupCollapsed( 'Permission [FAILED]' );
                                 console.log( "stack:", "APP" );
                                 console.log( "service:", __appName );
