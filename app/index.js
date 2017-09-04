@@ -112,28 +112,28 @@ app.config( function ( $locationProvider, $httpProvider ) {
                           }
                         )
                       }
-
-                      function goToFirstModule(permissions){
-
-                        var appPerm = permissions.APP && permissions.APP[__appName] ? permissions.APP[__appName] : {};
-                        var __modules = $rootScope.__modules;
-                        var __moduleNames = Object.keys(__modules);
-
-                        if(angular.isObject(appPerm)){
-                          var __module = {};
-
-                          // go to the first permitted module if it exists
-                          if(Object.keys(appPerm).some(function(moduleName){
-                            __module = __modules[moduleName];
-                            return appPerm[moduleName] && __moduleNames.indexOf(moduleName);
-                          })){
-                            if(loadingFirstModule == false){
-                              $rootScope.go(__module);
-                            }
-                          }
-                        }
-                      }
                 });
+
+                function goToFirstModule(permissions){
+
+                  var appPerm = permissions.APP && permissions.APP[__appName] ? permissions.APP[__appName] : {};
+                  var __modules = $rootScope.__modules;
+                  var __moduleNames = Object.keys(__modules);
+
+                  if(angular.isObject(appPerm)){
+                    var __module = {};
+
+                    // go to the first permitted module if it exists
+                    if(Object.keys(appPerm).some(function(moduleName){
+                      __module = __modules[moduleName];
+                      return appPerm[moduleName] && __moduleNames.indexOf(moduleName);
+                    })){
+                      if(loadingFirstModule == false){
+                        $rootScope.go(__module);
+                      }
+                    }
+                  }
+                }
 
             }, function error( usersResponse ) {
 
