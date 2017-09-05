@@ -8,7 +8,7 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
         if ( kind == 'daily' ) {
             if ( !input ) return;
             var val = _date( input );
-            return val.substring( 0, 11 );
+            return val.substring( 0, 10 );
         }
         if ( kind == 'weekly' ) {
             var inputDate = new Date( input );
