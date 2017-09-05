@@ -3,3 +3,7 @@
 @import 'custom/bootstrapCustom';
 @import 'custom/portlet';
 @import 'custom/table';
+
+.jstree-icon {
+    background-image: url("/img/32px.png");
+}
