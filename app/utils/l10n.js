@@ -47,6 +47,12 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
             return ( new Date( input ) )
                 .getFullYear();
         }
+        if( kind == 'UTC'){
+          var d = new Date( input );
+          var timezoneOffset = (d.getTimezoneOffset() * 60000);
+          var utcD = new Date(d.getTime() + timezoneOffset);
+          return _date( utcD );
+        }
         if ( kind ) return _date( input );
 
         if ( input === undefined ) return;
