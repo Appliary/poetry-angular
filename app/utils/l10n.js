@@ -8,7 +8,7 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
         if ( kind == 'daily' ) {
             if ( !input ) return;
             var val = _date( input );
-            return val.substring( 0, 11 );
+            return val.substring( 0, 10 );
         }
         if ( kind == 'weekly' ) {
             var inputDate = new Date( input );
@@ -46,6 +46,12 @@ app.filter( 'localize', function ( $filter, $rootScope ) {
               .getMonth() + 1;*/
             return ( new Date( input ) )
                 .getFullYear();
+        }
+        if( kind == 'UTC'){
+          var d = new Date( input );
+          var timezoneOffset = (d.getTimezoneOffset() * 60000);
+          var utcD = new Date(d.getTime() + timezoneOffset);
+          return _date( utcD );
         }
         if ( kind ) return _date( input );
 

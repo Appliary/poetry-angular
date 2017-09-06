@@ -12,26 +12,26 @@ app.directive("tableHeadFixer", function($timeout, listViewService){
       function run(ar, ev){
 
         $timeout(function(){
+          var config = {
+            head: true,
+            'z-index': 10
+          };
           if(scope.tableHeadFixer
             && (angular.isUndefined(scope.tableHeadFixer.active) || scope.tableHeadFixer.active)
           ){
-            var config = {
-              head: false,
-              left: scope.tableHeadFixer.left || 0,
-              'z-index': scope.tableHeadFixer.left || 10
-            };
+            config.left = scope.tableHeadFixer.left || 0;
+            config['z-index'] = scope.tableHeadFixer['z-index'] || 10;
+          }
 
-            // call tableHeadFixer plugin
-            $(elem).tableHeadFixer(config);
+          // call tableHeadFixer plugin
+          $(elem).tableHeadFixer(config);
 
-            // hide parent scroll
-            if(scope.thfHideScroll){
-              var parent = $( elem ).parent();
-              if( parent ){
-                parent.css( "overflow", "hidden" );
-              }
+          // hide parent scroll
+          if(scope.thfHideScroll){
+            var parent = $( elem ).parent();
+            if( parent ){
+              parent.css( "overflow", "hidden" );
             }
-
           }
         },999);
       }

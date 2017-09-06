@@ -117,8 +117,26 @@ app.controller('generic/overview', function ($scope, $http, ngDialog, validation
                             return true;
 
                         });
+
+                        toastr.success(
+                            $filter( 'translate' )( 'The element has been deleted:' + $scope.$root.__module.name ),
+                            $filter( 'translate' )( 'Deleted' )
+                        );
+
                         // Close panel
                         $scope.$root.go($scope.$root.__module);
+                    }, function(response){
+                      if ( response.status == -1 )
+                          response.statusText = "Server not available";
+
+                      var errkind = 'error';
+                      if ( response.status >= 500 )
+                          errkind = 'warning';
+
+                      toastr[ errkind ](
+                          $filter( 'translate' )( response.statusText ),
+                          $filter( 'translate' )( 'Error' ) + ' ' + response.status
+                      );
                     });
             });
     };
