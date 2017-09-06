@@ -1,4 +1,4 @@
-app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
+app.controller( 'modals/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope, $filter ) {
 
     $scope.user = {
         email: $rootScope.user.email,
