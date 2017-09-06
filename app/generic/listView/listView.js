@@ -28,7 +28,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
 
             //scope._id;
 
-            scope.config = isObject(scope.config) ? scope.config : {};
+            scope.config = isObject(scope.config) ? scope.config : {thf: {left: 1}};
 
             scope.sorting = {};
 
@@ -359,6 +359,10 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               $timeout(function(){
                 scope.setListHeight();
               }, delay || 100);
+              // NO RESIZE WIDTH
+              console.log("%cNO RESIZE","background-color: blanchedAlmond; color: white; font-weight: bolder");
+              return;
+
 
               var times = 7;
               var ms = 160;
@@ -382,7 +386,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                  * fix a new max-height
                  */
                 var globalHeight = $window.innerHeight;
-                var scrollBody = document.querySelectorAll('.dataTables_scrollBody');
+                var scrollBody = document.querySelectorAll('.custom_dataTables_scrollBody');
                 try{
                   for (indexList = 0; indexList < scrollBody.length; indexList++) {
                       var tableElem = angular.element(scrollBody[indexList]);

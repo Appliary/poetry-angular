@@ -1,0 +1,15 @@
+.custom_dataTables_scrollBody table tr{
+  background-color: white;
+}
+
+.custom_dataTables_scrollBody table tr th{
+  background-color: inherit;
+}
+
+.custom_dataTables_scrollBody table.dataTable{
+  margin-top: 0px !important;
+}
+
+.custom_dataTables_scrollBody table.dataTable.table-bordered{
+  border: none;
+}

@@ -4,7 +4,7 @@ app.directive('scroll', function () {
             'scroll': '&'
         },
         link: function (scope, elem, attrs) {
-            var scrollHead = elem[0].querySelector('.dataTables_scrollHead');
+            /*var scrollHead = elem[0].querySelector('.dataTables_scrollHead');
             var scrollHeadInner = elem[0].querySelector('.dataTables_scrollHead .dataTables_scrollHeadInner');
             var scrollBody = elem[0].querySelector('.dataTables_scrollBody');
 
@@ -17,11 +17,11 @@ app.directive('scroll', function () {
 
             scrollHeadInner.onscroll = function() {
                 scrollBody.scrollLeft = scrollHeadInner.scrollLeft;
-            }
+            }*/
 
-            scrollBody.onscroll = function (event) {
-                scrollHead.scrollLeft = scrollBody.scrollLeft;
-                scrollHeadInner.scrollLeft = scrollBody.scrollLeft;
+            elem[0].onscroll = function (event) {
+                //scrollHead.scrollLeft = scrollBody.scrollLeft;
+                //scrollHeadInner.scrollLeft = scrollBody.scrollLeft;
 
                 return scope.scroll()(event);
             }

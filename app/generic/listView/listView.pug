@@ -1,8 +1,8 @@
-.table-scrollable(scroll='scroll')
+div
     .dataTables_scroll(style='overflow: hidden;')
-        .dataTables_scrollHead(style='overflow: hidden;')
+        //-.dataTables_scrollHead(style='overflow: hidden;')
             .dataTables_scrollHeadInner()
-                table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf", thf-hide-scroll="true")
+                //-table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf", thf-hide-scroll="true")
                     thead: tr
                         th.sorting_disabled.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                         //- columns header display
@@ -23,10 +23,10 @@
                         th( ng-repeat="cm in getMeasurementsCount() track by $index" )
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
                         th.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)")  Actions
-        .dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;")
+        .custom_dataTables_scrollBody(style="overflow: auto; max-height: {{listHeight}}px;", scroll='scroll')
             table.table.table-striped.table-bordered.order-column.dataTable.no-footer(table-head-fixer="config.thf")
                 thead
-                    tr
+                    //-tr
                         th.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
                             .dataTables_sizing
                         th(ng-repeat='column in columns', ng-if="!column.hide", class="{{column.class}}")
@@ -35,11 +35,36 @@
                             .dataTables_sizing
                         th(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .dataTables_sizing
+                    //-
+                    tr
+                        //-
+                        th.sorting_disabled.checkboxes-col( ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)"
+                        , style="background-color: inherit; z-index: 10")
+                        //- columns header display
+                        th.sorting( ng-repeat='column in columns'
+                        , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
+                        , ng-click='sort(column)'
+                        , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }'
+                        , class="{{column.class}}"
+                        , style="background-color: inherit; z-index: 10;{{column.style}}" )
+                            | {{ (column.label || column.key) + ':' + 'column' | translate }}
+                        //- columns header display noSort
+                        th.sorting_disabled( ng-repeat='column in columns'
+                        , ng-if="column.key != measurementsColumn.key && config.noSort && !column.hide"
+                        , class="{{column.class}}"
+                        , style="background-color: inherit; z-index: 10;{{column.style}}" )
+                            | {{ (column.label || column.key) + ':' + 'column' | translate }}
+                        //- measurements header display
+                        th( ng-repeat="cm in getMeasurementsCount() track by $index", style="background-color: inherit; z-index: 10;" )
+                            | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
+                        th.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)"
+                        , style="background-color: inherit; z-index: 10;")
+                            | {{'Actions'|translate}}
                 //- body
                 tbody
                     tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
                         //- checkboxes
-                        td.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)")
+                        td.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)", style="background-color: inherit")
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
                                 input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
                                 span
