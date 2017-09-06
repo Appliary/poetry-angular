@@ -5,13 +5,13 @@ div(ng-controller="dashboard/widgets/chart/edit")
 
         .modal-body
             ul.nav.nav-tabs.nav-tabs-sm( ng-if="widget.options.chartType" )
-                li(ng-class="{active:tab==''}", ng-init="tab=''")
+                li(ng-class="{active:$parent.tab==''}")
                     a(ng-click="$parent.tab=''") 
                         | {{ 'main:chartwidget:tab' | translate }}
-                li(ng-class="{active:tab=='timeframe'}")
+                li(ng-class="{active:$parent.tab=='timeframe'}")
                     a(ng-click="$parent.tab='timeframe'") 
                         | {{ 'timeframe:chartwidget:tab' | translate }}
-                li(ng-class="{active:tab=='inputs'}")
+                li(ng-class="{active:$parent.tab=='inputs'}")
                     a(ng-click="$parent.tab='inputs'") 
                         | {{ 'inputs:chartwidget:tab' | translate }}
 
