@@ -3,7 +3,7 @@
         span.required *
     .col-md-9
         .input-icon.right
-            i.fa.fa-info-circle(data-toggle="tooltip", title="Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character.")
+            i.fa.fa-info-circle(data-toggle="tooltip", title="{{'Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character.'|translate}}")
             input.form-control( type='password', ng-model='password.newPassword1', name='newPassword1' required, ng-class='{error: password.errors.length }' )
 
 .form-group

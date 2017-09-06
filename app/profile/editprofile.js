@@ -1,4 +1,4 @@
-app.controller( 'profile/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope ) {
+app.controller( 'profile/editprofile', function ( $scope, $http, $window, $location, ngDialog, $rootScope, $filter ) {
 
     $scope.user = {
         email: $rootScope.user.email,
@@ -14,7 +14,6 @@ app.controller( 'profile/editprofile', function ( $scope, $http, $window, $locat
             return ( $scope.__joi = response.data.payload );
         }, function error( err ) {} );
 
-    $rootScope.user;
     $scope.email = "";
     $scope.password = {
         oldPassword: "",
@@ -48,7 +47,7 @@ app.controller( 'profile/editprofile', function ( $scope, $http, $window, $locat
     $scope.cancel = function cancel() {
         console.log( "Refreshing page" );
         $window.location.replace( $location.absUrl() );
-    }
+    };
 
     $scope.edit = function edit() {
         $scope.editState = {
@@ -61,13 +60,18 @@ app.controller( 'profile/editprofile', function ( $scope, $http, $window, $locat
         $http.put( '/api/users/me', $scope.user )
             .then( function success( response ) {
                 console.info( 'User edit succes', response );
-                $scope.editState.saved = true;
+                toastr.success(
+                    $filter( 'translate' )( 'The changes you made on your profile has been saved' ),
+                    $filter( 'translate' )( 'Profile saved' )
+                );
                 $scope.cancel();
 
             }, function error( response ) {
-                console.warn( 'Users edit failed', response );
-                $scope.editState.failed = true;
-            } )
+                toastr.error(
+                    $filter( 'translate' )( response.data.message ),
+                    $filter( 'translate' )( 'Error' )
+                );
+            } );
     };
 
     $scope.changePassword = function changePassword() {
@@ -82,23 +86,29 @@ app.controller( 'profile/editprofile', function ( $scope, $http, $window, $locat
                         newPassword: $scope.password.newPassword1
                     } )
                     .then( function success( response ) {
-                        console.info( 'User change pwd success', response );
-                        $scope.failedChangepwd = true;
-                        $scope.failChangepwdMsg = "Password successfully updated";
+                        toastr.success(
+                            $filter( 'translate' )( 'Your password has been changed' ),
+                            $filter( 'translate' )( 'Password changed' )
+                        );
                         $scope.cancel();
 
                     }, function error( response ) {
-                        console.warn( 'Users change pwd failed', response );
-                        $scope.failedChangepwd = true;
-                        $scope.failChangepwdMsg = response.data;
-                    } )
+                        toastr.success(
+                            $filter( 'translate' )( response.data.message ),
+                            $filter( 'translate' )( 'Error' )
+                        );
+                    } );
             } else {
-                $scope.failedChangepwd = true;
-                $scope.failChangepwdMsg = "Both new password field are not the same !";
+                toastr.success(
+                    $filter( 'translate' )( 'Both password fields are not the same' ),
+                    $filter( 'translate' )( 'Error' )
+                );
             }
         } else {
-            $scope.failedChangepwd = true;
-            $scope.failChangepwdMsg = "Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character";
+            toastr.success(
+                $filter( 'translate' )( "Password must have minimum 8 characters, at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character" ),
+                $filter( 'translate' )( 'Error' )
+            );
         }
 
 
