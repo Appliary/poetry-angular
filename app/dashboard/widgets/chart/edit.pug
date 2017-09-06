@@ -4,26 +4,31 @@ div(ng-controller="dashboard/widgets/chart/edit")
             h4.modal-title {{ 'editChart:ChartWidget' | translate }}
 
         .modal-body
-            tabs( ng-if="widget.options.chartType" )
-                a(ng-click="$parent.tab=''", ng-class="{active:tab==''}", ng-init="tab=''")
-                    | {{ 'main:chartwidget:tab' | translate }}
-                a(ng-click="$parent.tab='timeframe'", ng-class="{active:tab=='timeframe'}")
-                    | {{ 'timeframe:chartwidget:tab' | translate }}
-                a(ng-click="$parent.tab='inputs'", ng-class="{active:tab=='inputs'}")
-                    | {{ 'inputs:chartwidget:tab' | translate }}
+            ul.nav.nav-tabs.nav-tabs-sm( ng-if="widget.options.chartType" )
+                li(ng-class="{active:$parent.tab==''}")
+                    a(ng-click="$parent.tab=''") 
+                        | {{ 'main:chartwidget:tab' | translate }}
+                li(ng-class="{active:$parent.tab=='timeframe'}")
+                    a(ng-click="$parent.tab='timeframe'") 
+                        | {{ 'timeframe:chartwidget:tab' | translate }}
+                li(ng-class="{active:$parent.tab=='inputs'}")
+                    a(ng-click="$parent.tab='inputs'") 
+                        | {{ 'inputs:chartwidget:tab' | translate }}
 
             form.form-horizontal
                 .form-body
                     div( ng-if="tab==''")
                         .form-group
-                            label.col-md-3.control-label {{ 'title:widget:label' | translate }}
+                            label.col-md-3.control-label
+                                | {{'title:widget:label'|translate}}
                             .col-md-9
                                 input.form-control(ng-model="widget.title")
 
                         .form-group
                             label.col-md-3.control-label {{ 'chart:widget:label' | translate }}
-                            button(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
-                            span.muted(ng-if="!widget.options.inputs.length")
+                            .col-md-9
+                                button.btn.btn-primary(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
+                                span.muted(ng-if="!widget.options.inputs.length")
                                 | &nbsp;{{'selectInputFirst:chart'|translate}}
 
                     div( ng-if=" tab=='timeframe' " )
@@ -96,7 +101,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                     .table-scrollable( ng-if="tab=='inputs'")
                         table.table
                             tr
-                                th {{ 'varName:input:chart' | translate }}
+                                th {{ 'label:input:chart' | translate }}
                                 th {{ 'kind:input:chart' | translate }}
                                 th {{ 'id:input:chart' | translate }}
                                 th {{ 'measurement:input:chart' | translate }}
@@ -107,7 +112,7 @@ div(ng-controller="dashboard/widgets/chart/edit")
                                 td {{input.id}}
                                 td {{input.type}} {{input.indice}}
                                 td.pull-right
-                                    a.btn.btn-circle.btn-icon-only.red(ng-click="widget.options.inputs.splice(i,1)")
+                                    a.btn.btn-default.btn-icon-only(ng-click="widget.options.inputs.splice(i,1)")
                                         i.fa.fa-trash
                             tr
                                 td: input.form-control(ng-class="{error: !newInput.varName}", ng-model="newInput.varName")

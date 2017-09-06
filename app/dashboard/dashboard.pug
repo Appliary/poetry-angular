@@ -45,6 +45,6 @@ h1.page-title
                     a {{ dashboard.name }}
         .portlet-body
             .tab-content
-                div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='')
+                div(gridster='gridsterOpts', ng-scope='', gridster-loaded='', gridster-desktop='', style="top:-30px")
                     ul: li(gridster-item='widget', ng-repeat=' widget in Dashboards.current.widgets ')
                         ng-widget( widget='widget', edit='Widgets.edit', remove='Widgets.remove' )
