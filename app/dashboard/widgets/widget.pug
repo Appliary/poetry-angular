@@ -1,7 +1,8 @@
 div(ng-if="widget.edit")
     .pull-right
-        i.fa.fa-edit(ng-click='edit(widget)')
-        i.fa.fa-cog(ng-click='remove(widget)')
+        i.fa.fa-fw.fa-pencil(ng-click='edit(widget)')
+        i.fa.fa-fw.fa-trash-o(ng-click='remove(widget)')
+        i.fa.fa-fw
     
     strong {{widget.title}}
 
