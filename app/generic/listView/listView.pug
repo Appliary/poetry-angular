@@ -38,10 +38,10 @@ div
                     //-
                     tr
                         //-
-                        th.sorting_disabled.checkboxes-col( ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)"
+                        th.custom_dataTables.sorting_disabled.checkboxes-col( ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)"
                         , style="background-color: inherit; z-index: 10")
                         //- columns header display
-                        th.sorting( ng-repeat='column in columns'
+                        th.custom_dataTables.sorting( ng-repeat='column in columns'
                         , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
                         , ng-click='sort(column)'
                         , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }'
@@ -49,15 +49,15 @@ div
                         , style="background-color: inherit; z-index: 10;{{column.style}}" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- columns header display noSort
-                        th.sorting_disabled( ng-repeat='column in columns'
+                        th.custom_dataTables.sorting_disabled( ng-repeat='column in columns'
                         , ng-if="column.key != measurementsColumn.key && config.noSort && !column.hide"
                         , class="{{column.class}}"
                         , style="background-color: inherit; z-index: 10;{{column.style}}" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- measurements header display
-                        th( ng-repeat="cm in getMeasurementsCount() track by $index", style="background-color: inherit; z-index: 10;" )
+                        th.custom_dataTables( ng-repeat="cm in getMeasurementsCount() track by $index", style="background-color: inherit; z-index: 10;" )
                             | {{ (measurementsColumn.label || measurementsColumn.key) + ':' + $root.__module.name + ':' + 'column' | translate }} {{($index+1)}}
-                        th.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)"
+                        th.custom_dataTables.sorting_disabled(ng-if="!(hasValue(config.actions) && !config.actions)"
                         , style="background-color: inherit; z-index: 10;")
                             | {{'Actions'|translate}}
                 //- body
