@@ -7,3 +7,12 @@
 .jstree-icon {
     background-image: url("/img/32px.png");
 }
+
+.google-visualization-charteditor-dialog {
+    z-index: 999;
+    &, *{
+        -webkit-box-sizing: initial;
+        -moz-box-sizing: initial;
+        box-sizing: initial;
+    }
+}
