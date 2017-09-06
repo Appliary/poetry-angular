@@ -9,21 +9,8 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
     };
 
     $scope.__joi = {};
-    $http.put( '/__joi/api/users/me' )
-        .then( function success( response ) {
-            console.info( 'User edit succes', response );
-            toastr.success(
-                $filter( 'translate' )( 'The changes you made on your profile has been saved' ),
-                $filter( 'translate' )( 'Profile saved' )
-            );
-            $scope.cancel();
-
-        }, function error( response ) {
-            toastr.error(
-                $filter( 'translate' )( response.data.message ),
-                $filter( 'translate' )( 'Error' )
-            );
-        } );
+    // $http.put( '/__joi/api/users/me' )
+    //     .then(  );
 
     $scope.email = "";
     $scope.password = {
@@ -71,12 +58,17 @@ app.controller( 'modals/editprofile', function ( $scope, $http, $window, $locati
         $http.put( '/api/users/me', $scope.user )
             .then( function success( response ) {
                 console.info( 'User edit succes', response );
-                $scope.editState.saved = true;
+                toastr.success(
+                    $filter( 'translate' )( 'The changes you made on your profile has been saved' ),
+                    $filter( 'translate' )( 'Profile saved' )
+                );
                 $scope.cancel();
 
             }, function error( response ) {
-                console.warn( 'Users edit failed', response );
-                $scope.editState.failed = true;
+                toastr.error(
+                    $filter( 'translate' )( response.data.message ),
+                    $filter( 'translate' )( 'Error' )
+                );
             } );
     };
 
