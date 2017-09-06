@@ -62,11 +62,11 @@ div
                             | {{'Actions'|translate}}
                 //- body
                 tbody
-                    tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: (_id && row._id == _id), danger: isTimedOut(row) } ' )
+                    tr.odd.gradeX( ng-repeat='row in data', ng-class=' { active: isRowSelected(row), danger: isTimedOut(row) } ' )
                         //- checkboxes
                         td.checkboxes-col(ng-if="!(hasValue(config.checkboxes) && !config.checkboxes)", style="background-color: inherit")
                             label.mt-checkbox.mt-checkbox-single.mt-checkbox-outline
-                                input.checkboxes(ng-checked='row._id && _id == row._id', ng-click='select(row._id)', type='checkbox')
+                                input.checkboxes(ng-checked='isRowSelected(row)', ng-click='select(row._id)', type='checkbox')
                                 span
                         //- data
                         td( ng-repeat='(idx, column) in columns'

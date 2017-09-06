@@ -94,7 +94,13 @@ app.config( function ( $locationProvider, $httpProvider ) {
                       loadingFirstModule = true;
 
                       if(!(args.current.path == "/")) {
+                        var qMarkPosition = args.current.path.indexOf("?");
                         loadingFirstModule = false;
+                        if(qMarkPosition > 0){
+                          var redirectPath = args.current.path.substring(0, qMarkPosition );
+                          // matrix
+                          console.log("%cshould redirectPath "+redirectPath,"background-color: black; color: #2BFF00");
+                        }
                         return;
                       }
 

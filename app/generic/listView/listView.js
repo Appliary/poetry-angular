@@ -32,6 +32,9 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
 
             scope.sorting = {};
 
+            // for config.multiple
+            scope._ids = [];
+
             if (isObject(scope.config.defaultSort)) {
                 if (scope.config.defaultSort.key) {
                     scope.sorting.key = scope.config.defaultSort.key;
@@ -453,10 +456,29 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 }
             };
 
-            scope.$watch('item', function (item) {
-                if (!item) scope._id = undefined;
-                else scope._id = item._id;
-                scope.resize();
+            scope.isRowSelected = isRowSelected;
+            function isRowSelected(row){
+              if(!row || (row && !row._id)) return false;
+              if(!scope.config.multiple){
+                return (scope._id && row._id == scope._id)
+              }
+
+              return scope._ids.indexOf(row._id) > -1;
+            }
+
+            scope.$watchCollection('item', function (item) {
+                if(!scope.config.multiple){
+                  if (!item) scope._id = undefined;
+                  else scope._id = item._id;
+                  scope.resize();
+                  return;
+                }
+
+                var items = item;
+                if(!angular.isArray(items))
+                    items = [items].filter(function(){ return item && angular.isObject(item) && item._id;});
+                if (!items.length) scope._ids = [];
+                else scope._ids = items.map(function (it){ return it._id ;});
             });
 
             angular.element($window)
