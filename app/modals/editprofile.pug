@@ -14,28 +14,28 @@
         form.form-horizontal( ng-submit='edit()' )
             .form-body
                 .form-group
-                    label.col-md-3.control-label( for='firstName', ng-class="{ required: __joi['firstName']._flags.presence == 'required' }") {{ 'firstName:field:edit' | translate }}
+                    label.col-md-3.control-label( for='firstName') {{ 'firstName:field:edit' | translate }}
                         span(ng-if="__joi['firstName']._flags.presence == 'required'") *
                     .col-md-9
                         input.form-control( type='text', ng-model='user.firstName', name='firstName' )
                 .form-group
-                    label.col-md-3.control-label( for='lastName', ng-class="{ required: __joi['lastName']._flags.presence == 'required' }" ) {{ 'lastName:field:edit' | translate }}
+                    label.col-md-3.control-label( for='lastName') {{ 'lastName:field:edit' | translate }}
                         span(ng-if="__joi['lastName']._flags.presence == 'required'") *
                     .col-md-9
                         input.form-control( type='text', ng-model='user.lastName', name='lastName' )
                 .form-group
-                    label.col-md-3.control-label( for='email', ng-class="{ required: __joi['email']._flags.presence == 'required' }") {{ 'email:field:edit' | translate }}
+                    label.col-md-3.control-label( for='email') {{ 'email:field:edit' | translate }}
                         span(ng-if="__joi['email']._flags.presence == 'required'") *
                     .col-md-9
                         input.form-control( type='text', ng-model='user.email', name='email' )
                 .form-group
-                    label.col-md-3.control-label( for='language', ng-class="{ required: __joi['language']._flags.presence == 'required' }") {{ 'language:field:edit' | translate }}
+                    label.col-md-3.control-label( for='language') {{ 'language:field:edit' | translate }}
                         span(ng-if="__joi['language']._flags.presence == 'required'") *
                     .col-md-9
                         select.form-control(type='text', ng-model='user.language', name='language' )
                             option(ng-repeat='language in languageList' ng-value="language") {{ language + ':field:edit' | translate }}
                 .form-group
-                    label.col-md-3.control-label( for='locale' ng-class="{ required: __joi['locale']._flags.presence == 'required' }" ) {{ 'locale:field:edit' | translate }}
+                    label.col-md-3.control-label( for='locale' ) {{ 'locale:field:edit' | translate }}
                         span(ng-if="__joi['locale']._flags.presence == 'required'") *
                     .col-md-9
                         select.form-control(type='text', ng-model='user.locale', name='locale' )
@@ -57,7 +57,7 @@
         form.form-horizontal( ng-submit='changePassword()' )
             .form-body
                 .form-group
-                    label.col-md-3.control-label.required( for='oldPassword' ) {{ 'old password:field:edit' | translate }} *
+                    label.col-md-3.control-label( for='oldPassword' ) {{ 'old password:field:edit' | translate }} *
                     .col-md-9
                         input.form-control( type='password', ng-model='password.oldPassword', name='oldPassword', required, ng-class='{error: (!password.oldPassword && password.newPassword1) }' )
 
