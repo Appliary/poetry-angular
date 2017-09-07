@@ -1,5 +1,19 @@
-.input-group.date
+.input-group
+    input.form-control(
+      type="text",
+      uib-datepicker-popup="{{calendars.c1.format}}",
+      ng-model="datevalue",
+      ng-model-options="{ allowInvalid: false }",
+      is-open="calendars.c1.open",
+      datepicker-options="calendars.c1.options",
+      close-text="{{'Close' | translate}}",
+      alt-input-formats="calendars.c1.altFormats")
+    .input-group-addon(ng-click="open('c1')")
+        i.fa.fa-calendar
+
+//- OLD ONE
+//-.input-group.date
     input.form-control(ng-value="datevalue | localize:'daily'")
     span.input-group-addon
         i.fa.fa-calendar
-input.valueHolder(ng-model="datevalue",style="box-sizing:border-box;width:0px;position:relative;opacity:0;top:-32px;border:none")
+//-input.valueHolder(ng-model="datevalue",style="box-sizing:border-box;width:0px;position:relative;opacity:0;top:-32px;border:none")

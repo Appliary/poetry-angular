@@ -2,5 +2,6 @@
     "datatables",
     "datatables.options",
     "leaflet-directive",
-    "angularjs-dropdown-multiselect"
+    "angularjs-dropdown-multiselect",
+    "ui.bootstrap"
 ]

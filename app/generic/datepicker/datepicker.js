@@ -6,6 +6,33 @@ app.directive( "datepicker", function () {
     return {
         restrict: 'E',
         scope: {
+            datevalue: '=ngModel',
+            options: '=options'
+        },
+        templateUrl: 'generic/datepicker/datepicker.pug',
+        link: function ( scope, elem, attrs ) {
+          scope.calendars = {
+            c1: {
+              options: scope.options || {},
+              format: scope.$root.user && scope.$root.user.locale && scope.$root.user.locale == 'fr' ? "dd/MM/yyyy" : "MM/dd/yyyy",
+              altFormats: scope.$root.user && scope.$root.user.locale && scope.$root.user.locale == 'fr' ? ["d!/M!/yyyy"] : ["M!/d!/yyyy"]
+            }
+          };
+          scope.open = function(name){
+            if(!scope.calendars[name]) return;
+            scope.calendars[name].open = !scope.calendars[name].open;
+          };
+        }
+
+    };
+} );
+
+/** OLD datepicker
+app.directive( "datepicker", function () {
+    console.log( 'DATEPICKER' );
+    return {
+        restrict: 'E',
+        scope: {
             datevalue: '=ngModel'
         },
         templateUrl: 'generic/datepicker/datepicker.pug',
@@ -42,3 +69,4 @@ app.directive( "datepicker", function () {
         }
     };
 } );
+*/
