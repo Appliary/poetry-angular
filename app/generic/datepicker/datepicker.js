@@ -11,6 +11,18 @@ app.directive( "datepicker", function () {
         },
         templateUrl: 'generic/datepicker/datepicker.pug',
         link: function ( scope, elem, attrs ) {
+          var selfChange = false;
+          scope.$watch('datevalue', function(nv){
+            if(selfChange){
+              selfChange = false;
+              return;
+            }
+            if(nv && angular.isObject(nv) && typeof nv.getMonth === 'function' && !isNaN(nv.getMonth())){
+              var d = new Date(nv);
+              selfChange = true;
+              scope.datevalue = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            }
+          });
           scope.calendars = {
             c1: {
               options: scope.options || {},
@@ -27,15 +39,18 @@ app.directive( "datepicker", function () {
     };
 } );
 
-/** OLD datepicker
-app.directive( "datepicker", function () {
+/**
+*
+* OLD ONE: kept for testing purpose (and in case of re-use)
+*/
+app.directive( "datepickerold", function () {
     console.log( 'DATEPICKER' );
     return {
         restrict: 'E',
         scope: {
             datevalue: '=ngModel'
         },
-        templateUrl: 'generic/datepicker/datepicker.pug',
+        templateUrl: 'generic/datepicker/datepickerOld.pug',
         link: function ( scope, elem, attrs ) {
             console.log( 'DATEPICKER link', scope, elem );
             var lang = 'en',
@@ -69,4 +84,3 @@ app.directive( "datepicker", function () {
         }
     };
 } );
-*/
