@@ -105,26 +105,15 @@ app.controller( 'generic/list', function (
     }
     $scope.listViewConfig.defaultSort = $scope.sorting;
 
-    function logDebug(a, b, c){
-      console.log(typeof arguments, arguments);
-      //var args = Array.from(arguments).unshift("[generic/list]");
-      console.debug("[generic/list]",a, b, c);
-    }
-
     function getlist( n, o ) {
-
-        logDebug("getlist");
 
         // Delegate to custom controller
         if ( $scope.$root.__module.controller != 'generic/list' ){
-          logDebug("has its own controller");
           return;
         }
 
         var page = 0;
         if ( o == n ) {
-          console.debug(o,n);
-          logDebug("RETURN BC o != n");
           return;
         };
         if ( n !== true ) {
@@ -227,7 +216,7 @@ app.controller( 'generic/list', function (
                 } );
         }
         else{
-          logDebug(url, "equals", lastCall.url);
+          console.debug(url, "equals", lastCall.url);
         }
     }
 
