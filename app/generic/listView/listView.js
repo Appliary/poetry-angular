@@ -336,8 +336,10 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 });
 
                 if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
-                    if (scope.atBottom)
-                        scope.atBottom();
+                    if (scope.atBottom){
+                      console.debug("ARRIVED AT THE BOTTOM OF THE LIST");
+                      scope.atBottom();
+                    }
                 }
             };
 

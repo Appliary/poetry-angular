@@ -105,18 +105,34 @@ app.controller( 'generic/list', function (
     }
     $scope.listViewConfig.defaultSort = $scope.sorting;
 
+    function logDebug(a, b, c){
+      console.log(typeof arguments, arguments);
+      //var args = Array.from(arguments).unshift("[generic/list]");
+      console.debug("[generic/list]",a, b, c);
+    }
+
     function getlist( n, o ) {
 
+        logDebug("getlist");
+
         // Delegate to custom controller
-        if ( $scope.$root.__module.controller != 'generic/list' ) return;
+        if ( $scope.$root.__module.controller != 'generic/list' ){
+          logDebug("has its own controller");
+          return;
+        }
 
         var page = 0;
-        if ( o == n ) return;
+        if ( o == n ) {
+          console.debug(o,n);
+          logDebug("RETURN BC o != n");
+          return;
+        };
         if ( n !== true ) {
             $scope.total = undefined;
+            $scope.filtered = undefined;
             $scope.data = [];
         }
-        if ( $scope.data && $scope.total <= $scope.data.length ) return;
+        if ( $scope.data && $scope.filtered <= $scope.data.length ) return;
         isLoading = true;
 
         var urlConfig = {
@@ -152,7 +168,7 @@ app.controller( 'generic/list', function (
             urlConfig.params.page = 0;
         }
 
-        if ( /*lastCall.timestamp + 2000 < Date.now() &&*/ lastCall.url != url  ) {
+        if ( lastCall.timestamp + 1000 < Date.now() && lastCall.url != url  ) {
           console.groupCollapsed( '[generic/list] URL' );
           console.log( 'previous:', lastCall.url );
           console.log( 'current:', url );
@@ -209,6 +225,9 @@ app.controller( 'generic/list', function (
                     isLoading = false;
                     errorHandler( response );
                 } );
+        }
+        else{
+          logDebug(url, "equals", lastCall.url);
         }
     }
 
