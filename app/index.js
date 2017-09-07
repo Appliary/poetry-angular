@@ -61,14 +61,17 @@ app.config( function ( $locationProvider, $httpProvider ) {
                 console.groupEnd();
 
                 console.warn( "listening to appRouteChange" );
+
+                var noPermissionPath = '/error/403';
                 $rootScope.$on( 'appRouteChange',
                     function ( event, args ) {
                         //console.log( "current path:", args.current.path );
                         var authorized = AppUserService.hasApp( __appName, args.current.module.name );
                         if ( !authorized ) {
-                            var noPermissionPath = '/error/403';
                             if((args.current.path == "/")) {
-                              goToFirstModule(AppUserService.getPermissionsLocal());
+                              if(!goToFirstModule(AppUserService.getPermissionsLocal())){
+                                $location.path( noPermissionPath );
+                              }
                             }
                             else if ( args.current.path != noPermissionPath ) {
                                 console.groupCollapsed( 'Permission [FAILED]' );
@@ -109,12 +112,16 @@ app.config( function ( $locationProvider, $httpProvider ) {
                         AppUserService.getPermissions().then(
                           function(res){
                             loadingFirstModule = false;
-                            goToFirstModule(res.data);
+                            if(!goToFirstModule(res.data)){
+                              $location.path( noPermissionPath );
+                            }
                           },
                           function(){
                             loadingFirstModule = false;
                             // if could not retrieve permissions from the API
-                            goToFirstModule(AppUserService.getPermissionsLocal());
+                            if(!goToFirstModule(AppUserService.getPermissionsLocal())){
+                              $location.path( noPermissionPath );
+                            }
                           }
                         )
                       }
@@ -136,9 +143,12 @@ app.config( function ( $locationProvider, $httpProvider ) {
                     })){
                       if(loadingFirstModule == false){
                         $rootScope.go(__module);
+                        return true;
                       }
                     }
                   }
+
+                  return false;
                 }
 
             }, function error( usersResponse ) {
