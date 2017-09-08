@@ -58,15 +58,15 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                     //generic readonly
                     var roperm;
                     try {
-                        if ( $root.user.role != "SUPER" )
-                            roperm = $scope.$root
-                            .role
-                            .permissions[ $scope.$root.__appName ]
-                            [ $scope.$root.__module.name ];
+                        if ( $scope.$root.user.role != "SUPER" )
+                            roperm = ( $scope.$root
+                                .role
+                                .permissions[ $scope.$root.__appName ]
+                                [ $scope.$root.__module.name ] != 'rw' );
                     } catch ( err ) {
-
+                        console.error( err );
                     }
-                    if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) || roperm ) {
+                    if ( roperm || ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ) {
                         if ( $scope.__joi.computed[ name ]._tags.indexOf( 'submit' ) &&
                             $scope.__joi.computed[ name ]._meta.length ) {
                             $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
