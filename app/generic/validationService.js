@@ -182,10 +182,10 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                                             show = show.trim();
                                         } );
                                         if ( !show ) {
-                                            show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
+                                            show = opt._name || opt[ joi._meta[ 0 ].value || '_id' ];
                                         }
                                     } else {
-                                        show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
+                                        show = opt._name || opt[ joi._meta[ 0 ].value || '_id' ];
                                     }
                                     return {
                                         value: opt[ joi._meta[ 0 ].value || '_id' ],
