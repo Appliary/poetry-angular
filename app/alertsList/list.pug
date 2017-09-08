@@ -9,33 +9,33 @@
                 span {{config.$open ? "&darr;" : "&uarr;"}}
         .portlet-body(ng-hide="!config.$open").col-xs-12
             form.col-xs-12
-                .form-group.col-lg-3.col-xs-4(ng-hide="isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="isGenericApp()")
                     //- buildings
                     label(for="building")
                         | {{ "Choose building:alerts" | translate }}
                     select.form-control(ng-model="$root.report_data.building", ng-change="showBuilding()")
                         option(value="") {{ 'Choose building:alertsList' | translate }}
                         option(ng-repeat="bu in $root.report_buildingList", ng-value="bu") {{ bu.name }}
-                .form-group.col-lg-3.col-xs-4(ng-hide="isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="isGenericApp()")
                     //- blocks
                     label(for="block")
                         | {{ "Choose block:alerts" | translate }}
                     select.form-control(ng-model="block", ng-change="showBlock()")
                         option(value="") {{ 'Choose block:alertsList' | translate }}
                         option(ng-repeat="bl in $root.report_data.blocks1", ng-value="bl") {{ bl.name }}
-                .form-group.col-lg-3.col-xs-4(ng-hide="isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="isGenericApp()")
                     //- apartments
                     label(for="apartments")
                         | {{ "Choose apartment:alerts" | translate }}
                     select.form-control(ng-model="apartment")
                         option(value="") {{ 'Choose apartment:alertsList' | translate }}
                         option(ng-repeat="ap in dt.apartments2", ng-value="ap") {{ ap.name }}
-                .form-group.col-lg-3.col-xs-4
+                .form-group.col-lg-2.col-xs-4
                     //- searchId
                     label(for="id")
                         | {{ "id:alerts" | translate }}
                     input.form-control(ng-model="searchId" , placeholder="{{ 'alertId:alertsList' | translate }}")
-                .form-group.col-lg-3.col-xs-4
+                .form-group.col-lg-2.col-xs-4
                     //- category
                     label(for="category")
                         | {{ "category:alerts" | translate }}
@@ -44,7 +44,7 @@
                         option( disabled, value='──────────' ) ──────────
                         option( value='public' ) {{ 'public:category:alertsList' | translate }}
                         option( value='technical' ) {{ 'technical:category:alertsList' | translate }}
-                .form-group.col-lg-3.col-xs-4
+                .form-group.col-lg-2.col-xs-4
                     //- level
                     label(for="level")
                         | {{ "level:alerts" | translate }}
@@ -55,7 +55,7 @@
                         option( value='medium' ) {{ 'medium:level:alertsList' | translate }}
                         option( value='high' ) {{ 'high:level:alertsList' | translate }}
                         option( value='critical' ) {{ 'critical:level:alertsList' | translate }}
-                .form-group.col-lg-3.col-xs-4(ng-hide="!isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="!isGenericApp()")
                     //- rules
                     label(for="rules")
                         | {{ "rules:alerts" | translate }}
@@ -63,7 +63,7 @@
                         option( value='' ) {{ 'allRules:alertsList' | translate }}
                         option( disabled, value='──────────' ) ──────────
                         option(ng-repeat="rule in rules | orderBy:'+name'", ng-value="rule") {{ rule.name }}
-                .form-group.col-lg-3.col-xs-4(ng-hide="!isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="!isGenericApp()")
                     //- status
                     label(for="status")
                         | {{ "status:alerts" | translate }}
@@ -75,24 +75,18 @@
                         option( value='archived' )
                             | {{ 'archived:status:alertsList' | translate }}
                 //- dates
-                .form-group.col-lg-3.col-xs-4
+                .form-group.col-lg-2.col-xs-4
                     //- from
                     label(for="from")
                         | {{ "from:report" | translate }}
-                    datepicker(ng-model="$root.report_date.start", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                    datepicker(ng-model="$root.report_date.start", options="{maxDate: maxDate}")
+                .form-group.col-lg-2.col-xs-4
                     //- to
                     label(for="to")
                         | {{ "to:report" | translate }}
-                    datepicker(ng-model="$root.report_date.end", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
-                    //-label(for="from")
-                        | {{ "from:alerts" | translate }}
-                    //-input.form-control(type="date", ng-model="after", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
-
-                    //-label(for="to")
-                        | {{ "to:alerts" | translate }}
-                    //-input.form-control(type="date", ng-model="before", max="{{maxDate}}", ng-model-options="{allowInvalid: true}")
+                    datepicker(ng-model="$root.report_date.end", options="{maxDate: maxDate}")
                 //- acknowledged
-                .form-group.col-lg-3.col-xs-4(ng-hide="isGenericApp()")
+                .form-group.col-lg-2.col-xs-4(ng-hide="isGenericApp()")
                     label(for="to")
                         | {{ "acknowledged:alerts" | translate }}
                     select.form-control(ng-model="acknowledged")
@@ -101,7 +95,7 @@
                         option( value='y') {{ 'yes:acknowledged:alertsList' | translate }}
                         option( value='n') {{ 'no:acknowledged:alertsList' | translate }}
                 //- tags input
-                .form-group.col-xs-12
+                .form-group.col-lg-2.col-xs-4
                     //- searchTags
                     label(for="tags")
                         | {{ "tags:alerts" | translate }}
