@@ -10,7 +10,7 @@
                             | {{ $parent.$parent.item.name }}
                         span( ng-if="!name && !$parent.$parent.item.name && __id")
                             | {{ __id }}
-                        span( ng-if="!name && $parent.$parent.item.name && !__id")
+                        span( ng-if="!name && !$parent.$parent.item.name && !__id")
                             | {{ 'New'|translate }}
 
         .tab-content
