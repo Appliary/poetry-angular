@@ -73,7 +73,7 @@ div
                         , ng-click='select(row._id)'
                         , ng-if="column.key != measurementsColumn.key && !column.hide"
                         , class="{{column.tdClass || '' + (column.class || '')}}"
-                        , style="{{column.style}}"
+                        , style="background-color: inherit; {{column.style}}"
                         , ng-class="{muted:(idx && isDataType(column) && sameDataTypeValue(row, column, columns[idx-1]))}")
                             //- icon
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "icon" && !isContext(row[ column.key ])')
