@@ -58,11 +58,11 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                     //generic readonly
                     var roperm;
                     try {
-                        if ( $root.user.role != "SUPER" )
-                            roperm = $scope.$root
-                            .role
-                            .permissions[ $scope.$root.__appName ]
-                            [ $scope.$root.__module.name ];
+                        if ( $scope.$root.user.role != "SUPER" )
+                            roperm = ( $scope.$root
+                                .role
+                                .permissions[ $scope.$root.__appName ]
+                                [ $scope.$root.__module.name ] == 'ro' );
                     } catch ( err ) {
 
                     }
