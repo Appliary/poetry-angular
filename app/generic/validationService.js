@@ -13,25 +13,22 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                     // Readonly specials
                     if ( $scope.item[ name ] ) {
                         var readOnlyType = '';
-                        if ( $scope.item[ name ].name ) {
-                          readOnlyType = 'readOnlyName';
-                        }
-                        else if ( $scope.item[ name ].id ){
-                          readOnlyType = 'readOnlyId';
-                        }
-                        else if ( $scope.item[ name ]._id ) {
-                          readOnlyType = 'readOnly_Id';
-                        }
+                        if ( $scope.item[ name ].name )
+                            readOnlyType = 'readOnlyName';
+                        else if ( $scope.item[ name ].id )
+                            readOnlyType = 'readOnlyId';
+                        else if ( $scope.item[ name ]._id )
+                            readOnlyType = 'readOnly_Id';
 
-                        if(readOnlyType){
-                          if ($scope.__joi.computed[ name ]
-                            && $scope.__joi.computed[ name ]._meta.length
-                            && $scope.__joi.computed[name]._tags.indexOf( 'readonly' ) != -1
-                            && $scope.__joi.computed[name]._tags.indexOf( 'submit' ) != -1){
-                              $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
-                              $scope.item.__formatSubmit[name] = $scope.__joi.computed[ name ]._meta[0].value || '';
-                          }
-                          return readOnlyType;
+                        if ( readOnlyType ) {
+                            if ( $scope.__joi.computed[ name ] &&
+                                $scope.__joi.computed[ name ]._meta.length &&
+                                $scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) != -1 &&
+                                $scope.__joi.computed[ name ]._tags.indexOf( 'submit' ) != -1 ) {
+                                $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
+                                $scope.item.__formatSubmit[ name ] = $scope.__joi.computed[ name ]._meta[ 0 ].value || '';
+                            }
+                            return readOnlyType;
                         }
                     }
 
@@ -44,44 +41,43 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                         return $scope.__joi.computed[ name ]._type;
 
                     // Array
-                    if($scope.__joi.computed[ name ]._type == 'array'){
-                      // Special array readonly
-                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
-                          $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
-                          if($scope.item.__readonlyFields.indexOf(name) == -1){
-                            $scope.item.__readonlyFields.push(name);
-                          }
-                          return 'readOnlyArray';
-                      }
+                    if ( $scope.__joi.computed[ name ]._type == 'array' ) {
+                        // Special array readonly
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ) {
+                            $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
+                            if ( $scope.item.__readonlyFields.indexOf( name ) == -1 ) {
+                                $scope.item.__readonlyFields.push( name );
+                            }
+                            return 'readOnlyArray';
+                        }
 
-                      // Default string otherwise
-                      return 'array';
+                        // Default string otherwise
+                        return 'array';
                     }
 
                     //generic readonly
-                    if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ){
-                        if($scope.__joi.computed[name]._tags.indexOf( 'submit' )
-                          && $scope.__joi.computed[ name ]._meta.length){
+                    if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) || ( $scope.$root.role.permissions[ $scope.$root.__appName ][ $scope.$root.__module.name ] && $root.user.role != "SUPER" ) ) {
+                        if ( $scope.__joi.computed[ name ]._tags.indexOf( 'submit' ) &&
+                            $scope.__joi.computed[ name ]._meta.length ) {
                             $scope.item.__formatSubmit = $scope.item.__formatSubmit || {};
-                            $scope.item.__formatSubmit[name] = $scope.__joi.computed[ name ]._meta[0].value;
-                        }
-                        else{
-                          $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
-                          if($scope.item.__readonlyFields.indexOf(name) == -1){
-                            $scope.item.__readonlyFields.push(name);
-                          }
+                            $scope.item.__formatSubmit[ name ] = $scope.__joi.computed[ name ]._meta[ 0 ].value;
+                        } else {
+                            $scope.item.__readonlyFields = $scope.item.__readonlyFields || [];
+                            if ( $scope.item.__readonlyFields.indexOf( name ) == -1 ) {
+                                $scope.item.__readonlyFields.push( name );
+                            }
                         }
                         return 'readOnly';
                     }
 
                     // Dates
-                    if($scope.__joi.computed[ name ]._type == 'date'){
-                      // Special date (only handle time)
-                      if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'time' ) )
-                          return 'time';
+                    if ( $scope.__joi.computed[ name ]._type == 'date' ) {
+                        // Special date (only handle time)
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'time' ) )
+                            return 'time';
 
-                      // Default string otherwise
-                      return 'date';
+                        // Default string otherwise
+                        return 'date';
                     }
 
                     // Strings
@@ -178,19 +174,18 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                                 function ( opt ) {
                                     var meta_show = joi._meta[ 0 ].show;
                                     var show = '';
-                                    if(meta_show){
-                                      // concat attributes if '+' is present
-                                      var attrs = meta_show.split('+');
-                                      attrs.forEach(function(attr){
-                                        show += ' '+ (opt[attr] || '');
-                                        show = show.trim();
-                                      });
-                                      if(!show){
+                                    if ( meta_show ) {
+                                        // concat attributes if '+' is present
+                                        var attrs = meta_show.split( '+' );
+                                        attrs.forEach( function ( attr ) {
+                                            show += ' ' + ( opt[ attr ] || '' );
+                                            show = show.trim();
+                                        } );
+                                        if ( !show ) {
+                                            show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
+                                        }
+                                    } else {
                                         show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
-                                      }
-                                    }
-                                    else{
-                                      show = opt[ '_name' ] || opt[ joi._meta[ 0 ].value || '_id' ];
                                     }
                                     return {
                                         value: opt[ joi._meta[ 0 ].value || '_id' ],
@@ -208,13 +203,12 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
         toDateObject: function toDateObjectFactory( $scope ) {
             return function toDateObject( field, type ) {
                 var dateValue = new Date( $scope.item[ field ] || undefined );
-                if(dateValue && type == 'time'){
-                  $scope.item[ field ] = new Date(0);
-                  $scope.item[ field ].setHours(dateValue.getHours());
-                  $scope.item[ field ].setMinutes(dateValue.getMinutes());
-                }
-                else{
-                  $scope.item[ field ] = dateValue;
+                if ( dateValue && type == 'time' ) {
+                    $scope.item[ field ] = new Date( 0 );
+                    $scope.item[ field ].setHours( dateValue.getHours() );
+                    $scope.item[ field ].setMinutes( dateValue.getMinutes() );
+                } else {
+                    $scope.item[ field ] = dateValue;
                 }
                 $scope.item.__dateFields = $scope.item.__dateFields || [];
                 $scope.item.__dateFields.push( field );
@@ -226,40 +220,40 @@ app.service( 'validationService', function validationService( $http, $timeout ) 
                 $http[ button.method ]( $scope.$root.__module.api + '/' + $scope.__id + '/' + button.path )
                     .then( function success( a ) {
                         toastr.success(
-                          $filter( 'translate' )( 'Action succeed:' + $scope.$root.__module.name ),
-                          $filter( 'translate' )( 'Saved' )
+                            $filter( 'translate' )( 'Action succeed:' + $scope.$root.__module.name ),
+                            $filter( 'translate' )( 'Saved' )
                         );
                     }, function failed( e ) {
-                      if ( window.clientInformation && !window.clientInformation.onLine )
-                          e.statusText = "You seems to be offline";
+                        if ( window.clientInformation && !window.clientInformation.onLine )
+                            e.statusText = "You seems to be offline";
 
-                      else if ( e.status == -1 )
-                          e.statusText = "Server not available";
+                        else if ( e.status == -1 )
+                            e.statusText = "Server not available";
 
-                      var errkind = 'error';
-                      if ( e.status >= 500 )
-                          errkind = 'warning';
+                        var errkind = 'error';
+                        if ( e.status >= 500 )
+                            errkind = 'warning';
 
-                      toastr[ errkind ](
-                          $filter( 'translate' )( e.statusText ),
-                          $filter( 'translate' )( 'Error' ) + ' ' + e.status
-                      );
+                        toastr[ errkind ](
+                            $filter( 'translate' )( e.statusText ),
+                            $filter( 'translate' )( 'Error' ) + ' ' + e.status
+                        );
                     } );
             };
         },
 
         displayBtn: function displayBtnFactory( $scope ) {
             return function displayBtn( button ) {
-                if(!(angular.isObject(button.condition) && button.condition.hasOwnProperty('property')))
-                  return true;
+                if ( !( angular.isObject( button.condition ) && button.condition.hasOwnProperty( 'property' ) ) )
+                    return true;
 
-                if(!button.condition.hasOwnProperty('boolean'))
-                  button.condition.boolean = true;
+                if ( !button.condition.hasOwnProperty( 'boolean' ) )
+                    button.condition.boolean = true;
 
-                if(button.condition.boolean)
-                  return $scope.item[button.condition.property];
+                if ( button.condition.boolean )
+                    return $scope.item[ button.condition.property ];
                 else {
-                  return !$scope.item[button.condition.property];
+                    return !$scope.item[ button.condition.property ];
                 }
             };
         }
