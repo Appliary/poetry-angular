@@ -1,2 +1,6 @@
-@import 'global';
-@import 'layout';
+/**** Global ****/
+@import 'global/components-main';
+@import 'global/plugins-main';
+
+/**** Layout ****/
+@import 'layout/layout';
