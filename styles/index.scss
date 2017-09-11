@@ -1,25 +1,18 @@
-$simple-line-font-path: "./fonts/";
-@import 'simple-line-icons/simple-line-icons.scss';
+/**** Variables ****/
+@import 'Variables/assets';
+@import 'Variables/layout';
 
-$fa-font-path: "./fonts";
-@import 'font-awesome/font-awesome.scss';
 
+/**** Dependencies ****/
 @import '../../bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '../../font-awesome/scss/font-awesome.scss';
 
-@import 'datatables.bootstrap';
-@import 'datatables.min';
-@import 'custom-datatables';
-@import 'error.min';
-@import 'toastr.min';
-@import 'bootstrap-datepicker3.min';
 
-@import 'layouts/layout/layout';
+/**** Metronic ****/
+@import 'Metronic/index';
 
-@import 'global/components-main';
-@import 'global/plugins-main';
 
-@import 'layouts/layout/custom';
-
-body {
-    opacity: 1;
-}
+/**** Custom overrides ****/
+@import 'Custom/googleChartEditor';
+@import 'Custom/portlet';
+@import 'Custom/table';

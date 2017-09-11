@@ -1,0 +1,8 @@
+.google-visualization-charteditor-dialog {
+    z-index: 99999;
+    &, *{
+        -webkit-box-sizing: initial;
+        -moz-box-sizing: initial;
+        box-sizing: initial;
+    }
+}
