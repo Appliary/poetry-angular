@@ -17,7 +17,7 @@
 
 .row
     .page-toolbar(ng-if="$root.__module.config.toolbox")
-        .btn-group.pull-right(ng-hide="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role!='SUPER'")
+        .btn-group.pull-right(ng-hide="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role.length==24")
             button.btn.btn-sm.btn-outline.custom.dropdown-toggle(type='button', data-toggle='dropdown')
                 | {{ 'Actions' | translate }}&nbsp;
                 i.fa.fa-angle-down
