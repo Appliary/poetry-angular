@@ -4,7 +4,7 @@ ng-include.row( src='"generic/form.pug"', ng-controller='generic/overview' )
     .btn-toolbar.pull-right
         button.btn.btn-sm.red( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
             | {{ 'delete:button' | translate }}
-        button.btn.btn-sm.custom( ng-click=' save() ', ng-if="!disableSaveBTN", ng-disabled="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role!='SUPER'")
+        button.btn.btn-sm.custom( ng-click=' save() ', ng-if="!disableSaveBTN", ng-disabled="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role.length==24")
             | {{ 'save:' + $root.__module.name + ':button' | translate }}
 //-
 .last.col-xs-12(ng-repeat=' button in buttons', ng-if='item._id')
