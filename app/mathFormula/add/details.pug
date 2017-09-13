@@ -15,7 +15,7 @@ form.form-horizontal
                     i.fa.fa-caret-down
                     input.form-control#device(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'", readOnly)
                 div(ng-if="$parent.input.device.kind == 'tags'")
-                    tags-viewer(array="input.device.id")
+                    tags-viewer(array="$parent.input.device._id")
                     .input-icon.right
                         i.fa.fa-caret-down
                         input.form-control( placeholder="{{'clickToAddTag:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", readOnly)
