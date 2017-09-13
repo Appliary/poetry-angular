@@ -103,17 +103,18 @@ app.controller( 'mathFormula/add', function (
                 };
                 console.log( $scope.filters );
                 if ( filter == "tags" ) {
-                    config.params.collections = Object.keys( $scope.filters )
-                        .map( function ( col ) {
-                            return col;
-                        } )
-                        .filter( function ( el ) {
-                            return typeof el === 'string' && el != 'tags';
-                        } );
-
-                    if ( config.params.collections.length < 2 ) {
-                        delete config.params.collections;
-                    }
+                    config.url += '/qs';
+                    // config.params.collections = Object.keys( $scope.filters )
+                    //     .map( function ( col ) {
+                    //         return col;
+                    //     } )
+                    //     .filter( function ( el ) {
+                    //         return typeof el === 'string' && el != 'tags';
+                    //     } );
+                    //
+                    // if ( config.params.collections.length < 2 ) {
+                    //     delete config.params.collections;
+                    // }
                 }
 
                 $http( config )
