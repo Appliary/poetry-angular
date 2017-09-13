@@ -19,8 +19,9 @@
                         td {{ result.kind }}
                         td(ng-if=" result.kind != 'tags' ") {{ result.name }}
                         td(ng-if=" result.kind == 'tags' ")
-                            | {{"#"+result.name}}
-                            //tags-viewer( array="result.name" )
+                            .label(style="background-color:{{getColor(result._id)}};", alt="{{result._id}}", title="{{result._id}}")
+                                span(ng-if="!result.name") {{result._id}}
+                                span(ng-if="result.name") {{result.name}}
                         td {{ result.types[0][0] }}&nbsp;
                             em(ng-if="result.types.length > 1")
                                 | {{'and:mathformula'|translate}}&nbsp;

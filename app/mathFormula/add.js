@@ -144,6 +144,36 @@ app.controller( 'mathFormula/add', function (
     wg.push( 'search' );
     $scope.$watchGroup( wg, getDevices );
 
+    $scope.getColor = function ( id ) {
+        var collection = id.split( ':' );
+        if ( collection.length < 2 ) return '';
+        else collection = collection[ 0 ];
+
+        var hash = 0;
+        for ( i = 0; i < collection.length; i++ ) {
+            hash = ( ( hash << 4 ) - hash ) + collection.charCodeAt( i );
+            hash |= 0;
+        }
+        hash = hash.toString( 16 );
+        while ( hash.length < 6 ) {
+            hash = '0' + hash;
+        }
+
+        var color = 'rgba(';
+        var c = parseInt( hash.slice( 0, 2 ), 16 );
+        if ( c < 0 ) c = 0 - c;
+        color += c + ',';
+        c = parseInt( hash.slice( 2, 4 ), 16 );
+        if ( c < 0 ) c = 0 - c;
+        color += c + ',';
+        c = parseInt( hash.slice( 4, 6 ), 16 );
+        if ( c < 0 ) c = 0 - c;
+        color += c + ',';
+        color += '0.3)';
+
+        return color;
+    };
+
     /**
      * getVar()
      * Find the current value of the selected input

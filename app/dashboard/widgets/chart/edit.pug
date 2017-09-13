@@ -27,9 +27,9 @@ div(ng-controller="dashboard/widgets/chart/edit")
                         .form-group
                             label.col-md-3.control-label {{ 'chart:widget:label' | translate }}
                             .col-md-9
-                                button.btn.btn-primary(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'changeChartParameters:chart'|translate}}
-                                span.muted(ng-if="!widget.options.inputs.length")
-                                | &nbsp;{{'selectInputFirst:chart'|translate}}
+                                button.btn.btn-primary(ng-disabled="!widget.options.inputs.length", ng-click="chartEditor()") {{'Change chart:chart'|translate}}
+                                span.text-muted(ng-if="!widget.options.inputs.length")
+                                    | &nbsp;{{'selectInputFirst:chart'|translate}}
 
                     div( ng-if=" tab=='timeframe' " )
                         .form-group
