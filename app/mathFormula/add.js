@@ -281,8 +281,7 @@ app.controller( 'mathFormula/add', function (
             if ( !$scope.input.device ) {
                 $scope.input.device = result;
                 $scope.input.device._id = [ result._id ];
-            }
-            if ( !~$scope.input.device._id.indexOf( result._id ) )
+            } else if ( !~$scope.input.device._id.indexOf( result._id ) )
                 $scope.input.device._id.push( result._id );
         } else {
             $scope.input.device = result;
