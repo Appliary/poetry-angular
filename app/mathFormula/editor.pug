@@ -25,8 +25,7 @@ div(ng-controller='mathFormula/editor')
                             a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
                                 | {{ input.id }}
                     td.text-center(ng-if="!formulaInput", colspan="3") {{ input.kind.slice(0,1) }}&nbsp;
-                        em(ng-if="input.kind == 'tags'")
-                            | {{ input.id }}
+                        tags-viewer(array="input.id", ng-if="input.kind == 'tags'")
                         em(ng-if="input.kind != 'tags'")
                             a(ng-href="/deviceManager/{{input.kind}}/{{input.id}}" target="_blank")
                                 | {{ input.id }}
