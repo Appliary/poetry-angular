@@ -135,10 +135,10 @@ div
                         //- actions
                         td(ng-if="!(hasValue(config.actions) && !config.actions)")
                             .btn-group.pull-right
-                                button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                                button.btn.btn-xs.custom.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false', ng-if="!isObject(config.actions)")
                                     | {{ 'Actions' | translate }}&nbsp;
                                     i.fa.fa-angle-down
-                                ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions)")
+                                ul.dropdown-menu.pull-right(role='menu', ng-if="!isArray(config.actions) && !isObject(config.actions)")
                                     li
                                         a(href='javascript:;')
                                             i.icon-docs
@@ -149,6 +149,13 @@ div
                                             i(ng-class="act.icon")
                                             |  {{act.text | translate}}
                                             span.badge.badge-success(ng-if="hasValue(act.badge)") {{act.badge}}
+                                span(
+                                  ng-if="isObject(config.actions)",
+                                  class="{{config.actions.class}}",
+                                  ng-click="doAction(config.actions, row)",
+                                  title="{{(config.actions.title || '')|translate}}") {{(config.actions.text || '')|translate}}
+
+
 
 .col-md-5.col-sm-12
     .dataTables_info(ng-if='filtered > 0')

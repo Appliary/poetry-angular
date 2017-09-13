@@ -205,7 +205,7 @@ app.directive("listDirective", function(
 
       function responseErrorHandler(e){
         console.warn(e);
-        toastr.error(e.statusText + ' ' + e.statusText,'error');
+        toastr.error(e.statusText,'error ' + e.status);
         scope.item.__failed = true;
       }
 
@@ -717,12 +717,6 @@ app.directive("listDirective", function(
               //scope.resize();
           } );
 
-
-
-
-      /**
-      * start
-      */
       function getBuildings(){
         $http.get( "/api/buildings" )
             .then( function success( response ) {
@@ -747,12 +741,25 @@ app.directive("listDirective", function(
                 else{
                   getlist(true);
                 }
-            }, function error( response ) {
-                $location.path( '/error/' + response.status );
+            }, function(){
+              toastr.error(
+                e.statusText,
+                'Error'+' '+ e.status
+              );
             } );
       }
 
-      getBuildings();
+      /**
+      * start
+      */
+      if(!scope.isGenericApp){
+        getBuildings();
+      }
+      else{
+        scope.displayable = true;
+        getlist(true);
+      }
+
       getRules();
 
       /** non generic functions **/
