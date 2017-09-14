@@ -476,6 +476,14 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               return scope._ids.indexOf(row._id) > -1;
             }
 
+            scope.toDecimal = function( value , size ){
+              var rValue = value;
+              if(isNaN(rValue))
+                return rValue;
+              rValue = parseFloat(rValue).toFixed(size || 2);
+              return rValue;
+            }
+
             scope.$watchCollection('item', function (item) {
                 if(!scope.config.multiple){
                   if (!item) scope._id = undefined;
