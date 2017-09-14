@@ -11,10 +11,14 @@ form.form-horizontal
                 | {{ 'device:' + $root.__module.name + ':field' | translate }}
             //- device-selector(filters="deviceSelectorFilters" on-change="deviceSelectorOnChange")
             .col-md-9
-                .input-icon.right
+                .input-icon.right(ng-if="$parent.input.device.kind != 'tags'")
                     i.fa.fa-caret-down
                     input.form-control#device(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}{{ $parent.input.device.name }}", placeholder="{{'clickToSelect:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="!$parent.input.device || $parent.input.device.kind != 'tags'", readOnly)
-                    input#tag.form-control(value="{{ $parent.input.device.kind?$parent.input.device.kind + ' ':'' }}[{{ $parent.input.device.name }}]", readonly, ng-click="tab('devices');$event.preventDefault();", ng-if="$parent.input.device && $parent.input.device.kind == 'tags'")
+                div(ng-if="$parent.input.device.kind == 'tags'")
+                    tags-viewer(array="$parent.input.device._id")
+                    .input-icon.right
+                        i.fa.fa-caret-down
+                        input.form-control( placeholder="{{'clickToAddTag:device:mathformula'|translate}}", readonly, ng-click="tab('devices');$event.preventDefault();", readOnly)
         
         .form-group
             label.col-md-3.control-label(for="type", ng-if="formulaInput")

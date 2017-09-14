@@ -47,7 +47,8 @@ div(ng-controller='mathFormula/editor')
                         | [ {{ inputValues[ input.varName ][0] }},… ]
 
                     //- Delete btn
-                    td.text-right: a.btn.btn-circle.btn-icon-only.red(ng-click='inputs.remove(i)')
+                    td.text-right
+                        a.btn.btn-circle.btn-icon-only.red(ng-click='inputs.remove(i)')
                             i.fa.fa-trash
 
                 tr
