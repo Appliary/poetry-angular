@@ -81,7 +81,13 @@ div
                             //- string
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && !isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
-                                | {{ row[ column.key ] | localize }}
+                                span {{ row[ column.key ] | localize }}
+                                span(
+                                  ng-click="doInlineAction(row, column)",
+                                  ng-if="isObject(column.inlineAction)",
+                                  class="{{column.inlineAction.class}}",
+                                  title="{{(column.inlineAction.title || '')|translate}}"
+                                  )
                             //- string + link
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")

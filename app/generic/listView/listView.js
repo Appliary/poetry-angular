@@ -266,6 +266,14 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 });
             }
 
+            // inline action
+            scope.doInlineAction = doInlineAction;
+            function doInlineAction(row, col){
+              if(col.inlineAction && typeof col.inlineAction.callback == 'function'){
+                col.inlineAction.callback(row);
+              }
+            }
+
 
             /**
              * WATCHERS
