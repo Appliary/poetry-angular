@@ -266,6 +266,14 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                 });
             }
 
+            // inline action
+            scope.doInlineAction = doInlineAction;
+            function doInlineAction(row, col){
+              if(col.inlineAction && typeof col.inlineAction.callback == 'function'){
+                col.inlineAction.callback(row);
+              }
+            }
+
 
             /**
              * WATCHERS
@@ -466,6 +474,14 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               }
 
               return scope._ids.indexOf(row._id) > -1;
+            }
+
+            scope.toDecimal = function( value , size ){
+              var rValue = value;
+              if(isNaN(rValue))
+                return rValue;
+              rValue = parseFloat(rValue).toFixed(size || 2);
+              return rValue;
             }
 
             scope.$watchCollection('item', function (item) {

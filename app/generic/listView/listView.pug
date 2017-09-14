@@ -81,7 +81,13 @@ div
                             //- string
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && !isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
-                                | {{ row[ column.key ] | localize }}
+                                span {{ row[ column.key ] | localize }}
+                                span(
+                                  ng-click="doInlineAction(row, column)",
+                                  ng-if="isObject(column.inlineAction)",
+                                  class="{{column.inlineAction.class}}",
+                                  title="{{(column.inlineAction.title || '')|translate}}"
+                                  )
                             //- string + link
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
@@ -96,8 +102,11 @@ div
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "tags" && !isContext(row[ column.key ])')
                                 tags-viewer(array="row[ column.key ]")
                             //- data
-                            span( ng-if='isDefined(row[column.key]) && isDataType(column) && !isContext(row[ column.key ])')
+                            span( ng-if='isDefined(row[column.key]) && isDataType(column) && !isContext(row[ column.key ]) && !isDefined(column.param)')
                                 | {{row[ column.key ] | localize}}
+                            //- data
+                            span( ng-if='isDefined(row[column.key]) && isDataType(column) && !isContext(row[ column.key ]) && isDefined(column.param)')
+                                | {{toDecimal(row[ column.key ], column.param) | localize}}
                             //-date
                             span( ng-if='getColumnType(column) === "date" && !isContext(row[ column.key ]) && !isFunction(column.link)')
                                 | {{row[ column.key ] | localize:(column.param || 'daily')}}
