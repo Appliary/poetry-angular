@@ -19,7 +19,7 @@
                         td {{ result.kind }}
                         td(ng-if=" result.kind != 'tags' ") {{ result.name }}
                         td(ng-if=" result.kind == 'tags' ")
-                            .label(style="background-color:{{getColor(result._id)}};", alt="{{result._id}}", title="{{result._id}}")
+                            .label.label-default(style="background-color:{{getColor(result._id)}};", alt="{{result._id}}", title="{{result._id}}")
                                 span(ng-if="!result.name") {{result._id}}
                                 span(ng-if="result.name") {{result.name}}
                         td {{ result.types[0][0] }}&nbsp;
