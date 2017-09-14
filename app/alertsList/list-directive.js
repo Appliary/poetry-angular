@@ -170,6 +170,11 @@ app.directive("listDirective", function(
 
         scope.item.__saved = true;
 
+        toastr.success(
+            $filter( 'translate' )( 'The element has been saved:' + scope.$root.__module.name ),
+            $filter( 'translate' )( 'Saved' )
+        );
+
         // replace in list
         if(angular.isArray(scope.data)){
           scope.data.forEach(function(el, idx){
