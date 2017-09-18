@@ -1,4 +1,4 @@
-app.service( 'validationService', function validationService( $http, $timeout ) {
+app.service( 'validationService', function validationService( $http, $timeout, $filter ) {
     var to;
     return {
 
