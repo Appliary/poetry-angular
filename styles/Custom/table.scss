@@ -46,6 +46,13 @@ table.table {
     }
 }
 
+table.dataTable thead .sorting:after {
+    content: initial}
+table.dataTable thead .sorting_asc:after {
+    content: initial}
+table.dataTable thead .sorting_desc:after {
+    content: initial}
+
 .table > tbody > tr > td {
     vertical-align: middle;
 }
