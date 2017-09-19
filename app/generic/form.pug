@@ -32,6 +32,9 @@ form.form-horizontal.col-xs-12
                     input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
                     span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
 
+                //- Image
+                uploader(ng-if="inputType(field) == 'image'", name='{{field}}', file="item[field]", path="generic")
+
                 //- Passwords
                 input.form-control( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
 

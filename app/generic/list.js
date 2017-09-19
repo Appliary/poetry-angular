@@ -396,7 +396,6 @@ app.controller( 'generic/list', function (
         $http.get( api + '/' + id )
             .then( function success( response ) {
                 $scope.item = response.data;
-                //formatItemFieldType();
             }, function ( response ) {
                 errorHandler( response );
                 $location.path( '/' + $scope.$root.__module.name );

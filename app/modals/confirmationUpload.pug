@@ -1,0 +1,5 @@
+.modal-header
+    h4.modal-title {{'Upload this file ?:confirmation' | translate}}
+.modal-footer
+    button.btn.btn-sm.default(type='button', ng-click='closeThisDialog()') {{ 'No:confirmation' | translate }}
+    button.btn.btn-sm.custom(type='button', ng-click='confirm({})') {{ 'Yes:confirmation' | translate }}

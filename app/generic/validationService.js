@@ -90,7 +90,11 @@ app.service( 'validationService', function validationService( $http, $timeout, $
                     // Strings
                     if ( $scope.__joi.computed[ name ]._type == 'string' ) {
 
+
+
                         // Special strings
+                        if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'image' ))
+                            return 'image';
                         if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'password' ) )
                             return 'password';
                         if ( ~$scope.__joi.computed[ name ]._tags.indexOf( 'textarea' ) )

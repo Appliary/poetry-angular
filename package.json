@@ -38,6 +38,7 @@
     "mime-types": "^2.1.12",
     "ng-dialog": "^1.4.0",
     "ng-dropdown-multiselect": "^1.0.1",
+    "ng-file-upload": "^12.2.13",
     "node-sass": "^4.5.3",
     "poetry": "0.1.0",
     "pug": "^2.0.0-beta6",

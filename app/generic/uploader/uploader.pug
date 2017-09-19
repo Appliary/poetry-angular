@@ -1,0 +1,25 @@
+
+div(
+   ngf-drop,
+   ngf-select,
+   ng-model="newLogo",
+   class="uploadlogo",
+   ng-class="logo ? 'drop-box2-done' : 'drop-box2'",
+   ngf-multiple="false",
+   ngf-accept="'image/*'",
+   ngf-max-size="2MB",
+   ngf-change="callback($files, $file, $newFiles, $duplicateFiles, $invalidFiles, $event)",
+   ngf-capture="'camera'",
+   ngf-drag-over-class="'dragover'",
+   ngf-muDrop)
+
+   //-ng-show="!logo"
+   .input-group
+      input.form-control(type="text", value="{{'Select' | translate}}", readonly)
+      .input-group-addon
+          i.fa.fa-upload
+
+   img.thumb.pull-right(
+      ngf-src="getLogo(logo)",
+      title="{{'Select' | translate}}",
+      style="max-width: 100px; max-height: 100px;")
