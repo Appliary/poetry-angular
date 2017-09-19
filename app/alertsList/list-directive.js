@@ -757,7 +757,7 @@ app.directive("listDirective", function(
       /**
       * start
       */
-      if(!scope.isGenericApp){
+      if(!scope.isGenericApp()){
         getBuildings();
       }
       else{
