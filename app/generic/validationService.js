@@ -62,9 +62,7 @@ app.service( 'validationService', function validationService( $http, $timeout, $
                                 .role
                                 .permissions[ $scope.$root.__appName ]
                                 [ $scope.$root.__module.name ] != 'rw' );
-                    } catch ( err ) {
-                        console.error( err );
-                    }
+                    } catch ( err ) {}
                     if ( roperm || ~$scope.__joi.computed[ name ]._tags.indexOf( 'readonly' ) ) {
                         if ( $scope.__joi.computed[ name ]._tags.indexOf( 'submit' ) &&
                             $scope.__joi.computed[ name ]._meta.length ) {
