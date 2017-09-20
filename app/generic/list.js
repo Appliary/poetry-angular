@@ -35,7 +35,7 @@ app.controller( 'generic/list', function (
       $timeout(function(){
         listViewService.emit('resize');
       }, 100);
-    })
+  });
 
     var lastCall = {
       timestamp: 0,
@@ -115,7 +115,7 @@ app.controller( 'generic/list', function (
         var page = 0;
         if ( o == n ) {
           return;
-        };
+        }
         if ( n !== true ) {
             $scope.total = undefined;
             $scope.filtered = undefined;
@@ -341,8 +341,11 @@ app.controller( 'generic/list', function (
 
             }, function error( err ) {
                 console.error( err );
-                $scope.item.__failed = true;
-                $scope.item.__saved = false;
+
+                toastr.error(
+                    $filter( 'translate' )( 'Error during saving' ),
+                    $filter( 'translate' )( err.toString() )
+                );
 
                 if ( err.status == 400 && err.data && err.data.validation )
                     $scope.__validation = err.data.validation.keys;
