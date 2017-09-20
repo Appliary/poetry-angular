@@ -126,4 +126,29 @@ app.controller( 'alertsList/overview', function ( $scope, $http, ngDialog, valid
     $scope.doBtn = validationService.doBtn( $scope );
     $scope.displayBtn = validationService.displayBtn( $scope );
 
+    $scope.translateMessageField = function(field){
+      if(!field) return true;
+
+      /*if(!(field.endsWith('FR') || field.endsWith('NL'))) return true;
+
+      field = field.toLowerCase();
+
+      if(!($scope.$root.user && $scope.$root.user.language)) return true;
+
+      return field.endsWith($scope.$root.user.language);
+      */
+      if(!field.startsWith("message")) return true;
+
+      if(!($scope.$root.user && $scope.$root.user.language)){
+        return field == "message";
+      }
+
+      var available = ['fr','nl'];
+
+      if(available.indexOf($scope.$root.user.language) == -1){
+        return field == "message";
+      }
+      field = field.toLowerCase();
+      return field.endsWith($scope.$root.user.language);
+    }
 } );

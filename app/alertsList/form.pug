@@ -1,0 +1,103 @@
+form.form-horizontal.col-xs-12
+    .form-body
+        .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field) && (translateMessageField(field))" )
+            label.col-md-3.control-label( for='{{field}}', ng-if="inputType(field) != 'timezoneOffset'")
+                | {{ field + ':field' | translate }}
+                span.required(ng-if="__joi.computed[field]._flags.presence == 'required'") *
+
+            .col-md-9
+
+                //- Unknown => Read only
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnly'", ng-value='item[field] | localize', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnlyName'", ng-value='item[field].name', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnly_Id'", ng-value='item[field]._id', readonly )
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'readOnlyId'", ng-value='item[field].id', readonly )
+
+                //- _id
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'id'", ng-value='item[field]', readonly )
+
+                //- Numbers (with or without units)
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'number'", ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                span.input-group( ng-if="inputType(field) == 'numUnit'" )
+                    input.form-control( name='{{field}}', ng-model='item[field]', type="number", ng-required="__joi.computed[field]._flags.presence" )
+                    span.input-group-addon.bootstrap-touchspin-postfix {{ __joi.computed[field]._unit + ':unit' | translate }}
+
+                timezone-offset(name='{{field}}', ng-if="inputType(field) == 'timezoneOffset'", ng-model='item[field]')
+
+                //- Strings
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'string'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+
+                //- StringUnits
+                span( ng-if="inputType(field) == 'strUnit'" )
+                    input.form-control.input-inline.input-medium( name='{{field}}', ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    span.help-inline {{ __joi.computed[field]._unit + ':unit' | translate }}
+
+                //- Image
+                uploader(ng-if="inputType(field) == 'image'", name='{{field}}', file="item[field]", path="generic")
+
+                //- Passwords
+                input.form-control( name='{{field}}', ng-if="inputType(field) == 'password'", ng-model='item[field]', type="password" )
+
+                //- Enums
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'enum'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( ng-repeat=' opt in __joi.computed[field]._valids._set ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+
+                //- AF Enums
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'af'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( ng-repeat=' (opt,v) in __joi.alt ', value='{{opt}}' ) {{ opt + ':' + label + ':option' | translate }}
+
+                //- API Enums
+                select.form-control( name='{{field}}', ng-if="inputType(field) == 'api'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+                    option( value='SUPER' ng-if="(item[field]=='SUPER' || $root.user.role == 'SUPER')&& field=='role'" ng-disabled="$root.user.role != 'SUPER'")
+                        | {{ 'superUser:userGroups' | translate }}
+                    option(ng-repeat='opt in inputEnums(field)',value='{{opt.value}}')
+                        | {{ opt.show }}
+
+                //- Textareas
+                textarea.form-control( name='{{field}}', rows="3", ng-if="inputType(field) == 'textarea'", ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+
+                //- Icons
+                fa-iconpicker(name='{{field}}', model='item[field]', ng-if="inputType(field) == 'icon'")
+
+                //- Boolean
+                .mt-checkbox-inline(ng-if="inputType(field) == 'boolean'")
+                    label.mt-checkbox.mt-checkbox-outline
+                        input( name='{{field}}', type="checkbox", ng-model='item[field]' )
+                        span
+
+                //- Arrays
+                array-input( name='{{field}}', ng-if="inputType(field) == 'array'", array='item[field]', autocomplete="loadTags" )
+
+                //- readOnlyArray
+                tags-viewer(array='item[field]', ng-if="inputType(field) == 'readOnlyArray'", name='{{field}}')
+
+                //- Date
+                datepicker(ng-if="inputType(field) == 'date'", ng-model="item[field]")
+
+                //- Time
+                input.form-control( name='{{field}}', type="time", ng-if="inputType(field) == 'time'", ng-init='toDateObject(field, "time");' , ng-model='item[field]', ng-required="__joi.computed[field]._flags.presence" )
+
+                //- Error
+                span.help-block(ng-if='item.__failed && __validation.indexOf(field) !==-1') {{ 'failed:save:' + $root.__module.name | translate }}
+
+        p.text-right( ng-if='item.updatedAt || item.updatedBy' )
+            | {{ 'lastUpdate:itemInfo' | translate }}
+            span(ng-if='item.updatedAt')
+                | &nbsp;{{ item.updatedAt | localize }}
+            span(ng-if='item.updatedBy')
+                span(ng-if='item.updatedBy.firstName||item.updatedBy.lastName')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy.firstName }}
+                    | &nbsp;{{ item.updatedBy.lastName }}
+                span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&item.updatedBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy.email }}
+                span(ng-if='!item.updatedBy.firstName&&!item.updatedBy.lastName&&!item.updatedBy.email')
+                    | &nbsp;{{'by:iteminfo'|translate}}
+                    | &nbsp;{{ item.updatedBy }}
+        p.text-right( ng-if='!item.updatedAt && !item.updatedBy' )
+            span(ng-if='item.createdAt || item.createdBy')
+                | {{ 'createdAt:itemInfo' | translate }}
+                span(ng-if='item.createdAt')
+                    | &nbsp;{{ item.createdAt | localize }}
+                span(ng-if='item.createdBy')
