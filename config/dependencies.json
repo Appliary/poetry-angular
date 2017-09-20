@@ -31,5 +31,7 @@
     "jquery-table-fixer/tableHeadFixer.js",
     "angular-ui-bootstrap/dist/ui-bootstrap.js",
     "angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
-    "angular-ui-bootstrap/dist/ui-bootstrap-csp.css"
+    "angular-ui-bootstrap/dist/ui-bootstrap-csp.css",
+    "ng-file-upload/dist/ng-file-upload-shim.min.js",
+    "ng-file-upload/dist/ng-file-upload.min.js"
 ]

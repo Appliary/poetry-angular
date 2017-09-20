@@ -1,6 +1,6 @@
 form.form-horizontal.col-xs-12
     .form-body
-        .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field)" )
+        .form-group( ng-repeat=' field in fields ', ng-class="{ 'has-error': __validation.indexOf(field) !==-1 }", ng-if="inputVisible(field) && (translateMessageField(field))" )
             label.col-md-3.control-label( for='{{field}}', ng-if="inputType(field) != 'timezoneOffset'")
                 | {{ field + ':field' | translate }}
                 span.required(ng-if="__joi.computed[field]._flags.presence == 'required'") *

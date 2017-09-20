@@ -3,5 +3,6 @@
     "datatables.options",
     "leaflet-directive",
     "angularjs-dropdown-multiselect",
-    "ui.bootstrap"
+    "ui.bootstrap",
+    "ngFileUpload"
 ]
