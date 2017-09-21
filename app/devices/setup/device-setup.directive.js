@@ -22,7 +22,7 @@
     deviceSetupController.$inject = ['$scope', 'deviceService', 'iconsService', '$timeout'];
 
     /* @ngInject */
-    function deviceSetupController($scope, deviceService, iconsService, $timeout) {
+    function deviceSetupController($scope, deviceService, iconsService, $timeout, $filter ) {
         // ***********************************************************
         //                  DECLARE VARIABLES
         var vm = this;
@@ -106,7 +106,7 @@
                         })
                         .catch(function (error) {
                             resetSetup();
-                        })
+                        });
                 }
             });
         }
@@ -137,14 +137,18 @@
             deviceService.updateDevice(idDevice, payload)
                 .then(function (response) {
                     console.log(response);
-                    vm.loadingUpdate = false;
-                    $scope.__saved = true;
+                    toastr.success(
+                        $filter( 'translate' )( 'Saved' ),
+                        $filter( 'translate' )( 'Device setup saved' )
+                    );
                 })
                 .catch(function (error) {
                     console.log(error);
-                    vm.loadingUpdate = false;
-                    $scope.__failed = true;
-                })
+                    toastr.error(
+                        $filter( 'translate' )( 'Error' ),
+                        $filter( 'translate' )( error.toString() )
+                    );
+                });
         }
 
         function updateStaticPositionsDevice(position) {
