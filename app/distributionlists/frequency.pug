@@ -11,8 +11,9 @@ form.form.form-horizontal(ng-submit="save()")
                 datepicker( ng-model='item.startingAt' )
 
         .form-group
-            label.col-md-3.control-label(class="required")
+            label.col-md-3.control-label
                 | {{ 'interval:field' | translate }}
+                span(class="required") *
             .col-md-9
                 select.form-control( name='interval', ng-model='item.interval', ng-required="required" )
                     option( ng-repeat=" opt in ['NRT','hourly','daily','weekly','monthly','yearly'] ", value='{{opt}}' ) {{ opt + ':interval:option' | translate }}
