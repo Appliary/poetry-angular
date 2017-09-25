@@ -19,7 +19,7 @@
         return directive;
     }
 
-    deviceSetupController.$inject = ['$scope', 'deviceService', 'iconsService', '$timeout'];
+    deviceSetupController.$inject = ['$scope', 'deviceService', 'iconsService', '$timeout', '$filter'];
 
     /* @ngInject */
     function deviceSetupController($scope, deviceService, iconsService, $timeout, $filter ) {

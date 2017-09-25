@@ -62,6 +62,15 @@ app.controller( 'generic/list', function (
         $scope.sorting.order = ( $scope.sorting.order == 'asc' ) ? 'desc' : 'asc';*/
     };
 
+    if ( $scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject( $scope.$root.__module.config.listView ) )
+    {
+      $scope.listViewConfig = $scope.$root.__module.config.listView;
+      $scope.sorting = $scope.listViewConfig.defaultSort || $scope.sorting;
+    }
+    else {
+        $scope.listViewConfig = {};
+    }
+
     /**
      * Retrieve the list from the webservice
      */
@@ -96,14 +105,6 @@ app.controller( 'generic/list', function (
     $scope.data = [];
     $scope.tags = [];
     $scope.page = 0;
-
-
-    if ( $scope.$root.__module.config && $scope.$root.__module.config.listView && angular.isObject( $scope.$root.__module.config.listView ) )
-        $scope.listViewConfig = $scope.$root.__module.config.listView;
-    else {
-        $scope.listViewConfig = {};
-    }
-    $scope.listViewConfig.defaultSort = $scope.sorting;
 
     function getlist( n, o ) {
 

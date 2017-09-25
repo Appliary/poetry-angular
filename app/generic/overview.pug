@@ -3,7 +3,7 @@ div(ng-controller='generic/overview')
 
     .col-xs-12
         .btn-toolbar.pull-right
-            button.btn.btn-sm.red( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ' )
+            button.btn.btn-sm.red( ng-click='confirmDeletion()', ng-if=' !!confirmDeletion ', ng-disabled="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role.length==24" )
                 | {{ 'delete:button' | translate }}
             button.btn.btn-sm.custom( ng-click=' save() ', ng-if="!disableSaveBTN", ng-disabled="$root.role.permissions.APP[$root.__appName][$root.__module.name]!='rw'&&$root.user.role.length==24")
                 | {{ 'save:' + $root.__module.name + ':button' | translate }}

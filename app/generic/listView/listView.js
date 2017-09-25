@@ -274,6 +274,36 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
               }
             }
 
+            scope.getMethodTypeClass = getMethodTypeClass;
+            function getMethodTypeClass(value){
+              var v_return = "";
+              if(!(value && angular.isString(value))){
+                return v_return;
+              }
+
+              value = value.toLowerCase();
+
+              switch(value){
+                case "get":
+                  v_return = "text-success";
+                  break;
+                case "post":
+                  v_return = "text-warning";
+                  break;
+                case "put":
+                  v_return = "text-primary";
+                  break;
+                case "delete":
+                  v_return = "text-danger";
+                  break;
+                default:
+                  v_return = "text-muted";
+                  break;
+              }
+
+              return v_return;
+            }
+
 
             /**
              * WATCHERS
@@ -343,7 +373,7 @@ app.directive("listView", function ($timeout,$interval, $window, $q, listViewSer
                     ) - 1;
                 });
 
-                if ((elem.scrollTop + elem.offsetHeight + 300) > elem.scrollHeight) {
+                if (scope.listHeight && ((elem.scrollTop + elem.offsetHeight + 100) > elem.scrollHeight)) {
                     if (scope.atBottom){
                       console.debug("ARRIVED AT THE BOTTOM OF THE LIST");
                       scope.atBottom();

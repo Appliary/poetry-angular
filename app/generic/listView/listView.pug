@@ -42,7 +42,7 @@ div
                         , style="background-color: inherit; z-index: 10")
                         //- columns header display
                         th.custom_dataTables.sorting( ng-repeat='column in columns'
-                        , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide"
+                        , ng-if="column.key != measurementsColumn.key && !config.noSort && !column.hide && !column.noSort"
                         , ng-click='sort(column)'
                         , ng-class='{ "sorting_asc": (sorting.key == column.key && sorting.order == "asc"), "sorting_desc": (sorting.key == column.key && sorting.order == "desc") }'
                         , class="{{column.class}}"
@@ -50,7 +50,7 @@ div
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
                         //- columns header display noSort
                         th.custom_dataTables.sorting_disabled( ng-repeat='column in columns'
-                        , ng-if="column.key != measurementsColumn.key && config.noSort && !column.hide"
+                        , ng-if="column.key != measurementsColumn.key && !column.hide && (config.noSort || column.noSort)"
                         , class="{{column.class}}"
                         , style="background-color: inherit; z-index: 10;{{column.style}}" )
                             | {{ (column.label || column.key) + ':' + 'column' | translate }}
@@ -92,6 +92,11 @@ div
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "string" && !isContext(row[ column.key ]) && isFunction(column.link)'
                             , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
                                 a(ng-href="{{column.link(row)}}", target="_blank") {{ row[ column.key ] | localize }}
+
+                            //- method
+                            span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "method" && !isContext(row[ column.key ]) && !isFunction(column.link)'
+                            , title="{{(row[ column.key ]._id)?row[ column.key ]._id:row[ column.key ]}}")
+                                span(class="{{getMethodTypeClass(row[ column.key ])}}") {{ row[ column.key ] | uppercase }}
                             //- translatable
                             span( ng-if='isDefined(row[column.key]) && getColumnType(column) === "translatable" && !isContext(row[ column.key ])')
                                 | {{displayTranslatable(row, column)}}

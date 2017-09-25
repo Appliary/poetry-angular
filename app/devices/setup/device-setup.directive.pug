@@ -6,21 +6,21 @@ form.form-horizontal.col-xs-12
             label.col-md-3.control-label.text-right latitude
             .col-md-9
                 input.form-control.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lat:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lat')
-            
+
         img(data-ng-src='{{vm.mapIcon.data}}', ng-click='vm.maps.static.toggled = !vm.maps.static.toggled', alt='{{vm.mapIcon.name}}')
 
-        .form-group    
+        .form-group
             label.col-md-3.control-label.text-right longitude
             .col-md-9
                 input.form-control.ng-pristine.ng-valid.ng-empty.ng-touched(type='text', placeholder="{{'lng:set:setup:device'|translate}}", ng-model='vm.staticPosition.positions.lng')
-        
+
         setup-map(controls='vm.controls', position='vm.staticPosition.positions', edit='true', name="'static'", toggle='vm.maps.static.toggled')
 
         b {{'icon:setup:device'|translate}}
         div
             canvas#canvas(width='36', height='36', ng-click='openModal()')
             color-picker(ng-model='vm.colorPicker.value', options='vm.colorPicker.options', event-api='vm.eventApi')
-        
+
             icon-picker(icon-selected='vm.iconSelected', proc-event='vm.procSelectIcon')
             canvas#canvasHistory(ng-show='false', width='60', height='60')
 
@@ -47,4 +47,4 @@ form.form-horizontal.col-xs-12
             .col-xs-12
                 .btn-toolbar.pull-right
                     button.btn.btn-sm.custom(ng-click='vm.updateDevice()')
-                        | {{'save:general'|translate}}...
+                        | {{'Save:general'|translate}}...
