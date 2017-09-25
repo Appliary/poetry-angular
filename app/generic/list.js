@@ -71,6 +71,12 @@ app.controller( 'generic/list', function (
         $scope.listViewConfig = {};
     }
 
+    $scope.filters = [];
+    $scope.vfilters = {};
+    if($scope.$root.__module.config && angular.isArray($scope.$root.__module.config.filters)){
+      $scope.filters = $scope.$root.__module.config.filters;
+    }
+
     /**
      * Retrieve the list from the webservice
      */
@@ -78,6 +84,11 @@ app.controller( 'generic/list', function (
     $scope.$watch( 'search', getlist );
     $scope.$watch( 'status', getlist );
     $scope.$watchCollection( 'sorting', getlist );
+    $scope.filters.forEach(function(f){
+      if(!f.name) return;
+      $scope.vfilters[f.name] = f;
+      $scope.$watchCollection('vfilters.'+f.name, getlist);
+    });
 
     var cvr;
 
@@ -157,6 +168,13 @@ app.controller( 'generic/list', function (
             url += "&page=0";
             urlConfig.params.page = 0;
         }
+
+        $scope.filters.forEach(function(f){
+          if(f.name && f.type && f.value){
+            url += ("&"+f.name+"="+ f.value);
+            urlConfig.params[f.name] = f.value;
+          }
+        });
 
         if ( lastCall.timestamp + 1000 < Date.now() && lastCall.url != url  ) {
           console.groupCollapsed( '[generic/list] URL' );

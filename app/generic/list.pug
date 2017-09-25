@@ -15,7 +15,7 @@ h1.page-title
             .dataTables_wrapper.no-footer.DTS
                 .row
                     .col-md-5.col-sm-5
-                        .form-group
+                        .form-group(ng-if="!filters.length")
                             label
                                 | {{'Status'|translate}}&nbsp;
                                 select.form-control.input-inline(ng-model='$parent.status')
@@ -31,6 +31,17 @@ h1.page-title
                                 | {{ "Columns" | translate }}&nbsp;
                                 custom-dropdown-multiselect(options="columns" selected-model="visibleColumns")
 
+                        //- additionnal filters
+                        .form-group(ng-repeat="filter in filters", ng-if="filter.name && filter.type")
+                            label
+                                | {{ (filter.label || filter.name) | translate}}&nbsp;
+                                //- type='select'
+                                select.form-control.input-inline(ng-model='$parent.filter.value', ng-if="filter.type == 'select'")
+                                    option( value='all' ) {{ 'all:status:' + $root.__module.name | translate }}
+                                    option( disabled, value='──────────' ) ──────────
+                                    option(  ng-repeat="o in filter.options", ng-value='o', ) {{ o + ":" +$root.__module.name | translate }}
+                                //- type='date' || type='datepicker'
+                                datepicker(ng-model='$parent.filter.value', ng-if="filter.type == 'date' || filter.type == 'datepicker'")
 
                     .col-md-5.col-sm-5
                         .form-group
