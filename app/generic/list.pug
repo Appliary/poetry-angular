@@ -37,7 +37,7 @@ h1.page-title
                                 datepicker.col-md-9.col-sm-9(ng-model='$parent.filter.value', ng-if="filter.type == 'date' || filter.type == 'datepicker'")
 
 
-                    .col-md-5.col-sm-5(ng-if="!filters.length")
+                    .col-md-5.col-sm-5(ng-show="!filters.length")
                         .form-group
                             label
                                 | {{'Status'|translate}}&nbsp;
@@ -54,7 +54,7 @@ h1.page-title
                                 | {{ "Columns" | translate }}&nbsp;
                                 custom-dropdown-multiselect(options="columns" selected-model="visibleColumns")
 
-                    .col-md-5.col-sm-5(ng-if="!filters.length")
+                    .col-md-5.col-sm-5(ng-show="!filters.length")
                         .form-group
                             .input-icon.right
                                 i.icon-magnifier
