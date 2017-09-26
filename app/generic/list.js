@@ -86,6 +86,24 @@ app.controller( 'generic/list', function (
     $scope.$watchCollection( 'sorting', getlist );
     $scope.filters.forEach(function(f){
       if(!f.name) return;
+
+      if(f.type == 'select' && f.api && angular.isObject(f.api) && f.api.path){
+        $http[f.api.method || 'get'](f.api.path).then(
+          function(response){
+            if(angular.isArray(response.data)){
+              f.options = response.data;
+              return;
+            }
+
+            if(response.data && angular.isObject(response.data) && angular.isArray(response.data.data)){
+              f.options = response.data.data;
+              return;
+            }
+          },
+          errorHandler
+        );
+      }
+
       $scope.vfilters[f.name] = f;
       $scope.$watchCollection('vfilters.'+f.name, getlist);
     });
