@@ -14,9 +14,22 @@ h1.page-title
         .portlet-body
             .dataTables_wrapper.no-footer.DTS
                 .row
-                    .col-md-10.col-sm-10(ng-if="filters.length")
+                    div(
+                      ng-repeat="filter in filters",
+                      ng-if="filters.length && filter.name && filter.type",
+                      class="col-md-{{filter.bsSize || '4'}} col-sm-{{filter.bsSize || '4'}}")
                         //- custom filters
-                        .form-group.col-sm-4(
+                        .form-group
+                            //- type='select'
+                            select.form-control(ng-if="filter.type == 'select'", ng-model='$parent.filter.value')
+                                option( value='all' ) {{ 'all '+ (filter.label || filter.name) +':filter:' + $root.__module.name | translate }}
+                                option( disabled, value='──────────' ) ──────────
+                                option(  ng-repeat="o in filter.options", ng-value='o[filter.api.value]', ng-if="filter.api.value") {{ o[filter.api.show] + ":" +$root.__module.name | translate }}
+                                option(  ng-repeat="o in filter.options", ng-value='o', ng-if="!filter.api.value") {{ o + ":" +$root.__module.name | translate }}
+
+                            //- type='date' || type='datepicker'
+                            datepicker(ng-if="filter.type == 'date' || filter.type == 'datepicker'", ng-model='$parent.filter.value')
+                        //-.form-group.col-sm-4(
                             ng-repeat="filter in filters",
                             ng-if="filter.name && filter.type",
                             ng-class="{'col-md-6': filter.type == 'date' || filter.type == 'datepicker', 'col-md-3': filter.type != 'date' && filter.type != 'datepicker'}")
