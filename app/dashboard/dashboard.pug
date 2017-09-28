@@ -1,36 +1,36 @@
 .page-toolbar
     .btn-group.pull-right
         button.btn.btn-sm.btn-outline.custom.dropdown-toggle(type='button', data-toggle='dropdown')
-            | {{ 'manage:dashboards'|translate }} 
+            | {{ 'manage:dashboards'|translate }}
             i.fa.fa-angle-down
         ul.dropdown-menu.pull-right(role='menu')
             li
                 a(ng-click='Dashboards.create()')
-                    i.icon-bell 
+                    i.fa.fa-desktop
                     |  {{ 'addDashboard:dashboardHeader' | translate }}
             li
                 a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
-                    i.icon-bell 
+                    i.fa.fa-address-book-o
                     |  {{ 'addWidget:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
-                    i.icon-bell 
+                    i.fa.fa-pencil
                     |  {{ 'editDashboard:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.clear()', ng-if="Dashboards.current.widgets.length")
-                    i.icon-bell 
+                    i.fa.fa-eraser
                     |  {{ 'clearDashboard:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.remove()', ng-if="Dashboards.list.length")
-                    i.icon-bell 
+                    i.fa.fa-trash-o
                     |  {{ 'deleteDashboard:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.draggable( true )', ng-if='!Dashboards.draggable() && Dashboards.list.length')
-                    i.icon-bell 
+                    i.fa.fa-unlock
                     |  {{ 'enableDragWidget:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.draggable( false )',  ng-if='Dashboards.draggable() && Dashboards.list.length')
-                    i.icon-bell 
+                    i.fa.fa-lock
                     |  {{ 'disableDragWidget:dashboardHeader' | translate }}
 
 h1.page-title
