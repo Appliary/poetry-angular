@@ -53,6 +53,9 @@ tags-input .tags {
 
 /* ===== DASHBOARD ===== */
 .gridster .gridster-item {
+	.widget{
+		height:100%;
+	},
 	.widget-view, .widget-view div {
 		height:100%;
 	}

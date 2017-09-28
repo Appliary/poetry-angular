@@ -1,2 +1,13 @@
 div( ng-controller="dashboard/widgets/chart/view")
+    button.btn.btn-sm.custom(
+      ng-click="toggleTable()",
+      ng-disabled="loadingChart",
+      ng-if="!tgtab.isTable && widget.options.chartType != 'Table' && !(widget.options && widget.options.hideTable)")
+        i.fa.fa-table
+    button.btn.btn-sm.custom(
+      ng-click="toggleTable()",
+      ng-disabled="loadingChart",
+      ng-if="tgtab.isTable && !(widget.options && widget.options.hideTable)")
+        i.fa.fa-line-chart
+
     div( google-chart, chart="widget.chartObject")
