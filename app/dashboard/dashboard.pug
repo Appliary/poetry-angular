@@ -10,7 +10,7 @@
                     |  {{ 'addDashboard:dashboardHeader' | translate }}
             li
                 a(ng-click='Widgets.create()', ng-if="Dashboards.list.length")
-                    i.fa.fa-address-book-o
+                    i.fa.fa-plus
                     |  {{ 'addWidget:dashboardHeader' | translate }}
             li
                 a(ng-click='Dashboards.edit()', ng-if="Dashboards.list.length")
